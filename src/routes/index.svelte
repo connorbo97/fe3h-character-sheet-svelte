@@ -83,6 +83,7 @@ import Modal from 'src/common/Modal.svelte';
 
 				{equippedClass}
 				{setEquippedClass}
+	
 				{unlockedClasses}
 				{onUpdateUnlockedClasses}
 
