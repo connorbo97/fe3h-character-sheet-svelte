@@ -15,12 +15,12 @@ import Modal from 'src/common/Modal.svelte';
 	let fullSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
 		playerName: 'No Name',
-		skillProficiencies: DEFAULT_PLAYER_SKILL_PROFICIENCY,
+		playerSkills: DEFAULT_PLAYER_SKILL_PROFICIENCY,
 		skillBonuses: DEFAULT_PLAYER_SKILL_BONUSES,
 	};
 
 	$: playerStats = fullSheet.playerStats;
-	$: playerSkillProficiency = fullSheet.skillProficiencies;
+	$: playerSkillProficiency = fullSheet.playerSkills;
 	$: playerSkillBonus = fullSheet.skillBonuses;
 	$: name = fullSheet.playerName;
 
@@ -51,7 +51,7 @@ import Modal from 'src/common/Modal.svelte';
 	const onToggleSkillProficiency = (skill: any) => {
 		const curVal = playerSkillProficiency[skill];
 
-		onUpdateSheet('skillProficiencies', { ...playerSkillProficiency, [skill]: !curVal });
+		onUpdateSheet('playerSkills', { ...playerSkillProficiency, [skill]: !curVal });
 	};
 </script>
 
