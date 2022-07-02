@@ -11,6 +11,7 @@
 	import { modal } from 'src/stores.js';
 import Modal from 'src/common/Modal.svelte';
 
+	let ready = false;
 	let fullSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
 		playerName: 'No Name',
@@ -33,6 +34,8 @@ import Modal from 'src/common/Modal.svelte';
 				console.error(err);
 			}
 		}
+
+		ready = true
 	});
 
 	const onUpdateSheet = (property: string, value: any) => {
@@ -52,7 +55,7 @@ import Modal from 'src/common/Modal.svelte';
 	};
 </script>
 
-<div class="container">
+<div class={`${ready ? '' : 'no-clicks'} container`}>
   <Modal show={$modal}>
     <div class="header">
       <Header playerName={name} {onUpdatePlayerName} />
@@ -67,6 +70,9 @@ import Modal from 'src/common/Modal.svelte';
       />
     </div>
   </Modal>
+	{#if !ready}
+		<div class="not-ready">Loading</div>
+	{/if}
 </div>
 
 <style lang="scss">
@@ -87,5 +93,16 @@ import Modal from 'src/common/Modal.svelte';
 	}
 	.content {
 		grid-area:content
+	}
+	.no-clicks {
+		pointer-events: none;
+	}
+	.not-ready {
+		position: fixed;
+		inset: 0;
+		background-color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 </style>
