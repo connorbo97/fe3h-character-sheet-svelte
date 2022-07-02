@@ -1,7 +1,7 @@
 <script lang="ts">
 import Popup from './Popup.svelte';
 
-	import { getModifierByPlayerStat } from 'src/utils';
+	import { getModifierByPlayerStat, rollD20 } from 'src/utils';
 	import { DEFAULT_PLAYER_STAT, PLAYER_STAT_TO_LABEL } from '../../constants';
 import { getContext } from 'svelte';
 
@@ -14,11 +14,9 @@ import { getContext } from 'svelte';
 	// handlers
 	const onPlayerStatRoll = (stat: string) => {
 		const statBuff = getModifierByPlayerStat(stats[stat]);
-		const rng = Math.floor(Math.random() * 20 + 1);
+		const rng = rollD20();
 		const result = rng + statBuff;
 		alert(`${result} = ${rng} + ${statBuff}`);
-
-		onUpdatePlayerStats({ ...stats, [stat]: stats[stat] + 1 });
 	};
 
 	const onPlayerStatChange = (stat: string, value: any) => {
