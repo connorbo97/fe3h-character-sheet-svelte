@@ -17,6 +17,9 @@ import Stats from "./stats.svelte";
 
 	export let equippedClass: any;
 	export let setEquippedClass: any;
+
+	export let unlockedClasses: any;
+	export let onUpdateUnlockedClasses: any;
 </script>
 
 <div class="container">
@@ -36,6 +39,9 @@ import Stats from "./stats.svelte";
 		<Classes
 			{equippedClass} 
 			{setEquippedClass}
+
+			{unlockedClasses}
+			{onUpdateUnlockedClasses}
 		/>
 	</div>
 </div>

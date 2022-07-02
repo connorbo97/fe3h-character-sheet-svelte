@@ -11,18 +11,22 @@
 	import { modal } from 'src/stores.js';
 import Modal from 'src/common/Modal.svelte';
 
-	let ready = false;
-	let fullSheet = {
+	const defaultSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
 		playerName: 'No Name',
 		playerSkills: DEFAULT_PLAYER_SKILL_PROFICIENCY,
 		skillBonuses: DEFAULT_PLAYER_SKILL_BONUSES,
+		unlockedClasses: [],
 	};
+
+	let ready = false;
+	let fullSheet = defaultSheet;
 	let equippedClass = '';
 
 	$: playerStats = fullSheet.playerStats;
 	$: playerSkillProficiency = fullSheet.playerSkills;
 	$: playerSkillBonus = fullSheet.skillBonuses;
+	$: unlockedClasses = fullSheet.unlockedClasses;
 	$: name = fullSheet.playerName;
 
 	onMount(() => {
@@ -30,7 +34,7 @@ import Modal from 'src/common/Modal.svelte';
 
 		if (lsSheet) {
 			try {
-				fullSheet = JSON.parse(lsSheet);
+				fullSheet = { ...defaultSheet, ...JSON.parse(lsSheet) };
 			} catch (err) {
 				console.error(err);
 			}
@@ -57,6 +61,9 @@ import Modal from 'src/common/Modal.svelte';
 	const setEquippedClass = (newClass: any) => {
 		equippedClass = newClass
 	}
+	const onUpdateUnlockedClasses = (newClasses: Array<string>) => {
+		onUpdateSheet('unlockedClasses', newClasses)
+	}
 </script>
 
 <div class={`${ready ? '' : 'no-clicks'} container`}>
@@ -76,6 +83,8 @@ import Modal from 'src/common/Modal.svelte';
 
 				{equippedClass}
 				{setEquippedClass}
+				{unlockedClasses}
+				{onUpdateUnlockedClasses}
 
       />
     </div>

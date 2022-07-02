@@ -1,12 +1,16 @@
 <script lang="ts">
-	import { BEGINNER_CLASSES, CLASS, INTERMEDIATE_CLASSES } from 'src/constants';
+	import { BEGINNER_CLASSES, INTERMEDIATE_CLASSES } from 'src/constants';
 
 	export let equippedClass: string;
 	export let setEquippedClass: Function;
 
-	$: classSet = new Set([CLASS.MYRMIDON]);
+  export let unlockedClasses: Array<string>;
+  export let onUpdateUnlockedClasses: Function;
 
-	const onToggleEquipClass = (classToSelect: string) => {
+
+	$: classSet = new Set(unlockedClasses);
+
+  const onToggleEquipClass = (classToSelect: string) => {
 		if (equippedClass === classToSelect) {
 			setEquippedClass('');
 		} else if (classSet.has(classToSelect)) {
@@ -14,18 +18,15 @@
 		}
 	};
 
-	const onToggleClassActive = (classToSelect: string) => {
-		if (classSet.has(classToSelect)) {
-			classSet.delete(classToSelect);
-
-      if (equippedClass === classToSelect) {
+	const onToggleClassActive = (targetClass: string) => {
+		if (classSet.has(targetClass)) {
+      if (equippedClass === targetClass) {
         setEquippedClass('');
       }
+      onUpdateUnlockedClasses(Array.from(classSet).filter(val => val !== targetClass))
 		} else {
-			classSet.add(classToSelect);
+      onUpdateUnlockedClasses([...Array.from(classSet), targetClass])
 		}
-
-		classSet = new Set(classSet);
 	};
 </script>
 
@@ -36,7 +37,7 @@
 			{#each Array.from(BEGINNER_CLASSES) as beginnerClass}
 				<div class="class-container">
 					<button
-						class={classSet.has(beginnerClass) ? 'active' : 'not-active'}
+						class={classSet?.has(beginnerClass) ? 'active' : 'not-active'}
 						on:click={() => onToggleClassActive(beginnerClass)}
 					/>
 					<div class="class-label">{beginnerClass}</div>
@@ -54,7 +55,7 @@
 			{#each Array.from(INTERMEDIATE_CLASSES) as intermediateClass}
 				<div class="class-container">
 					<button
-						class={classSet.has(intermediateClass) ? 'active' : 'not-active'}
+						class={classSet?.has(intermediateClass) ? 'active' : 'not-active'}
 						on:click={() => onToggleClassActive(intermediateClass)}
 					/>
 					<div class="class-label">{intermediateClass}</div>
