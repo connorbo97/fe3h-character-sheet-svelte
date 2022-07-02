@@ -1,4 +1,6 @@
 <script lang='ts'>
+import Classes from "./classes.svelte";
+
 import CombatStats from "./combatStats.svelte";
 
 import Skills from "./skills.svelte";
@@ -25,6 +27,9 @@ import Stats from "./stats.svelte";
     />
 		<CombatStats stats={playerStats}/>
   </div>
+	<div class="rest">
+		<Classes />
+	</div>
 </div>
 
 <style lang='scss'>
