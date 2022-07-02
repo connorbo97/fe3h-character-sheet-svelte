@@ -1,4 +1,5 @@
 export const PROFICIENCY_BONUS = 2;
+
 export const PLAYER_STAT = {
 	STR: 'pc_strength',
 	DEX: 'pc_dexterity',
@@ -57,6 +58,7 @@ export const PLAYER_SKILL = {
 
 export const DEFAULT_PLAYER_SKILL_PROFICIENCY: { [s: string]: number } = {}
 export const DEFAULT_PLAYER_SKILL_BONUSES: { [s: string]: number } = {}
+export const DEFAULT_ARMOR_CLASS = 5
 
 export const PLAYER_SKILL_TO_STAT = {
   [PLAYER_SKILL.ACROBATICS]: PLAYER_STAT.DEX,
