@@ -1,10 +1,7 @@
 <script lang="ts">
 	import Classes from './classes.svelte';
-
 	import CombatStats from './combatStats.svelte';
-
 	import Skills from './skills.svelte';
-
 	import Stats from './stats.svelte';
 
 	export let playerStats: any;
