@@ -16,7 +16,7 @@ import Modal from 'src/common/Modal.svelte';
 		playerStats: DEFAULT_PLAYER_STAT,
 		playerName: 'No Name',
 		skillProficiencies: DEFAULT_PLAYER_SKILL_PROFICIENCY,
-		skillBonuses: DEFAULT_PLAYER_SKILL_BONUSES
+		skillBonuses: DEFAULT_PLAYER_SKILL_BONUSES,
 	};
 
 	$: playerStats = fullSheet.playerStats;
@@ -85,6 +85,8 @@ import Modal from 'src/common/Modal.svelte';
 			'content';
 		grid-template-rows: min-content 1fr;
 		grid-template-columns: 1fr;
+
+		min-height: 100vh;
 
 		row-gap: 5px
 	}
