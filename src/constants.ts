@@ -1,3 +1,38 @@
+//types
+declare type BasicStat = {
+  [s: string]: number | Array<any> | undefined,
+  pickOne?: Array<any>
+}
+
+declare type ClassFeatures = {
+	canUseMagic?: boolean,
+  unlocks: StatBlock,
+  whenEquipped: StatBlock,
+  whenMastered: StatBlock
+}
+
+declare type ClassToFeatures = { [s:string]: ClassFeatures }
+
+declare type StatBlock = {
+  playerStats?: BasicStat
+  playerSkills?: BasicStat
+  toolProficiencies?: BasicStat
+  combatArts?: BasicStat
+  weapons?: BasicStat
+
+  xpMods?: BasicStat
+  
+  combatSkills?: BasicStat
+
+  hpBonus?: number,
+  msBonus?: number,
+  bonusRange?: number,
+  followUpBonus?: number,
+  protectionBonus?: number,
+
+}
+
+
 // STATS
 export const PLAYER_STAT = {
 	STR: 'pc_strength',
@@ -269,7 +304,7 @@ export const CLASS_TO_LABEL = {
 	[CLASS.PRIEST]: 'Priest',
 }
 
-export const CLASS_TO_FEATURES = {
+export const CLASS_TO_FEATURES: ClassToFeatures = {
 	[CLASS.MYRMIDON]: {
 		unlocks: {
 			playerStats: {
@@ -370,6 +405,7 @@ export const CLASS_TO_FEATURES = {
 		}
 	},
 	[CLASS.MONK]: {
+		canUseMagic: true,
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.INT]: 12,
@@ -560,8 +596,8 @@ export const CLASS_TO_FEATURES = {
 			}
 		},
 		whenEquipped: {
-			followUpMod: -1,
-			protectionMod: 1,
+			followUpBonus: -1,
+			protectionBonus: 1,
 			weapons: {
 				[WEAPONS.IRON_SHIELD]: 1,
 			},
@@ -597,6 +633,7 @@ export const CLASS_TO_FEATURES = {
 			}
 		},
 		whenEquipped: {
+			msBonus: 1,
 			xpMods: {
 				[WEAPON_TYPE.FISTS]: 1.6,
 				[WEAPON_TYPE.AXE]: 1.3,
@@ -609,6 +646,7 @@ export const CLASS_TO_FEATURES = {
 		}
 	},
 	[CLASS.MAGE]: {
+		canUseMagic: true,
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.INT]: 14,
@@ -630,6 +668,7 @@ export const CLASS_TO_FEATURES = {
 		}
 	},
 	[CLASS.PRIEST]: {
+		canUseMagic: true,
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.INT]: 14,
@@ -655,9 +694,15 @@ export const CLASS_TO_FEATURES = {
 	},
 }
 
+// CONSTS
+export const PROFICIENCY_BONUS = 2;
+export const INTERMEDIATE_MARTIAL_HP_BONUS = 2;
+export const INTERMEDIATE_MAGIC_HP_BONUS = 1;
+
+export const INTERMEDIATE_MARTIAL_PROTECTION_BONUS = 1;
+export const INTERMEDIATE_MARTIAL_RESILIENCE_BONUS = 1;
 
 // DEFAULTS
-export const PROFICIENCY_BONUS = 2;
 export const DEFAULT_PLAYER_STAT = {
 	[PLAYER_STAT.STR]: 10,
 	[PLAYER_STAT.DEX]: 10,
@@ -671,3 +716,4 @@ export const DEFAULT_PLAYER_SKILL_BONUSES: { [s: string]: number } = {}
 export const DEFAULT_ARMOR_CLASS = 5
 export const DEFAULT_MOVEMENT_SPEED = 4;
 export const DEFAULT_MAX_HP = 8;
+export const DEFAULT_PROTECTION = 0;
