@@ -21,7 +21,6 @@ import { getContext } from 'svelte';
 	};
 
 	const onPlayerStatChange = (stat: string, value: any) => {
-		console.log(value);
 		onUpdatePlayerStats({ ...stats, [stat]: isNaN(value) ? 0 : value });
 	};
 
