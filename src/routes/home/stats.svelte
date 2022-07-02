@@ -16,7 +16,8 @@ import { getContext } from 'svelte';
 		const statBuff = getModifierByPlayerStat(stats[stat]);
 		const rng = rollD20();
 		const result = rng + statBuff;
-		alert(`${result} = ${rng} + ${statBuff}`);
+
+		open(Popup, { message: `${result} = ${rng} + ${statBuff}`})
 	};
 
 	const onPlayerStatChange = (stat: string, value: any) => {
@@ -53,12 +54,11 @@ import { getContext } from 'svelte';
 		justify-content: flex-start;
 		align-items: stretch;
 
-		min-height: 100vh;
 		row-gap: 20px;
 		background-color: blue;
 
 		padding: 10px;
-
+		height: calc(100% - 20px);
 	}
 	.stat-container {
 		display: flex;

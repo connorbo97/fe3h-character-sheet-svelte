@@ -1,4 +1,6 @@
 <script lang='ts'>
+import CombatStats from "./combatStats.svelte";
+
 import Skills from "./skills.svelte";
 
 import Stats from "./stats.svelte";
@@ -21,6 +23,7 @@ import Stats from "./stats.svelte";
       skillBonus={playerSkillBonus}
       onToggleSkillProficiency={onToggleSkillProficiency}
     />
+		<CombatStats stats={playerStats}/>
   </div>
 </div>
 
@@ -29,8 +32,10 @@ import Stats from "./stats.svelte";
 		display: grid;
 		grid-template-areas:
 			'stats skills rest';
-		grid-template-columns: min-content 200px 1fr;
+		grid-template-columns: min-content 210px 1fr;
 		column-gap: 5px;
+
+		height: 100%;
 	}
 	.stats {
 		grid-area: stats;
@@ -38,6 +43,9 @@ import Stats from "./stats.svelte";
 
 	.skills {
 		grid-area: skills;
+		display:flex;
+		flex-direction: column;
+		row-gap: 5px;
 	}
 
 </style>
