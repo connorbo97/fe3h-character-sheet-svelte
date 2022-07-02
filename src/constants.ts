@@ -59,6 +59,8 @@ export const PLAYER_SKILL = {
 export const DEFAULT_PLAYER_SKILL_PROFICIENCY: { [s: string]: number } = {}
 export const DEFAULT_PLAYER_SKILL_BONUSES: { [s: string]: number } = {}
 export const DEFAULT_ARMOR_CLASS = 5
+export const DEFAULT_MOVEMENT_SPEED = 4;
+export const DEFAULT_MAX_HP = 8;
 
 export const PLAYER_SKILL_TO_STAT = {
   [PLAYER_SKILL.ACROBATICS]: PLAYER_STAT.DEX,
