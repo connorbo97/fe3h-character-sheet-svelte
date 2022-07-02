@@ -18,6 +18,7 @@ import Modal from 'src/common/Modal.svelte';
 		playerSkills: DEFAULT_PLAYER_SKILL_PROFICIENCY,
 		skillBonuses: DEFAULT_PLAYER_SKILL_BONUSES,
 	};
+	let equippedClass = '';
 
 	$: playerStats = fullSheet.playerStats;
 	$: playerSkillProficiency = fullSheet.playerSkills;
@@ -53,6 +54,9 @@ import Modal from 'src/common/Modal.svelte';
 
 		onUpdateSheet('playerSkills', { ...playerSkillProficiency, [skill]: !curVal });
 	};
+	const setEquippedClass = (newClass: any) => {
+		equippedClass = newClass
+	}
 </script>
 
 <div class={`${ready ? '' : 'no-clicks'} container`}>
@@ -63,10 +67,16 @@ import Modal from 'src/common/Modal.svelte';
     <div class="content">
       <Home
         {playerStats}
-        {playerSkillProficiency}
-        {playerSkillBonus}
-        {onToggleSkillProficiency}
         {onUpdatePlayerStats}
+
+        {playerSkillBonus}
+	
+        {playerSkillProficiency}
+        {onToggleSkillProficiency}
+
+				{equippedClass}
+				{setEquippedClass}
+
       />
     </div>
   </Modal>

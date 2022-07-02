@@ -8,10 +8,15 @@ import Skills from "./skills.svelte";
 import Stats from "./stats.svelte";
 
   export let playerStats: any;
-  export let playerSkillProficiency: any;
-  export let playerSkillBonus: any;
-  export let onToggleSkillProficiency: any;
   export let onUpdatePlayerStats: any;
+
+  export let playerSkillBonus: any;
+
+  export let playerSkillProficiency: any;
+  export let onToggleSkillProficiency: any;
+
+	export let equippedClass: any;
+	export let setEquippedClass: any;
 </script>
 
 <div class="container">
@@ -28,7 +33,10 @@ import Stats from "./stats.svelte";
 		<CombatStats stats={playerStats}/>
   </div>
 	<div class="rest">
-		<Classes />
+		<Classes
+			{equippedClass} 
+			{setEquippedClass}
+		/>
 	</div>
 </div>
 
