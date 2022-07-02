@@ -1,5 +1,4 @@
-export const PROFICIENCY_BONUS = 2;
-
+// STATS
 export const PLAYER_STAT = {
 	STR: 'pc_strength',
 	DEX: 'pc_dexterity',
@@ -7,15 +6,6 @@ export const PLAYER_STAT = {
 	INT: 'pc_intelligence',
 	WIS: 'pc_wisdom',
 	CHA: 'pc_charisma'
-};
-
-export const DEFAULT_PLAYER_STAT = {
-	[PLAYER_STAT.STR]: 10,
-	[PLAYER_STAT.DEX]: 10,
-	[PLAYER_STAT.CON]: 10,
-	[PLAYER_STAT.INT]: 10,
-	[PLAYER_STAT.WIS]: 10,
-	[PLAYER_STAT.CHA]: 10
 };
 
 export const PLAYER_STAT_TO_LABEL = {
@@ -56,12 +46,7 @@ export const PLAYER_SKILL = {
 	SURVIVAL: 'SURVIVAL',
 }
 
-export const DEFAULT_PLAYER_SKILL_PROFICIENCY: { [s: string]: number } = {}
-export const DEFAULT_PLAYER_SKILL_BONUSES: { [s: string]: number } = {}
-export const DEFAULT_ARMOR_CLASS = 5
-export const DEFAULT_MOVEMENT_SPEED = 4;
-export const DEFAULT_MAX_HP = 8;
-
+// SKILLS
 export const PLAYER_SKILL_TO_STAT = {
   [PLAYER_SKILL.ACROBATICS]: PLAYER_STAT.DEX,
 	[PLAYER_SKILL.ANIMAL_HANDLING]: PLAYER_STAT.WIS,
@@ -103,3 +88,586 @@ export const PLAYER_SKILL_TO_LABEL = {
 	[PLAYER_SKILL.STEALTH]: 'Stealth',
 	[PLAYER_SKILL.SURVIVAL]: 'Survival',
 }
+
+// tools
+export const TOOLS = {
+	LOCKPICKING: 'LOCKPICKING',
+	COOKING: 'COOKING',
+}
+
+// weapons
+
+export const WEAPON_TYPE = {
+	SWORD: 'SWORD',
+	LANCE: 'LANCE',
+	AXE: 'AXE',
+	BOW: 'BOW',
+	FISTS: 'FISTS',
+	HEAVY_ARMOR: 'HEAVY_ARMOR',
+	RIDING: 'RIDING',
+	REASON: 'REASON',
+	FAITH: 'FAITH',
+	LEADERSHIP: 'LEADERSHIP',
+}
+
+export const WEAPON_TYPE_TO_STAT = {
+	[WEAPON_TYPE.SWORD]:[PLAYER_STAT.STR],
+	[WEAPON_TYPE.LANCE]: [PLAYER_STAT.STR, PLAYER_STAT.DEX],
+	[WEAPON_TYPE.AXE]: [PLAYER_STAT.STR],
+	[WEAPON_TYPE.BOW]: [PLAYER_STAT.DEX],
+	[WEAPON_TYPE.FISTS]: [PLAYER_STAT.STR, PLAYER_STAT.DEX],
+	[WEAPON_TYPE.HEAVY_ARMOR]:[PLAYER_STAT.CON],
+	[WEAPON_TYPE.RIDING]: [PLAYER_SKILL.ANIMAL_HANDLING],
+	[WEAPON_TYPE.REASON]: [PLAYER_STAT.INT],
+	[WEAPON_TYPE.FAITH]: [PLAYER_STAT.INT],
+	[WEAPON_TYPE.LEADERSHIP]: [PLAYER_STAT.WIS, PLAYER_STAT.CHA],
+}
+
+export const WEAPON_LEVEL = {
+	E: 'E',
+	E_PLUS: 'E_PLUS',
+	D: 'D',
+	D_PLUS: 'D_PLUS',
+	C: 'C',
+	C_PLUS: 'C_PLUS',
+	B: 'B',
+	B_PLUS: 'B_PLUS',
+	A: 'A',
+	A_PLUS: 'A_PLUS',
+	S: 'S',
+}
+
+export const WEAPON_LEVEL_TO_LABEL = {
+	[WEAPON_LEVEL.E]: 'E',
+	[WEAPON_LEVEL.E_PLUS]: 'E+',
+	[WEAPON_LEVEL.D]: 'D',
+	[WEAPON_LEVEL.D_PLUS]: 'D+',
+	[WEAPON_LEVEL.C]: 'C',
+	[WEAPON_LEVEL.C_PLUS]: 'C+',
+	[WEAPON_LEVEL.B]: 'B',
+	[WEAPON_LEVEL.B_PLUS]: 'B+',
+	[WEAPON_LEVEL.A]: 'A',
+	[WEAPON_LEVEL.A_PLUS]: 'A+',
+	[WEAPON_LEVEL.S]: 'S',
+}
+
+export const WEAPONS = {
+	TRAINING_SWORD: 'TRAINING_SWORD',
+	IRON_SWORD: 'IRON_SWORD',
+	STEEL_SWORD: 'STEEL_SWORD',
+
+	TRAINING_LANCE: 'TRAINING_LANCE',
+	IRON_LANCE: 'IRON_LANCE',
+	STEEL_LANCE: 'STEEL_LANCE',
+	PIKE: 'PIKE',
+
+	TRAINING_AXE: 'TRAINING_AXE',
+	IRON_AXE: 'IRON_AXE',
+	STEEL_AXE: 'STEEL_AXE',
+	HAND_AXE: 'HAND_AXE',
+	HAMMER: 'HAMMER',
+
+	TRAINING_BOW: 'TRAINING_BOW',
+	IRON_BOW: 'IRON_BOW',
+	STEEL_BOW: 'STEEL_BOW',
+	SHORT_BOW: 'SHORT_BOW',
+	
+	TRAINING_GAUNTLETS: 'TRAINING_GAUNTLETS',
+	IRON_GAUNTLETS: 'IRON_GAUNTLETS',
+	STEEL_GAUNTLETS: 'STEEL_GAUNTLETS',
+	CLOTH_GAUNTLETS: 'CLOTH_GAUNTLETS',
+
+	FIRE: 'FIRE',
+	THUNDER: 'THUNDER',
+	WIND: 'WIND',
+	BLIZZARD: 'BLIZZARD',
+
+	BOLGANONE: 'BOLGANONE',
+	THORON: 'THORON',
+	CUTTING_GALE: 'CUTTING_GALE',
+	SAGITTAE: 'SAGITTAE',
+	HAILSTORM: 'HAILSTORM',
+
+	HEAL: 'HEAL',
+	NOSFERATU: 'NOSFERATU',
+	SERAPHIM: 'SERAPHIM',
+
+	RECOVER: 'RECOVER',
+	PHYSIC: 'PHYSIC',
+	RESTORE: 'RESTORE',
+	WARD: 'WARD',
+
+	IRON_SHIELD: 'IRON_SHIELD',
+}
+
+// Combat Arts
+export const COMBAT_ARTS = {
+	SWAP: 'SWAP',
+	SHOVE: 'SHOVE',
+	REPOSITION: 'REPOSITION',
+	PULL_BACK: 'PULL_BACK',
+	
+}
+
+// Combat Skills
+export const COMBAT_SKILLS = {
+	MYRMIDON_MASTER: 'MYRMIDON_MASTER',
+	SOLDIER_MASTER: 'SOLDIER_MASTER',
+	FIGHTER_MASTER: 'FIGHTER_MASTER',
+	RANGER_MASTER: 'RANGER_MASTER',
+	MONK_MASTER: 'MONK_MASTER',
+	
+	MERCENARY_THIEF_SKILL: 'MERCENARY_THIEF_SKILL',
+	VANTAGE: 'VANTAGE',
+	ANIMAL_WHISPERER: 'ANIMAL_WHISPERER',
+	BULLSEYE: 'BULLSEYE',
+	DEATH_BLOW: 'DEATH_BLOW',
+	ARMORED_COMBAT: 'ARMORED_COMBAT',
+	GRAPPLER: 'GRAPPLER',
+
+	FIENDISH_BLOW: 'FIENDISH_BLOW',
+	HEAL_PLUS: 'HEAL_PLUS',
+}
+// Class
+
+export const CLASS = {
+	MYRMIDON: 'MYRMIDON',
+	SOLDIER: 'SOLDIER',
+	FIGHTER: 'FIGHTER',
+	RANGER: 'RANGER',
+	MONK: 'MONK',
+
+	MERCENARY: 'MERCENARY',
+	THIEF: 'THIEF',
+	CAVALIER: 'CAVALIER',
+	ARCHER: 'ARCHER',
+	BRIGAND: 'BRIGAND',
+	ARMORED_KNIGHT: 'ARMORED_KNIGHT',
+	BRAWLER: 'BRAWLER',
+	MAGE: 'MAGE',
+	PRIEST: 'PRIEST',
+}
+
+export const BEGINNER_CLASSES = new Set([CLASS.MYRMIDON, CLASS.SOLDIER, CLASS.FIGHTER, CLASS.RANGER, CLASS.MONK])
+export const INTERMEDIATE_CLASSES = new Set([CLASS.MERCENARY, CLASS.THIEF, CLASS.CAVALIER, CLASS.ARCHER, CLASS.BRIGAND, CLASS.ARMORED_KNIGHT, CLASS.BRAWLER, CLASS.MAGE, CLASS.PRIEST])
+
+export const CLASS_TO_LABEL = {
+	[CLASS.MYRMIDON]: 'Myrmidon',
+	[CLASS.SOLDIER]: 'Soldier',
+	[CLASS.FIGHTER]: 'Fighter',
+	[CLASS.RANGER]: 'Ranger',
+	[CLASS.MONK]: 'Monk',
+
+	[CLASS.MERCENARY]: 'Mercenary',
+	[CLASS.THIEF]: 'Thief',
+	[CLASS.CAVALIER]: 'Cavalier',
+	[CLASS.ARCHER]: 'Archer',
+	[CLASS.BRIGAND]: 'Brigand',
+	[CLASS.ARMORED_KNIGHT]: 'Armored Knight',
+	[CLASS.BRAWLER]: 'Brawler',
+	[CLASS.MAGE]: 'Mage',
+	[CLASS.PRIEST]: 'Priest',
+}
+
+export const CLASS_TO_FEATURES = {
+	[CLASS.MYRMIDON]: {
+		unlocks: {
+			playerStats: {
+				[PLAYER_STAT.DEX]: 12,
+			},
+			combatArts: {
+				[COMBAT_ARTS.SWAP]: 1,
+			},
+			weapons: {
+				[WEAPONS.IRON_SWORD]: 1,
+			}
+		},
+		whenEquipped: {
+			xpMods: {
+				[WEAPON_TYPE.SWORD]: 1.3
+			}
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.MYRMIDON_MASTER]: 1,
+			}
+		}
+	},
+	[CLASS.SOLDIER]: {
+		unlocks: {
+			playerStats: {
+				pickOne: [{
+					[PLAYER_STAT.DEX]: 12,
+				}, {
+					[PLAYER_STAT.STR]: 12,
+				}]
+			},
+			combatArts: {
+				[COMBAT_ARTS.REPOSITION]: 1,
+			}
+		},
+		whenEquipped: {
+			xpMods: {
+				[WEAPON_TYPE.LANCE]: 1.3
+			}
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.SOLDIER_MASTER]: 1,
+			},
+		},
+	},
+	[CLASS.FIGHTER]: {
+		unlocks: {
+			playerStats: {
+				pickOne: [{
+					[PLAYER_STAT.DEX]: 12,
+				}, {
+					[PLAYER_STAT.STR]: 12,
+				}]
+			},
+			combatArts: {
+				[COMBAT_ARTS.SHOVE]: 1,
+			},
+			weapons: {
+				[WEAPONS.IRON_AXE]: 1,
+				[WEAPONS.IRON_GAUNTLETS]: 1,
+			}
+		},
+		whenEquipped: {
+			xpMods: {
+				[WEAPON_TYPE.FISTS]: 1.3,
+				[WEAPON_TYPE.AXE]: 1.3,
+			}
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.FIGHTER_MASTER]: 1,
+			}
+		}
+	},
+	[CLASS.RANGER]: {
+		unlocks: {
+			playerStats: {
+				[PLAYER_STAT.DEX]: 12,
+			},
+			combatArts: {
+				[COMBAT_ARTS.PULL_BACK]: 1,
+			},
+			weapons: {
+				[WEAPONS.IRON_BOW]: 1,
+			}
+		},
+		whenEquipped: {
+			xpMods: {
+				[WEAPON_TYPE.BOW]: 1.3
+			}
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.RANGER_MASTER]: 1,
+			}
+		}
+	},
+	[CLASS.MONK]: {
+		unlocks: {
+			playerStats: {
+				[PLAYER_STAT.INT]: 12,
+			},
+			combatArts: {
+				[COMBAT_ARTS.PULL_BACK]: 1,
+			},
+			weapons: {
+			}
+		},
+		whenEquipped: {
+			xpMods: {
+				[WEAPON_TYPE.REASON]: 1.3,
+				[WEAPON_TYPE.FAITH]: 1.3,
+			}
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.MONK_MASTER]: 1,
+			}
+		}
+	},
+
+	[CLASS.MERCENARY]: {
+		unlocks: {
+			playerStats: {
+				[PLAYER_STAT.DEX]: 14,
+			},
+			combatSkills: {
+				[COMBAT_SKILLS.MERCENARY_THIEF_SKILL]: 1,
+			},
+			weapons: {
+				[WEAPONS.STEEL_SWORD]: 1,
+				[WEAPONS.IRON_AXE]: 1,
+			}
+		},
+		whenEquipped: {
+			xpMods: {
+				[WEAPON_TYPE.SWORD]: 1.6,
+				[WEAPON_TYPE.AXE]: 1.3,
+			},
+			msBonus: 1,
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.VANTAGE]: 1,
+			}
+		}
+	},
+	[CLASS.THIEF]: {
+		unlocks: {
+			playerStats: {
+				[PLAYER_STAT.DEX]: 14,
+			},
+			combatSkills: {
+				[COMBAT_SKILLS.MERCENARY_THIEF_SKILL]: 1,
+			},
+			weapons: {
+				[WEAPONS.STEEL_SWORD]: 1,
+				[WEAPONS.IRON_AXE]: 1,
+			}
+		},
+		whenEquipped: {
+			xpMods: {
+				[WEAPON_TYPE.SWORD]: 1.6,
+				[WEAPON_TYPE.BOW]: 1.3,
+			},
+			toolProficiencies: {
+				[TOOLS.LOCKPICKING]: 1,
+			},
+			msBonus: 1,
+		},
+		whenMastered: {
+			toolProficiencies: {
+				[TOOLS.LOCKPICKING]: 1,
+			},
+			playerSkills: {
+				[PLAYER_SKILL.SLEIGHT_OF_HAND]: 1,
+			},
+		}
+	},
+	[CLASS.CAVALIER]: {
+		unlocks: {
+			playerStats: {
+				[PLAYER_STAT.DEX]: 12,
+				[PLAYER_STAT.WIS]: 12,
+			},
+			combatSkills: {
+				[COMBAT_SKILLS.MERCENARY_THIEF_SKILL]: 1,
+			},
+			playerSkills: {
+				[PLAYER_SKILL.ANIMAL_HANDLING]: 1,
+			},
+			weapons: {
+				[WEAPONS.STEEL_LANCE]: 1,
+				[WEAPONS.PIKE]: 1,
+				pickOne: [WEAPONS.IRON_SWORD, WEAPONS.IRON_AXE, WEAPONS.IRON_BOW],
+			}
+		},
+		whenEquipped: {
+			xpMods: {
+				[WEAPON_TYPE.LANCE]: 1.6,
+				pickOne: [{ weapons: [WEAPON_TYPE.SWORD, WEAPON_TYPE.AXE, WEAPON_TYPE.BOW], xp: 1.3 }],
+			},
+			toolProficiencies: {
+				[TOOLS.LOCKPICKING]: 1,
+			},
+			msBonus: 3,
+		},
+		whenMastered: {
+			toolProficiencies: {
+				[TOOLS.LOCKPICKING]: 1,
+			},
+			combatSkills: {
+				[COMBAT_SKILLS.ANIMAL_WHISPERER]: 1,
+			},
+		}
+	},
+	[CLASS.ARCHER]: {
+		unlocks: {
+			playerStats: {
+				[PLAYER_STAT.DEX]: 14,
+			},
+			weapons: {
+				[WEAPONS.STEEL_BOW]: 1,
+				[WEAPONS.SHORT_BOW]: 1,
+				[WEAPONS.IRON_SWORD]: 1,
+			}
+		},
+		whenEquipped: {
+			bonusRange: 1,
+			msBonus: 1,
+			xpMods: {
+				[WEAPON_TYPE.BOW]: 1.6,
+				[WEAPON_TYPE.SWORD]: 1.3,
+			},
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.BULLSEYE]: 1,
+			}
+		}
+	},
+	[CLASS.BRIGAND]: {
+		unlocks: {
+			hpBonus: 1,
+			playerStats: {
+				[PLAYER_STAT.STR]: 14,
+			},
+			combatSkills: {
+				[COMBAT_SKILLS.MERCENARY_THIEF_SKILL]: 1,
+			},
+			weapons: {
+				[WEAPONS.STEEL_AXE]: 1,
+				[WEAPONS.HAND_AXE]: 1,
+				[WEAPONS.STEEL_GAUNTLETS]: 1,
+			}
+		},
+		whenEquipped: {
+			msBonus: 1,
+			xpMods: {
+				[WEAPON_TYPE.AXE]: 1.6,
+				[WEAPON_TYPE.FISTS]: 1.3,
+			},
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.DEATH_BLOW]: 1,
+			}
+		}
+	},
+	[CLASS.ARMORED_KNIGHT]: {
+		unlocks: {
+			hpBonus: 1,
+			playerStats: {
+				[PLAYER_STAT.STR]: 12,
+				[PLAYER_STAT.CON]: 14,
+			},
+			combatSkills: {
+				[COMBAT_SKILLS.MERCENARY_THIEF_SKILL]: 1,
+			},
+			weapons: {
+				[WEAPONS.STEEL_AXE]: 1,
+				[WEAPONS.STEEL_LANCE]: 1,
+				[WEAPONS.HAMMER]: 1,
+				[WEAPONS.IRON_LANCE]: 1,
+				[WEAPONS.IRON_AXE]: 1,
+			}
+		},
+		whenEquipped: {
+			followUpMod: -1,
+			protectionMod: 1,
+			weapons: {
+				[WEAPONS.IRON_SHIELD]: 1,
+			},
+			xpMods: {
+				[WEAPON_TYPE.AXE]: 1.6,
+				[WEAPON_TYPE.LANCE]: 1.6,
+			},
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.ARMORED_COMBAT]: 1,
+			}
+		}
+	},
+	[CLASS.BRAWLER]: {
+		unlocks: {
+			hpBonus: 1,
+			playerStats: {
+				pickOne: [{
+					[PLAYER_STAT.STR]: 12,
+					[PLAYER_STAT.DEX]: 14,
+				}, {
+					[PLAYER_STAT.STR]: 14,
+					[PLAYER_STAT.DEX]: 12,
+				}]
+			},
+			combatSkills: {
+				[COMBAT_SKILLS.MERCENARY_THIEF_SKILL]: 1,
+			},
+			weapons: {
+				[WEAPONS.STEEL_GAUNTLETS]: 1,
+				[WEAPONS.CLOTH_GAUNTLETS]: 1,
+			}
+		},
+		whenEquipped: {
+			xpMods: {
+				[WEAPON_TYPE.FISTS]: 1.6,
+				[WEAPON_TYPE.AXE]: 1.3,
+			},
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.GRAPPLER]: 1,
+			}
+		}
+	},
+	[CLASS.MAGE]: {
+		unlocks: {
+			playerStats: {
+				[PLAYER_STAT.INT]: 14,
+			},
+			weapons: {
+				pickOne: [WEAPONS.FIRE, WEAPONS.THUNDER, WEAPONS.BLIZZARD, WEAPONS.WIND, 'DOUBLE_EXISTING'],
+			}
+		},
+		whenEquipped: {
+			xpMods: {
+				[WEAPON_TYPE.REASON]: 1.6,
+				[WEAPON_TYPE.FAITH]: 1.3,
+			},
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.FIENDISH_BLOW]: 1,
+			}
+		}
+	},
+	[CLASS.PRIEST]: {
+		unlocks: {
+			playerStats: {
+				[PLAYER_STAT.INT]: 14,
+			},
+			playerSkills: {
+				[PLAYER_SKILL.RELIGION]: 1,
+			}
+		},
+		whenEquipped: {
+			combatSkills: {
+				[COMBAT_SKILLS.HEAL_PLUS]: 1,
+			},
+			xpMods: {
+				[WEAPON_TYPE.FAITH]: 1.6,
+				[WEAPON_TYPE.REASON]: 1.3,
+			},
+		},
+		whenMastered: {
+			combatSkills: {
+				[COMBAT_SKILLS.HEAL_PLUS]: 1,
+			}
+		}
+	},
+}
+
+
+// DEFAULTS
+export const PROFICIENCY_BONUS = 2;
+export const DEFAULT_PLAYER_STAT = {
+	[PLAYER_STAT.STR]: 10,
+	[PLAYER_STAT.DEX]: 10,
+	[PLAYER_STAT.CON]: 10,
+	[PLAYER_STAT.INT]: 10,
+	[PLAYER_STAT.WIS]: 10,
+	[PLAYER_STAT.CHA]: 10
+};
+export const DEFAULT_PLAYER_SKILL_PROFICIENCY: { [s: string]: number } = {}
+export const DEFAULT_PLAYER_SKILL_BONUSES: { [s: string]: number } = {}
+export const DEFAULT_ARMOR_CLASS = 5
+export const DEFAULT_MOVEMENT_SPEED = 4;
+export const DEFAULT_MAX_HP = 8;
