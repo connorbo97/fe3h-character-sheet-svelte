@@ -1,30 +1,91 @@
-<script>
-  import { DEFAULT_PLAYER_STAT } from '../constants';
-  import Stats from './home/stats.svelte';
+<script lang="ts">
+	import { onMount } from 'svelte';
 
-  let playerStats = DEFAULT_PLAYER_STAT
-  let playerName = "Default Name"
+	import {
+		DEFAULT_PLAYER_SKILL_BONUSES,
+		DEFAULT_PLAYER_SKILL_PROFICIENCY,
+		DEFAULT_PLAYER_STAT
+	} from '../constants';
+	import Home from './home/home.svelte';
+	import Header from './home/Header.svelte';
+	import { modal } from 'src/stores.js';
+import Modal from 'src/common/Modal.svelte';
 
+	let fullSheet = {
+		playerStats: DEFAULT_PLAYER_STAT,
+		playerName: 'No Name',
+		skillProficiencies: DEFAULT_PLAYER_SKILL_PROFICIENCY,
+		skillBonuses: DEFAULT_PLAYER_SKILL_BONUSES
+	};
+
+	$: playerStats = fullSheet.playerStats;
+	$: playerSkillProficiency = fullSheet.skillProficiencies;
+	$: playerSkillBonus = fullSheet.skillBonuses;
+	$: name = fullSheet.playerName;
+
+	onMount(() => {
+		const lsSheet = localStorage.getItem('sheet');
+
+		if (lsSheet) {
+			try {
+				fullSheet = JSON.parse(lsSheet);
+			} catch (err) {
+				console.error(err);
+			}
+		}
+	});
+
+	const onUpdateSheet = (property: string, value: any) => {
+		fullSheet = { ...fullSheet, [property]: value };
+		localStorage.setItem('sheet', JSON.stringify(fullSheet));
+	};
+	const onUpdatePlayerStats = (newStats: any) => {
+		onUpdateSheet('playerStats', newStats);
+	};
+	const onUpdatePlayerName = (newName: any) => {
+		onUpdateSheet('playerName', newName);
+	};
+	const onToggleSkillProficiency = (skill: any) => {
+		const curVal = playerSkillProficiency[skill];
+
+		onUpdateSheet('skillProficiencies', { ...playerSkillProficiency, [skill]: !curVal });
+	};
 </script>
 
-<style lang='scss'>
-  // :global {
-  // }
-  .container {
-    display: grid;
-    grid-template-areas: 
-    "stats main";
-    grid-template-rows: min-content 1fr;
-  }
-  .stats{
-    grid-area: stats;
-  }
-  
-</style>
-
 <div class="container">
-  <div class="stats">
-    <Stats/>
-  </div>
-
+  <Modal show={$modal}>
+    <div class="header">
+      <Header playerName={name} {onUpdatePlayerName} />
+    </div>
+    <div class="content">
+      <Home
+        {playerStats}
+        {playerSkillProficiency}
+        {playerSkillBonus}
+        {onToggleSkillProficiency}
+        {onUpdatePlayerStats}
+      />
+    </div>
+  </Modal>
 </div>
+
+<style lang="scss">
+	// :global {
+	// }
+	.container {
+		display: grid;
+		grid-template-areas:
+			'header'
+			'content';
+		grid-template-rows: min-content 1fr;
+		grid-template-columns: 1fr;
+
+		row-gap: 5px
+	}
+	.header {
+		grid-area: header
+	}
+	.content {
+		grid-area:content
+	}
+</style>

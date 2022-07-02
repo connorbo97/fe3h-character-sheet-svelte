@@ -12,6 +12,7 @@ const config = {
 				alias: {
 					$constants: resolve('./src/constants'),
 					$root: resolve('./src'),
+					src: resolve('./src'),
 				}
 			}
 		}

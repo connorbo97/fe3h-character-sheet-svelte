@@ -1,60 +1,93 @@
-<script lang='ts'>
-  import { DEFAULT_PLAYER_STAT, PLAYER_STAT, PLAYER_STAT_TO_LABEL } from '../../constants'
+<script lang="ts">
+import Popup from './Popup.svelte';
 
-  export let stats = DEFAULT_PLAYER_STAT
+	import { getModifierByPlayerStat } from 'src/utils';
+	import { DEFAULT_PLAYER_STAT, PLAYER_STAT_TO_LABEL } from '../../constants';
+import { getContext } from 'svelte';
 
-  const onPlayerStatRoll = (stat: string) => {
-    const statBuff = Math.floor((stats[stat] - 10) / 2);
-    const rng = Math.floor(Math.random() * 20 + 1)
-    const result = rng + statBuff
-    alert(`${result} = ${rng} + ${statBuff}`);
-  }
+  const { open } = getContext('simple-modal');
 
+	// state
+	export let stats = DEFAULT_PLAYER_STAT;
+	export let onUpdatePlayerStats: Function;
+
+	// handlers
+	const onPlayerStatRoll = (stat: string) => {
+		const statBuff = getModifierByPlayerStat(stats[stat]);
+		const rng = Math.floor(Math.random() * 20 + 1);
+		const result = rng + statBuff;
+		alert(`${result} = ${rng} + ${statBuff}`);
+
+		onUpdatePlayerStats({ ...stats, [stat]: stats[stat] + 1 });
+	};
+
+	const onPlayerStatChange = (stat: string, value: any) => {
+		console.log(value);
+		onUpdatePlayerStats({ ...stats, [stat]: isNaN(value) ? 0 : value });
+	};
+
+  const showPopup = () => {
+		open(Popup, { message: "It's a popup!" });
+	};
 </script>
 
 <div class="container">
 	{#each Object.keys(stats) as stat}
 		<div class="stat-container">
-      <button class='label' on:click={() => onPlayerStatRoll(stat)}>{PLAYER_STAT_TO_LABEL[stat]}</button>
-      <span class='value'>{stats[stat] || 0}</span>
-    </div>
+			<button class="label" on:click={() => onPlayerStatRoll(stat)}>
+				{PLAYER_STAT_TO_LABEL[stat]}
+			</button>
+			<div>{getModifierByPlayerStat(stats[stat])}</div>
+			<input
+				class="value"
+				value={typeof stats[stat] === 'number' ? stats[stat] : 0}
+				on:input={(e) => onPlayerStatChange(stat, parseInt(e.currentTarget.value))}
+				type="number"
+			/>
+		</div>
 	{/each}
 </div>
 
 <style lang="scss">
+	.container {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
 
-  .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
+		min-height: 100vh;
+		row-gap: 20px;
+		background-color: blue;
 
-    min-height: 100vh;
-    row-gap: 20px;
-    background-color: blue;
+		padding: 10px;
 
-    padding: 10px;
+	}
+	.stat-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		row-gap: 5px;
+		background-color: white;
 
-    width: min-content;
-  }
-  .stat-container {
-    display: flex;
-    flex-direction: column;
-    row-gap: 5px;
-    background-color: white;
+		text-align: center;
 
-    text-align: center;
+		padding: 5px;
+		border-radius: 5px;
 
-    padding: 5px;
-    border-radius: 5px;
-    
-    button {
-      border: 0;
-      padding: 0;
-      background-color: transparent;
-      &:hover {
-        color: red
-      }
-    }
-  }
+		button {
+			border: 0;
+			padding: 0;
+			background-color: transparent;
+			&:hover {
+				color: red;
+			}
+		}
+		input {
+			display: inline-block;
+			text-align: center;
+			max-width: 50px;
+		}
+	}
+
+
 </style>
