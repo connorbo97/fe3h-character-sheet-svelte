@@ -58,7 +58,7 @@ import Modal from 'src/common/Modal.svelte';
 <div class={`${ready ? '' : 'no-clicks'} container`}>
   <Modal show={$modal}>
     <div class="header">
-      <Header playerName={name} {onUpdatePlayerName} />
+      <Header playerName={name} {onUpdatePlayerName} {fullSheet} />
     </div>
     <div class="content">
       <Home
