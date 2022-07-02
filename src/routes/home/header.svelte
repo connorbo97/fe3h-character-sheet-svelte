@@ -43,6 +43,7 @@
 
   .name {
     flex: 1;
+    font-size: 20px;
   }
 </style>
 
