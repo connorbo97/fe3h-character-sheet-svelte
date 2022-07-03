@@ -83,12 +83,17 @@
 			return acc;
 		}
 		// if intermediate AND is a magic class, add bonus
-		return CLASS_TO_FEATURES?.[c]?.canUseMagic ? INTERMEDIATE_MAGIC_RESILIENCE_BONUS : acc
+		return CLASS_TO_FEATURES?.[c]?.canUseMagic ? INTERMEDIATE_MAGIC_RESILIENCE_BONUS : acc;
 	}, 0);
 	$: equippedClassResilienceBonus =
 		CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.resilienceBonus || 0;
 	$: skillResilienceBonus = 0;
-	$: resilience = DEFAULT_RESILIENCE + unlockedClassResilienceBonus + intermediateClassResilienceBonus + equippedClassResilienceBonus + skillResilienceBonus;
+	$: resilience =
+		DEFAULT_RESILIENCE +
+		unlockedClassResilienceBonus +
+		intermediateClassResilienceBonus +
+		equippedClassResilienceBonus +
+		skillResilienceBonus;
 
 	const onTerrainModChange = (e: any) => {
 		const input = parseInt(e.currentTarget.value);
@@ -151,7 +156,7 @@
 	}
 
 	.big-text {
-		font-size: 30px;
+		font-size: 25px;
 	}
 
 	.terrain-container {
