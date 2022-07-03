@@ -307,6 +307,17 @@ export const WEAPON_TO_LABEL = {
 	[WEAPONS.STEEL_GAUNTLETS]: 'Steel Gauntlets',
 	[WEAPONS.CLOTH_GAUNTLETS]: 'Cloth Gauntlets',
 
+	[WEAPONS.FIRE]: 'Fire',
+	[WEAPONS.THUNDER]: 'Thunder',
+	[WEAPONS.WIND]: 'Wind',
+	[WEAPONS.BLIZZARD]: 'Blizzard',
+
+	[WEAPONS.BOLGANONE]: 'Bolganone',
+	[WEAPONS.THORON]: 'Thoron',
+	[WEAPONS.CUTTING_GALE]: 'Cutting Gale',
+	[WEAPONS.SAGITTAE]: 'Sagittae',
+	[WEAPONS.HAILSTORM]: 'Hailstorm',
+
 	[WEAPONS.HEAL]: 'Heal',
 	[WEAPONS.NOSFERATU]: 'Nosferatu',
 	[WEAPONS.SERAPHIM]: 'Seraphim',
