@@ -405,6 +405,80 @@ export const COMBAT_ARTS = {
 	NIMBLE_COMBO: 'NIMBLE_COMBO',
 	HEAVY_COMBO: 'HEAVY_COMBO'
 };
+interface SkillFeatures {
+	label: string;
+	description: string;
+	acBonus?: number;
+	msBonus?: number;
+	hpBonus?: number;
+	damageBonus?: { [s: string]: Array<number | Dice> };
+	attackBonus?: { [s: string]: Array<number | Dice> };
+	protectionBonus?: number;
+	resilienceBonus?: number;
+	bonusCharges?: { [s: string]: number };
+}
+interface ArtFeatures {
+	label: string;
+	description: string;
+	compatibleWeapons?: Array<string>;
+	damageBonus?: Array<number | Dice>;
+	attackBonus?: Array<number | Dice>;
+	critBonus?: Array<number | Dice>;
+	dieCost?: { roll: number | Dice; target: number; mod: number };
+}
+
+export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
+	[COMBAT_ARTS.SWAP]: {
+		label: 'Swap',
+		description:
+			'As action, switch places with an adjacent ally. Does not consume a combat die when used.'
+	},
+	[COMBAT_ARTS.REPOSITION]: {
+		label: '',
+		description: ''
+	},
+	[COMBAT_ARTS.SHOVE]: {
+		label: 'Shove',
+		description:
+			'As an action, push an adjacent ally 1 space away from you. Does not consume a superiority die'
+	},
+	[COMBAT_ARTS.PULL_BACK]: {
+		label: 'Pull Back',
+		description:
+			'As an action, pull you and an adjacent ally 1 square back. Does not consume a combat die.'
+	},
+	[COMBAT_ARTS.WRATH_STRIKE]: {
+		label: 'Wrath Strike',
+		description: '+1 damage, +2 to attack',
+		compatibleWeapons: [WEAPON_TYPE.SWORD],
+		damageBonus: [1],
+		attackBonus: [2]
+	},
+	[COMBAT_ARTS.TEMPEST_LANCE]: {
+		label: 'Tempest Lance',
+		description: '+2 damage, +2 to attack. 50% chance to lose an extra superiority die',
+		compatibleWeapons: [WEAPON_TYPE.LANCE],
+		damageBonus: [2],
+		attackBonus: [2],
+		dieCost: { roll: '1d2', target: 2, mod: -1 }
+	},
+	[COMBAT_ARTS.SMASH]: {
+		label: 'Smash',
+		description:
+			'+1 damage, +4 to attack, +4 to crit rate. 50% chance to lose an extra superiority die',
+		compatibleWeapons: [WEAPON_TYPE.AXE],
+		damageBonus: [1],
+		attackBonus: [4],
+		critBonus: [4],
+		dieCost: { roll: '1d2', target: 2, mod: -1 }
+	},
+	[COMBAT_ARTS.CURVED_SHOT]: {
+		label: 'Curved Shot',
+		description: '+4 to attack',
+		compatibleWeapons: [WEAPON_TYPE.BOW],
+		attackBonus: [4]
+	}
+};
 
 // Combat Skills
 export const COMBAT_SKILLS = {
@@ -424,17 +498,6 @@ export const COMBAT_SKILLS = {
 
 	FIENDISH_BLOW: 'FIENDISH_BLOW',
 	HEAL_PLUS: 'HEAL_PLUS'
-};
-type SkillFeatures = {
-	label: string;
-	description: string;
-	acBonus?: number;
-	msBonus?: number;
-	hpBonus?: number;
-	attackBonus?: { [s: string]: Array<number | Dice> };
-	protectionBonus?: number;
-	resilienceBonus?: number;
-	bonusCharges?: { [s: string]: number };
 };
 export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 	MYRMIDON_MASTER: {
