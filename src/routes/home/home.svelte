@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Classes from './classes.svelte';
+	import CombatArts from './combatArts.svelte';
 	import CombatSkills from './combatSkills.svelte';
 	import CombatStats from './combatStats.svelte';
 	import Skills from './skills.svelte';
@@ -57,13 +58,18 @@
 		/>
 	</div>
 	<div class="rest">
-		<Weapons
-			{customWeapons}
-			{unlockedClasses}
-			{equippedClass}
-			{equippedWeapon}
-			{setEquippedWeapon}
-		/>
+		<div class="weapons">
+			<Weapons
+				{customWeapons}
+				{unlockedClasses}
+				{equippedClass}
+				{equippedWeapon}
+				{setEquippedWeapon}
+			/>
+		</div>
+		<div class="arts">
+			<CombatArts />
+		</div>
 	</div>
 </div>
 
@@ -92,5 +98,24 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 5px;
+	}
+
+	.rest {
+		grid-area: rest;
+		display: grid;
+		grid-template-areas:
+			'weapons weapons'
+			'arts rest';
+		grid-template-rows: min-content 1fr;
+		grid-template-columns: min-content 1fr;
+	}
+
+	.weapons {
+		grid-area: weapons;
+	}
+
+	.arts {
+		grid-area: arts;
+		display: flex;
 	}
 </style>
