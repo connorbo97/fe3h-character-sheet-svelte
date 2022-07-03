@@ -17,7 +17,9 @@
 		playerSkills: any;
 		skillBonuses: any;
 		unlockedClasses: any;
+		unlockedClassesPicks: any;
 		customWeapons: any;
+		customCombatSkills: any;
 	};
 
 	const defaultSheet: CharacterSheet = {
@@ -26,20 +28,25 @@
 		playerSkills: DEFAULT_PLAYER_SKILL_PROFICIENCY,
 		skillBonuses: DEFAULT_PLAYER_SKILL_BONUSES,
 		unlockedClasses: [],
-		customWeapons: {}
+		unlockedClassesPicks: {},
+		customWeapons: {},
+		customCombatSkills: {}
 	};
 
 	let ready = false;
 	let fullSheet: CharacterSheet = defaultSheet;
 	let equippedClass: string = '';
 	let equippedWeapon: string = '';
+	let equippedCombatSkills: Array<string> = [];
 
 	$: playerStats = fullSheet.playerStats;
 	$: playerSkillProficiency = fullSheet.playerSkills;
 	$: playerSkillBonus = fullSheet.skillBonuses;
 	$: unlockedClasses = fullSheet.unlockedClasses;
+	$: unlockedClassesPicks = fullSheet.unlockedClassesPicks;
 	$: name = fullSheet.playerName;
 	$: customWeapons = fullSheet.customWeapons;
+	$: customCombatSkills = fullSheet.customCombatSkills;
 
 	onMount(() => {
 		const lsSheet = localStorage.getItem('sheet');
@@ -76,6 +83,13 @@
 	const setEquippedWeapon = (newWeapon: any) => {
 		equippedWeapon = newWeapon;
 	};
+	const onToggleCombatSkill = (targetSkill: any) => {
+		if (equippedCombatSkills.indexOf(targetSkill) !== -1) {
+			equippedCombatSkills = equippedCombatSkills.filter((skill) => skill !== targetSkill);
+		} else {
+			equippedCombatSkills = [...equippedCombatSkills, targetSkill];
+		}
+	};
 	const onUpdateUnlockedClasses = (newClasses: Array<string>) => {
 		onUpdateSheet('unlockedClasses', newClasses);
 	};
@@ -92,14 +106,18 @@
 				{onUpdatePlayerStats}
 				{playerSkillBonus}
 				{customWeapons}
+				{customCombatSkills}
 				{playerSkillProficiency}
 				{onToggleSkillProficiency}
 				{equippedWeapon}
 				{setEquippedWeapon}
 				{equippedClass}
 				{setEquippedClass}
+				{equippedCombatSkills}
+				{onToggleCombatSkill}
 				{unlockedClasses}
 				{onUpdateUnlockedClasses}
+				{unlockedClassesPicks}
 			/>
 		</div>
 	</Modal>
