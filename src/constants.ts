@@ -482,7 +482,7 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 		label: 'Fading Blow',
 		description:
 			'+2 to damage, +2 to attack, +6 AC on retaliatory attack. After combat, move away from the target 1 square if possible.',
-		compatibleWeapons: [WEAPON_TYPE.BOW],
+		compatibleWeapons: [WEAPON_TYPE.FISTS],
 		attackBonus: [2],
 		damageBonus: [2]
 	}
