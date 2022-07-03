@@ -10,6 +10,7 @@
 	export let onUpdatePlayerStats: any;
 
 	export let customWeapons: any;
+	export let customCombatSkills: any;
 
 	export let playerSkillBonus: any;
 
@@ -19,11 +20,16 @@
 	export let equippedWeapon: any;
 	export let setEquippedWeapon: any;
 
+	export let equippedCombatSkills: any;
+	export let onToggleCombatSkill: any;
+
 	export let equippedClass: any;
 	export let setEquippedClass: any;
 
 	export let unlockedClasses: any;
 	export let onUpdateUnlockedClasses: any;
+
+	export let unlockedClassesPicks: any;
 </script>
 
 <div class="container">
@@ -41,7 +47,14 @@
 	</div>
 	<div class="classes">
 		<Classes {equippedClass} {setEquippedClass} {unlockedClasses} {onUpdateUnlockedClasses} />
-		<CombatSkills />
+		<CombatSkills
+			{unlockedClasses}
+			{equippedClass}
+			{customCombatSkills}
+			{unlockedClassesPicks}
+			{equippedCombatSkills}
+			{onToggleCombatSkill}
+		/>
 	</div>
 	<div class="rest">
 		<Weapons
