@@ -120,8 +120,6 @@
 		grid-template-columns: 1fr;
 
 		min-height: 100vh;
-
-		row-gap: 5px;
 	}
 	.header {
 		grid-area: header;
