@@ -11,6 +11,7 @@
 	import Header from './home/Header.svelte';
 	import { modal } from 'src/stores.js';
 	import Modal from 'src/common/Modal.svelte';
+	import Xp from './xp/xp.svelte';
 
 	type CharacterSheet = {
 		playerStats: any;
@@ -21,6 +22,8 @@
 		unlockedClassesPicks: any;
 		customWeapons: any;
 		customCombatSkills: any;
+		classXP: { [s: string]: { total: number; level: string } };
+		weaponXP: { [s: string]: { total: number; level: string } };
 	};
 
 	const defaultSheet: CharacterSheet = {
@@ -31,7 +34,9 @@
 		unlockedClasses: [],
 		unlockedClassesPicks: {},
 		customWeapons: {},
-		customCombatSkills: {}
+		customCombatSkills: {},
+		classXP: {},
+		weaponXP: {}
 	};
 
 	let ready = false;
@@ -39,6 +44,8 @@
 	let equippedClass: string = '';
 	let equippedWeapon: string = '';
 	let equippedCombatSkills: Array<string> = [];
+
+	let currentPage = 'HOME';
 
 	$: playerStats = fullSheet.playerStats;
 	$: playerSkillProficiency = fullSheet.playerSkills;
@@ -48,6 +55,8 @@
 	$: name = fullSheet.playerName;
 	$: customWeapons = fullSheet.customWeapons;
 	$: customCombatSkills = fullSheet.customCombatSkills;
+	$: classXP = fullSheet.classXP;
+	$: weaponXP = fullSheet.weaponXP;
 
 	onMount(() => {
 		const lsSheet = localStorage.getItem('sheet');
@@ -94,32 +103,47 @@
 	const onUpdateUnlockedClasses = (newClasses: Array<string>) => {
 		onUpdateSheet('unlockedClasses', newClasses);
 	};
+	const onChangePage = (newPage: any) => {
+		currentPage = newPage;
+	};
+	const onUpdateWeaponXP = (weapon: any, total: any, level: any) => {
+		onUpdateSheet('weaponXP', { ...weaponXP, [weapon]: { total, level } });
+	};
+	const onUpdateClassXP = (targetClass: any, total: any, level: any) => {
+		onUpdateSheet('classXP', { ...classXP, [targetClass]: { total, level } });
+	};
 </script>
 
 <div class={`${ready ? '' : 'no-clicks'} container`}>
 	<Modal show={$modal}>
 		<div class="header">
-			<Header playerName={name} {onUpdatePlayerName} {fullSheet} />
+			<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} />
 		</div>
 		<div class="content">
-			<Home
-				{playerStats}
-				{onUpdatePlayerStats}
-				{playerSkillBonus}
-				{customWeapons}
-				{customCombatSkills}
-				{playerSkillProficiency}
-				{onToggleSkillProficiency}
-				{equippedWeapon}
-				{setEquippedWeapon}
-				{equippedClass}
-				{setEquippedClass}
-				{equippedCombatSkills}
-				{onToggleCombatSkill}
-				{unlockedClasses}
-				{onUpdateUnlockedClasses}
-				{unlockedClassesPicks}
-			/>
+			<div class={currentPage === 'HOME' ? '' : 'invisible'}>
+				<Home
+					{playerStats}
+					{onUpdatePlayerStats}
+					{playerSkillBonus}
+					{customWeapons}
+					{customCombatSkills}
+					{playerSkillProficiency}
+					{onToggleSkillProficiency}
+					{equippedWeapon}
+					{setEquippedWeapon}
+					{equippedClass}
+					{setEquippedClass}
+					{equippedCombatSkills}
+					{onToggleCombatSkill}
+					{unlockedClasses}
+					{onUpdateUnlockedClasses}
+					{unlockedClassesPicks}
+				/>
+			</div>
+			<div class={currentPage === 'XP' ? '' : 'invisible'}>
+				<Xp {unlockedClasses} {classXP} {weaponXP} {onUpdateClassXP} {onUpdateWeaponXP} />
+			</div>
+			<div class={currentPage === 'CUSTOM' ? '' : 'invisible'}>CUSTOM</div>
 		</div>
 	</Modal>
 	{#if !ready}
@@ -157,5 +181,11 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	.invisible {
+		height: 0;
+		width: 0;
+		overflow: hidden;
 	}
 </style>
