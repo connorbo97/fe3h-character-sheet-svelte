@@ -305,7 +305,15 @@ export const WEAPON_TO_LABEL = {
 	[WEAPONS.TRAINING_GAUNTLETS]: 'Training Gauntlets',
 	[WEAPONS.IRON_GAUNTLETS]: 'Iron Gauntlets',
 	[WEAPONS.STEEL_GAUNTLETS]: 'Steel Gauntlets',
-	[WEAPONS.CLOTH_GAUNTLETS]: 'Cloth Gauntlets'
+	[WEAPONS.CLOTH_GAUNTLETS]: 'Cloth Gauntlets',
+
+	[WEAPONS.HEAL]: 'Heal',
+	[WEAPONS.NOSFERATU]: 'Nosferatu',
+	[WEAPONS.SERAPHIM]: 'Seraphim',
+	[WEAPONS.RECOVER]: 'Recover',
+	[WEAPONS.PHYSIC]: 'Physic',
+	[WEAPONS.RESTORE]: 'Restore',
+	[WEAPONS.WARD]: 'Ward'
 };
 
 export const WEAPON_TO_TYPE = {
