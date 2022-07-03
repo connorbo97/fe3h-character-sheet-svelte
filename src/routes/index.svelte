@@ -11,23 +11,35 @@
 	import { modal } from 'src/stores.js';
 import Modal from 'src/common/Modal.svelte';
 
-	const defaultSheet = {
+	type CharacterSheet = {
+		playerStats: any
+		playerName: any
+		playerSkills: any
+		skillBonuses: any
+		unlockedClasses: any,
+		customWeapons: any,
+	}
+
+	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
 		playerName: 'No Name',
 		playerSkills: DEFAULT_PLAYER_SKILL_PROFICIENCY,
 		skillBonuses: DEFAULT_PLAYER_SKILL_BONUSES,
 		unlockedClasses: [],
+		customWeapons: {},
 	};
 
 	let ready = false;
-	let fullSheet = defaultSheet;
-	let equippedClass = '';
+	let fullSheet: CharacterSheet = defaultSheet;
+	let equippedClass: string = '';
+	let equippedWeapon: string = '';
 
 	$: playerStats = fullSheet.playerStats;
 	$: playerSkillProficiency = fullSheet.playerSkills;
 	$: playerSkillBonus = fullSheet.skillBonuses;
 	$: unlockedClasses = fullSheet.unlockedClasses;
 	$: name = fullSheet.playerName;
+	$: customWeapons = fullSheet.customWeapons
 
 	onMount(() => {
 		const lsSheet = localStorage.getItem('sheet');
@@ -61,6 +73,9 @@ import Modal from 'src/common/Modal.svelte';
 	const setEquippedClass = (newClass: any) => {
 		equippedClass = newClass
 	}
+	const setEquippedWeapon = (newWeapon: any) => {
+		equippedWeapon = newWeapon
+	}
 	const onUpdateUnlockedClasses = (newClasses: Array<string>) => {
 		onUpdateSheet('unlockedClasses', newClasses)
 	}
@@ -77,9 +92,14 @@ import Modal from 'src/common/Modal.svelte';
         {onUpdatePlayerStats}
 
         {playerSkillBonus}
+
+				{customWeapons}
 	
         {playerSkillProficiency}
         {onToggleSkillProficiency}
+
+				{equippedWeapon}
+				{setEquippedWeapon}
 
 				{equippedClass}
 				{setEquippedClass}
