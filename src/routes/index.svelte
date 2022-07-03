@@ -9,16 +9,16 @@
 	import Home from './home/home.svelte';
 	import Header from './home/Header.svelte';
 	import { modal } from 'src/stores.js';
-import Modal from 'src/common/Modal.svelte';
+	import Modal from 'src/common/Modal.svelte';
 
 	type CharacterSheet = {
-		playerStats: any
-		playerName: any
-		playerSkills: any
-		skillBonuses: any
-		unlockedClasses: any,
-		customWeapons: any,
-	}
+		playerStats: any;
+		playerName: any;
+		playerSkills: any;
+		skillBonuses: any;
+		unlockedClasses: any;
+		customWeapons: any;
+	};
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -26,7 +26,7 @@ import Modal from 'src/common/Modal.svelte';
 		playerSkills: DEFAULT_PLAYER_SKILL_PROFICIENCY,
 		skillBonuses: DEFAULT_PLAYER_SKILL_BONUSES,
 		unlockedClasses: [],
-		customWeapons: {},
+		customWeapons: {}
 	};
 
 	let ready = false;
@@ -39,7 +39,7 @@ import Modal from 'src/common/Modal.svelte';
 	$: playerSkillBonus = fullSheet.skillBonuses;
 	$: unlockedClasses = fullSheet.unlockedClasses;
 	$: name = fullSheet.playerName;
-	$: customWeapons = fullSheet.customWeapons
+	$: customWeapons = fullSheet.customWeapons;
 
 	onMount(() => {
 		const lsSheet = localStorage.getItem('sheet');
@@ -52,7 +52,7 @@ import Modal from 'src/common/Modal.svelte';
 			}
 		}
 
-		ready = true
+		ready = true;
 	});
 
 	const onUpdateSheet = (property: string, value: any) => {
@@ -71,45 +71,38 @@ import Modal from 'src/common/Modal.svelte';
 		onUpdateSheet('playerSkills', { ...playerSkillProficiency, [skill]: !curVal });
 	};
 	const setEquippedClass = (newClass: any) => {
-		equippedClass = newClass
-	}
+		equippedClass = newClass;
+	};
 	const setEquippedWeapon = (newWeapon: any) => {
-		equippedWeapon = newWeapon
-	}
+		equippedWeapon = newWeapon;
+	};
 	const onUpdateUnlockedClasses = (newClasses: Array<string>) => {
-		onUpdateSheet('unlockedClasses', newClasses)
-	}
+		onUpdateSheet('unlockedClasses', newClasses);
+	};
 </script>
 
 <div class={`${ready ? '' : 'no-clicks'} container`}>
-  <Modal show={$modal}>
-    <div class="header">
-      <Header playerName={name} {onUpdatePlayerName} {fullSheet} />
-    </div>
-    <div class="content">
-      <Home
-        {playerStats}
-        {onUpdatePlayerStats}
-
-        {playerSkillBonus}
-
+	<Modal show={$modal}>
+		<div class="header">
+			<Header playerName={name} {onUpdatePlayerName} {fullSheet} />
+		</div>
+		<div class="content">
+			<Home
+				{playerStats}
+				{onUpdatePlayerStats}
+				{playerSkillBonus}
 				{customWeapons}
-	
-        {playerSkillProficiency}
-        {onToggleSkillProficiency}
-
+				{playerSkillProficiency}
+				{onToggleSkillProficiency}
 				{equippedWeapon}
 				{setEquippedWeapon}
-
 				{equippedClass}
 				{setEquippedClass}
-	
 				{unlockedClasses}
 				{onUpdateUnlockedClasses}
-
-      />
-    </div>
-  </Modal>
+			/>
+		</div>
+	</Modal>
 	{#if !ready}
 		<div class="not-ready">Loading</div>
 	{/if}
@@ -128,13 +121,14 @@ import Modal from 'src/common/Modal.svelte';
 
 		min-height: 100vh;
 
-		row-gap: 5px
+		row-gap: 5px;
 	}
 	.header {
-		grid-area: header
+		grid-area: header;
 	}
 	.content {
-		grid-area:content
+		grid-area: content;
+		padding: 5px;
 	}
 	.no-clicks {
 		pointer-events: none;
