@@ -56,8 +56,6 @@
 	$: classCombatSkills = new Set([...equippedClassCombatSkills, ...unlockedCombatSkillsArr]);
 	$: allCombatSkills = [...Array.from(classCombatSkills), ...Object.keys(customCombatSkills)];
 	$: allCombatSkillFeatures = { ...COMBAT_SKILLS_TO_FEATURES, ...customCombatSkills };
-
-	$: console.log(allCombatSkills, allCombatSkillFeatures);
 </script>
 
 <div class="container">

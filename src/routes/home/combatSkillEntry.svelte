@@ -5,8 +5,6 @@
 	export let onToggleCombatSkill: any;
 
 	let hideDescription = true;
-
-	console.log(skill, feature);
 </script>
 
 <div class="container">
