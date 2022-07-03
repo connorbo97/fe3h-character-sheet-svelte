@@ -37,142 +37,149 @@
 </script>
 
 <div class="container">
-	<div class="category">
-		<div class="label">Swords</div>
-		<div class="category-container">
-			{#each SWORD_WEAPONS as weapon}
-				{@const isCustomUnlock = !!customWeapons[weapon]}
-				{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
-				{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
-				<div class="weapon-container">
-					<button
-						class={isCustomUnlock
-							? 'custom-unlock'
-							: isClassUnlock || isTrainingWeapon
-							? 'class-unlock'
-							: ''}
-					/>
-					<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-					<button
-						class={equippedWeapon === weapon ? 'equipped' : ''}
-						on:click={() =>
-							onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
-					/>
-				</div>
-			{/each}
+	<div class="martial-weapons">
+		<div class="category">
+			<div class="label">Swords</div>
+			<div class="category-container">
+				{#each SWORD_WEAPONS as weapon}
+					{@const isCustomUnlock = !!customWeapons[weapon]}
+					{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
+					{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
+					<div class="weapon-container">
+						<button
+							class={isCustomUnlock
+								? 'custom-unlock'
+								: isClassUnlock || isTrainingWeapon
+								? 'class-unlock'
+								: ''}
+						/>
+						<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
+						<button
+							class={equippedWeapon === weapon ? 'equipped' : ''}
+							on:click={() =>
+								onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
+						/>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
-	<div class="category">
-		<div class="label">Lances</div>
-		<div class="category-container">
-			{#each LANCE_WEAPONS as weapon}
-				{@const isCustomUnlock = !!customWeapons[weapon]}
-				{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
-				{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
-				<div class="weapon-container">
-					<button
-						class={isCustomUnlock
-							? 'custom-unlock'
-							: isClassUnlock || isTrainingWeapon
-							? 'class-unlock'
-							: ''}
-					/>
-					<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-					<button
-						class={equippedWeapon === weapon ? 'equipped' : ''}
-						on:click={() =>
-							onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
-					/>
-				</div>
-			{/each}
+		<div class="category">
+			<div class="label">Lances</div>
+			<div class="category-container">
+				{#each LANCE_WEAPONS as weapon}
+					{@const isCustomUnlock = !!customWeapons[weapon]}
+					{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
+					{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
+					<div class="weapon-container">
+						<button
+							class={isCustomUnlock
+								? 'custom-unlock'
+								: isClassUnlock || isTrainingWeapon
+								? 'class-unlock'
+								: ''}
+						/>
+						<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
+						<button
+							class={equippedWeapon === weapon ? 'equipped' : ''}
+							on:click={() =>
+								onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
+						/>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
-	<div class="category">
-		<div class="label">Axes</div>
-		<div class="category-container">
-			{#each AXE_WEAPONS as weapon}
-				{@const isCustomUnlock = !!customWeapons[weapon]}
-				{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
-				{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
-				<div class="weapon-container">
-					<button
-						class={isCustomUnlock
-							? 'custom-unlock'
-							: isClassUnlock || isTrainingWeapon
-							? 'class-unlock'
-							: ''}
-					/>
-					<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-					<button
-						class={equippedWeapon === weapon ? 'equipped' : ''}
-						on:click={() =>
-							onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
-					/>
-				</div>
-			{/each}
+		<div class="category">
+			<div class="label">Axes</div>
+			<div class="category-container">
+				{#each AXE_WEAPONS as weapon}
+					{@const isCustomUnlock = !!customWeapons[weapon]}
+					{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
+					{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
+					<div class="weapon-container">
+						<button
+							class={isCustomUnlock
+								? 'custom-unlock'
+								: isClassUnlock || isTrainingWeapon
+								? 'class-unlock'
+								: ''}
+						/>
+						<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
+						<button
+							class={equippedWeapon === weapon ? 'equipped' : ''}
+							on:click={() =>
+								onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
+						/>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
-	<div class="category">
-		<div class="label">Bows</div>
-		<div class="category-container">
-			{#each BOW_WEAPONS as weapon}
-				{@const isCustomUnlock = !!customWeapons[weapon]}
-				{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
-				{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
-				<div class="weapon-container">
-					<button
-						class={isCustomUnlock
-							? 'custom-unlock'
-							: isClassUnlock || isTrainingWeapon
-							? 'class-unlock'
-							: ''}
-					/>
-					<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-					<button
-						class={equippedWeapon === weapon ? 'equipped' : ''}
-						on:click={() =>
-							onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
-					/>
-				</div>
-			{/each}
+		<div class="category">
+			<div class="label">Bows</div>
+			<div class="category-container">
+				{#each BOW_WEAPONS as weapon}
+					{@const isCustomUnlock = !!customWeapons[weapon]}
+					{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
+					{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
+					<div class="weapon-container">
+						<button
+							class={isCustomUnlock
+								? 'custom-unlock'
+								: isClassUnlock || isTrainingWeapon
+								? 'class-unlock'
+								: ''}
+						/>
+						<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
+						<button
+							class={equippedWeapon === weapon ? 'equipped' : ''}
+							on:click={() =>
+								onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
+						/>
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
-	<div class="category">
-		<div class="label">Fists</div>
-		<div class="category-container">
-			{#each FIST_WEAPONS as weapon}
-				{@const isCustomUnlock = !!customWeapons[weapon]}
-				{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
-				{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
-				<div class="weapon-container">
-					<button
-						class={isCustomUnlock
-							? 'custom-unlock'
-							: isClassUnlock || isTrainingWeapon
-							? 'class-unlock'
-							: ''}
-					/>
-					<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-					<button
-						class={equippedWeapon === weapon ? 'equipped' : ''}
-						on:click={() =>
-							onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
-					/>
-				</div>
-			{/each}
+		<div class="category">
+			<div class="label">Fists</div>
+			<div class="category-container">
+				{#each FIST_WEAPONS as weapon}
+					{@const isCustomUnlock = !!customWeapons[weapon]}
+					{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
+					{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
+					<div class="weapon-container">
+						<button
+							class={isCustomUnlock
+								? 'custom-unlock'
+								: isClassUnlock || isTrainingWeapon
+								? 'class-unlock'
+								: ''}
+						/>
+						<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
+						<button
+							class={equippedWeapon === weapon ? 'equipped' : ''}
+							on:click={() =>
+								onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
+						/>
+					</div>
+				{/each}
+			</div>
 		</div>
 	</div>
 </div>
 
 <style lang="scss">
 	.container {
-		display: flex;
-		justify-content: space-between;
 		background-color: darksalmon;
 		border-radius: 5px;
 		padding: 5px;
 
 		column-gap: 5px;
+	}
+
+	.martial-weapons {
+		display: flex;
+		justify-content: space-between;
+
+		border-bottom: 1px solid black;
 	}
 
 	.category {
