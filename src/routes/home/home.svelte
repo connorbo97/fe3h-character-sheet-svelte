@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Classes from './classes.svelte';
+	import CombatSkills from './combatSkills.svelte';
 	import CombatStats from './combatStats.svelte';
 	import Skills from './skills.svelte';
 	import Stats from './stats.svelte';
@@ -40,6 +41,7 @@
 	</div>
 	<div class="classes">
 		<Classes {equippedClass} {setEquippedClass} {unlockedClasses} {onUpdateUnlockedClasses} />
+		<CombatSkills />
 	</div>
 	<div class="rest">
 		<Weapons
@@ -74,5 +76,8 @@
 
 	.classes {
 		grid-area: classes;
+		display: flex;
+		flex-direction: column;
+		row-gap: 5px;
 	}
 </style>
