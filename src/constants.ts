@@ -526,6 +526,9 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			},
 			combatArts: {
 				[COMBAT_ARTS.REPOSITION]: 1
+			},
+			weapons: {
+				[WEAPONS.IRON_LANCE]: 1
 			}
 		},
 		whenEquipped: {
