@@ -5,10 +5,12 @@
 		DEFAULT_MAX_HP,
 		DEFAULT_MOVEMENT_SPEED,
 		DEFAULT_PROTECTION,
+		DEFAULT_RESILIENCE,
 		INTERMEDIATE_CLASSES,
 		INTERMEDIATE_MAGIC_HP_BONUS,
 		INTERMEDIATE_MARTIAL_HP_BONUS,
 		INTERMEDIATE_MARTIAL_PROTECTION_BONUS,
+		INTERMEDIATE_MAGIC_RESILIENCE_BONUS,
 		PLAYER_STAT
 	} from 'src/constants';
 	import { getModifierByPlayerStat } from 'src/utils';
@@ -71,6 +73,23 @@
 		equippedClassProtectionBonus +
 		skillProtectionBonus;
 
+	$: unlockedClassResilienceBonus = unlockedClasses.reduce(
+		(acc: any, c: string) => acc + CLASS_TO_FEATURES?.[c]?.unlocks?.protectionBonus || 0,
+		0
+	);
+	$: intermediateClassResilienceBonus = unlockedClasses.reduce((acc: any, c: string) => {
+		// if not an intermediate class, move on
+		if (!INTERMEDIATE_CLASSES.has(c)) {
+			return acc;
+		}
+		// if intermediate AND is a magic class, add bonus
+		return CLASS_TO_FEATURES?.[c]?.canUseMagic ? INTERMEDIATE_MAGIC_RESILIENCE_BONUS : acc
+	}, 0);
+	$: equippedClassResilienceBonus =
+		CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.resilienceBonus || 0;
+	$: skillResilienceBonus = 0;
+	$: resilience = DEFAULT_RESILIENCE + unlockedClassResilienceBonus + intermediateClassResilienceBonus + equippedClassResilienceBonus + skillResilienceBonus;
+
 	const onTerrainModChange = (e: any) => {
 		const input = parseInt(e.currentTarget.value);
 
@@ -111,9 +130,15 @@
 
 	<div
 		class="big-text"
-		title={`Protection = ${DEFAULT_PROTECTION} + ${unlockedClassProtectionBonus} (from unlocked classes) + ${intermediateClassProtectionBonus} (from being a intermediate class) ${equippedClassProtectionBonus} (from equipped class) + ${skillProtectionBonus} (from skills)`}
+		title={`Protection = ${DEFAULT_PROTECTION} + ${unlockedClassProtectionBonus} (from unlocked classes) + ${intermediateClassProtectionBonus} (from being a intermediate martial class) + ${equippedClassProtectionBonus} (from equipped class) + ${skillProtectionBonus} (from skills)`}
 	>
 		Protection: {protections}
+	</div>
+	<div
+		class="big-text"
+		title={`Resilience = ${DEFAULT_RESILIENCE} + ${unlockedClassResilienceBonus} (from unlocked classes) + ${intermediateClassResilienceBonus} (from being a intermediate magic class) + ${equippedClassResilienceBonus} (from equipped class) + ${skillResilienceBonus} (from skills)`}
+	>
+		Resilience: {resilience}
 	</div>
 </div>
 
