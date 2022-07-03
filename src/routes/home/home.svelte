@@ -3,14 +3,20 @@
 	import CombatStats from './combatStats.svelte';
 	import Skills from './skills.svelte';
 	import Stats from './stats.svelte';
+	import Weapons from './weapons.svelte';
 
 	export let playerStats: any;
 	export let onUpdatePlayerStats: any;
+
+	export let customWeapons: any;
 
 	export let playerSkillBonus: any;
 
 	export let playerSkillProficiency: any;
 	export let onToggleSkillProficiency: any;
+
+	export let equippedWeapon: any;
+	export let setEquippedWeapon: any;
 
 	export let equippedClass: any;
 	export let setEquippedClass: any;
@@ -34,6 +40,15 @@
 	</div>
 	<div class="classes">
 		<Classes {equippedClass} {setEquippedClass} {unlockedClasses} {onUpdateUnlockedClasses} />
+	</div>
+	<div class="rest">
+		<Weapons
+			{customWeapons}
+			{unlockedClasses}
+			{equippedClass}
+			{equippedWeapon}
+			{setEquippedWeapon}
+		/>
 	</div>
 </div>
 
