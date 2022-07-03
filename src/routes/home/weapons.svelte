@@ -3,10 +3,11 @@
 		AXE_WEAPONS,
 		BOW_WEAPONS,
 		CLASS_TO_FEATURES,
+		FAITH_MAGIC,
 		FIST_WEAPONS,
 		LANCE_WEAPONS,
-		SWORD_WEAPONS,
-		WEAPON_TO_LABEL
+		REASON_MAGIC,
+		SWORD_WEAPONS
 	} from 'src/constants';
 	import WeaponsSection from './weaponsSection.svelte';
 
@@ -118,15 +119,29 @@
 	<div class="magic-weapons">
 		<div class="category">
 			<div class="label">Reason</div>
-			<div>Thunder</div>
-			<div>Thunder</div>
-			<div>Thunder</div>
+			{#each REASON_MAGIC as weapon}
+				<WeaponsSection
+					{equippedWeapon}
+					{weapon}
+					{onToggleEquip}
+					{customWeapons}
+					{classWeaponsSet}
+					{equippedWeaponsSet}
+				/>
+			{/each}
 		</div>
 		<div class="category">
 			<div class="label">Faith</div>
-			<div>Thunder</div>
-			<div>Thunder</div>
-			<div>Thunder</div>
+			{#each FAITH_MAGIC as weapon}
+				<WeaponsSection
+					{equippedWeapon}
+					{weapon}
+					{onToggleEquip}
+					{customWeapons}
+					{classWeaponsSet}
+					{equippedWeaponsSet}
+				/>
+			{/each}
 		</div>
 	</div>
 </div>
@@ -150,8 +165,7 @@
 	.magic-weapons {
 		display: flex;
 		justify-content: space-between;
-
-		max-height: 200px;
+		align-items: flex-start;
 	}
 
 	.category {
@@ -163,6 +177,9 @@
 			border-right: 1px solid black;
 		}
 		padding: 5px;
+		max-height: 120px;
+
+		column-gap: 5px;
 
 		.label {
 			font-weight: bold;
