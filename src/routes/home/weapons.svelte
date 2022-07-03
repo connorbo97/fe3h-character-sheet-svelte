@@ -181,11 +181,15 @@
 			border-right: 1px solid black;
 		}
 		padding: 5px;
+
+		font-weight: bold;
 	}
 
 	.weapon-container {
 		display: flex;
 		flex: 1;
+
+		font-weight: normal;
 
 		justify-content: space-between;
 		column-gap: 5px;
