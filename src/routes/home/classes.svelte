@@ -4,13 +4,12 @@
 	export let equippedClass: string;
 	export let setEquippedClass: Function;
 
-  export let unlockedClasses: Array<string>;
-  export let onUpdateUnlockedClasses: Function;
-
+	export let unlockedClasses: Array<string>;
+	export let onUpdateUnlockedClasses: Function;
 
 	$: classSet = new Set(unlockedClasses);
 
-  const onToggleEquipClass = (classToSelect: string) => {
+	const onToggleEquipClass = (classToSelect: string) => {
 		if (equippedClass === classToSelect) {
 			setEquippedClass('');
 		} else if (classSet.has(classToSelect)) {
@@ -20,19 +19,19 @@
 
 	const onToggleClassActive = (targetClass: string) => {
 		if (classSet.has(targetClass)) {
-      if (equippedClass === targetClass) {
-        setEquippedClass('');
-      }
-      onUpdateUnlockedClasses(Array.from(classSet).filter(val => val !== targetClass))
+			if (equippedClass === targetClass) {
+				setEquippedClass('');
+			}
+			onUpdateUnlockedClasses(Array.from(classSet).filter((val) => val !== targetClass));
 		} else {
-      onUpdateUnlockedClasses([...Array.from(classSet), targetClass])
+			onUpdateUnlockedClasses([...Array.from(classSet), targetClass]);
 		}
 	};
 </script>
 
 <div class="container">
 	<div class="category">
-		Beginner
+		<div class="label">Beginner</div>
 		<div class="classes-container">
 			{#each Array.from(BEGINNER_CLASSES) as beginnerClass}
 				<div class="class-container">
@@ -50,7 +49,7 @@
 		</div>
 	</div>
 	<div class="category">
-		Intermediate
+		<div class="label">Intermediate</div>
 		<div class="classes-container">
 			{#each Array.from(INTERMEDIATE_CLASSES) as intermediateClass}
 				<div class="class-container">
@@ -78,7 +77,11 @@
 		padding: 10px;
 		border-radius: 5px;
 
-		row-gap: 5px;
+		row-gap: 10px;
+	}
+
+	.label {
+		font-weight: bold;
 	}
 
 	.classes-container {
