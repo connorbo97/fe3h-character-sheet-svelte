@@ -8,6 +8,7 @@
 		SWORD_WEAPONS,
 		WEAPON_TO_LABEL
 	} from 'src/constants';
+	import WeaponsSection from './weaponsSection.svelte';
 
 	export let unlockedClasses: any;
 	export let equippedClass: any;
@@ -42,24 +43,14 @@
 			<div class="label">Swords</div>
 			<div class="category-container">
 				{#each SWORD_WEAPONS as weapon}
-					{@const isCustomUnlock = !!customWeapons[weapon]}
-					{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
-					{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
-					<div class="weapon-container">
-						<button
-							class={isCustomUnlock
-								? 'custom-unlock'
-								: isClassUnlock || isTrainingWeapon
-								? 'class-unlock'
-								: ''}
-						/>
-						<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-						<button
-							class={equippedWeapon === weapon ? 'equipped' : ''}
-							on:click={() =>
-								onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
-						/>
-					</div>
+					<WeaponsSection
+						{equippedWeapon}
+						{weapon}
+						{onToggleEquip}
+						{customWeapons}
+						{classWeaponsSet}
+						{equippedWeaponsSet}
+					/>
 				{/each}
 			</div>
 		</div>
@@ -67,24 +58,14 @@
 			<div class="label">Lances</div>
 			<div class="category-container">
 				{#each LANCE_WEAPONS as weapon}
-					{@const isCustomUnlock = !!customWeapons[weapon]}
-					{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
-					{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
-					<div class="weapon-container">
-						<button
-							class={isCustomUnlock
-								? 'custom-unlock'
-								: isClassUnlock || isTrainingWeapon
-								? 'class-unlock'
-								: ''}
-						/>
-						<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-						<button
-							class={equippedWeapon === weapon ? 'equipped' : ''}
-							on:click={() =>
-								onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
-						/>
-					</div>
+					<WeaponsSection
+						{equippedWeapon}
+						{weapon}
+						{onToggleEquip}
+						{customWeapons}
+						{classWeaponsSet}
+						{equippedWeaponsSet}
+					/>
 				{/each}
 			</div>
 		</div>
@@ -92,24 +73,14 @@
 			<div class="label">Axes</div>
 			<div class="category-container">
 				{#each AXE_WEAPONS as weapon}
-					{@const isCustomUnlock = !!customWeapons[weapon]}
-					{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
-					{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
-					<div class="weapon-container">
-						<button
-							class={isCustomUnlock
-								? 'custom-unlock'
-								: isClassUnlock || isTrainingWeapon
-								? 'class-unlock'
-								: ''}
-						/>
-						<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-						<button
-							class={equippedWeapon === weapon ? 'equipped' : ''}
-							on:click={() =>
-								onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
-						/>
-					</div>
+					<WeaponsSection
+						{equippedWeapon}
+						{weapon}
+						{onToggleEquip}
+						{customWeapons}
+						{classWeaponsSet}
+						{equippedWeaponsSet}
+					/>
 				{/each}
 			</div>
 		</div>
@@ -117,24 +88,14 @@
 			<div class="label">Bows</div>
 			<div class="category-container">
 				{#each BOW_WEAPONS as weapon}
-					{@const isCustomUnlock = !!customWeapons[weapon]}
-					{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
-					{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
-					<div class="weapon-container">
-						<button
-							class={isCustomUnlock
-								? 'custom-unlock'
-								: isClassUnlock || isTrainingWeapon
-								? 'class-unlock'
-								: ''}
-						/>
-						<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-						<button
-							class={equippedWeapon === weapon ? 'equipped' : ''}
-							on:click={() =>
-								onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
-						/>
-					</div>
+					<WeaponsSection
+						{equippedWeapon}
+						{weapon}
+						{onToggleEquip}
+						{customWeapons}
+						{classWeaponsSet}
+						{equippedWeaponsSet}
+					/>
 				{/each}
 			</div>
 		</div>
@@ -142,26 +103,30 @@
 			<div class="label">Fists</div>
 			<div class="category-container">
 				{#each FIST_WEAPONS as weapon}
-					{@const isCustomUnlock = !!customWeapons[weapon]}
-					{@const isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon)}
-					{@const isTrainingWeapon = weapon.indexOf('TRAINING') >= 0}
-					<div class="weapon-container">
-						<button
-							class={isCustomUnlock
-								? 'custom-unlock'
-								: isClassUnlock || isTrainingWeapon
-								? 'class-unlock'
-								: ''}
-						/>
-						<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-						<button
-							class={equippedWeapon === weapon ? 'equipped' : ''}
-							on:click={() =>
-								onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
-						/>
-					</div>
+					<WeaponsSection
+						{equippedWeapon}
+						{weapon}
+						{onToggleEquip}
+						{customWeapons}
+						{classWeaponsSet}
+						{equippedWeaponsSet}
+					/>
 				{/each}
 			</div>
+		</div>
+	</div>
+	<div class="magic-weapons">
+		<div class="category">
+			<div class="label">Reason</div>
+			<div>Thunder</div>
+			<div>Thunder</div>
+			<div>Thunder</div>
+		</div>
+		<div class="category">
+			<div class="label">Faith</div>
+			<div>Thunder</div>
+			<div>Thunder</div>
+			<div>Thunder</div>
 		</div>
 	</div>
 </div>
@@ -182,38 +147,25 @@
 		border-bottom: 1px solid black;
 	}
 
+	.magic-weapons {
+		display: flex;
+		justify-content: space-between;
+
+		max-height: 200px;
+	}
+
 	.category {
+		display: flex;
+		flex-direction: column;
 		flex: 1;
+		flex-wrap: wrap;
 		&:not(:last-child) {
 			border-right: 1px solid black;
 		}
 		padding: 5px;
 
-		font-weight: bold;
-	}
-
-	.weapon-container {
-		display: flex;
-		flex: 1;
-
-		font-weight: normal;
-
-		justify-content: space-between;
-		column-gap: 5px;
 		.label {
-			flex: 1;
+			font-weight: bold;
 		}
-	}
-
-	.custom-unlock {
-		background-color: purple;
-	}
-
-	.class-unlock {
-		background-color: blue;
-	}
-
-	.equipped {
-		background-color: green;
 	}
 </style>
