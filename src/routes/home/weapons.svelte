@@ -175,6 +175,14 @@
 		column-gap: 5px;
 	}
 
+	.category {
+		flex: 1;
+		&:not(:last-child) {
+			border-right: 1px solid black;
+		}
+		padding: 5px;
+	}
+
 	.weapon-container {
 		display: flex;
 		flex: 1;
