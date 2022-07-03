@@ -4,7 +4,8 @@
 	import {
 		DEFAULT_PLAYER_SKILL_BONUSES,
 		DEFAULT_PLAYER_SKILL_PROFICIENCY,
-		DEFAULT_PLAYER_STAT
+		DEFAULT_PLAYER_STAT,
+		MAX_COMBAT_SKILLS
 	} from '../constants';
 	import Home from './home/home.svelte';
 	import Header from './home/Header.svelte';
@@ -86,7 +87,7 @@
 	const onToggleCombatSkill = (targetSkill: any) => {
 		if (equippedCombatSkills.indexOf(targetSkill) !== -1) {
 			equippedCombatSkills = equippedCombatSkills.filter((skill) => skill !== targetSkill);
-		} else {
+		} else if (equippedCombatSkills.length < MAX_COMBAT_SKILLS) {
 			equippedCombatSkills = [...equippedCombatSkills, targetSkill];
 		}
 	};

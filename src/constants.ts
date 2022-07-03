@@ -890,6 +890,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 };
 
 // CONSTS
+export const MAX_COMBAT_SKILLS = 1;
 export const PROFICIENCY_BONUS = 2;
 export const INTERMEDIATE_MARTIAL_HP_BONUS = 2;
 export const INTERMEDIATE_MAGIC_HP_BONUS = 1;

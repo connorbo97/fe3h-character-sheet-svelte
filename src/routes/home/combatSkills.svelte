@@ -65,6 +65,7 @@
 			feature={allCombatSkillFeatures[skill]}
 			isEquipped={equippedCombatSkills.indexOf(skill) !== -1}
 			{onToggleCombatSkill}
+			numEquipped={equippedCombatSkills.length}
 		/>
 	{/each}
 </div>
@@ -79,5 +80,7 @@
 
 		flex: 1;
 		padding: 5px;
+
+		overflow: scroll-x;
 	}
 </style>

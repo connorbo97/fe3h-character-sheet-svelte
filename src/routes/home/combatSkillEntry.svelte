@@ -1,15 +1,22 @@
 <script lang="ts">
+	import { MAX_COMBAT_SKILLS } from 'src/constants';
+
 	export let skill: any;
 	export let feature: any;
 	export let isEquipped: any;
 	export let onToggleCombatSkill: any;
+	export let numEquipped: any;
 
 	let hideDescription = true;
 </script>
 
 <div class="container">
 	<div class="skill-container">
-		<button class={isEquipped ? 'equipped' : ''} on:click={() => onToggleCombatSkill(skill)} />
+		<button
+			class={isEquipped ? 'equipped' : ''}
+			on:click={() => onToggleCombatSkill(skill)}
+			disabled={numEquipped >= MAX_COMBAT_SKILLS && !isEquipped}
+		/>
 		<div class="label" on:click={() => (hideDescription = !hideDescription)}>{feature?.label}</div>
 		<div
 			class={`caret ${hideDescription ? 'flip' : ''}`}
@@ -31,6 +38,11 @@
 
 		button {
 			height: 20px;
+			cursor: pointer;
+			&:disabled {
+				color: gray;
+				cursor: default;
+			}
 		}
 	}
 	.skill-container {
