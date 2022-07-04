@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
 	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
-	import { CRESTS, CRESTS_TO_FEATURES, CrestTrigger, CrestType } from 'src/constants/crests';
+	import { CRESTS_TO_FEATURES, CrestTrigger } from 'src/constants/crests';
 	import { Dice } from 'src/constants/dice';
 	import { PLAYER_STAT } from 'src/constants/stats';
 
@@ -12,10 +12,8 @@
 		WEAPON_TO_TYPE
 	} from 'src/constants/weapons';
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
-	import { getModifierByPlayerStat, printCalc } from 'src/utils';
+	import { getModifierByPlayerStat, printCalc, rollCalc } from 'src/utils';
 
-	export let equippedClass;
-	export let equippedWeapon: string;
 	export let equippedCombatArts: Array<string>;
 	export let equippedCombatSkills: Array<string>;
 	export let playerCrest: PlayerCrest;
@@ -23,7 +21,6 @@
 
 	export let allWeapons: AllWeapons;
 	export let allCombatArts: AllCombatArts;
-	export let equipped: AllCombatArts;
 
 	let selectedWeapon: any;
 	let selectedCombatArt: any;
@@ -78,6 +75,7 @@
 
 	$: attackDexModifier = getModifierByPlayerStat(playerStats[PLAYER_STAT.DEX]);
 	$: weaponAttackModifier = WEAPONS_TO_FEATURES[selectedWeapon]?.attackBonus || 0;
+	$: weaponArtAttackModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.attackBonus || [0];
 	$: skillAttackModifier = equippedCombatSkills.reduce((acc: any, skill: any) => {
 		return [
 			...acc,
@@ -87,15 +85,13 @@
 		];
 	}, []);
 	$: optionalAttackModifier = 0;
-	$: attackCalc = [
-		Dice.d20,
+	$: attackModifier = [
 		...skillAttackModifier,
+		...weaponArtAttackModifier,
 		weaponAttackModifier,
 		attackDexModifier,
 		optionalAttackModifier
 	].filter((a) => a !== 0);
-	$: console.log(attackCalc);
-	$: attack = printCalc(attackCalc);
 </script>
 
 <div class="container">
@@ -154,7 +150,16 @@
 	</div>
 	<div class="content">
 		<h1>Attack Bonus</h1>
-		<span>{printCalc(attackCalc)}</span>
+		<span>
+			<span>
+				{rollCalc(attackModifier)}
+			</span>
+			{#if attackModifier.length > 1}
+				<span>
+					= {printCalc(attackModifier)}
+				</span>
+			{/if}
+		</span>
 	</div>
 </div>
 
