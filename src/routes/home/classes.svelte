@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { BEGINNER_CLASSES, INTERMEDIATE_CLASSES } from 'src/constants';
+	import { BEGINNER_CLASSES, CLASS_TO_LABEL, INTERMEDIATE_CLASSES } from 'src/constants';
 
 	export let equippedClass: string;
 	export let setEquippedClass: Function;
@@ -39,7 +39,7 @@
 						class={classSet?.has(beginnerClass) ? 'active' : 'not-active'}
 						on:click={() => onToggleClassActive(beginnerClass)}
 					/>
-					<div class="class-label">{beginnerClass}</div>
+					<div class="class-label">{CLASS_TO_LABEL[beginnerClass]}</div>
 					<button
 						class={equippedClass === beginnerClass ? 'equipped' : ''}
 						on:click={() => onToggleEquipClass(beginnerClass)}
@@ -57,7 +57,7 @@
 						class={classSet?.has(intermediateClass) ? 'active' : 'not-active'}
 						on:click={() => onToggleClassActive(intermediateClass)}
 					/>
-					<div class="class-label">{intermediateClass}</div>
+					<div class="class-label">{CLASS_TO_LABEL[intermediateClass]}</div>
 					<button
 						class={equippedClass === intermediateClass ? 'equipped' : ''}
 						on:click={() => onToggleEquipClass(intermediateClass)}
@@ -91,6 +91,10 @@
 	}
 	.class-container {
 		display: flex;
+	}
+	.class-label {
+		flex: 1;
+		white-space: nowrap;
 	}
 
 	.active {
