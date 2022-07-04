@@ -12,7 +12,9 @@ export const CRESTS = {
 	INDECH: 'INDECH',
 	LAMINE: 'LAMINE',
 	MACUIL: 'MACUIL',
-	RIEGAN: 'RIEGAN'
+	RIEGAN: 'RIEGAN',
+	SEIROS: 'SEIROS',
+	THE_BEAST: 'THE_BEAST'
 };
 export const CRESTS_TO_LABELS = {
 	[CRESTS.BLAIDDYD]: 'Blaiddyd',
@@ -28,7 +30,9 @@ export const CRESTS_TO_LABELS = {
 	[CRESTS.INDECH]: 'Indech',
 	[CRESTS.LAMINE]: 'Lamine',
 	[CRESTS.MACUIL]: 'Macuil',
-	[CRESTS.RIEGAN]: 'Riegan'
+	[CRESTS.RIEGAN]: 'Riegan',
+	[CRESTS.SEIROS]: 'Seiros',
+	[CRESTS.THE_BEAST]: 'The Beast'
 };
 
 export enum CrestType {
@@ -36,19 +40,19 @@ export enum CrestType {
 	MINOR = 'MINOR'
 }
 export const ActivationRates = {
-	alpha: {
+	omega: {
 		[CrestType.MAJOR]: 17,
 		[CrestType.MINOR]: 19
 	},
-	beta: {
+	gamma: {
 		[CrestType.MAJOR]: 13,
 		[CrestType.MINOR]: 17
 	},
-	gamma: {
+	beta: {
 		[CrestType.MAJOR]: 11,
 		[CrestType.MINOR]: 15
 	},
-	omega: {
+	alpha: {
 		[CrestType.MAJOR]: 7,
 		[CrestType.MINOR]: 13
 	}
@@ -148,6 +152,19 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 		description:
 			'When using a combat art, heal for 30% of the damage dealt if the combat art deals damage if activated',
 		activationDC: ActivationRates.beta,
+		triggersOn: CrestTrigger.COMBAT_ART
+	},
+	[CRESTS.SEIROS]: {
+		label: 'Seiros',
+		description:
+			'When using a combat art, heal for 30% of the damage dealt if the combat art deals damage if activated',
+		activationDC: ActivationRates.alpha,
+		triggersOn: CrestTrigger.COMBAT_ART
+	},
+	[CRESTS.THE_BEAST]: {
+		label: 'The Beast',
+		description: 'When attacking with a weapon, add +2 damage',
+		activationDC: ActivationRates.gamma,
 		triggersOn: CrestTrigger.COMBAT_ART
 	}
 };
