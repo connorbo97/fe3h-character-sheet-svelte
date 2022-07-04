@@ -1,0 +1,26 @@
+export const WEAPON_LEVEL: { [s: string]: string } = {
+	E: 'E',
+	E_PLUS: 'E_PLUS',
+	D: 'D',
+	D_PLUS: 'D_PLUS',
+	C: 'C',
+	C_PLUS: 'C_PLUS',
+	B: 'B',
+	B_PLUS: 'B_PLUS',
+	A: 'A',
+	A_PLUS: 'A_PLUS',
+	S: 'S'
+};
+export const WEAPON_LEVEL_TO_MAX_XP = {
+	[WEAPON_LEVEL.E]: 40,
+	[WEAPON_LEVEL.E_PLUS]: 100,
+	[WEAPON_LEVEL.D]: 180,
+	[WEAPON_LEVEL.D_PLUS]: 300,
+	[WEAPON_LEVEL.C]: 460,
+	[WEAPON_LEVEL.C_PLUS]: 580,
+	[WEAPON_LEVEL.B]: 860,
+	[WEAPON_LEVEL.B_PLUS]: 1220,
+	[WEAPON_LEVEL.A]: 1660,
+	[WEAPON_LEVEL.A_PLUS]: 2420,
+	[WEAPON_LEVEL.S]: 3500
+};
