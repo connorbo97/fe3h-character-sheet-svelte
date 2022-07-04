@@ -37,6 +37,8 @@
 	const showPopup = () => {
 		open(Popup, { message: "It's a popup!" });
 	};
+
+	$: playerCrestFeatures = CRESTS_TO_FEATURES[playerCrest?.type] || {};
 </script>
 
 <div class="container">
@@ -55,6 +57,14 @@
 		</div>
 	{/each}
 	<div class="crest">
+		{#if playerCrestFeatures?.image}
+			<img
+				class="crest-image"
+				src={playerCrestFeatures?.image}
+				title={playerCrestFeatures?.description}
+				alt={playerCrest?.type}
+			/>
+		{/if}
 		<select
 			name="crest"
 			on:change={(e) => {
@@ -125,5 +135,11 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
+	}
+	.crest-image {
+		background-color: white;
+		border-radius: 100%;
+		border: 3px solid gray;
+		margin-bottom: 5px;
 	}
 </style>

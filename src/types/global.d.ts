@@ -54,6 +54,7 @@ declare global {
 	type CrestFeatures = {
 		label: string;
 		description: string;
+		image: any;
 		activationDC: { [s in CrestType]: number };
 		triggersOn: CrestTrigger;
 		hideInitial?: boolean;
