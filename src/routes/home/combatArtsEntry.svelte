@@ -11,7 +11,12 @@
 
 <div class="container">
 	<div class="content">
-		<button />
+		<button
+			class={equippedCombatArts.indexOf(art) !== -1 ? 'equipped' : ''}
+			on:click={() => onToggleCombatArts(art)}
+			disabled={equippedCombatArts.length >= MAX_COMBAT_ARTS &&
+				equippedCombatArts.indexOf(art) === -1}
+		/>
 		<div class="label" on:click={() => (hideDescription = !hideDescription)}>
 			{COMBAT_ARTS_TO_FEATURES[art].label}
 		</div>
@@ -21,12 +26,7 @@
 		>
 			v
 		</div>
-		<button
-			class={equippedCombatArts.indexOf(art) !== -1 ? 'equipped' : ''}
-			on:click={() => onToggleCombatArts(art)}
-			disabled={equippedCombatArts.length >= MAX_COMBAT_ARTS &&
-				equippedCombatArts.indexOf(art) === -1}
-		/>
+		<button />
 	</div>
 	{#if hideDescription}
 		<div class="description">
@@ -56,6 +56,10 @@
 		transform: rotate(180deg);
 	}
 
+	.active {
+		background-color: blue;
+	}
+
 	.content {
 		display: flex;
 		column-gap: 5px;
@@ -71,6 +75,6 @@
 	}
 
 	.equipped {
-		background-color: green;
+		background-color: blue;
 	}
 </style>
