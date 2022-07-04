@@ -85,7 +85,7 @@
 		display: flex;
 		flex-direction: column;
 
-		background-color: teal;
+		background-color: powderblue;
 		padding: 10px;
 		border-radius: 5px;
 

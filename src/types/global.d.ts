@@ -34,6 +34,7 @@ declare global {
 		classUnlockSet: Set<string>;
 		fullSet: Set<string>;
 		fullArray: Array<string>;
+		fullFeatures: object;
 	};
 	type AllCombatSkills = {
 		customSet: Set<string>;
@@ -48,6 +49,7 @@ declare global {
 		classUnlockSet: Set<string>;
 		fullSet: Set<string>;
 		fullArray: Array<string>;
+		fullFeatures: { [s: string]: ArtFeatures };
 	};
 	//crests
 	type CrestFeatures = {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import AttackCalc from './attackCalc.svelte';
 	import Classes from './classes.svelte';
 	import CombatArts from './combatArts.svelte';
 	import CombatSkills from './combatSkills.svelte';
@@ -89,6 +90,15 @@
 		</div>
 		<div class="other">
 			<CombatStats stats={playerStats} {equippedClass} {unlockedClasses} {equippedCombatSkills} />
+			<AttackCalc
+				{equippedClass}
+				{equippedWeapon}
+				{equippedCombatArts}
+				{allWeapons}
+				{allCombatArts}
+				{playerCrest}
+				{playerStats}
+			/>
 		</div>
 	</div>
 </div>
@@ -135,6 +145,11 @@
 	}
 	.other {
 		grid-area: other;
+
+		display: grid;
+		grid-area: 'cStats' 'attack';
+		grid-template-rows: min-content 1fr;
+		gap: 5px;
 	}
 
 	.weapons {
