@@ -12,7 +12,7 @@
 		WEAPON_TO_TYPE
 	} from 'src/constants/weapons';
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
-	import { getModifierByPlayerStat, printCalc, rollCalc } from 'src/utils';
+	import { checkCalcRequiresRoll, getModifierByPlayerStat, printCalc, rollCalc } from 'src/utils';
 
 	export let equippedCombatArts: Array<string>;
 	export let equippedCombatSkills: Array<string>;
@@ -75,7 +75,7 @@
 
 	$: attackDexModifier = getModifierByPlayerStat(playerStats[PLAYER_STAT.DEX]);
 	$: weaponAttackModifier = WEAPONS_TO_FEATURES[selectedWeapon]?.attackBonus || 0;
-	$: weaponArtAttackModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.attackBonus || [0];
+	$: weaponArtAttackModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.attackBonus || [];
 	$: skillAttackModifier = equippedCombatSkills.reduce((acc: any, skill: any) => {
 		return [
 			...acc,
@@ -84,14 +84,16 @@
 				[])
 		];
 	}, []);
-	$: optionalAttackModifier = 0;
+	$: optionalAttackModifier = [];
 	$: attackModifier = [
 		...skillAttackModifier,
 		...weaponArtAttackModifier,
 		weaponAttackModifier,
 		attackDexModifier,
-		optionalAttackModifier
+		...optionalAttackModifier
 	].filter((a) => a !== 0);
+	$: attackModifierRequiresRoll = checkCalcRequiresRoll(attackModifier);
+	$: attackCalc = [Dice.d20, ...attackModifier];
 </script>
 
 <div class="container">
@@ -148,18 +150,30 @@
 			/>
 		{/if}
 	</div>
-	<div class="content">
-		<h1>Attack Bonus</h1>
-		<span>
-			<span>
-				{rollCalc(attackModifier)}
+	<div class="attack-container">
+		<h1>
+			Attack: 1d20
+			<span class="modifiers">
+				{#if attackDexModifier}
+					<span>+ {attackDexModifier}<span class="source">(dex)</span></span>
+				{/if}
+				{#if weaponAttackModifier}
+					<span>+ {weaponAttackModifier}<span class="source">(weapon)</span></span>{/if}
+				{#if weaponArtAttackModifier.length}
+					<span>
+						+ {printCalc(weaponArtAttackModifier)}<span class="source">(combat art)</span>
+					</span>
+				{/if}
+				{#if optionalAttackModifier.length > 0}
+					<span>
+						+ {printCalc(optionalAttackModifier)}<span class="source">(optionals)</span>
+					</span>
+				{/if}
 			</span>
-			{#if attackModifier.length > 1}
-				<span>
-					= {printCalc(attackModifier)}
-				</span>
-			{/if}
-		</span>
+			{#if attackModifier.length > 0 && !attackModifierRequiresRoll}<span>
+					= 1d20 <span class="modifiers">+ {rollCalc(attackModifier)}</span></span
+				>{/if}
+		</h1>
 	</div>
 </div>
 
@@ -186,5 +200,15 @@
 
 	.crest-indicator {
 		width: 20px;
+	}
+	.attack-container {
+		display: flex;
+		align-items: center;
+	}
+	.source {
+		font-size: 20px;
+	}
+	.modifiers {
+		color: royalblue;
 	}
 </style>
