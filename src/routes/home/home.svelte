@@ -7,6 +7,8 @@
 	import Stats from './stats.svelte';
 	import Weapons from './weapons.svelte';
 
+	export let classXP: any;
+
 	export let playerStats: any;
 	export let onUpdatePlayerStats: any;
 
@@ -55,6 +57,7 @@
 			{unlockedClassesPicks}
 			{equippedCombatSkills}
 			{onToggleCombatSkill}
+			{classXP}
 		/>
 	</div>
 	<div class="rest">

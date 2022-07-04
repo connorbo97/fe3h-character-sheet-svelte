@@ -122,6 +122,7 @@
 		<div class="content">
 			<div class={currentPage === 'HOME' ? '' : 'invisible'}>
 				<Home
+					{classXP}
 					{playerStats}
 					{onUpdatePlayerStats}
 					{playerSkillBonus}
