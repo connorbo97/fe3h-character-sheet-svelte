@@ -21,6 +21,18 @@
 	export let playerCrest: PlayerCrest;
 	export let onUpdateCrest: any;
 
+	let majorMinorDropdown: any = {};
+
+	$: {
+		if (majorMinorDropdown) {
+			majorMinorDropdown.value = playerCrest.type
+				? playerCrest?.isMajor
+					? CrestType.MAJOR
+					: CrestType.MINOR
+				: 'none';
+		}
+	}
+
 	// handlers
 	const onPlayerStatRoll = (stat: string) => {
 		const statBuff = getModifierByPlayerStat(stats[stat]);
@@ -60,8 +72,10 @@
 		{#if playerCrestFeatures?.image}
 			<img
 				class="crest-image"
-				src={playerCrestFeatures?.image}
-				title={playerCrestFeatures?.description}
+				src={playerCrestFeatures.image}
+				title={`${playerCrestFeatures?.description} DC ${
+					playerCrestFeatures.activationDC[playerCrest.isMajor ? CrestType.MAJOR : CrestType.MINOR]
+				}`}
 				alt={playerCrest?.type}
 			/>
 		{/if}
@@ -82,10 +96,15 @@
 				</option>
 			{/each}
 		</select>
-		<select name="major-minor">
-			<option value={'none'} selected={!playerCrest.type}>Major/Minor?</option>
-			<option value={CrestType.MAJOR} selected={playerCrest.isMajor}>{'Major'}</option>
-			<option value={CrestType.MINOR} selected={!playerCrest.isMajor}>{'Minor'}</option>
+		<select
+			bind:this={majorMinorDropdown}
+			name="major-minor"
+			on:change={(e) =>
+				onUpdateCrest({ ...playerCrest, isMajor: e.currentTarget.value === 'MAJOR' })}
+		>
+			<option value={'none'}>Major/Minor?</option>
+			<option value={CrestType.MAJOR}>{'Major'}</option>
+			<option value={CrestType.MINOR}>{'Minor'}</option>
 		</select>
 	</div>
 </div>
