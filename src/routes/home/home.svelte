@@ -15,6 +15,9 @@
 
 	export let masteredClasses: any;
 
+	export let playerCrest: any;
+	export let onUpdateCrest: any;
+
 	export let playerStats: any;
 	export let onUpdatePlayerStats: any;
 
@@ -43,7 +46,7 @@
 
 <div class="container">
 	<div class="stats">
-		<Stats stats={playerStats} {onUpdatePlayerStats} />
+		<Stats stats={playerStats} {onUpdatePlayerStats} {playerCrest} {onUpdateCrest} />
 	</div>
 	<div class="skills">
 		<Skills

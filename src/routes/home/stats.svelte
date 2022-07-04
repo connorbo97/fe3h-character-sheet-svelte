@@ -3,6 +3,7 @@
 
 	import { getModifierByPlayerStat, rollD20 } from 'src/utils';
 	import {
+		CLASS_TO_FEATURES,
 		CRESTS,
 		CRESTS_TO_FEATURES,
 		CrestType,
@@ -16,6 +17,9 @@
 	// state
 	export let stats = DEFAULT_PLAYER_STAT;
 	export let onUpdatePlayerStats: Function;
+
+	export let playerCrest: PlayerCrest;
+	export let onUpdateCrest: any;
 
 	// handlers
 	const onPlayerStatRoll = (stat: string) => {
@@ -51,16 +55,27 @@
 		</div>
 	{/each}
 	<div class="crest">
-		<select name="crest">
-			<option value={'none'}>Crest?</option>
+		<select
+			name="crest"
+			on:change={(e) => {
+				onUpdateCrest({
+					type: e.currentTarget.value,
+					isMajor: false,
+					canDisplay: !CRESTS_TO_FEATURES[e.currentTarget.value]?.hideInitial
+				});
+			}}
+		>
+			<option value={''} selected={!playerCrest.type}>Crest?</option>
 			{#each Object.keys(CRESTS) as crest}
-				<option value={crest}>{CRESTS_TO_FEATURES[crest].label}</option>
+				<option value={crest} selected={playerCrest?.type === crest}>
+					{CRESTS_TO_FEATURES[crest].label}
+				</option>
 			{/each}
 		</select>
 		<select name="major-minor">
-			<option value={'none'}>Major/Minor?</option>
-			<option value={CrestType.MAJOR}>{'Major'}</option>
-			<option value={CrestType.MINOR}>{'Minor'}</option>
+			<option value={'none'} selected={!playerCrest.type}>Major/Minor?</option>
+			<option value={CrestType.MAJOR} selected={playerCrest.isMajor}>{'Major'}</option>
+			<option value={CrestType.MINOR} selected={!playerCrest.isMajor}>{'Minor'}</option>
 		</select>
 	</div>
 </div>

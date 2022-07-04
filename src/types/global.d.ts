@@ -9,6 +9,11 @@ declare global {
 		mastered: boolean;
 	};
 	type XPMap = { [s: string]: XPBlock };
+	type PlayerCrest = {
+		type: string;
+		isMajor: boolean;
+		canDisplay?: boolean;
+	};
 	type CharacterSheet = {
 		playerStats: any;
 		playerName: any;
@@ -21,6 +26,7 @@ declare global {
 		customCombatSkills: any;
 		classXP: XPMap;
 		weaponXP: XPMap;
+		crest: PlayerCrest;
 	};
 
 	type AllWeapons = {
@@ -50,6 +56,7 @@ declare global {
 		description: string;
 		activationDC: { [s in CrestType]: number };
 		triggersOn: CrestTrigger;
+		hideInitial?: boolean;
 	};
 
 	//types

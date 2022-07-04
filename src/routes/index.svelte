@@ -17,6 +17,7 @@
 		calculateAllCombatSkills,
 		calculateAllWeapons
 	} from 'src/combinationUtils';
+	import Popup from './home/Popup.svelte';
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -29,7 +30,8 @@
 		customCombatSkills: {},
 		customCombatArts: {},
 		classXP: {},
-		weaponXP: {}
+		weaponXP: {},
+		crest: { type: '', isMajor: false, canDisplay: true }
 	};
 
 	let ready = false;
@@ -50,6 +52,7 @@
 	$: customCombatSkills = fullSheet.customCombatSkills;
 	$: classXP = fullSheet.classXP;
 	$: weaponXP = fullSheet.weaponXP;
+	$: playerCrest = fullSheet.crest;
 
 	$: allWeapons = calculateAllWeapons(fullSheet, equippedClass);
 	$: allCombatSkills = calculateAllCombatSkills(fullSheet, equippedClass);
@@ -118,6 +121,9 @@
 	const onUpdateClassXP = (targetClass: any, total: any, mastered: boolean) => {
 		onUpdateSheet('classXP', { ...classXP, [targetClass]: { total, mastered } });
 	};
+	const onUpdateCrest = (newCrest: PlayerCrest) => {
+		onUpdateSheet('crest', newCrest);
+	};
 </script>
 
 <div class={`${ready ? '' : 'no-clicks'} container`}>
@@ -148,8 +154,9 @@
 					{onToggleCombatSkill}
 					{unlockedClasses}
 					{onUpdateUnlockedClasses}
-					{unlockedClassesPicks}
 					{masteredClasses}
+					{playerCrest}
+					{onUpdateCrest}
 				/>
 			</div>
 			<div class={currentPage === 'XP' ? '' : 'invisible'}>
