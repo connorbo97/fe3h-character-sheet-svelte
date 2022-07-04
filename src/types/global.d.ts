@@ -42,6 +42,12 @@ declare global {
 		fullSet: Set<string>;
 		fullArray: Array<string>;
 	};
+	//crests
+	type CrestFeatures = {
+		label: string;
+		description: string;
+		activationDC: { [s in CrestType]: number };
+	};
 
 	//types
 	type Dice = '1d2' | '1d3' | '1d4' | '1d20';

@@ -1029,6 +1029,141 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 	}
 };
 
+// Crests
+export const CRESTS = {
+	BLAIDDYD: 'BLAIDDYD',
+	CETHLEANN: 'CETHLEANN',
+	CICHOL: 'CICHOL',
+	CHARON: 'CHARON',
+	DAPHNEL: 'DAPHNEL',
+	DOMINIC: 'DOMINIC',
+	FRALDARIUS: 'FRALDARIUS',
+	GAUTIER: 'GAUTIER',
+	GLOUCESTER: 'GLOUCESTER',
+	GONERIL: 'GONERIL',
+	INDECH: 'INDECH',
+	LAMINE: 'LAMINE',
+	MACUIL: 'MACUIL',
+	RIEGAN: 'RIEGAN'
+};
+export const CRESTS_TO_LABELS = {
+	[CRESTS.BLAIDDYD]: 'Blaiddyd',
+	[CRESTS.CETHLEANN]: 'Cethleann',
+	[CRESTS.CICHOL]: 'Cichol',
+	[CRESTS.CHARON]: 'Charon',
+	[CRESTS.DAPHNEL]: 'Daphnel',
+	[CRESTS.DOMINIC]: 'Dominic',
+	[CRESTS.FRALDARIUS]: 'Fraldarius',
+	[CRESTS.GAUTIER]: 'Gautier',
+	[CRESTS.GLOUCESTER]: 'Gloucester',
+	[CRESTS.GONERIL]: 'Goneril',
+	[CRESTS.INDECH]: 'Indech',
+	[CRESTS.LAMINE]: 'Lamine',
+	[CRESTS.MACUIL]: 'Macuil',
+	[CRESTS.RIEGAN]: 'Riegan'
+};
+
+export enum CrestType {
+	MAJOR = 'MAJOR',
+	MINOR = 'MINOR'
+}
+export const ActivationRates = {
+	alpha: {
+		[CrestType.MAJOR]: 17,
+		[CrestType.MINOR]: 19
+	},
+	beta: {
+		[CrestType.MAJOR]: 13,
+		[CrestType.MINOR]: 17
+	},
+	gamma: {
+		[CrestType.MAJOR]: 11,
+		[CrestType.MINOR]: 15
+	},
+	omega: {
+		[CrestType.MAJOR]: 7,
+		[CrestType.MINOR]: 13
+	}
+};
+export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
+	[CRESTS.BLAIDDYD]: {
+		label: 'Blaiddyd',
+		description:
+			'When using a combat art, conserves superiority die and doubles any extra damage done by the weapon art if activated',
+		activationDC: ActivationRates.omega
+	},
+	[CRESTS.CETHLEANN]: {
+		label: 'Cethleann',
+		description: 'When using recovery magic, heal the target for +2 HP if activated.',
+		activationDC: ActivationRates.beta
+	},
+	[CRESTS.CICHOL]: {
+		label: 'Cichol',
+		description: 'When using a combat art, prevent counterattack',
+		activationDC: ActivationRates.beta
+	},
+	[CRESTS.CHARON]: {
+		label: 'Charon',
+		description:
+			'When using a combat art, doubles any extra damage done by the weapon art if activated',
+		activationDC: ActivationRates.alpha
+	},
+	[CRESTS.DAPHNEL]: {
+		label: 'Daphnel',
+		description:
+			'When using a combat art, adds +2 damage if the combat art does damage if activated',
+		activationDC: ActivationRates.alpha
+	},
+	[CRESTS.DOMINIC]: {
+		label: 'Dominic',
+		description: 'When attacking with a spell, conserves spell slot if activated',
+		activationDC: ActivationRates.omega
+	},
+	[CRESTS.FRALDARIUS]: {
+		label: 'Fraldarius',
+		description: 'When attacking with a weapon, adds +2 damage to the attack if activated',
+		activationDC: ActivationRates.gamma
+	},
+	[CRESTS.GAUTIER]: {
+		label: 'Gautier',
+		description:
+			'When using a combat art, adds +2 damage if the combat art deals damage if activated',
+		activationDC: ActivationRates.alpha
+	},
+	[CRESTS.GLOUCESTER]: {
+		label: 'Gloucester',
+		description: 'When attcking with a spell, adds +2 damage to the attack if activated',
+		activationDC: ActivationRates.omega
+	},
+	[CRESTS.GONERIL]: {
+		label: 'Goneril',
+		description: 'When using a combat art, prevents counterattack',
+		activationDC: ActivationRates.beta
+	},
+	[CRESTS.INDECH]: {
+		label: 'Indech',
+		description:
+			'When attacking with a weapon, you may attack the target again if activated. (this follow up attack can also trigger the effect)',
+		activationDC: ActivationRates.omega
+	},
+	[CRESTS.LAMINE]: {
+		label: 'Lamine',
+		description: 'When using recovery magic, fe the spell slot if activated',
+		activationDC: ActivationRates.omega
+	},
+	[CRESTS.MACUIL]: {
+		label: 'Macuil',
+		description: 'When attacking with a spell, add +2 damage to the attack if activated.',
+		activationDC: ActivationRates.omega
+	},
+	[CRESTS.RIEGAN]: {
+		label: 'Riegan',
+		description:
+			'When using a combat art, heal for 30% of the damage dealt if the combat art deals damage if activated',
+		activationDC: ActivationRates.beta
+	}
+};
+
 // CONSTS
 export const MAX_COMBAT_ARTS = 3;
 export const MAX_COMBAT_SKILLS = 5;

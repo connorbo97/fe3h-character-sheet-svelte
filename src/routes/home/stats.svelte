@@ -1,11 +1,17 @@
 <script lang="ts">
-import Popup from './Popup.svelte';
+	import Popup from './Popup.svelte';
 
 	import { getModifierByPlayerStat, rollD20 } from 'src/utils';
-	import { DEFAULT_PLAYER_STAT, PLAYER_STAT_TO_LABEL } from '../../constants';
-import { getContext } from 'svelte';
+	import {
+		CRESTS,
+		CRESTS_TO_FEATURES,
+		CrestType,
+		DEFAULT_PLAYER_STAT,
+		PLAYER_STAT_TO_LABEL
+	} from '../../constants';
+	import { getContext } from 'svelte';
 
-  const { open } = getContext('simple-modal');
+	const { open } = getContext('simple-modal');
 
 	// state
 	export let stats = DEFAULT_PLAYER_STAT;
@@ -17,14 +23,14 @@ import { getContext } from 'svelte';
 		const rng = rollD20();
 		const result = rng + statBuff;
 
-		open(Popup, { message: `${result} = ${rng} + ${statBuff}`})
+		open(Popup, { message: `${result} = ${rng} + ${statBuff}` });
 	};
 
 	const onPlayerStatChange = (stat: string, value: any) => {
 		onUpdatePlayerStats({ ...stats, [stat]: isNaN(value) ? 0 : value });
 	};
 
-  const showPopup = () => {
+	const showPopup = () => {
 		open(Popup, { message: "It's a popup!" });
 	};
 </script>
@@ -44,6 +50,19 @@ import { getContext } from 'svelte';
 			/>
 		</div>
 	{/each}
+	<div class="crest">
+		<select name="crest">
+			<option value={'none'}>Select a Crest</option>
+			{#each Object.keys(CRESTS) as crest}
+				<option value={crest}>{CRESTS_TO_FEATURES[crest].label}</option>
+			{/each}
+		</select>
+		<select name="major-minor">
+			<option value={'none'}>Select Major/Minor</option>
+			<option value={CrestType.MAJOR}>{'Major'}</option>
+			<option value={CrestType.MINOR}>{'Minor'}</option>
+		</select>
+	</div>
 </div>
 
 <style lang="scss">
@@ -86,5 +105,10 @@ import { getContext } from 'svelte';
 		}
 	}
 
-
+	.crest {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+	}
 </style>
