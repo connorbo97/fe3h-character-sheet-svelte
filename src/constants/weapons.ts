@@ -1,3 +1,4 @@
+import { Dice } from './dice';
 import { WEAPON_LEVEL } from './weaponLevel';
 import { WEAPON_TYPE } from './weaponType';
 
@@ -214,4 +215,308 @@ export const WEAPON_TO_TYPE = {
 	[WEAPONS.PHYSIC]: WEAPON_TYPE.FAITH,
 	[WEAPONS.RESTORE]: WEAPON_TYPE.FAITH,
 	[WEAPONS.WARD]: WEAPON_TYPE.FAITH
+};
+
+type WeaponFeatures = {
+	label: string;
+	description: string;
+	type: string;
+	damage: Array<number | Dice>;
+	range: Array<number> | string;
+	attackBonus?: number;
+	followUpBonus?: number;
+	critBonus?: number;
+	uses?: number;
+};
+export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
+	[WEAPONS.TRAINING_SWORD]: {
+		label: 'Training Sword',
+		description: '',
+		type: WEAPON_TYPE.SWORD,
+		damage: [1],
+		attackBonus: 3,
+		range: [1]
+	},
+	[WEAPONS.IRON_SWORD]: {
+		label: 'Iron Sword',
+		description: '+1 to attack, 1d2+1 damage',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2, 1],
+		range: [1]
+	},
+	[WEAPONS.STEEL_SWORD]: {
+		label: 'Steel Sword',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d3, 1],
+		range: [1]
+	},
+
+	[WEAPONS.TRAINING_LANCE]: {
+		label: 'Training Lance',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2],
+		range: [1]
+	},
+	[WEAPONS.IRON_LANCE]: {
+		label: 'Iron Lance',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2, 1],
+		range: [1]
+	},
+	[WEAPONS.STEEL_LANCE]: {
+		label: 'Steel Lance',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d3, 2],
+		range: [1]
+	},
+	[WEAPONS.PIKE]: {
+		label: 'Pike',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d3, 1],
+		range: [1]
+	},
+
+	[WEAPONS.TRAINING_AXE]: {
+		label: 'Training Axe',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2, 1],
+		range: [1]
+	},
+	[WEAPONS.IRON_AXE]: {
+		label: 'Iron Axe',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d3, 1],
+		range: [1]
+	},
+	[WEAPONS.STEEL_AXE]: {
+		label: 'Steel Axe',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d4, 1],
+		range: [1]
+	},
+	[WEAPONS.HAMMER]: {
+		label: 'Hammer',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d4, 1],
+		range: [1]
+	},
+	[WEAPONS.HAND_AXE]: {
+		label: 'Hand Axe',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2],
+		range: [1]
+	},
+
+	[WEAPONS.TRAINING_BOW]: {
+		label: 'Training Bow',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [1],
+		range: [1, 2]
+	},
+	[WEAPONS.IRON_BOW]: {
+		label: 'Iron Bow',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2, 1],
+		range: [1, 2]
+	},
+	[WEAPONS.STEEL_BOW]: {
+		label: 'Steel Bow',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d3, 1],
+		range: [1, 2]
+	},
+	[WEAPONS.SHORT_BOW]: {
+		label: 'Short Bow',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2],
+		range: [1]
+	},
+
+	[WEAPONS.TRAINING_GAUNTLETS]: {
+		label: 'Training Gauntlets',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [0],
+		range: [1]
+	},
+	[WEAPONS.IRON_GAUNTLETS]: {
+		label: 'Iron Gauntlets',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [1],
+		range: [1]
+	},
+	[WEAPONS.STEEL_GAUNTLETS]: {
+		label: 'Steel Gauntlets',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2, 1],
+		range: [1]
+	},
+	[WEAPONS.CLOTH_GAUNTLETS]: {
+		label: 'Hand Wraps',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [0],
+		range: [1]
+	},
+
+	[WEAPONS.FIRE]: {
+		label: 'Fire',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2],
+		range: [1, 2],
+		uses: 10
+	},
+	[WEAPONS.THUNDER]: {
+		label: 'Thunder',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2, 1],
+		range: [1, 2],
+		uses: 8
+	},
+	[WEAPONS.WIND]: {
+		label: 'Wind',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [1],
+		range: [1, 2],
+		uses: 12
+	},
+	[WEAPONS.BLIZZARD]: {
+		label: 'Blizzard',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2, 1],
+		range: [1, 2],
+		uses: 10
+	},
+
+	[WEAPONS.BOLGANONE]: {
+		label: 'Bolganone',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d3, 1],
+		range: [1, 2],
+		uses: 5
+	},
+	[WEAPONS.THORON]: {
+		label: 'Thoron',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d3, 1],
+		range: [1, 3],
+		uses: 4
+	},
+	[WEAPONS.CUTTING_GALE]: {
+		label: 'Cutting Gale',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2, 1],
+		range: [1, 2],
+		uses: 6
+	},
+	[WEAPONS.SAGITTAE]: {
+		label: 'Sagittae',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2, 1],
+		range: [1, 2],
+		uses: 10
+	},
+	[WEAPONS.HAILSTORM]: {
+		label: 'Hailstorm',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d5],
+		range: [1, 2],
+		uses: 6
+	},
+
+	[WEAPONS.HEAL]: {
+		label: 'Heal',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [2],
+		range: [1],
+		uses: 8
+	},
+	[WEAPONS.NOSFERATU]: {
+		label: 'Nosferatu',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [1],
+		range: [1, 2],
+		uses: 8
+	},
+	[WEAPONS.SERAPHIM]: {
+		label: 'Seraphim',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [Dice.d2, 1],
+		range: [1, 2],
+		uses: 8
+	},
+	[WEAPONS.RECOVER]: {
+		label: 'Recover',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [8],
+		range: [1, 2],
+		uses: 5
+	},
+	[WEAPONS.PHYSIC]: {
+		label: 'Physic',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [2],
+		range: 'special',
+		uses: 5
+	},
+	[WEAPONS.RESTORE]: {
+		label: 'Restore',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [0],
+		range: 'special',
+		uses: 10
+	},
+	[WEAPONS.WARD]: {
+		label: 'Ward',
+		description: 'superLongDescription',
+		type: WEAPON_TYPE.SWORD,
+		damage: [0],
+		range: [1],
+		uses: 5
+	}
+};
+
+export const getWeaponDescription = (feature: WeaponFeatures) => {
+	console.log(feature);
+	const { damage, attackBonus, range } = feature;
+	return [
+		attackBonus ? `${attackBonus} to attack` : '',
+		`Damage: ${damage.reduce((acc, cur, i) => {
+			return acc + cur + (i === damage.length - 1 ? '' : parseInt(cur + '') < 0 ? '-' : '+');
+		}, '')}`,
+		`Range: ${Array.isArray(range) ? range?.join('-') : range}`
+	]
+		.filter((a) => a)
+		.join(', ');
 };
