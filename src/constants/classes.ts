@@ -1,7 +1,6 @@
 import { COMBAT_ARTS, COMBAT_SKILLS } from './combatArts';
 import { PLAYER_SKILL } from './playerSkills';
 import { PLAYER_STAT } from './stats';
-import { TOOLS } from './tools';
 import { WEAPONS } from './weapons';
 import { WEAPON_TYPE } from './weaponType';
 
@@ -242,13 +241,13 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 				[WEAPON_TYPE.BOW]: 1.3
 			},
 			toolProficiencies: {
-				[TOOLS.LOCKPICKING]: 1
+				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			msBonus: 1
 		},
 		whenMastered: {
 			toolProficiencies: {
-				[TOOLS.LOCKPICKING]: 1
+				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			playerSkills: {
 				[PLAYER_SKILL.SLEIGHT_OF_HAND]: 1
@@ -276,13 +275,13 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 				pickOne: [[{ weapons: [WEAPON_TYPE.SWORD, WEAPON_TYPE.AXE, WEAPON_TYPE.BOW], xp: 1.3 }]]
 			},
 			toolProficiencies: {
-				[TOOLS.LOCKPICKING]: 1
+				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			msBonus: 3
 		},
 		whenMastered: {
 			toolProficiencies: {
-				[TOOLS.LOCKPICKING]: 1
+				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			combatSkills: {
 				[COMBAT_SKILLS.ANIMAL_WHISPERER]: 1
