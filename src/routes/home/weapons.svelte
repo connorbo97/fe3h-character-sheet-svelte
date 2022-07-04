@@ -11,23 +11,10 @@
 	} from 'src/constants';
 	import WeaponsSection from './weaponsSection.svelte';
 
-	export let unlockedClasses: any;
-	export let equippedClass: any;
-	export let customWeapons: any;
-
 	export let equippedWeapon: any;
 	export let setEquippedWeapon: any;
 
-	$: classWeaponsSet = new Set(
-		unlockedClasses.reduce((acc: Array<any>, curClass: string) => {
-			const weaponsObj = CLASS_TO_FEATURES[curClass]?.unlocks?.weapons || {};
-
-			return [...acc, ...Object.keys(weaponsObj)];
-		}, [])
-	);
-	$: equippedWeaponsSet = new Set(
-		Object.keys(CLASS_TO_FEATURES[equippedClass]?.unlocks?.weapons || {})
-	);
+	export let allWeapons: any;
 
 	$: onToggleEquip = (weapon: any, canEquip: any) => {
 		if (equippedWeapon === weapon) {
@@ -44,14 +31,7 @@
 			<div class="label">Swords</div>
 			<div class="category-container">
 				{#each SWORD_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapon}
-						{weapon}
-						{onToggleEquip}
-						{customWeapons}
-						{classWeaponsSet}
-						{equippedWeaponsSet}
-					/>
+					<WeaponsSection {allWeapons} {equippedWeapon} {weapon} {onToggleEquip} />
 				{/each}
 			</div>
 		</div>
@@ -59,14 +39,7 @@
 			<div class="label">Lances</div>
 			<div class="category-container">
 				{#each LANCE_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapon}
-						{weapon}
-						{onToggleEquip}
-						{customWeapons}
-						{classWeaponsSet}
-						{equippedWeaponsSet}
-					/>
+					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
 				{/each}
 			</div>
 		</div>
@@ -74,14 +47,7 @@
 			<div class="label">Axes</div>
 			<div class="category-container">
 				{#each AXE_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapon}
-						{weapon}
-						{onToggleEquip}
-						{customWeapons}
-						{classWeaponsSet}
-						{equippedWeaponsSet}
-					/>
+					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
 				{/each}
 			</div>
 		</div>
@@ -89,14 +55,7 @@
 			<div class="label">Bows</div>
 			<div class="category-container">
 				{#each BOW_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapon}
-						{weapon}
-						{onToggleEquip}
-						{customWeapons}
-						{classWeaponsSet}
-						{equippedWeaponsSet}
-					/>
+					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
 				{/each}
 			</div>
 		</div>
@@ -104,14 +63,7 @@
 			<div class="label">Fists</div>
 			<div class="category-container">
 				{#each FIST_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapon}
-						{weapon}
-						{onToggleEquip}
-						{customWeapons}
-						{classWeaponsSet}
-						{equippedWeaponsSet}
-					/>
+					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
 				{/each}
 			</div>
 		</div>
@@ -120,27 +72,13 @@
 		<div class="category">
 			<div class="label">Reason</div>
 			{#each REASON_MAGIC as weapon}
-				<WeaponsSection
-					{equippedWeapon}
-					{weapon}
-					{onToggleEquip}
-					{customWeapons}
-					{classWeaponsSet}
-					{equippedWeaponsSet}
-				/>
+				<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
 			{/each}
 		</div>
 		<div class="category">
 			<div class="label">Faith</div>
 			{#each FAITH_MAGIC as weapon}
-				<WeaponsSection
-					{equippedWeapon}
-					{weapon}
-					{onToggleEquip}
-					{customWeapons}
-					{classWeaponsSet}
-					{equippedWeaponsSet}
-				/>
+				<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
 			{/each}
 		</div>
 	</div>

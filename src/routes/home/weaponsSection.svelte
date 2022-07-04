@@ -4,12 +4,11 @@
 	export let weapon: any;
 	export let equippedWeapon: any;
 	export let onToggleEquip: any;
-	export let customWeapons: any;
-	export let classWeaponsSet: any;
-	export let equippedWeaponsSet: any;
+	export let allWeapons: AllWeapons;
 
-	$: isCustomUnlock = !!customWeapons[weapon];
-	$: isClassUnlock = classWeaponsSet.has(weapon) || equippedWeaponsSet.has(weapon);
+	$: isCustomUnlock = allWeapons?.customSet.has(weapon);
+	$: isClassUnlock =
+		allWeapons?.classUnlockSet.has(weapon) || allWeapons?.equippedClassSet.has(weapon);
 	$: isTrainingWeapon = weapon.indexOf('TRAINING') >= 0;
 </script>
 

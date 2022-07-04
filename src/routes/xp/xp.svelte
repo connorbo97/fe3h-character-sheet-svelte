@@ -76,7 +76,7 @@
 				: INTERMEDIATE_CLASSES.has(curClass)
 				? INTERMEDIATE_MASTERY_REQ
 				: 10000}
-			{@const mastered = classXP[curClass]?.level}
+			{@const mastered = classXP[curClass]?.mastered}
 			<div class="label">{CLASS_TO_LABEL[curClass]}</div>
 			<div class="xp-bar">
 				<div

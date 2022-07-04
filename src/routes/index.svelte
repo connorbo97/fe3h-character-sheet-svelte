@@ -12,19 +12,7 @@
 	import { modal } from 'src/stores.js';
 	import Modal from 'src/common/Modal.svelte';
 	import Xp from './xp/xp.svelte';
-
-	type CharacterSheet = {
-		playerStats: any;
-		playerName: any;
-		playerSkills: any;
-		skillBonuses: any;
-		unlockedClasses: any;
-		unlockedClassesPicks: any;
-		customWeapons: any;
-		customCombatSkills: any;
-		classXP: { [s: string]: { total: number; level: string } };
-		weaponXP: { [s: string]: { total: number; level: string } };
-	};
+	import { calculateAllWeapons } from 'src/combinationUtils';
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -57,6 +45,9 @@
 	$: customCombatSkills = fullSheet.customCombatSkills;
 	$: classXP = fullSheet.classXP;
 	$: weaponXP = fullSheet.weaponXP;
+
+	$: allWeapons = calculateAllWeapons(fullSheet, equippedClass);
+	// $: allSkills = calculateAllSkills(fullSheet, equippedClass);
 
 	onMount(() => {
 		const lsSheet = localStorage.getItem('sheet');
@@ -106,11 +97,11 @@
 	const onChangePage = (newPage: any) => {
 		currentPage = newPage;
 	};
-	const onUpdateWeaponXP = (weapon: any, total: any, level: any) => {
-		onUpdateSheet('weaponXP', { ...weaponXP, [weapon]: { total, level } });
+	const onUpdateWeaponXP = (weapon: any, total: any, level: string, mastered: boolean) => {
+		onUpdateSheet('weaponXP', { ...weaponXP, [weapon]: { total, level, mastered } });
 	};
-	const onUpdateClassXP = (targetClass: any, total: any, level: any) => {
-		onUpdateSheet('classXP', { ...classXP, [targetClass]: { total, level } });
+	const onUpdateClassXP = (targetClass: any, total: any, mastered: boolean) => {
+		onUpdateSheet('classXP', { ...classXP, [targetClass]: { total, mastered } });
 	};
 </script>
 
@@ -122,11 +113,11 @@
 		<div class="content">
 			<div class={currentPage === 'HOME' ? '' : 'invisible'}>
 				<Home
+					{allWeapons}
 					{classXP}
 					{playerStats}
 					{onUpdatePlayerStats}
 					{playerSkillBonus}
-					{customWeapons}
 					{customCombatSkills}
 					{playerSkillProficiency}
 					{onToggleSkillProficiency}
@@ -160,10 +151,10 @@
 		grid-template-areas:
 			'header'
 			'content';
-		grid-template-rows: min-content 1fr;
+		grid-template-rows: 50px calc(100vh - 50px);
 		grid-template-columns: 1fr;
 
-		min-height: 100vh;
+		height: 100vh;
 	}
 	.header {
 		grid-area: header;
@@ -171,6 +162,9 @@
 	.content {
 		grid-area: content;
 		padding: 5px;
+		> div {
+			height: 100%;
+		}
 	}
 	.no-clicks {
 		pointer-events: none;
@@ -184,7 +178,7 @@
 		justify-content: center;
 	}
 
-	.invisible {
+	.invisible.invisible {
 		height: 0;
 		width: 0;
 		overflow: hidden;

@@ -9,10 +9,11 @@
 
 	export let classXP: any;
 
+	export let allWeapons: any;
+
 	export let playerStats: any;
 	export let onUpdatePlayerStats: any;
 
-	export let customWeapons: any;
 	export let customCombatSkills: any;
 
 	export let playerSkillBonus: any;
@@ -62,13 +63,7 @@
 	</div>
 	<div class="rest">
 		<div class="weapons">
-			<Weapons
-				{customWeapons}
-				{unlockedClasses}
-				{equippedClass}
-				{equippedWeapon}
-				{setEquippedWeapon}
-			/>
+			<Weapons {allWeapons} {equippedWeapon} {setEquippedWeapon} />
 		</div>
 		<div class="arts">
 			<CombatArts />
@@ -101,6 +96,8 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 5px;
+
+		overflow: hidden;
 	}
 
 	.rest {
