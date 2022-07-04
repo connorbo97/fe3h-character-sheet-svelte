@@ -2,6 +2,7 @@ import {
 	CLASS_TO_FEATURES,
 	COMBAT_ARTS,
 	COMBAT_SKILLS,
+	WEAPONS,
 	COMBAT_ARTS_TO_FEATURES
 } from './constants';
 import memoize from 'memoize-one';
@@ -20,6 +21,13 @@ const calculateAllWeaponsMemoized = memoize(
 		classXP: XPMap,
 		equippedClass: string
 	): AllWeapons => {
+		const baseSet = [
+			WEAPONS.TRAINING_SWORD,
+			WEAPONS.TRAINING_LANCE,
+			WEAPONS.TRAINING_AXE,
+			WEAPONS.TRAINING_BOW,
+			WEAPONS.TRAINING_GAUNTLETS
+		];
 		const customSet: Set<string> = new Set(Object.keys(customWeapons));
 		const equippedClassSet: Set<string> = new Set(
 			Object.keys(CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.weapons || {})
@@ -43,7 +51,7 @@ const calculateAllWeaponsMemoized = memoize(
 		equippedClassSet.delete('pickOne');
 		classUnlockSet.delete('pickOne');
 
-		const fullSet = new Set([...customSet, ...equippedClassSet, ...classUnlockSet]);
+		const fullSet = new Set([...baseSet, ...customSet, ...equippedClassSet, ...classUnlockSet]);
 
 		return {
 			customSet,

@@ -64,7 +64,7 @@ declare global {
 	};
 
 	//types
-	type CalcEntry = '-' | Dice;
+	type CalcEntry = '-' | number | Dice;
 	declare type BasicStat = {
 		[s: string]: number | Array<any> | undefined;
 		pickOne?: Array<Array<any>>;

@@ -1,4 +1,5 @@
 import { Dice } from './dice';
+import { PLAYER_STAT } from './stats';
 import { WEAPON_LEVEL } from './weaponLevel';
 import { WEAPON_TYPE } from './weaponType';
 
@@ -223,6 +224,7 @@ type WeaponFeatures = {
 	description: string;
 	type: string;
 	damage: Array<number | Dice>;
+	damageType?: Array<string>;
 	range: Array<number> | string;
 	attackBonus?: number;
 	followUpBonus?: number;
@@ -397,8 +399,9 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.FIRE]: {
 		label: 'Fire',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.REASON,
 		damage: [Dice.d2],
+		damageType: [PLAYER_STAT.INT],
 		attackBonus: 1,
 		range: [1, 2],
 		uses: 10
@@ -406,8 +409,9 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.THUNDER]: {
 		label: 'Thunder',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.REASON,
 		damage: [Dice.d2, 1],
+		damageType: [PLAYER_STAT.INT],
 		attackBonus: -1,
 		range: [1, 2],
 		uses: 8
@@ -415,17 +419,19 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.WIND]: {
 		label: 'Wind',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.REASON,
 		attackBonus: 3,
 		damage: [1],
+		damageType: [PLAYER_STAT.INT],
 		range: [1, 2],
 		uses: 12
 	},
 	[WEAPONS.BLIZZARD]: {
 		label: 'Blizzard',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.REASON,
 		damage: [Dice.d2, 1],
+		damageType: [PLAYER_STAT.INT],
 		attackBonus: -3,
 		range: [1, 2],
 		uses: 10
@@ -434,16 +440,18 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.BOLGANONE]: {
 		label: 'Bolganone',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.REASON,
 		damage: [Dice.d3, 1],
+		damageType: [PLAYER_STAT.INT],
 		range: [1, 2],
 		uses: 5
 	},
 	[WEAPONS.THORON]: {
 		label: 'Thoron',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.REASON,
 		damage: [Dice.d3, 1],
+		damageType: [PLAYER_STAT.INT],
 		attackBonus: -2,
 		range: [1, 3],
 		uses: 4
@@ -451,8 +459,9 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.CUTTING_GALE]: {
 		label: 'Cutting Gale',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.REASON,
 		damage: [Dice.d2, 1],
+		damageType: [PLAYER_STAT.INT],
 		attackBonus: 2,
 		range: [1, 2],
 		uses: 6
@@ -460,8 +469,9 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.SAGITTAE]: {
 		label: 'Sagittae',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.REASON,
 		damage: [Dice.d2, 1],
+		damageType: [PLAYER_STAT.INT],
 		attackBonus: 1,
 		range: [1, 2],
 		uses: 10
@@ -469,8 +479,9 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.HAILSTORM]: {
 		label: 'Hailstorm',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.REASON,
 		damage: [Dice.d5],
+		damageType: [PLAYER_STAT.INT],
 		attackBonus: -3,
 		range: [1, 2],
 		uses: 6
@@ -479,16 +490,18 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.HEAL]: {
 		label: 'Heal',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.FAITH,
 		damage: [2],
+		damageType: [PLAYER_STAT.INT],
 		range: [1],
 		uses: 8
 	},
 	[WEAPONS.NOSFERATU]: {
 		label: 'Nosferatu',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.FAITH,
 		damage: [1],
+		damageType: [PLAYER_STAT.INT],
 		attackBonus: -1,
 		range: [1, 2],
 		uses: 8
@@ -496,8 +509,9 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.SERAPHIM]: {
 		label: 'Seraphim',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.FAITH,
 		damage: [Dice.d2, 1],
+		damageType: [PLAYER_STAT.INT],
 		attackBonus: -2,
 		range: [1, 2],
 		uses: 8
@@ -505,31 +519,35 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.RECOVER]: {
 		label: 'Recover',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.FAITH,
 		damage: [8],
+		damageType: [PLAYER_STAT.INT],
 		range: [1, 2],
 		uses: 5
 	},
 	[WEAPONS.PHYSIC]: {
 		label: 'Physic',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.FAITH,
 		damage: [2],
+		damageType: [PLAYER_STAT.INT],
 		range: 'special',
 		uses: 5
 	},
 	[WEAPONS.RESTORE]: {
 		label: 'Restore',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.FAITH,
 		damage: [0],
+		damageType: [PLAYER_STAT.INT],
 		range: 'special',
 		uses: 10
 	},
 	[WEAPONS.WARD]: {
 		label: 'Ward',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.FAITH,
+		damageType: [PLAYER_STAT.INT],
 		damage: [0],
 		range: [1],
 		uses: 5
