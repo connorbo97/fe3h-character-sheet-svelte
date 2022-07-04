@@ -1,4 +1,5 @@
 import type { CrestTrigger } from 'src/constants';
+import type { Dice } from 'src/constants/dice';
 
 export {};
 
@@ -63,7 +64,7 @@ declare global {
 	};
 
 	//types
-	type Dice = '1d2' | '1d3' | '1d4' | '1d20';
+	type CalcEntry = '-' | Dice;
 	declare type BasicStat = {
 		[s: string]: number | Array<any> | undefined;
 		pickOne?: Array<Array<any>>;
@@ -103,8 +104,8 @@ declare global {
 		acBonus?: number;
 		msBonus?: number;
 		hpBonus?: number;
-		damageBonus?: { [s: string]: Array<number | Dice> };
-		attackBonus?: { [s: string]: Array<number | Dice> };
+		damageBonus?: { [s: string]: Array<CalcEntry> };
+		attackBonus?: { [s: string]: Array<CalcEntry> };
 		protectionBonus?: number;
 		resilienceBonus?: number;
 		bonusCharges?: { [s: string]: number };
@@ -113,9 +114,10 @@ declare global {
 		label: string;
 		description: string;
 		compatibleWeapons?: Array<string>;
-		damageBonus?: Array<number | Dice>;
-		attackBonus?: Array<number | Dice>;
-		critBonus?: Array<number | Dice>;
+		damageBonus?: Array<CalcEntry>;
+		attackBonus?: Array<CalcEntry>;
+		rangeBonus?: number;
+		critBonus?: Array<CalcEntry>;
 		dieCost?: { roll: number | Dice; target: number; mod: number };
 	}
 }
