@@ -1030,6 +1030,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 };
 
 // CONSTS
+export const MAX_COMBAT_ARTS = 3;
 export const MAX_COMBAT_SKILLS = 5;
 export const PROFICIENCY_BONUS = 2;
 
