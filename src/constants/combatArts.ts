@@ -1,3 +1,4 @@
+import { Dice } from './dice';
 import { WEAPONS } from './weapons';
 import { WEAPON_TYPE } from './weaponType';
 
@@ -67,7 +68,7 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 		compatibleWeapons: [WEAPON_TYPE.LANCE],
 		damageBonus: [2],
 		attackBonus: [2],
-		dieCost: { roll: '1d2', target: 2, mod: -1 }
+		dieCost: { roll: Dice.d20, target: 10, mod: -1 }
 	},
 	[COMBAT_ARTS.SMASH]: {
 		label: 'Smash',
@@ -77,13 +78,14 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 		damageBonus: [1],
 		attackBonus: [4],
 		critBonus: [4],
-		dieCost: { roll: '1d2', target: 2, mod: -1 }
+		dieCost: { roll: Dice.d20, target: 10, mod: -1 }
 	},
 	[COMBAT_ARTS.CURVED_SHOT]: {
 		label: 'Curved Shot',
 		description: '+4 to attack',
 		compatibleWeapons: [WEAPON_TYPE.BOW],
-		attackBonus: [4]
+		attackBonus: [4],
+		rangeBonus: 1
 	},
 	[COMBAT_ARTS.FADING_BLOW]: {
 		label: 'Fading Blow',
@@ -93,6 +95,22 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 		attackBonus: [2],
 		damageBonus: [2]
 	}
+};
+export const getCombatArtsDescription = (feature: ArtFeatures) => {
+	const { damageBonus, attackBonus, rangeBonus } = feature;
+	return [
+		attackBonus ? `${attackBonus} to attack` : '',
+		damageBonus
+			? `Damage: ${damageBonus.reduce((acc, cur, i) => {
+					return (
+						acc + cur + (i === damageBonus.length - 1 ? '' : parseInt(cur + '') < 0 ? '-' : '+')
+					);
+			  }, '')}`
+			: '',
+		rangeBonus ? `Extra Range: ${rangeBonus}` : ''
+	]
+		.filter((a) => a)
+		.join(', ');
 };
 
 // Combat Skills
@@ -185,7 +203,7 @@ export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 			[WEAPONS.HEAL]: 8
 		},
 		attackBonus: {
-			[WEAPONS.HEAL]: ['1d2']
+			[WEAPONS.HEAL]: [Dice.d2]
 		}
 	}
 };
