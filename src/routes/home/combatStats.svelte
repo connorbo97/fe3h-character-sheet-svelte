@@ -118,6 +118,7 @@
 
 <div class="container">
 	<div
+		style:flex={0}
 		title={`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${skillBonus} (combat skill bonus) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
 	>
 		<div class="big-text">

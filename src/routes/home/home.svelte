@@ -131,6 +131,7 @@
 		grid-template-rows: min-content 1fr;
 		grid-template-columns: 185px 1fr;
 		row-gap: 5px;
+		column-gap: 5px;
 	}
 	.other {
 		grid-area: other;
