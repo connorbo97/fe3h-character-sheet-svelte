@@ -1,38 +1,3 @@
-//types
-type Dice = '1d2' | '1d3' | '1d4' | '1d20';
-declare type BasicStat = {
-	[s: string]: number | Array<any> | undefined;
-	pickOne?: Array<Array<any>>;
-};
-
-declare type ClassFeatures = {
-	canUseMagic?: boolean;
-	unlocks: StatBlock;
-	whenEquipped: StatBlock;
-	whenMastered: StatBlock;
-};
-
-declare type ClassToFeatures = { [s: string]: ClassFeatures };
-
-declare type StatBlock = {
-	playerStats?: BasicStat;
-	playerSkills?: BasicStat;
-	toolProficiencies?: BasicStat;
-	combatArts?: BasicStat;
-	weapons?: BasicStat;
-
-	xpMods?: BasicStat;
-
-	combatSkills?: BasicStat;
-
-	hpBonus?: number;
-	msBonus?: number;
-	bonusRange?: number;
-	followUpBonus?: number;
-	protectionBonus?: number;
-	resilienceBonus?: number;
-};
-
 // STATS
 export const PLAYER_STAT = {
 	STR: 'pc_strength',
@@ -444,27 +409,6 @@ export const COMBAT_ARTS = {
 	NIMBLE_COMBO: 'NIMBLE_COMBO',
 	HEAVY_COMBO: 'HEAVY_COMBO'
 };
-interface SkillFeatures {
-	label: string;
-	description: string;
-	acBonus?: number;
-	msBonus?: number;
-	hpBonus?: number;
-	damageBonus?: { [s: string]: Array<number | Dice> };
-	attackBonus?: { [s: string]: Array<number | Dice> };
-	protectionBonus?: number;
-	resilienceBonus?: number;
-	bonusCharges?: { [s: string]: number };
-}
-interface ArtFeatures {
-	label: string;
-	description: string;
-	compatibleWeapons?: Array<string>;
-	damageBonus?: Array<number | Dice>;
-	attackBonus?: Array<number | Dice>;
-	critBonus?: Array<number | Dice>;
-	dieCost?: { roll: number | Dice; target: number; mod: number };
-}
 
 export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 	[COMBAT_ARTS.SWAP]: {
