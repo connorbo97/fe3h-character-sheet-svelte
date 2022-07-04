@@ -6,11 +6,20 @@
 
 	export let equippedCombatArts: any;
 	export let onToggleCombatArts: any;
+
+	export let selectedCombatArt: any;
+	export let setSelectedCombatArt: any;
 </script>
 
 <div class="container">
 	{#each allCombatArts.fullArray as art}
-		<CombatArtsEntry {art} {equippedCombatArts} {onToggleCombatArts} />
+		<CombatArtsEntry
+			{art}
+			{equippedCombatArts}
+			{onToggleCombatArts}
+			{selectedCombatArt}
+			{setSelectedCombatArt}
+		/>
 	{/each}
 </div>
 

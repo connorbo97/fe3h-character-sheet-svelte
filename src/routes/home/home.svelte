@@ -18,6 +18,9 @@
 	export let playerCrest: any;
 	export let onUpdateCrest: any;
 
+	export let selectedCombatArt: any;
+	export let setSelectedCombatArt: any;
+
 	export let playerStats: any;
 	export let onUpdatePlayerStats: any;
 
@@ -76,7 +79,13 @@
 			<Weapons {allWeapons} {equippedWeapon} {setEquippedWeapon} />
 		</div>
 		<div class="arts">
-			<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />
+			<CombatArts
+				{allCombatArts}
+				{equippedCombatArts}
+				{onToggleCombatArts}
+				{selectedCombatArt}
+				{setSelectedCombatArt}
+			/>
 		</div>
 		<div class="other">
 			<CombatStats stats={playerStats} {equippedClass} {unlockedClasses} {equippedCombatSkills} />

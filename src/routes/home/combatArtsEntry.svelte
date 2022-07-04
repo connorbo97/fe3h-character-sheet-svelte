@@ -6,6 +6,9 @@
 	export let equippedCombatArts: any;
 	export let onToggleCombatArts: any;
 
+	export let selectedCombatArt: any;
+	export let setSelectedCombatArt: any;
+
 	let hideDescription: any = false;
 </script>
 
@@ -26,7 +29,11 @@
 		>
 			v
 		</div>
-		<button />
+		<button
+			class={selectedCombatArt === art ? 'selected' : ''}
+			on:click={() => setSelectedCombatArt(art)}
+			disabled={equippedCombatArts.indexOf(art) === -1}
+		/>
 	</div>
 	{#if hideDescription}
 		<div class="description">
@@ -76,5 +83,8 @@
 
 	.equipped {
 		background-color: blue;
+	}
+	.selected {
+		background-color: green;
 	}
 </style>

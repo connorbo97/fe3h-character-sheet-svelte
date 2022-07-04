@@ -41,6 +41,8 @@
 	let equippedCombatSkills: Array<string> = [];
 	let equippedCombatArts: Array<string> = [];
 
+	let selectedCombatArt: string;
+
 	let currentPage = 'HOME';
 
 	$: playerStats = fullSheet.playerStats;
@@ -93,6 +95,9 @@
 	};
 	const setEquippedWeapon = (newWeapon: any) => {
 		equippedWeapon = newWeapon;
+	};
+	const setSelectedCombatArt = (art: any) => {
+		selectedCombatArt = art;
 	};
 	const onToggleCombatArts = (targetArt: any) => {
 		if (equippedCombatArts.indexOf(targetArt) !== -1) {
@@ -157,6 +162,8 @@
 					{masteredClasses}
 					{playerCrest}
 					{onUpdateCrest}
+					{selectedCombatArt}
+					{setSelectedCombatArt}
 				/>
 			</div>
 			<div class={currentPage === 'XP' ? '' : 'invisible'}>
