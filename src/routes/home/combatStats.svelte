@@ -50,7 +50,9 @@
 		// otherwise, this is an intermeidate martial class
 		return Math.max(acc, INTERMEDIATE_MARTIAL_HP_BONUS);
 	}, 0);
-	$: skillHPBonus = 0;
+	$: skillHPBonus = equippedCombatSkills.reduce((acc, cur) => {
+		return acc + (COMBAT_SKILLS_TO_FEATURES[cur].hpBonus || 0);
+	}, 0);
 	$: conMod = getModifierByPlayerStat(stats[PLAYER_STAT.CON]);
 	$: hpMax =
 		DEFAULT_MAX_HP + unlockedClassHpBonus + intermediateClassHpBonus + skillHPBonus + conMod;
@@ -69,7 +71,9 @@
 	}, 0);
 	$: equippedClassProtectionBonus =
 		CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.protectionBonus || 0;
-	$: skillProtectionBonus = 0;
+	$: skillProtectionBonus = equippedCombatSkills.reduce((acc, cur) => {
+		return acc + (COMBAT_SKILLS_TO_FEATURES[cur].protectionBonus || 0);
+	}, 0);
 	$: protections =
 		DEFAULT_PROTECTION +
 		unlockedClassProtectionBonus +
@@ -91,7 +95,9 @@
 	}, 0);
 	$: equippedClassResilienceBonus =
 		CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.resilienceBonus || 0;
-	$: skillResilienceBonus = 0;
+	$: skillResilienceBonus = equippedCombatSkills.reduce((acc, cur) => {
+		return acc + (COMBAT_SKILLS_TO_FEATURES[cur].resilienceBonus || 0);
+	}, 0);
 	$: resilience =
 		DEFAULT_RESILIENCE +
 		unlockedClassResilienceBonus +
