@@ -24,7 +24,8 @@
 		<button
 			class={equippedCombatArts.indexOf(art) !== -1 ? 'equipped' : ''}
 			on:click={() => onToggleCombatArts(art)}
-			disabled={equippedCombatArts.length >= MAX_COMBAT_ARTS}
+			disabled={equippedCombatArts.length >= MAX_COMBAT_ARTS &&
+				equippedCombatArts.indexOf(art) === -1}
 		/>
 	</div>
 	{#if hideDescription}
