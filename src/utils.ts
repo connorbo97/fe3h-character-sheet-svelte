@@ -1,5 +1,5 @@
 import { PLAYER_STAT } from './constants';
-import type { Dice } from './constants/dice';
+import { Dice } from './constants/dice';
 
 export const getModifierByPlayerStat = (stat: number) => {
 	if (stat === undefined) {
@@ -22,16 +22,15 @@ export const calcDice = (die: CalcEntry) => {
 };
 export const printCalc = (calc: Array<CalcEntry>): string =>
 	calc.reduce((acc: string, entry: number | string, index: number) => {
-		console.log(acc, entry);
 		if (entry === '-' || parseInt(entry + '') < 0) {
-			console.log(entry, parseInt(entry + '') < 0);
 			acc = acc.substr(0, acc.length - 1);
 		}
 
-		const a = acc + (entry + '') + (index === calc.length - 1 ? '' : '+');
-		console.log(a);
-		return a;
+		return acc + (entry + '') + (index === calc.length - 1 ? '' : '+');
 	}, '');
+
+export const checkCalcRequiresRoll = (calc: Array<CalcEntry>) =>
+	calc.some((calc: any) => Object.values(Dice).includes(calc));
 export const rollCalc = (calc: Dice | Array<CalcEntry>) => {
 	if (!Array.isArray(calc)) {
 		return calcDice(calc);
