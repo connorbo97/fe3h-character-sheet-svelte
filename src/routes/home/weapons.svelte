@@ -31,7 +31,7 @@
 			<div class="label">Swords</div>
 			<div class="category-container">
 				{#each SWORD_WEAPONS as weapon}
-					<WeaponsSection {allWeapons} {equippedWeapon} {weapon} {onToggleEquip} />
+					<WeaponsSection {allWeapons} {equippedWeapon} {weapon} {onToggleEquip} numUses={0} />
 				{/each}
 			</div>
 		</div>
@@ -39,7 +39,7 @@
 			<div class="label">Lances</div>
 			<div class="category-container">
 				{#each LANCE_WEAPONS as weapon}
-					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
+					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} numUses={0} />
 				{/each}
 			</div>
 		</div>
@@ -47,7 +47,7 @@
 			<div class="label">Axes</div>
 			<div class="category-container">
 				{#each AXE_WEAPONS as weapon}
-					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
+					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} numUses={0} />
 				{/each}
 			</div>
 		</div>
@@ -55,7 +55,7 @@
 			<div class="label">Bows</div>
 			<div class="category-container">
 				{#each BOW_WEAPONS as weapon}
-					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
+					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} numUses={0} />
 				{/each}
 			</div>
 		</div>
@@ -63,7 +63,7 @@
 			<div class="label">Fists</div>
 			<div class="category-container">
 				{#each FIST_WEAPONS as weapon}
-					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
+					<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} numUses={0} />
 				{/each}
 			</div>
 		</div>
@@ -72,13 +72,13 @@
 		<div class="category">
 			<div class="label">Reason</div>
 			{#each REASON_MAGIC as weapon}
-				<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
+				<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} numUses={5} />
 			{/each}
 		</div>
 		<div class="category">
 			<div class="label">Faith</div>
 			{#each FAITH_MAGIC as weapon}
-				<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} />
+				<WeaponsSection {equippedWeapon} {weapon} {onToggleEquip} {allWeapons} numUses={5} />
 			{/each}
 		</div>
 	</div>
