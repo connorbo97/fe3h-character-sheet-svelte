@@ -13,6 +13,8 @@
 	export let allCombatSkills: any;
 	export let allCombatArts: any;
 
+	export let masteredClasses: any;
+
 	export let playerStats: any;
 	export let onUpdatePlayerStats: any;
 
@@ -53,7 +55,13 @@
 		<CombatStats stats={playerStats} {equippedClass} {unlockedClasses} />
 	</div>
 	<div class="classes">
-		<Classes {equippedClass} {setEquippedClass} {unlockedClasses} {onUpdateUnlockedClasses} />
+		<Classes
+			{equippedClass}
+			{setEquippedClass}
+			{unlockedClasses}
+			{onUpdateUnlockedClasses}
+			{masteredClasses}
+		/>
 		<CombatSkills
 			{allCombatSkills}
 			{customCombatSkills}

@@ -54,6 +54,7 @@
 	$: allWeapons = calculateAllWeapons(fullSheet, equippedClass);
 	$: allCombatSkills = calculateAllCombatSkills(fullSheet, equippedClass);
 	$: allCombatArts = calculateAllCombatArts(fullSheet, equippedClass, allCombatSkills.fullSet);
+	$: masteredClasses = unlockedClasses.filter((c: any) => classXP[c]?.mastered);
 
 	onMount(() => {
 		const lsSheet = localStorage.getItem('sheet');
@@ -148,6 +149,7 @@
 					{unlockedClasses}
 					{onUpdateUnlockedClasses}
 					{unlockedClassesPicks}
+					{masteredClasses}
 				/>
 			</div>
 			<div class={currentPage === 'XP' ? '' : 'invisible'}>
