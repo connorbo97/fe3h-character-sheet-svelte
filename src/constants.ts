@@ -2,6 +2,7 @@ import { PLAYER_STAT } from './constants/stats';
 
 export * from './constants/classes';
 export * from './constants/combatArts';
+export * from './constants/combatSkills';
 export * from './constants/crests';
 export * from './constants/playerSkills';
 export * from './constants/stats';

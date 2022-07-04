@@ -31,7 +31,7 @@
 		customCombatArts: {},
 		classXP: {},
 		weaponXP: {},
-		crest: { type: '', isMajor: false, canDisplay: true }
+		crest: { type: '', isMajor: false }
 	};
 
 	let ready = false;

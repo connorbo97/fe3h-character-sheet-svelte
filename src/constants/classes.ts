@@ -1,4 +1,5 @@
-import { COMBAT_ARTS, COMBAT_SKILLS } from './combatArts';
+import { COMBAT_ARTS } from './combatArts';
+import { COMBAT_SKILLS } from './combatSkills';
 import { PLAYER_SKILL } from './playerSkills';
 import { PLAYER_STAT } from './stats';
 import { WEAPONS } from './weapons';

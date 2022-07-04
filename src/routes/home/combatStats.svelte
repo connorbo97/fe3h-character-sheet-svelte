@@ -13,7 +13,7 @@
 		INTERMEDIATE_MAGIC_RESILIENCE_BONUS,
 		PLAYER_STAT
 	} from 'src/constants';
-	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatArts';
+	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
 	import { getModifierByPlayerStat } from 'src/utils';
 
 	export let stats: any;
