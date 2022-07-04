@@ -29,7 +29,6 @@
 			onUpdateUnlockedClasses([...Array.from(classSet), targetClass]);
 		}
 	};
-	console.log(masteredClasses);
 </script>
 
 <div class="container">
