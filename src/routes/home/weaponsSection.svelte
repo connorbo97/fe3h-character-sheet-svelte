@@ -14,6 +14,8 @@
 	$: isClassUnlock =
 		allWeapons?.classUnlockSet.has(weapon) || allWeapons?.equippedClassSet.has(weapon);
 	$: isTrainingWeapon = weapon.indexOf('TRAINING') >= 0;
+
+	$: isUnlocked = isCustomUnlock || isClassUnlock || isTrainingWeapon;
 </script>
 
 <div class="container">
@@ -25,12 +27,10 @@
 			: ''}
 	/>
 	<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-	{#if !numUses}
-		<button
-			class={equippedWeapon === weapon ? 'equipped' : ''}
-			on:click={() => onToggleEquip(weapon, isCustomUnlock || isClassUnlock || isTrainingWeapon)}
-		/>
-	{/if}
+	<button
+		class={equippedWeapon === weapon ? 'equipped' : ''}
+		on:click={() => onToggleEquip(weapon, isUnlocked)}
+	/>
 	{#if numUses}
 		<input
 			class="count"

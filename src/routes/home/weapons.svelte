@@ -19,7 +19,7 @@
 	$: onToggleEquip = (weapon: any, canEquip: any) => {
 		if (equippedWeapon === weapon) {
 			setEquippedWeapon('');
-		} else if (canEquip) {
+		} else {
 			setEquippedWeapon(weapon);
 		}
 	};
