@@ -20,6 +20,18 @@ export const calcDice = (die: CalcEntry) => {
 
 	return parseInt(times) * rollDice(parseInt(faces));
 };
+export const printCalc = (calc: Array<CalcEntry>): string =>
+	calc.reduce((acc: string, entry: number | string, index: number) => {
+		console.log(acc, entry);
+		if (entry === '-' || parseInt(entry + '') < 0) {
+			console.log(entry, parseInt(entry + '') < 0);
+			acc = acc.substr(0, acc.length - 1);
+		}
+
+		const a = acc + (entry + '') + (index === calc.length - 1 ? '' : '+');
+		console.log(a);
+		return a;
+	}, '');
 export const rollCalc = (calc: Dice | Array<CalcEntry>) => {
 	if (!Array.isArray(calc)) {
 		return calcDice(calc);

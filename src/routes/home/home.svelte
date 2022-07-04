@@ -94,6 +94,7 @@
 				{equippedClass}
 				{equippedWeapon}
 				{equippedCombatArts}
+				{equippedCombatSkills}
 				{allWeapons}
 				{allCombatArts}
 				{playerCrest}

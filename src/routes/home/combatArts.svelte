@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { COMBAT_ARTS_TO_FEATURES } from 'src/constants';
 	import CombatArtsEntry from './combatArtsEntry.svelte';
 
 	export let allCombatArts: AllCombatArts;

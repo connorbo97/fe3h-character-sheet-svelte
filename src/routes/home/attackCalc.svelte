@@ -1,19 +1,34 @@
 <script lang="ts">
 	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
+	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
+	import { CRESTS, CRESTS_TO_FEATURES, CrestTrigger, CrestType } from 'src/constants/crests';
+	import { Dice } from 'src/constants/dice';
+	import { PLAYER_STAT } from 'src/constants/stats';
 
-	import { getWeaponDescription, WEAPONS_TO_FEATURES, WEAPON_TO_TYPE } from 'src/constants/weapons';
+	import {
+		getWeaponDescription,
+		HEALING_MAGIC,
+		WEAPONS_TO_FEATURES,
+		WEAPON_TO_TYPE
+	} from 'src/constants/weapons';
+	import { WEAPON_TYPE } from 'src/constants/weaponType';
+	import { getModifierByPlayerStat, printCalc } from 'src/utils';
 
 	export let equippedClass;
 	export let equippedWeapon: string;
 	export let equippedCombatArts: Array<string>;
-	export let playerCrest;
-	export let playerStats;
+	export let equippedCombatSkills: Array<string>;
+	export let playerCrest: PlayerCrest;
+	export let playerStats: any;
 
 	export let allWeapons: AllWeapons;
 	export let allCombatArts: AllCombatArts;
+	export let equipped: AllCombatArts;
 
 	let selectedWeapon: any;
 	let selectedCombatArt: any;
+
+	let optionalModifierChoices;
 
 	$: allCombatArtFeatures = allCombatArts.fullFeatures;
 
@@ -39,6 +54,48 @@
 			combatArtsSelect.value = '';
 		}
 	}
+
+	$: crestTrigger = new Set(CRESTS_TO_FEATURES[playerCrest.type]?.triggersOn);
+	$: calcShouldRollCrest = () => {
+		if (selectedCombatArt) {
+			return crestTrigger.has(CrestTrigger.COMBAT_ART);
+		} else if (
+			selectedWeaponType === WEAPON_TYPE.REASON ||
+			selectedWeaponType === WEAPON_TYPE.FAITH
+		) {
+			return (
+				(crestTrigger.has(CrestTrigger.MAGIC_ATTACK) &&
+					WEAPONS_TO_FEATURES[selectedWeapon]?.damage?.[0] === 0) ||
+				(crestTrigger.has(CrestTrigger.HEAL) && HEALING_MAGIC.has(selectedWeapon))
+			);
+		} else {
+			return crestTrigger.has(CrestTrigger.ATTACK);
+		}
+	};
+
+	$: selectedWeaponType = WEAPON_TO_TYPE[selectedWeapon];
+	$: shouldRollCrest = calcShouldRollCrest();
+
+	$: attackDexModifier = getModifierByPlayerStat(playerStats[PLAYER_STAT.DEX]);
+	$: weaponAttackModifier = WEAPONS_TO_FEATURES[selectedWeapon]?.attackBonus || 0;
+	$: skillAttackModifier = equippedCombatSkills.reduce((acc: any, skill: any) => {
+		return [
+			...acc,
+			...(COMBAT_SKILLS_TO_FEATURES[skill].attackBonus?.['ANY'] ||
+				COMBAT_SKILLS_TO_FEATURES[skill].attackBonus?.[selectedWeaponType] ||
+				[])
+		];
+	}, []);
+	$: optionalAttackModifier = 0;
+	$: attackCalc = [
+		Dice.d20,
+		...skillAttackModifier,
+		weaponAttackModifier,
+		attackDexModifier,
+		optionalAttackModifier
+	].filter((a) => a !== 0);
+	$: console.log(attackCalc);
+	$: attack = printCalc(attackCalc);
 </script>
 
 <div class="container">
@@ -87,6 +144,17 @@
 			{COMBAT_ARTS_TO_FEATURES[selectedCombatArt] &&
 				getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])}
 		</div>
+		{#if shouldRollCrest}
+			<img
+				class="crest-indicator"
+				src={CRESTS_TO_FEATURES[playerCrest.type].image}
+				alt={playerCrest.type}
+			/>
+		{/if}
+	</div>
+	<div class="content">
+		<h1>Attack Bonus</h1>
+		<span>{printCalc(attackCalc)}</span>
 	</div>
 </div>
 
@@ -109,5 +177,9 @@
 	}
 	.entry {
 		flex: 1;
+	}
+
+	.crest-indicator {
+		width: 20px;
 	}
 </style>
