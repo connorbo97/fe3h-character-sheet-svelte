@@ -41,7 +41,6 @@
 	$: unlockedClasses = fullSheet.unlockedClasses;
 	$: unlockedClassesPicks = fullSheet.unlockedClassesPicks;
 	$: name = fullSheet.playerName;
-	$: customWeapons = fullSheet.customWeapons;
 	$: customCombatSkills = fullSheet.customCombatSkills;
 	$: classXP = fullSheet.classXP;
 	$: weaponXP = fullSheet.weaponXP;
