@@ -417,8 +417,9 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 			'As action, switch places with an adjacent ally. Does not consume a combat die when used.'
 	},
 	[COMBAT_ARTS.REPOSITION]: {
-		label: '',
-		description: ''
+		label: 'Reposition',
+		description:
+			'As an action, move an adjacent ally directly across you. Does not consume a superiority die'
 	},
 	[COMBAT_ARTS.SHOVE]: {
 		label: 'Shove',
@@ -1029,7 +1030,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 };
 
 // CONSTS
-export const MAX_COMBAT_SKILLS = 1;
+export const MAX_COMBAT_SKILLS = 5;
 export const PROFICIENCY_BONUS = 2;
 
 export const INTERMEDIATE_MARTIAL_HP_BONUS = 2;
