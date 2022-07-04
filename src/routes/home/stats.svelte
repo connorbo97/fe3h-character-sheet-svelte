@@ -52,13 +52,13 @@
 	{/each}
 	<div class="crest">
 		<select name="crest">
-			<option value={'none'}>Select a Crest</option>
+			<option value={'none'}>Crest?</option>
 			{#each Object.keys(CRESTS) as crest}
 				<option value={crest}>{CRESTS_TO_FEATURES[crest].label}</option>
 			{/each}
 		</select>
 		<select name="major-minor">
-			<option value={'none'}>Select Major/Minor</option>
+			<option value={'none'}>Major/Minor?</option>
 			<option value={CrestType.MAJOR}>{'Major'}</option>
 			<option value={CrestType.MINOR}>{'Minor'}</option>
 		</select>

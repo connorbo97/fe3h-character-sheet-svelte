@@ -1,3 +1,5 @@
+import type { CrestTrigger } from 'src/constants';
+
 export {};
 
 declare global {
@@ -47,6 +49,7 @@ declare global {
 		label: string;
 		description: string;
 		activationDC: { [s in CrestType]: number };
+		triggersOn: CrestTrigger;
 	};
 
 	//types
