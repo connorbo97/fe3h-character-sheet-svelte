@@ -12,11 +12,6 @@
 
 <div class="container">
 	<div class="skill-container">
-		<button
-			class={isEquipped ? 'equipped' : ''}
-			on:click={() => onToggleCombatSkill(skill)}
-			disabled={numEquipped >= MAX_COMBAT_SKILLS && !isEquipped}
-		/>
 		<div class="label" on:click={() => (hideDescription = !hideDescription)}>{feature?.label}</div>
 		<div
 			class={`caret ${hideDescription ? 'flip' : ''}`}
@@ -24,6 +19,11 @@
 		>
 			v
 		</div>
+		<button
+			class={isEquipped ? 'equipped' : ''}
+			on:click={() => onToggleCombatSkill(skill)}
+			disabled={numEquipped >= MAX_COMBAT_SKILLS && !isEquipped}
+		/>
 	</div>
 	{#if !hideDescription}
 		<div class="description" on:click={() => (hideDescription = true)}>{feature?.description}</div>

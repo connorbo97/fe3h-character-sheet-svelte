@@ -14,12 +14,11 @@
 
 <div class="container">
 	<div class="content">
-		<button
-			class={equippedCombatArts.indexOf(art) !== -1 ? 'equipped' : ''}
-			on:click={() => onToggleCombatArts(art)}
-			disabled={equippedCombatArts.length >= MAX_COMBAT_ARTS &&
-				equippedCombatArts.indexOf(art) === -1}
-		/>
+		<!-- <button
+			class={selectedCombatArt === art ? 'selected' : ''}
+			on:click={() => setSelectedCombatArt(art)}
+			disabled={equippedCombatArts.indexOf(art) === -1}
+		/> -->
 		<div class="label" on:click={() => (hideDescription = !hideDescription)}>
 			{COMBAT_ARTS_TO_FEATURES[art].label}
 		</div>
@@ -30,9 +29,10 @@
 			v
 		</div>
 		<button
-			class={selectedCombatArt === art ? 'selected' : ''}
-			on:click={() => setSelectedCombatArt(art)}
-			disabled={equippedCombatArts.indexOf(art) === -1}
+			class={equippedCombatArts.indexOf(art) !== -1 ? 'equipped' : ''}
+			on:click={() => onToggleCombatArts(art)}
+			disabled={equippedCombatArts.length >= MAX_COMBAT_ARTS &&
+				equippedCombatArts.indexOf(art) === -1}
 		/>
 	</div>
 	{#if hideDescription}
@@ -82,9 +82,9 @@
 	}
 
 	.equipped {
-		background-color: blue;
+		background-color: green;
 	}
 	.selected {
-		background-color: green;
+		background-color: blue;
 	}
 </style>
