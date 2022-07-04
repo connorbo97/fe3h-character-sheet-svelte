@@ -55,7 +55,6 @@
 			skillBonus={playerSkillBonus}
 			{onToggleSkillProficiency}
 		/>
-		<CombatStats stats={playerStats} {equippedClass} {unlockedClasses} />
 	</div>
 	<div class="classes">
 		<Classes
@@ -78,6 +77,9 @@
 		</div>
 		<div class="arts">
 			<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />
+		</div>
+		<div class="rest">
+			<CombatStats stats={playerStats} {equippedClass} {unlockedClasses} />
 		</div>
 	</div>
 </div>
