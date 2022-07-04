@@ -79,7 +79,7 @@
 			<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />
 		</div>
 		<div class="other">
-			<CombatStats stats={playerStats} {equippedClass} {unlockedClasses} />
+			<CombatStats stats={playerStats} {equippedClass} {unlockedClasses} {equippedCombatSkills} />
 		</div>
 	</div>
 </div>

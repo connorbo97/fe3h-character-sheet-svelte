@@ -13,17 +13,21 @@
 		INTERMEDIATE_MAGIC_RESILIENCE_BONUS,
 		PLAYER_STAT
 	} from 'src/constants';
+	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatArts';
 	import { getModifierByPlayerStat } from 'src/utils';
 
 	export let stats: any;
 	export let unlockedClasses: Array<string>;
 	export let equippedClass: string;
+	export let equippedCombatSkills: Array<string>;
 
 	let terrainMod = 0;
 	$: dexMod = getModifierByPlayerStat(stats[PLAYER_STAT.DEX]);
 	$: dodgeRate = 0;
 	$: weaponBonus = 0;
-	$: skillBonus = 0;
+	$: skillBonus = equippedCombatSkills.reduce((acc, cur) => {
+		return acc + (COMBAT_SKILLS_TO_FEATURES[cur].acBonus || 0);
+	}, 0);
 	$: ac = DEFAULT_ARMOR_CLASS + dexMod + dodgeRate + weaponBonus + skillBonus + terrainMod;
 
 	$: equippedClassMovementBonus = CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.msBonus || 0;
