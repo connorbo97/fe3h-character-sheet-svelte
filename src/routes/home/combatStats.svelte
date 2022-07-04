@@ -114,7 +114,7 @@
 			AC: {ac}
 		</div>
 		<div class="terrain-container">
-			<div>Terrain Modifier:</div>
+			<div>Terrain:</div>
 			<input type="number" value={terrainMod} on:input={onTerrainModChange} />
 		</div>
 	</div>
@@ -153,6 +153,20 @@
 		background-color: green;
 		border-radius: 5px;
 		padding: 10px;
+
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+
+		> * {
+			flex: 1;
+			padding: 5px;
+			text-align: center;
+		}
+
+		> *:not(:last-child) {
+			border-right: 1px solid black;
+		}
 	}
 
 	.big-text {
@@ -161,8 +175,10 @@
 
 	.terrain-container {
 		display: flex;
+		flex: 1;
+		justify-content: center;
 		input {
-			width: 50px;
+			width: 30px;
 		}
 	}
 </style>
