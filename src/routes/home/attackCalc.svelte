@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { COMBAT_ARTS_TO_FEATURES } from 'src/constants/combatArts';
+	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
 
-	import { WEAPON_TO_LABEL, WEAPON_TO_TYPE } from 'src/constants/weapons';
+	import { getWeaponDescription, WEAPONS_TO_FEATURES, WEAPON_TO_TYPE } from 'src/constants/weapons';
 
 	export let equippedClass;
 	export let equippedWeapon: string;
@@ -39,6 +39,7 @@
 			combatArtsSelect.value = '';
 		}
 	}
+	$: console.log(WEAPONS_TO_FEATURES[selectedWeapon]);
 </script>
 
 <div class="container">
@@ -56,10 +57,14 @@
 				<option value={''}> - </option>
 				{#each weaponsOptions as weapon}
 					<option value={weapon}>
-						{weapon}
+						{WEAPONS_TO_FEATURES[weapon].label}
 					</option>
 				{/each}
 			</select>
+		</div>
+		<div class="entry">
+			{WEAPONS_TO_FEATURES[selectedWeapon] &&
+				getWeaponDescription(WEAPONS_TO_FEATURES[selectedWeapon])}
 		</div>
 		<div class="entry">
 			<span class="label">
@@ -78,6 +83,10 @@
 					</option>
 				{/each}
 			</select>
+		</div>
+		<div class="entry">
+			{COMBAT_ARTS_TO_FEATURES[selectedCombatArt] &&
+				getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])}
 		</div>
 	</div>
 </div>
@@ -98,5 +107,8 @@
 
 		display: flex;
 		justify-content: space-between;
+	}
+	.entry {
+		flex: 1;
 	}
 </style>
