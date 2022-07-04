@@ -39,7 +39,6 @@
 			combatArtsSelect.value = '';
 		}
 	}
-	$: console.log(WEAPONS_TO_FEATURES[selectedWeapon]);
 </script>
 
 <div class="container">
