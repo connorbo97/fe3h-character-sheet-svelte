@@ -15,12 +15,27 @@ declare global {
 		unlockedClasses: any;
 		unlockedClassesPicks: any;
 		customWeapons: any;
+		customCombatArts: any;
 		customCombatSkills: any;
 		classXP: XPMap;
 		weaponXP: XPMap;
 	};
 
 	type AllWeapons = {
+		customSet: Set<string>;
+		equippedClassSet: Set<string>;
+		classUnlockSet: Set<string>;
+		fullSet: Set<string>;
+		fullArray: Array<string>;
+	};
+	type AllCombatSkills = {
+		customSet: Set<string>;
+		equippedClassSet: Set<string>;
+		classUnlockSet: Set<string>;
+		fullSet: Set<string>;
+		fullArray: Array<string>;
+	};
+	type AllCombatArts = {
 		customSet: Set<string>;
 		equippedClassSet: Set<string>;
 		classUnlockSet: Set<string>;
