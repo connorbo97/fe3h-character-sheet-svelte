@@ -68,7 +68,7 @@ const calculateAllCombatSkillsMemoized = (
 		Object.keys(CLASS_TO_FEATURES[curClass]?.unlocks?.combatSkills || {}).forEach((w) =>
 			classUnlockSet.add(w)
 		);
-		const masteredSkills = CLASS_TO_FEATURES[curClass]?.whenEquipped?.combatSkills;
+		const masteredSkills = CLASS_TO_FEATURES[curClass]?.whenMastered?.combatSkills;
 
 		if (masteredSkills && classXP?.[curClass]?.mastered) {
 			Object.keys(masteredSkills).forEach((w) => classUnlockSet.add(w));
