@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { BEGINNER_CLASSES, CLASS_TO_LABEL, INTERMEDIATE_CLASSES } from 'src/constants';
 
+	export let masteredClasses: any;
+
 	export let equippedClass: string;
 	export let setEquippedClass: Function;
 
@@ -27,6 +29,7 @@
 			onUpdateUnlockedClasses([...Array.from(classSet), targetClass]);
 		}
 	};
+	console.log(masteredClasses);
 </script>
 
 <div class="container">
@@ -39,7 +42,11 @@
 						class={classSet?.has(beginnerClass) ? 'active' : 'not-active'}
 						on:click={() => onToggleClassActive(beginnerClass)}
 					/>
-					<div class="class-label">{CLASS_TO_LABEL[beginnerClass]}</div>
+					<div
+						class={`${masteredClasses.indexOf(beginnerClass) !== -1 ? 'mastered' : ''} class-label`}
+					>
+						{CLASS_TO_LABEL[beginnerClass]}
+					</div>
 					<button
 						class={equippedClass === beginnerClass ? 'equipped' : ''}
 						on:click={() => onToggleEquipClass(beginnerClass)}
@@ -57,7 +64,13 @@
 						class={classSet?.has(intermediateClass) ? 'active' : 'not-active'}
 						on:click={() => onToggleClassActive(intermediateClass)}
 					/>
-					<div class="class-label">{CLASS_TO_LABEL[intermediateClass]}</div>
+					<div
+						class={`${
+							masteredClasses.indexOf(intermediateClass) !== -1 ? 'mastered' : ''
+						} class-label`}
+					>
+						{CLASS_TO_LABEL[intermediateClass]}
+					</div>
 					<button
 						class={equippedClass === intermediateClass ? 'equipped' : ''}
 						on:click={() => onToggleEquipClass(intermediateClass)}
@@ -102,5 +115,9 @@
 	}
 	.equipped {
 		background-color: green;
+	}
+
+	.mastered {
+		color: red;
 	}
 </style>
