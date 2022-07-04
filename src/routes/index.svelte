@@ -105,7 +105,6 @@
 		} else if (equippedCombatArts.length < MAX_COMBAT_SKILLS) {
 			equippedCombatArts = [...equippedCombatArts, targetArt];
 		}
-		console.log(targetArt, equippedCombatArts);
 	};
 	const onToggleCombatSkill = (targetSkill: any) => {
 		if (equippedCombatSkills.indexOf(targetSkill) !== -1) {

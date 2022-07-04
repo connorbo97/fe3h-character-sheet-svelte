@@ -21,7 +21,6 @@
 	}
 
 	$: skillStatModifier = getModifierByPlayerStat(stats[selectedStat]);
-	$: console.log(skillStatModifier, selectedStat, skillStat, skill);
 </script>
 
 <div class="container">
