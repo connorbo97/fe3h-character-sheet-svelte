@@ -110,6 +110,7 @@
 		flex: 1;
 		padding: 5px;
 
-		overflow: scroll-x;
+		overflow-y: scroll;
+		height: 100%;
 	}
 </style>
