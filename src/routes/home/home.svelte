@@ -78,7 +78,7 @@
 		<div class="arts">
 			<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />
 		</div>
-		<div class="rest">
+		<div class="other">
 			<CombatStats stats={playerStats} {equippedClass} {unlockedClasses} />
 		</div>
 	</div>
@@ -118,10 +118,13 @@
 		display: grid;
 		grid-template-areas:
 			'weapons weapons'
-			'arts rest';
+			'arts other';
 		grid-template-rows: min-content 1fr;
 		grid-template-columns: 185px 1fr;
 		row-gap: 5px;
+	}
+	.other {
+		grid-area: other;
 	}
 
 	.weapons {
