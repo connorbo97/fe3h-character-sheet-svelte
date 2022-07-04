@@ -12,7 +12,6 @@ declare global {
 	type PlayerCrest = {
 		type: string;
 		isMajor: boolean;
-		canDisplay?: boolean;
 	};
 	type CharacterSheet = {
 		playerStats: any;
@@ -56,8 +55,9 @@ declare global {
 		description: string;
 		image: any;
 		activationDC: { [s in CrestType]: number };
-		triggersOn: CrestTrigger;
-		hideInitial?: boolean;
+		triggersOn: Array<CrestTrigger>;
+
+		conservesResource?: boolean;
 	};
 
 	//types

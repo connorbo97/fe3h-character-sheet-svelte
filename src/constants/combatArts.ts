@@ -37,7 +37,7 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 	[COMBAT_ARTS.SWAP]: {
 		label: 'Swap',
 		description:
-			'As action, switch places with an adjacent ally. Does not consume a combat die when used.'
+			'As action, switch places with an adjacent ally. Does not consume a superiority die when used.'
 	},
 	[COMBAT_ARTS.REPOSITION]: {
 		label: 'Reposition',
@@ -52,7 +52,7 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 	[COMBAT_ARTS.PULL_BACK]: {
 		label: 'Pull Back',
 		description:
-			'As an action, pull you and an adjacent ally 1 square back. Does not consume a combat die.'
+			'As an action, pull you and an adjacent ally 1 square back. Does not consume a superiority die.'
 	},
 	[COMBAT_ARTS.WRATH_STRIKE]: {
 		label: 'Wrath Strike',

@@ -71,6 +71,7 @@
 	<div class="crest">
 		{#if playerCrestFeatures?.image}
 			<img
+				style:border-color={playerCrest.isMajor ? 'slateblue' : 'lightskyblue'}
 				class="crest-image"
 				src={playerCrestFeatures.image}
 				title={`${playerCrestFeatures?.description} DC ${
@@ -84,15 +85,14 @@
 			on:change={(e) => {
 				onUpdateCrest({
 					type: e.currentTarget.value,
-					isMajor: false,
-					canDisplay: !CRESTS_TO_FEATURES[e.currentTarget.value]?.hideInitial
+					isMajor: false
 				});
 			}}
 		>
 			<option value={''} selected={!playerCrest.type}>Crest?</option>
 			{#each Object.keys(CRESTS) as crest}
 				<option value={crest} selected={playerCrest?.type === crest}>
-					{CRESTS_TO_FEATURES[crest].label}
+					{CRESTS_TO_FEATURES[crest]?.label}
 				</option>
 			{/each}
 		</select>
@@ -156,9 +156,9 @@
 		justify-content: flex-end;
 	}
 	.crest-image {
+		box-sizing: border-box;
 		background-color: white;
 		border-radius: 100%;
-		border: 3px solid gray;
-		margin-bottom: 5px;
+		border: 5px solid gray;
 	}
 </style>
