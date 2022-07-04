@@ -1,34 +1,31 @@
 <script lang="ts">
-	let combatArts = ['Hello'];
-	let hideDescription: any = true;
+	import { COMBAT_ARTS_TO_FEATURES } from 'src/constants';
+	import CombatArtsEntry from './combatArtsEntry.svelte';
+
+	export let allCombatArts: AllCombatArts;
+
+	export let equippedCombatArts: any;
+	export let onToggleCombatArts: any;
 </script>
 
 <div class="container">
-	{#each combatArts as art}
-		<div class="combat-art-container">
-			<button />
-			<div class="label">{art}</div>
-			<div
-				class={`caret ${hideDescription ? 'flip' : ''}`}
-				on:click={() => (hideDescription = !hideDescription)}
-			>
-				v
-			</div>
-			<button />
-		</div>
+	{#each allCombatArts.fullArray as art}
+		<CombatArtsEntry {art} {equippedCombatArts} {onToggleCombatArts} />
 	{/each}
 </div>
 
 <style lang="scss">
 	.container {
+		display: flex;
+		flex-direction: column;
 		background-color: aquamarine;
 
 		border-radius: 5px;
 		padding: 5px;
-	}
 
-	.combat-art-container {
-		display: flex;
-		column-gap: 5px;
+		row-gap: 5px;
+
+		width: 100%;
+		overflow-y: scroll;
 	}
 </style>

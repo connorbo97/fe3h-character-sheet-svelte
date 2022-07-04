@@ -10,6 +10,8 @@
 	export let classXP: any;
 
 	export let allWeapons: any;
+	export let allCombatSkills: any;
+	export let allCombatArts: any;
 
 	export let playerStats: any;
 	export let onUpdatePlayerStats: any;
@@ -24,6 +26,9 @@
 	export let equippedWeapon: any;
 	export let setEquippedWeapon: any;
 
+	export let equippedCombatArts: any;
+	export let onToggleCombatArts: any;
+
 	export let equippedCombatSkills: any;
 	export let onToggleCombatSkill: any;
 
@@ -32,8 +37,6 @@
 
 	export let unlockedClasses: any;
 	export let onUpdateUnlockedClasses: any;
-
-	export let unlockedClassesPicks: any;
 </script>
 
 <div class="container">
@@ -52,13 +55,10 @@
 	<div class="classes">
 		<Classes {equippedClass} {setEquippedClass} {unlockedClasses} {onUpdateUnlockedClasses} />
 		<CombatSkills
-			{unlockedClasses}
-			{equippedClass}
+			{allCombatSkills}
 			{customCombatSkills}
-			{unlockedClassesPicks}
 			{equippedCombatSkills}
 			{onToggleCombatSkill}
-			{classXP}
 		/>
 	</div>
 	<div class="rest">
@@ -66,7 +66,7 @@
 			<Weapons {allWeapons} {equippedWeapon} {setEquippedWeapon} />
 		</div>
 		<div class="arts">
-			<CombatArts />
+			<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />
 		</div>
 	</div>
 </div>
@@ -107,7 +107,7 @@
 			'weapons weapons'
 			'arts rest';
 		grid-template-rows: min-content 1fr;
-		grid-template-columns: min-content 1fr;
+		grid-template-columns: 185px 1fr;
 	}
 
 	.weapons {

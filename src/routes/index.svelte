@@ -12,7 +12,11 @@
 	import { modal } from 'src/stores.js';
 	import Modal from 'src/common/Modal.svelte';
 	import Xp from './xp/xp.svelte';
-	import { calculateAllWeapons } from 'src/combinationUtils';
+	import {
+		calculateAllCombatArts,
+		calculateAllCombatSkills,
+		calculateAllWeapons
+	} from 'src/combinationUtils';
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -23,6 +27,7 @@
 		unlockedClassesPicks: {},
 		customWeapons: {},
 		customCombatSkills: {},
+		customCombatArts: {},
 		classXP: {},
 		weaponXP: {}
 	};
@@ -32,6 +37,7 @@
 	let equippedClass: string = '';
 	let equippedWeapon: string = '';
 	let equippedCombatSkills: Array<string> = [];
+	let equippedCombatArts: Array<string> = [];
 
 	let currentPage = 'HOME';
 
@@ -46,7 +52,8 @@
 	$: weaponXP = fullSheet.weaponXP;
 
 	$: allWeapons = calculateAllWeapons(fullSheet, equippedClass);
-	// $: allSkills = calculateAllSkills(fullSheet, equippedClass);
+	$: allCombatSkills = calculateAllCombatSkills(fullSheet, equippedClass);
+	$: allCombatArts = calculateAllCombatArts(fullSheet, equippedClass, allCombatSkills.fullSet);
 
 	onMount(() => {
 		const lsSheet = localStorage.getItem('sheet');
@@ -83,6 +90,14 @@
 	const setEquippedWeapon = (newWeapon: any) => {
 		equippedWeapon = newWeapon;
 	};
+	const onToggleCombatArts = (targetArt: any) => {
+		if (equippedCombatArts.indexOf(targetArt) !== -1) {
+			equippedCombatArts = equippedCombatArts.filter((art) => art !== targetArt);
+		} else if (equippedCombatArts.length < MAX_COMBAT_SKILLS) {
+			equippedCombatArts = [...equippedCombatArts, targetArt];
+		}
+		console.log(targetArt, equippedCombatArts);
+	};
 	const onToggleCombatSkill = (targetSkill: any) => {
 		if (equippedCombatSkills.indexOf(targetSkill) !== -1) {
 			equippedCombatSkills = equippedCombatSkills.filter((skill) => skill !== targetSkill);
@@ -113,6 +128,8 @@
 			<div class={currentPage === 'HOME' ? '' : 'invisible'}>
 				<Home
 					{allWeapons}
+					{allCombatSkills}
+					{allCombatArts}
 					{classXP}
 					{playerStats}
 					{onUpdatePlayerStats}
@@ -122,6 +139,8 @@
 					{onToggleSkillProficiency}
 					{equippedWeapon}
 					{setEquippedWeapon}
+					{equippedCombatArts}
+					{onToggleCombatArts}
 					{equippedClass}
 					{setEquippedClass}
 					{equippedCombatSkills}
