@@ -3,6 +3,7 @@
 	import CombatSkillEntry from './combatSkillEntry.svelte';
 
 	export let customCombatSkills: any;
+	export let classXP: any;
 
 	export let equippedClass: any;
 	export let unlockedClasses: any;
@@ -32,6 +33,30 @@
 
 		return acc;
 	}, []);
+	$: masteredSkillsArr = Object.keys(classXP).reduce((acc: any, c: any) => {
+		if (classXP[c]?.level) {
+			const skills = CLASS_TO_FEATURES[c]?.whenMastered?.combatSkills || {};
+			const skillsArr = Object.keys(skills);
+
+			let pickedSkillsArr: any = [];
+			const pickOne = skills?.pickOne;
+
+			if (pickOne) {
+				pickedSkillsArr = pickOne
+					.map((skillArray: any, index: any) => {
+						skillArray[unlockedClassesPicks[c]?.whenMastered?.combatSkills?.pickOne?.[index]];
+					})
+					.filter((skill) => skill);
+			}
+
+			if (skillsArr.length || pickedSkillsArr.length) {
+				return [...acc, ...skillsArr, ...pickedSkillsArr];
+			}
+
+			return acc;
+		}
+		return acc;
+	}, []);
 
 	$: getEquippedClassSkills = () => {
 		const skills = CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.combatSkills || {};
@@ -53,7 +78,11 @@
 		return [...skillsArr, ...pickedSkillsArr];
 	};
 	$: equippedClassCombatSkills = getEquippedClassSkills();
-	$: classCombatSkills = new Set([...equippedClassCombatSkills, ...unlockedCombatSkillsArr]);
+	$: classCombatSkills = new Set([
+		...equippedClassCombatSkills,
+		...unlockedCombatSkillsArr,
+		...masteredSkillsArr
+	]);
 	$: allCombatSkills = [...Array.from(classCombatSkills), ...Object.keys(customCombatSkills)];
 	$: allCombatSkillFeatures = { ...COMBAT_SKILLS_TO_FEATURES, ...customCombatSkills };
 </script>
