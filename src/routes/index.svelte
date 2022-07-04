@@ -8,7 +8,7 @@
 		MAX_COMBAT_SKILLS
 	} from '../constants';
 	import Home from './home/home.svelte';
-	import Header from './home/Header.svelte';
+	import Header from './home/header.svelte';
 	import { modal } from 'src/stores.js';
 	import Modal from 'src/common/Modal.svelte';
 	import Xp from './xp/xp.svelte';
@@ -117,7 +117,7 @@
 <div class={`${ready ? '' : 'no-clicks'} container`}>
 	<Modal show={$modal}>
 		<div class="header">
-			<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} />
+			<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} {currentPage} />
 		</div>
 		<div class="content">
 			<div class={currentPage === 'HOME' ? '' : 'invisible'}>

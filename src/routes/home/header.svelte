@@ -1,4 +1,5 @@
 <script lang="ts">
+	export let currentPage: any;
 	export let fullSheet: any;
 	export let playerName: any;
 	export let onUpdatePlayerName: any;
@@ -31,8 +32,12 @@
 		on:input={(e) => onUpdatePlayerName(e.currentTarget.value || '')}
 	/>
 
-	<button on:click={() => onChangePage('HOME')}>Home</button>
-	<button on:click={() => onChangePage('XP')}>Weapon XP</button>
+	<button class={currentPage === 'HOME' ? 'active' : ''} on:click={() => onChangePage('HOME')}>
+		Home
+	</button>
+	<button class={currentPage === 'XP' ? 'active' : ''} on:click={() => onChangePage('XP')}
+		>Weapon XP</button
+	>
 	<button>Page Placeholder</button>
 	<button on:click={onExportSheet}>Export Sheet</button>
 </div>
@@ -50,5 +55,10 @@
 	.name {
 		flex: 1;
 		font-size: 20px;
+	}
+
+	.active {
+		background-color: blue;
+		color: white;
 	}
 </style>
