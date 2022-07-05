@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { CLASS_TO_FEATURES } from 'src/constants/classes';
+	import { CLASS, CLASS_TO_FEATURES } from 'src/constants/classes';
 
 	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
-	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
+	import { COMBAT_SKILLS, COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
 	import { CRESTS_TO_FEATURES, CrestTrigger, CrestType } from 'src/constants/crests';
 	import { Dice } from 'src/constants/dice';
 	import { PLAYER_STAT, PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
@@ -171,7 +171,14 @@
 	}
 	$: damageBase = getModifierByPlayerStat(playerStats[damageTypeSelection] || 10);
 	$: damageTypeLabel = PLAYER_STAT_TO_SHORT_LABEL[damageTypeSelection];
-	$: weaponDamageModifier = WEAPONS_TO_FEATURES[selectedWeapon]?.damage || [];
+	$: weaponDamageModifier = [
+		...(WEAPONS_TO_FEATURES[selectedWeapon]?.damage || []),
+		...(selectedWeapon === WEAPONS.HEAL &&
+		(equippedCombatSkills.includes(COMBAT_SKILLS.HEAL_PLUS) || equippedClass === CLASS.PRIEST)
+			? [2]
+			: [0])
+	];
+
 	$: weaponArtDamageModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.damageBonus || [];
 	$: optionsDamageModifier = [];
 	$: damageCalc = [
