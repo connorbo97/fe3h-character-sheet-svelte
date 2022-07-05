@@ -26,6 +26,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@sveltejs/adapter-node": "^1.0.0-next.78",
+		"@sveltejs/adapter-static": "^1.0.0-next.34",
 		"lodash.clonedeep": "^4.5.0",
 		"lodash.get": "^4.4.2",
 		"lodash.set": "^4.3.2",
