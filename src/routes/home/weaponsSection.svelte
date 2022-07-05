@@ -15,25 +15,22 @@
 	export let weaponUses: { [s: string]: number };
 	export let onUpdateWeaponUses: any;
 
-	let mounted = false;
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
-	$: maxUses = (WEAPONS_TO_FEATURES[weapon]?.uses || 0) * (hasHealPlus ? 2 : 1);
+	let prevMaxUses: any = { current: null };
+	$: maxUses =
+		(WEAPONS_TO_FEATURES[weapon]?.uses || 0) * (hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
 	$: curUses = weaponUses[weapon];
 	$: updateCurWeaponUses = (newTotal: any) => {
 		if (newTotal <= maxUses && newTotal >= 0) {
-			onUpdateWeaponUses({ ...weaponUses, [weapon]: newTotal });
+			onUpdateWeaponUses(weapon, newTotal);
 		}
 	};
 
 	$: {
-		if (mounted) {
-			if (weapon === WEAPONS.HEAL && hasHealPlus) {
-				updateCurWeaponUses(maxUses);
-			}
-		} else {
+		if (maxUses !== prevMaxUses.current) {
 			updateCurWeaponUses(maxUses);
+			prevMaxUses.current = maxUses;
 		}
-		mounted = true;
 	}
 
 	$: isCustomUnlock = allWeapons?.customSet.has(weapon);

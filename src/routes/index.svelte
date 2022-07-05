@@ -19,7 +19,6 @@
 		calculateAllCombatSkills,
 		calculateAllWeapons
 	} from 'src/combinationUtils';
-	import Popup from './home/Popup.svelte';
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -140,9 +139,8 @@
 	const onUpdateCrest = (newCrest: PlayerCrest) => {
 		onUpdateSheet('crest', newCrest);
 	};
-	const onUpdateWeaponUses = (newUses: any) => {
-		console.log(newUses);
-		weaponUses = newUses;
+	const onUpdateWeaponUses = (weapon: any, newUses: any) => {
+		weaponUses = { ...weaponUses, [weapon]: newUses };
 	};
 </script>
 
