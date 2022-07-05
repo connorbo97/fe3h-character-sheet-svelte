@@ -25,20 +25,6 @@ export const INTERMEDIATE_MAGIC_RESILIENCE_BONUS = 1;
 export const BEGINNER_MASTERY_REQ = 5;
 export const INTERMEDIATE_MASTERY_REQ = 7;
 
-export const SUPERIORITY_DIE_TO_CLASSES: { [n: number]: Set<string> } = {
-	1: new Set(Object.values(CLASS)),
-	3: new Set(BEGINNER_CLASSES),
-	5: new Set(INTERMEDIATE_CLASSES)
-};
-export const getSuperiorityDieFromClasses = (unlockedClasses: Array<any>) => {
-	return Object.keys(SUPERIORITY_DIE_TO_CLASSES).reduce((acc: number, die: any) => {
-		if (unlockedClasses.some((c: any) => SUPERIORITY_DIE_TO_CLASSES[die].has(c))) {
-			return Math.max(parseInt(die), acc);
-		}
-		return acc;
-	}, 0);
-};
-
 // DEFAULTS
 export const DEFAULT_PLAYER_STAT = {
 	[PLAYER_STAT.STR]: 10,
