@@ -84,10 +84,10 @@
 	$: console.log(queries, selections, queriesMap, equippedCombatSkills);
 
 	// selected weapon
-	$: weaponsOptions = allWeapons.fullArray.filter((a) => a);
+	$: weaponsOptions = equippedWeapons;
 	let weaponsSelect: any;
 	$: {
-		if (weaponsSelect && !allWeapons.fullSet.has(weaponsSelect?.value)) {
+		if (weaponsSelect && !equippedWeapons.includes(weaponsSelect?.value)) {
 			setSelectedWeapon('');
 			weaponsSelect.value = '';
 		}
@@ -179,7 +179,7 @@
 		...(selectedWeapon === WEAPONS.HEAL &&
 		(equippedCombatSkills.includes(COMBAT_SKILLS.HEAL_PLUS) || equippedClass === CLASS.PRIEST)
 			? [2]
-			: [0])
+			: [])
 	];
 
 	$: weaponArtDamageModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.damageBonus || [];
