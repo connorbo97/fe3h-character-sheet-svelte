@@ -301,7 +301,9 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			}
 		},
 		whenEquipped: {
-			bonusRange: 1,
+			bonusRange: {
+				[WEAPON_TYPE.BOW]: 1
+			},
 			msBonus: 1,
 			xpMods: {
 				[WEAPON_TYPE.BOW]: 1.6,

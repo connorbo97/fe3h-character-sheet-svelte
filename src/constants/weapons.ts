@@ -225,7 +225,7 @@ type WeaponFeatures = {
 	type: string;
 	damage: Array<number | Dice>;
 	damageType?: Array<string>;
-	range: Array<number> | string;
+	range: Array<number | string>;
 	attackBonus?: number;
 	followUpBonus?: number;
 	critBonus?: number;
@@ -260,7 +260,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.TRAINING_LANCE]: {
 		label: 'Training Lance',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.LANCE,
 		damage: [Dice.d2],
 		attackBonus: 1,
 		range: [1]
@@ -268,7 +268,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.IRON_LANCE]: {
 		label: 'Iron Lance',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.LANCE,
 		damage: [Dice.d2, 1],
 		attackBonus: -1,
 		range: [1]
@@ -276,7 +276,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.STEEL_LANCE]: {
 		label: 'Steel Lance',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.LANCE,
 		damage: [Dice.d3, 2],
 		attackBonus: -2,
 		range: [1]
@@ -284,7 +284,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.PIKE]: {
 		label: 'Pike',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.LANCE,
 		damage: [Dice.d3, 1],
 		attackBonus: -2,
 		range: [1]
@@ -293,7 +293,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.TRAINING_AXE]: {
 		label: 'Training Axe',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.AXE,
 		damage: [Dice.d2, 1],
 		attackBonus: -1,
 		range: [1]
@@ -301,7 +301,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.IRON_AXE]: {
 		label: 'Iron Axe',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.AXE,
 		damage: [Dice.d3, 1],
 		attackBonus: -3,
 		range: [1]
@@ -309,7 +309,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.STEEL_AXE]: {
 		label: 'Steel Axe',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.AXE,
 		damage: [Dice.d4, 1],
 		attackBonus: -4,
 		range: [1]
@@ -317,7 +317,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.HAMMER]: {
 		label: 'Hammer',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.AXE,
 		damage: [Dice.d4, 1],
 		attackBonus: -5,
 		range: [1]
@@ -325,7 +325,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.HAND_AXE]: {
 		label: 'Hand Axe',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.AXE,
 		damage: [Dice.d2],
 		attackBonus: -3,
 		range: [1]
@@ -334,7 +334,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.TRAINING_BOW]: {
 		label: 'Training Bow',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.BOW,
 		damage: [1],
 		attackBonus: 1,
 		range: [1, 2]
@@ -342,14 +342,14 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.IRON_BOW]: {
 		label: 'Iron Bow',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.BOW,
 		damage: [Dice.d2, 1],
 		range: [1, 2]
 	},
 	[WEAPONS.STEEL_BOW]: {
 		label: 'Steel Bow',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.BOW,
 		attackBonus: -1,
 		damage: [Dice.d3, 1],
 		range: [1, 2]
@@ -357,7 +357,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.SHORT_BOW]: {
 		label: 'Short Bow',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.BOW,
 		damage: [Dice.d2],
 		attackBonus: 1,
 		range: [1]
@@ -366,7 +366,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.TRAINING_GAUNTLETS]: {
 		label: 'Training Gauntlets',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.FISTS,
 		attackBonus: 1,
 		damage: [0],
 		range: [1]
@@ -374,7 +374,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.IRON_GAUNTLETS]: {
 		label: 'Iron Gauntlets',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.FISTS,
 		damage: [1],
 		attackBonus: 0,
 		range: [1]
@@ -382,7 +382,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.STEEL_GAUNTLETS]: {
 		label: 'Steel Gauntlets',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.FISTS,
 		attackBonus: -1,
 		damage: [Dice.d2, 1],
 		range: [1]
@@ -390,7 +390,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.CLOTH_GAUNTLETS]: {
 		label: 'Hand Wraps',
 		description: 'superLongDescription',
-		type: WEAPON_TYPE.SWORD,
+		type: WEAPON_TYPE.FISTS,
 		attackBonus: 1,
 		damage: [0],
 		range: [1]
@@ -531,7 +531,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		type: WEAPON_TYPE.FAITH,
 		damage: [2],
 		damageType: [PLAYER_STAT.INT],
-		range: 'special',
+		range: ['1', '2 + 2 * INT'],
 		uses: 5
 	},
 	[WEAPONS.RESTORE]: {
@@ -540,7 +540,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		type: WEAPON_TYPE.FAITH,
 		damage: [0],
 		damageType: [PLAYER_STAT.INT],
-		range: 'special',
+		range: ['1', '2 + INT'],
 		uses: 10
 	},
 	[WEAPONS.WARD]: {
@@ -555,7 +555,6 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 };
 
 export const getWeaponDescription = (feature: WeaponFeatures) => {
-	console.log(feature);
 	const { damage, attackBonus, range } = feature;
 	return [
 		attackBonus ? `${attackBonus} to attack` : '',

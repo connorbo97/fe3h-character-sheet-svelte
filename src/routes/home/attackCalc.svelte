@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { CLASS_TO_FEATURES } from 'src/constants/classes';
+
 	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
 	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
 	import { CRESTS_TO_FEATURES, CrestTrigger, CrestType } from 'src/constants/crests';
@@ -8,6 +10,7 @@
 	import {
 		getWeaponDescription,
 		HEALING_MAGIC,
+		WEAPONS,
 		WEAPONS_TO_FEATURES,
 		WEAPON_TO_TYPE
 	} from 'src/constants/weapons';
@@ -20,6 +23,7 @@
 		rollDice
 	} from 'src/utils';
 
+	export let equippedClass: string;
 	export let equippedCombatArts: Array<string>;
 	export let equippedCombatSkills: Array<string>;
 	export let playerCrest: PlayerCrest;
@@ -148,6 +152,37 @@
 	]);
 
 	let critRoll = 'Click to roll crit';
+
+	$: equippedClassRangeModifier =
+		CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.bonusRange?.[
+			WEAPONS_TO_FEATURES[selectedWeapon]?.type
+		] || 0;
+	$: combatSkillsRangeModifier = equippedCombatSkills.reduce(
+		(acc, skill) =>
+			acc +
+			(COMBAT_SKILLS_TO_FEATURES[skill]?.bonusRange?.[WEAPONS_TO_FEATURES[selectedWeapon]?.type] ||
+				0),
+		0
+	);
+	$: calcWeaponRange = () => {
+		let baseWeaponRange = [...(WEAPONS_TO_FEATURES[selectedWeapon]?.range || [1])];
+
+		if (selectedWeapon === WEAPONS.RESTORE) {
+			baseWeaponRange = [1, 2 + 2 * getModifierByPlayerStat(playerStats[PLAYER_STAT.INT])];
+		} else if (selectedWeapon === WEAPONS.PHYSIC) {
+			baseWeaponRange = [1, 2 + 2 * getModifierByPlayerStat(playerStats[PLAYER_STAT.INT])];
+		}
+
+		if (baseWeaponRange[1] === undefined) {
+			baseWeaponRange[1] = baseWeaponRange[0];
+		}
+
+		baseWeaponRange[1] =
+			parseInt(baseWeaponRange[1] + '') + equippedClassRangeModifier + combatSkillsRangeModifier;
+
+		return baseWeaponRange;
+	};
+	$: [weaponRangeMin, weaponRangeMax] = calcWeaponRange();
 </script>
 
 <div class="container">
@@ -321,6 +356,14 @@
 					e.currentTarget.innerHTML = `${didCrit ? 'CRIT' : 'Normal'} (${roll})`;
 				}}>Click to roll</button
 			>
+		</h1>
+	</div>
+	<div class="range-container">
+		<h1 class="content">
+			Range: {#if selectedWeapon}
+				{weaponRangeMin}
+				{#if weaponRangeMax !== weaponRangeMin}to {weaponRangeMax}{/if}
+			{/if}
 		</h1>
 	</div>
 </div>

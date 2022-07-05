@@ -92,7 +92,7 @@ declare global {
 
 		hpBonus?: number;
 		msBonus?: number;
-		bonusRange?: number;
+		bonusRange?: { [s: string]: number };
 		followUpBonus?: number;
 		protectionBonus?: number;
 		resilienceBonus?: number;
@@ -104,6 +104,7 @@ declare global {
 		acBonus?: number;
 		msBonus?: number;
 		hpBonus?: number;
+		bonusRange?: { [s: string]: number };
 		damageBonus?: { [s: string]: Array<CalcEntry> };
 		attackBonus?: { [s: string]: Array<CalcEntry> };
 		protectionBonus?: number;
