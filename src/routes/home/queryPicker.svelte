@@ -1,12 +1,12 @@
 <script lang="ts">
 	export let queries: Array<Query>;
-	export let selections: { [s: string]: QueryOption };
+	export let selections: { [s: string]: QueryOption } | undefined;
 	export let onUpdateQuerySelection: any;
 </script>
 
 <div class="container">
 	{#each queries as query}
-		{@const selectedOption = selections[query.key || '']}
+		{@const selectedOption = selections?.[query.key || '']}
 		<div class="query">
 			<div class="prompt">{query.prompt}</div>
 			<select

@@ -46,8 +46,10 @@
 			const curQueries = COMBAT_SKILLS_TO_FEATURES[skill].queries || [];
 
 			curQueries.forEach((query, index) => {
-				const key = skill + '__' + index;
-				acc[key] = { ...query, key: skill + '__' + index };
+				if (query.compatibleWeapons.includes(WEAPONS_TO_FEATURES[selectedWeapon]?.type)) {
+					const key = skill + '__' + index;
+					acc[key] = { ...query, key: skill + '__' + index };
+				}
 			});
 
 			return acc;
@@ -58,13 +60,19 @@
 	$: queriesMap = calcQueriesMap();
 	$: queries = Object.values(queriesMap);
 
-	let selections: { [s: string]: QueryOption };
+	let selections: { [s: string]: QueryOption } | undefined;
 	$: {
 		if (!selections) {
-			selections = queries.reduce((acc: { [s: string]: QueryOption }, value: Query) => {
-				acc[value.key || ''] = value.options[0];
+			selections = queries.reduce((acc: { [s: string]: QueryOption }, query: Query) => {
+				acc[query.key || ''] = query.options[0];
 				return acc;
 			}, {});
+		} else {
+			queries.forEach((query) => {
+				if (!selections?.[query.key || '']) {
+					(selections || {})[query.key || ''] = query.options[0];
+				}
+			});
 		}
 	}
 	$: onUpdateQuerySelection = (key: string, value: QueryOption) => {
@@ -412,6 +420,12 @@
 		>
 	</div>
 	<div class="options">
+		<button
+			class="reset"
+			on:click={() => {
+				selections = {};
+			}}>Reset Queries</button
+		>
 		<EntryPicker {queries} {selections} {onUpdateQuerySelection} />
 	</div>
 </div>
@@ -477,5 +491,14 @@
 	.crest-container {
 		display: flex;
 		align-items: center;
+	}
+
+	.options {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		.reset {
+			width: 200px;
+		}
 	}
 </style>
