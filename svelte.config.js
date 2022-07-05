@@ -6,7 +6,7 @@ import { resolve } from 'path';
 const config = {
 	preprocess: preprocess(),
 	kit: {
-		adapter: adapter({ out: 'public' }),
+		adapter: adapter(),
 		vite: {
 			resolve: {
 				alias: {
