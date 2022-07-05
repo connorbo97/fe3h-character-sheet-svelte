@@ -121,4 +121,16 @@ declare global {
 		critBonus?: Array<CalcEntry>;
 		dieCost?: { roll: number | Dice; target: number; mod: number };
 	}
+	type WeaponFeatures = {
+		label: string;
+		description: string;
+		type: string;
+		damage: Array<number | Dice>;
+		damageType?: Array<string>;
+		range: Array<number | string>;
+		attackBonus?: number;
+		followUpBonus?: number;
+		critBonus?: number;
+		uses?: number;
+	};
 }

@@ -218,19 +218,6 @@ export const WEAPON_TO_TYPE = {
 	[WEAPONS.RESTORE]: WEAPON_TYPE.FAITH,
 	[WEAPONS.WARD]: WEAPON_TYPE.FAITH
 };
-
-type WeaponFeatures = {
-	label: string;
-	description: string;
-	type: string;
-	damage: Array<number | Dice>;
-	damageType?: Array<string>;
-	range: Array<number | string>;
-	attackBonus?: number;
-	followUpBonus?: number;
-	critBonus?: number;
-	uses?: number;
-};
 export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.TRAINING_SWORD]: {
 		label: 'Training Sword',

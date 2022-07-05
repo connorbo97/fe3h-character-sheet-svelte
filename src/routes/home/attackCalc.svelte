@@ -164,6 +164,7 @@
 				0),
 		0
 	);
+	$: optionsRangeModifier = 0;
 	$: calcWeaponRange = () => {
 		let baseWeaponRange = [...(WEAPONS_TO_FEATURES[selectedWeapon]?.range || [1])];
 
@@ -178,7 +179,10 @@
 		}
 
 		baseWeaponRange[1] =
-			parseInt(baseWeaponRange[1] + '') + equippedClassRangeModifier + combatSkillsRangeModifier;
+			parseInt(baseWeaponRange[1] + '') +
+			equippedClassRangeModifier +
+			combatSkillsRangeModifier +
+			optionsRangeModifier;
 
 		return baseWeaponRange;
 	};
