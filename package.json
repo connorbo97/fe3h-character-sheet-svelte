@@ -2,7 +2,8 @@
 	"name": "fe3h-character-sheet-svelte",
 	"version": "0.0.1",
 	"scripts": {
-		"start": "svelte-kit dev",
+		"start": "node build/index.js",
+		"dev": "svelte-kit dev",
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
