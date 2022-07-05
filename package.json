@@ -7,6 +7,7 @@
 		"build": "svelte-kit build",
 		"package": "svelte-kit package",
 		"preview": "svelte-kit preview",
+		"deploy": "git checkout release && git pull origin master && git push && git checkout -",
 		"prepare": "svelte-kit sync",
 		"check": "svelte-check --tsconfig ./jsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./jsconfig.json --watch",
