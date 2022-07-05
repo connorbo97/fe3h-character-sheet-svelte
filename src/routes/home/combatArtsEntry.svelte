@@ -6,9 +6,6 @@
 	export let equippedCombatArts: any;
 	export let onToggleCombatArts: any;
 
-	export let selectedCombatArt: any;
-	export let setSelectedCombatArt: any;
-
 	let hideDescription: any = false;
 </script>
 

@@ -2,7 +2,7 @@
 	import { WEAPON_TO_LABEL } from 'src/constants';
 
 	export let weapon: any;
-	export let equippedWeapon: any;
+	export let equippedWeapons: any;
 	export let onToggleEquip: any;
 	export let allWeapons: AllWeapons;
 
@@ -28,7 +28,7 @@
 	/>
 	<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
 	<button
-		class={equippedWeapon === weapon ? 'equipped' : ''}
+		class={equippedWeapons.includes(weapon) ? 'equipped' : ''}
 		on:click={() => onToggleEquip(weapon, isUnlocked)}
 	/>
 	{#if numUses}

@@ -22,6 +22,9 @@
 	export let selectedCombatArt: any;
 	export let setSelectedCombatArt: any;
 
+	export let selectedWeapon: any;
+	export let setSelectedWeapon: any;
+
 	export let playerStats: any;
 	export let onUpdatePlayerStats: any;
 
@@ -32,8 +35,8 @@
 	export let playerSkillProficiency: any;
 	export let onToggleSkillProficiency: any;
 
-	export let equippedWeapon: any;
-	export let setEquippedWeapon: any;
+	export let equippedWeapons: any;
+	export let onToggleEquippedWeapons: any;
 
 	export let equippedCombatArts: any;
 	export let onToggleCombatArts: any;
@@ -77,28 +80,24 @@
 	</div>
 	<div class="rest">
 		<div class="weapons">
-			<Weapons {allWeapons} {equippedWeapon} {setEquippedWeapon} />
+			<Weapons {allWeapons} {equippedWeapons} {onToggleEquippedWeapons} />
 		</div>
 		<div class="arts">
-			<CombatArts
-				{allCombatArts}
-				{equippedCombatArts}
-				{onToggleCombatArts}
-				{selectedCombatArt}
-				{setSelectedCombatArt}
-			/>
+			<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />
 		</div>
 		<div class="other">
 			<CombatStats stats={playerStats} {equippedClass} {unlockedClasses} {equippedCombatSkills} />
 			<AttackCalc
 				{equippedClass}
-				{equippedWeapon}
+				{equippedWeapons}
 				{equippedCombatArts}
 				{equippedCombatSkills}
 				{allWeapons}
 				{allCombatArts}
 				{playerCrest}
 				{playerStats}
+				{selectedWeapon}
+				{setSelectedWeapon}
 			/>
 		</div>
 	</div>

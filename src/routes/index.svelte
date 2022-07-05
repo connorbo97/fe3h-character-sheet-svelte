@@ -5,7 +5,9 @@
 		DEFAULT_PLAYER_SKILL_BONUSES,
 		DEFAULT_PLAYER_SKILL_PROFICIENCY,
 		DEFAULT_PLAYER_STAT,
-		MAX_COMBAT_SKILLS
+		MAX_COMBAT_ARTS,
+		MAX_COMBAT_SKILLS,
+		MAX_WEAPONS_EQUIPPED
 	} from '../constants';
 	import Home from './home/home.svelte';
 	import Header from './home/header.svelte';
@@ -37,11 +39,12 @@
 	let ready = false;
 	let fullSheet: CharacterSheet = defaultSheet;
 	let equippedClass: string = '';
-	let equippedWeapon: string = '';
+	let equippedWeapons: Array<string> = [];
 	let equippedCombatSkills: Array<string> = [];
 	let equippedCombatArts: Array<string> = [];
 
 	let selectedCombatArt: string;
+	let selectedWeapon: string;
 
 	let currentPage = 'HOME';
 
@@ -93,8 +96,8 @@
 	const setEquippedClass = (newClass: any) => {
 		equippedClass = newClass;
 	};
-	const setEquippedWeapon = (newWeapon: any) => {
-		equippedWeapon = newWeapon;
+	const setSelectedWeapon = (newWeapon: any) => {
+		selectedWeapon = newWeapon;
 	};
 	const setSelectedCombatArt = (art: any) => {
 		selectedCombatArt = art;
@@ -102,7 +105,7 @@
 	const onToggleCombatArts = (targetArt: any) => {
 		if (equippedCombatArts.indexOf(targetArt) !== -1) {
 			equippedCombatArts = equippedCombatArts.filter((art) => art !== targetArt);
-		} else if (equippedCombatArts.length < MAX_COMBAT_SKILLS) {
+		} else if (equippedCombatArts.length < MAX_COMBAT_ARTS) {
 			equippedCombatArts = [...equippedCombatArts, targetArt];
 		}
 	};
@@ -111,6 +114,13 @@
 			equippedCombatSkills = equippedCombatSkills.filter((skill) => skill !== targetSkill);
 		} else if (equippedCombatSkills.length < MAX_COMBAT_SKILLS) {
 			equippedCombatSkills = [...equippedCombatSkills, targetSkill];
+		}
+	};
+	const onToggleEquippedWeapons = (weapon: any) => {
+		if (equippedWeapons.includes(weapon)) {
+			equippedWeapons = equippedWeapons.filter((w) => w !== weapon);
+		} else if (equippedWeapons.length < MAX_WEAPONS_EQUIPPED) {
+			equippedWeapons = [...equippedWeapons, weapon];
 		}
 	};
 	const onUpdateUnlockedClasses = (newClasses: Array<string>) => {
@@ -148,8 +158,8 @@
 					{customCombatSkills}
 					{playerSkillProficiency}
 					{onToggleSkillProficiency}
-					{equippedWeapon}
-					{setEquippedWeapon}
+					{equippedWeapons}
+					{onToggleEquippedWeapons}
 					{equippedCombatArts}
 					{onToggleCombatArts}
 					{equippedClass}
@@ -163,6 +173,8 @@
 					{onUpdateCrest}
 					{selectedCombatArt}
 					{setSelectedCombatArt}
+					{selectedWeapon}
+					{setSelectedWeapon}
 				/>
 			</div>
 			<div class={currentPage === 'XP' ? '' : 'invisible'}>

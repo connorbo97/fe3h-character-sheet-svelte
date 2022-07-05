@@ -12,6 +12,7 @@ export * from './constants/weaponType';
 
 export const MAX_COMBAT_ARTS = 3;
 export const MAX_COMBAT_SKILLS = 5;
+export const MAX_WEAPONS_EQUIPPED = 3;
 export const PROFICIENCY_BONUS = 2;
 
 export const INTERMEDIATE_MARTIAL_HP_BONUS = 2;

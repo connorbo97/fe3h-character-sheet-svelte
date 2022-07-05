@@ -28,13 +28,16 @@
 	export let equippedClass: string;
 	export let equippedCombatArts: Array<string>;
 	export let equippedCombatSkills: Array<string>;
+	export let equippedWeapons: Array<string>;
 	export let playerCrest: PlayerCrest;
 	export let playerStats: any;
 
 	export let allWeapons: AllWeapons;
 	export let allCombatArts: AllCombatArts;
 
-	let selectedWeapon: any;
+	export let selectedWeapon: any;
+	export let setSelectedWeapon: any;
+
 	let selectedCombatArt: any;
 
 	$: allCombatArtFeatures = allCombatArts.fullFeatures;
@@ -85,7 +88,7 @@
 	let weaponsSelect: any;
 	$: {
 		if (weaponsSelect && !allWeapons.fullSet.has(weaponsSelect?.value)) {
-			selectedWeapon = '';
+			setSelectedWeapon('');
 			weaponsSelect.value = '';
 		}
 	}
@@ -251,7 +254,7 @@
 			<select
 				bind:this={weaponsSelect}
 				on:change={(e) => {
-					selectedWeapon = e.currentTarget.value;
+					setSelectedWeapon(e.currentTarget.value);
 					damageTypeSelection = '';
 				}}
 			>
