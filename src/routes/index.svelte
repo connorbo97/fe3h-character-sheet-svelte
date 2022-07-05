@@ -48,6 +48,8 @@
 
 	let currentPage = 'HOME';
 
+	let weaponUses: { [s: string]: number } = {};
+
 	$: playerStats = fullSheet.playerStats;
 	$: playerSkillProficiency = fullSheet.playerSkills;
 	$: playerSkillBonus = fullSheet.skillBonuses;
@@ -138,6 +140,10 @@
 	const onUpdateCrest = (newCrest: PlayerCrest) => {
 		onUpdateSheet('crest', newCrest);
 	};
+	const onUpdateWeaponUses = (newUses: any) => {
+		console.log(newUses);
+		weaponUses = newUses;
+	};
 </script>
 
 <div class={`${ready ? '' : 'no-clicks'} container`}>
@@ -174,6 +180,8 @@
 					{setSelectedCombatArt}
 					{selectedWeapon}
 					{setSelectedWeapon}
+					{weaponUses}
+					{onUpdateWeaponUses}
 				/>
 			</div>
 			<div class={currentPage === 'XP' ? '' : 'invisible'}>

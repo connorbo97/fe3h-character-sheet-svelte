@@ -14,6 +14,9 @@
 
 	export let masteredClasses: any;
 
+	export let weaponUses: any;
+	export let onUpdateWeaponUses: any;
+
 	export let playerCrest: any;
 	export let onUpdateCrest: any;
 
@@ -78,7 +81,15 @@
 	</div>
 	<div class="rest">
 		<div class="weapons">
-			<Weapons {allWeapons} {equippedWeapons} {onToggleEquippedWeapons} />
+			<Weapons
+				{allWeapons}
+				{equippedWeapons}
+				{onToggleEquippedWeapons}
+				{equippedCombatSkills}
+				{equippedClass}
+				{weaponUses}
+				{onUpdateWeaponUses}
+			/>
 		</div>
 		<div class="arts">
 			<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />

@@ -1,4 +1,4 @@
-import { PLAYER_STAT } from './constants';
+import { PLAYER_STAT, COMBAT_SKILLS, CLASS } from './constants';
 import { Dice } from './constants/dice';
 
 export const getModifierByPlayerStat = (stat: number) => {
@@ -59,14 +59,5 @@ export const rollCalc = (calc: Dice | Array<CalcEntry>) => {
 	}, 0);
 };
 
-// export const getACFromStatsLoadoutAndCombat = (
-// 	sheet: any,
-// 	loadout: {
-// 		class: any;
-// 		weapon: any;
-// 		skills: any;
-// 	},
-// 	otherBonuses: { terrainMod: number }
-// ) => {
-//   sheet.acBonus
-// };
+export const checkHealPlus = (equippedClass: string, equippedCombatSkills: Array<string>) =>
+	equippedCombatSkills.includes(COMBAT_SKILLS.HEAL_PLUS) || equippedClass === CLASS.PRIEST;

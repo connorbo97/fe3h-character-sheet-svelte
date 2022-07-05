@@ -17,6 +17,7 @@
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
 	import {
 		checkCalcRequiresRoll,
+		checkHealPlus,
 		getModifierByPlayerStat,
 		printCalc,
 		rollCalc,
@@ -42,6 +43,7 @@
 	export let setSelectedCombatArt: any;
 
 	$: dexMod = getModifierByPlayerStat(playerStats[PLAYER_STAT.DEX]);
+	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
 
 	// queries
 	$: calcQueriesMap = (): { [s: string]: Query } => {
@@ -150,10 +152,7 @@
 	$: damageTypeLabel = PLAYER_STAT_TO_SHORT_LABEL[damageTypeSelection];
 	$: weaponDamageModifier = [
 		...(WEAPONS_TO_FEATURES[selectedWeapon]?.damage || []),
-		...(selectedWeapon === WEAPONS.HEAL &&
-		(equippedCombatSkills.includes(COMBAT_SKILLS.HEAL_PLUS) || equippedClass === CLASS.PRIEST)
-			? [2]
-			: [])
+		...(selectedWeapon === WEAPONS.HEAL && hasHealPlus ? [2] : [])
 	];
 
 	$: weaponArtDamageModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.damageBonus || [];

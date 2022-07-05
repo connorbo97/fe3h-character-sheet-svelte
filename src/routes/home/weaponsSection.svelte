@@ -1,14 +1,40 @@
 <script lang="ts">
 	import { WEAPON_TO_LABEL } from 'src/constants';
+	import { WEAPONS, WEAPONS_TO_FEATURES } from 'src/constants/weapons';
+	import { checkHealPlus } from 'src/utils';
 
 	export let weapon: any;
+	export let equippedClass: any;
 	export let equippedWeapons: any;
+	export let equippedCombatSkills: any;
 	export let onToggleEquip: any;
 	export let allWeapons: AllWeapons;
 
-	export let numUses: any | undefined;
+	export let isMagic: any;
 
-	let curUses = numUses;
+	export let weaponUses: { [s: string]: number };
+	export let onUpdateWeaponUses: any;
+
+	let mounted = false;
+	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
+	$: maxUses = (WEAPONS_TO_FEATURES[weapon]?.uses || 0) * (hasHealPlus ? 2 : 1);
+	$: curUses = weaponUses[weapon];
+	$: updateCurWeaponUses = (newTotal: any) => {
+		if (newTotal <= maxUses && newTotal >= 0) {
+			onUpdateWeaponUses({ ...weaponUses, [weapon]: newTotal });
+		}
+	};
+
+	$: {
+		if (mounted) {
+			if (weapon === WEAPONS.HEAL && hasHealPlus) {
+				updateCurWeaponUses(maxUses);
+			}
+		} else {
+			updateCurWeaponUses(maxUses);
+		}
+		mounted = true;
+	}
 
 	$: isCustomUnlock = allWeapons?.customSet.has(weapon);
 	$: isClassUnlock =
@@ -27,23 +53,26 @@
 			: ''}
 	/>
 	<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
-	<button
-		class={equippedWeapons.includes(weapon) ? 'equipped' : ''}
-		on:click={() => onToggleEquip(weapon, isUnlocked)}
-	/>
-	{#if numUses}
+	{#if !isMagic}
+		<button
+			class={equippedWeapons.includes(weapon) ? 'equipped' : ''}
+			on:click={() => onToggleEquip(weapon, isUnlocked)}
+		/>
+	{/if}
+	{#if isMagic}
 		<input
-			class="count"
+			class={`count ${curUses === maxUses ? 'max' : ''}`}
 			type="number"
 			on:change={(e) => {
 				const value = parseInt(e.currentTarget.value);
 
-				curUses = value;
+				updateCurWeaponUses(value);
 
 				e.currentTarget.value = '';
 			}}
 			value={curUses}
 		/>
+		/<span style:width={'15px'}>{maxUses}</span>
 	{/if}
 </div>
 
@@ -74,5 +103,6 @@
 	}
 	.count {
 		width: 30px;
+		border: 1px solid black;
 	}
 </style>
