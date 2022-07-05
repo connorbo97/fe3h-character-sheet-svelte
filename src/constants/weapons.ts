@@ -127,52 +127,6 @@ export const FAITH_MAGIC = [
 ];
 export const HEALING_MAGIC = new Set([WEAPONS.HEAL, WEAPONS.NOSFERATU, WEAPONS.PHYSIC]);
 
-export const WEAPON_TO_LABEL = {
-	[WEAPONS.TRAINING_SWORD]: 'Training Sword',
-	[WEAPONS.IRON_SWORD]: 'Iron Sword',
-	[WEAPONS.STEEL_SWORD]: 'Steel Sword',
-
-	[WEAPONS.TRAINING_LANCE]: 'Training Lance',
-	[WEAPONS.IRON_LANCE]: 'Iron Lance',
-	[WEAPONS.STEEL_LANCE]: 'Steel Lance',
-	[WEAPONS.PIKE]: 'Pike',
-
-	[WEAPONS.TRAINING_AXE]: 'Training Axe',
-	[WEAPONS.IRON_AXE]: 'Iron Axe',
-	[WEAPONS.STEEL_AXE]: 'Steel Axe',
-	[WEAPONS.HAMMER]: 'Warhammer',
-	[WEAPONS.HAND_AXE]: 'Hand Axe',
-
-	[WEAPONS.TRAINING_BOW]: 'Training Bow',
-	[WEAPONS.IRON_BOW]: 'Iron Bow',
-	[WEAPONS.STEEL_BOW]: 'Steel Bow',
-	[WEAPONS.SHORT_BOW]: 'Short Bow',
-
-	[WEAPONS.TRAINING_GAUNTLETS]: 'Training Gauntlets',
-	[WEAPONS.IRON_GAUNTLETS]: 'Iron Gauntlets',
-	[WEAPONS.STEEL_GAUNTLETS]: 'Steel Gauntlets',
-	[WEAPONS.CLOTH_GAUNTLETS]: 'Cloth Gauntlets',
-
-	[WEAPONS.FIRE]: 'Fire',
-	[WEAPONS.THUNDER]: 'Thunder',
-	[WEAPONS.WIND]: 'Wind',
-	[WEAPONS.BLIZZARD]: 'Blizzard',
-
-	[WEAPONS.BOLGANONE]: 'Bolganone',
-	[WEAPONS.THORON]: 'Thoron',
-	[WEAPONS.CUTTING_GALE]: 'Cutting Gale',
-	[WEAPONS.SAGITTAE]: 'Sagittae',
-	[WEAPONS.HAILSTORM]: 'Hailstorm',
-
-	[WEAPONS.HEAL]: 'Heal',
-	[WEAPONS.NOSFERATU]: 'Nosferatu',
-	[WEAPONS.SERAPHIM]: 'Seraphim',
-	[WEAPONS.RECOVER]: 'Recover',
-	[WEAPONS.PHYSIC]: 'Physic',
-	[WEAPONS.RESTORE]: 'Restore',
-	[WEAPONS.WARD]: 'Ward'
-};
-
 export const WEAPON_TO_TYPE = {
 	[WEAPONS.TRAINING_SWORD]: WEAPON_TYPE.SWORD,
 	[WEAPONS.IRON_SWORD]: WEAPON_TYPE.SWORD,
@@ -302,7 +256,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		range: [1]
 	},
 	[WEAPONS.HAMMER]: {
-		label: 'Hammer',
+		label: 'Warhammer',
 		description: 'superLongDescription',
 		type: WEAPON_TYPE.AXE,
 		damage: [Dice.d4, 1],
@@ -540,6 +494,14 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		uses: 5
 	}
 };
+
+export const WEAPON_TO_LABEL = Object.keys(WEAPONS_TO_FEATURES).reduce(
+	(acc: { [s: string]: string }, key) => {
+		acc[key] = WEAPONS_TO_FEATURES[key].label;
+		return acc;
+	},
+	{}
+);
 
 export const getWeaponDescription = (feature: WeaponFeatures) => {
 	const { damage, attackBonus, range } = feature;
