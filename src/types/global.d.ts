@@ -98,6 +98,20 @@ declare global {
 		resilienceBonus?: number;
 	};
 
+	type Query = {
+		prompt: string;
+		options: Array<QueryOption>;
+		key?: string;
+	};
+	type QueryOption = {
+		label: string;
+		description?: string;
+		acBonus?: number;
+		attackBonus?: Array<CalcEntry>;
+		damageBonus?: Array<CalcEntry>;
+		critBonus?: number;
+	};
+
 	interface SkillFeatures {
 		label: string;
 		description: string;
@@ -110,6 +124,7 @@ declare global {
 		protectionBonus?: number;
 		resilienceBonus?: number;
 		bonusCharges?: { [s: string]: number };
+		queries?: Array<Query>;
 	}
 	interface ArtFeatures {
 		label: string;

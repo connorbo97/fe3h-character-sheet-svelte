@@ -22,6 +22,8 @@
 		rollCalc,
 		rollDice
 	} from 'src/utils';
+	import EntryPicker from './queryPicker.svelte';
+	import OptionsPicker from './queryPicker.svelte';
 
 	export let equippedClass: string;
 	export let equippedCombatArts: Array<string>;
@@ -35,10 +37,42 @@
 	let selectedWeapon: any;
 	let selectedCombatArt: any;
 
-	let optionalModifierChoices;
-
 	$: allCombatArtFeatures = allCombatArts.fullFeatures;
+	$: dexMod = getModifierByPlayerStat(playerStats[PLAYER_STAT.DEX]);
 
+	// queries
+	$: calcQueriesMap = (): { [s: string]: Query } => {
+		const combatSkillQueries = equippedCombatSkills.reduce((acc: any, skill) => {
+			const curQueries = COMBAT_SKILLS_TO_FEATURES[skill].queries || [];
+
+			curQueries.forEach((query, index) => {
+				const key = skill + '__' + index;
+				acc[key] = { ...query, key: skill + '__' + index };
+			});
+
+			return acc;
+		}, {});
+
+		return combatSkillQueries;
+	};
+	$: queriesMap = calcQueriesMap();
+	$: queries = Object.values(queriesMap);
+
+	let selections: { [s: string]: QueryOption };
+	$: {
+		if (!selections) {
+			selections = queries.reduce((acc: { [s: string]: QueryOption }, value: Query) => {
+				acc[value.key || ''] = value.options[0];
+				return acc;
+			}, {});
+		}
+	}
+	$: onUpdateQuerySelection = (key: string, value: QueryOption) => {
+		selections = { ...selections, [key]: value };
+	};
+	$: console.log(queries, selections, queriesMap, equippedCombatSkills);
+
+	// selected weapon
 	$: weaponsOptions = allWeapons.fullArray.filter((a) => a);
 	let weaponsSelect: any;
 	$: {
@@ -48,6 +82,7 @@
 		}
 	}
 
+	// selected combat art
 	$: combatArtsOptions = equippedCombatArts.filter((art: string) => {
 		const compatibleWeapons = allCombatArtFeatures[art].compatibleWeapons || [];
 		const weaponType = WEAPON_TO_TYPE[selectedWeapon];
@@ -62,6 +97,7 @@
 		}
 	}
 
+	// crest activation
 	$: crestTrigger = new Set(CRESTS_TO_FEATURES[playerCrest.type]?.triggersOn);
 	$: calcShouldRollCrest = () => {
 		if (selectedCombatArt) {
@@ -88,8 +124,7 @@
 		  ]
 		: 21;
 
-	$: dexMod = getModifierByPlayerStat(playerStats[PLAYER_STAT.DEX]);
-
+	// Attack
 	$: attackDexModifier = dexMod;
 	$: weaponAttackModifier = WEAPONS_TO_FEATURES[selectedWeapon]?.attackBonus || 0;
 	$: weaponArtAttackModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.attackBonus || [];
@@ -111,8 +146,9 @@
 	].filter((a) => a !== 0);
 	$: attackModifierRequiresRoll = checkCalcRequiresRoll(attackModifier);
 
-	let attackRoll = 'Click to roll';
+	let attackRoll = 'Roll Attack';
 
+	// Damage
 	$: weaponDamageType = WEAPONS_TO_FEATURES[selectedWeapon]?.damageType;
 	let damageTypeSelection = '';
 
@@ -137,8 +173,9 @@
 		...optionsDamageModifier
 	].filter((a) => a !== 0);
 
-	let damageRoll = 'Click to roll damage';
+	let damageRoll = 'roll damage';
 
+	// Crit
 	$: critDexModifier = -1;
 	$: weaponCritModifier = WEAPONS_TO_FEATURES[selectedWeapon]?.critBonus || 0;
 	$: weaponArtCritModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.critBonus || [];
@@ -153,6 +190,7 @@
 
 	let critRoll = 'Click to roll crit';
 
+	// Range
 	$: equippedClassRangeModifier =
 		CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.bonusRange?.[
 			WEAPONS_TO_FEATURES[selectedWeapon]?.type
@@ -247,128 +285,134 @@
 			</div>
 		{/if}
 	</div>
-	<div class="attack-container">
-		<h1 class="content">
-			Attack: 1d20
-			<span class="modifiers">
-				{#if attackDexModifier}
-					<span>+ {attackDexModifier}<span class="source">(dex)</span></span>
-				{/if}
-				{#if weaponAttackModifier}
-					<span>+ {weaponAttackModifier}<span class="source">(weapon)</span></span>{/if}
-				{#if weaponArtAttackModifier.length}
-					<span>
-						+ {printCalc(weaponArtAttackModifier)}<span class="source">(combat art)</span>
-					</span>
-				{/if}
-				{#if optionalAttackModifier.length > 0}
-					<span>
-						+ {printCalc(optionalAttackModifier)}<span class="source">(optionals)</span>
-					</span>
-				{/if}
-			</span>
-			{#if attackModifier.length > 0 && !attackModifierRequiresRoll}
-				<span>
-					= 1d20 <span class="modifiers">+ {rollCalc(attackModifier)}</span>
-				</span>
-			{/if}
-			=
-			<button
-				on:click={() => {
-					const roll = rollDice(20);
-					const mod = rollCalc(attackModifier);
-					attackRoll = roll + mod + '=' + roll + '+' + mod;
-				}}>{attackRoll}</button
-			>
-			<button
-				on:click={(e) => {
-					const mod = rollCalc(attackModifier);
-					e.currentTarget.innerHTML = mod + '';
-				}}>Roll Mods Only</button
-			>
-		</h1>
-	</div>
-	<div class="damage-container">
-		<h1 class="content">
-			Damage: {#if selectedWeapon}
-				{damageBase}{#if damageTypeSelection && (weaponDamageType || []).length <= 1}
-					<span>({damageTypeLabel})</span>
-				{/if}{#if weaponDamageType && weaponDamageType.length > 1}
-					<select
-						on:change={(e) => {
-							damageTypeSelection = e.currentTarget.value;
-						}}
-					>
-						<option value={''}>-</option>
-						{#each weaponDamageType as type}
-							<option value={type} selected={type === damageTypeSelection}
-								>{PLAYER_STAT_TO_SHORT_LABEL[type]}</option
-							>
-						{/each}
-					</select>
-				{/if}
-
+	<div class="calcs">
+		<div class="attack-container">
+			<h2 class="content">
+				Attack: 1d20
 				<span class="modifiers">
-					{#if weaponDamageModifier.length}
-						<span>+ {printCalc(weaponDamageModifier)}<span class="source">(weapon)</span></span>
+					{#if attackDexModifier}
+						<span>+ {attackDexModifier}<span class="source">(dex)</span></span>
 					{/if}
-					{#if weaponArtDamageModifier.length}
-						<span>+ {weaponArtDamageModifier}<span class="source">(combat art)</span></span>
+					{#if weaponAttackModifier}
+						<span>+ {weaponAttackModifier}<span class="source">(weapon)</span></span>{/if}
+					{#if weaponArtAttackModifier.length}
+						<span>
+							+ {printCalc(weaponArtAttackModifier)}<span class="source">(combat art)</span>
+						</span>
 					{/if}
-					{#if optionsDamageModifier.length}
-						<span>+ {optionsDamageModifier}<span class="source">(options)</span></span>
+					{#if optionalAttackModifier.length > 0}
+						<span>
+							+ {printCalc(optionalAttackModifier)}<span class="source">(optionals)</span>
+						</span>
 					{/if}
 				</span>
-				=
-				<button
-					on:click={() => {
-						const damage = rollCalc(damageCalc);
-						damageRoll = damage + '';
-					}}>{damageRoll}</button
-				>
-			{/if}
-		</h1>
-	</div>
-	<div class="crit-container">
-		<h1 class="content">
-			Crit Modifier: {dexMod + critDexModifier}<span class="source"
-				>(Dex{critDexModifier > 0 ? '+' + critDexModifier : critDexModifier})</span
-			>
-			<span class="modifiers">
-				{#if weaponCritModifier}
-					<span
-						>{weaponCritModifier > 0 ? '+ ' + weaponCritModifier : weaponCritModifier}<span
-							class="source">(weapon)</span
-						></span
-					>
+				{#if attackModifier.length > 0 && !attackModifierRequiresRoll}
+					<span>
+						= 1d20 <span class="modifiers">+ {rollCalc(attackModifier)}</span>
+					</span>
 				{/if}
-				{#if weaponArtCritModifier.length}
-					<span>+ {printCalc(weaponArtCritModifier)}<span class="source">(combat art)</span></span>
-				{/if}
-				{#if optionsCritModifier.length}
-					<span>+ {optionsCritModifier}<span class="source">(options)</span></span>
-				{/if}
-			</span>
-			= {20 - critModifier} to 20
-			<span />
-			<button
-				on:click={(e) => {
-					const roll = rollCalc([Dice.d20]);
-					const didCrit = roll >= 20 - critModifier;
+			</h2>
+		</div>
+		<div class="damage-container">
+			<h2 class="content">
+				Damage: {#if selectedWeapon}
+					{damageBase}{#if damageTypeSelection && (weaponDamageType || []).length <= 1}
+						<span>({damageTypeLabel})</span>
+					{/if}{#if weaponDamageType && weaponDamageType.length > 1}
+						<select
+							on:change={(e) => {
+								damageTypeSelection = e.currentTarget.value;
+							}}
+						>
+							<option value={''}>-</option>
+							{#each weaponDamageType as type}
+								<option value={type} selected={type === damageTypeSelection}
+									>{PLAYER_STAT_TO_SHORT_LABEL[type]}</option
+								>
+							{/each}
+						</select>
+					{/if}
 
-					critRoll = `${didCrit ? 'CRIT' : 'Normal'} (${roll})`;
-					e.currentTarget.innerHTML = `${didCrit ? 'CRIT' : 'Normal'} (${roll})`;
-				}}>Click to roll</button
-			>
-		</h1>
+					<span class="modifiers">
+						{#if weaponDamageModifier.length}
+							<span>+ {printCalc(weaponDamageModifier)}<span class="source">(weapon)</span></span>
+						{/if}
+						{#if weaponArtDamageModifier.length}
+							<span>+ {weaponArtDamageModifier}<span class="source">(combat art)</span></span>
+						{/if}
+						{#if optionsDamageModifier.length}
+							<span>+ {optionsDamageModifier}<span class="source">(options)</span></span>
+						{/if}
+					</span>
+				{/if}
+			</h2>
+		</div>
+		<div class="crit-container">
+			<h2 class="content">
+				Crit Modifier: {dexMod + critDexModifier}<span class="source"
+					>(Dex{critDexModifier > 0 ? '+' + critDexModifier : critDexModifier})</span
+				>
+				<span class="modifiers">
+					{#if weaponCritModifier}
+						<span
+							>{weaponCritModifier > 0 ? '+ ' + weaponCritModifier : weaponCritModifier}<span
+								class="source">(weapon)</span
+							></span
+						>
+					{/if}
+					{#if weaponArtCritModifier.length}
+						<span>+ {printCalc(weaponArtCritModifier)}<span class="source">(combat art)</span></span
+						>
+					{/if}
+					{#if optionsCritModifier.length}
+						<span>+ {optionsCritModifier}<span class="source">(options)</span></span>
+					{/if}
+				</span>
+				= {20 - critModifier} to 20
+				<span />
+			</h2>
+		</div>
+		<div class="range-container">
+			<h2 class="content">
+				Range: {#if selectedWeapon}
+					{weaponRangeMin}
+					{#if weaponRangeMax !== weaponRangeMin}to {weaponRangeMax}{/if}
+				{/if}
+			</h2>
+		</div>
 	</div>
-	<div class="range-container">
-		<h1 class="content">
-			Range: {#if selectedWeapon}
-				{weaponRangeMin}
-				{#if weaponRangeMax !== weaponRangeMin}to {weaponRangeMax}{/if}
-			{/if}
-		</h1>
+	<div class="rolls">
+		<button
+			on:click={() => {
+				const roll = rollDice(20);
+				const mod = rollCalc(attackModifier);
+				attackRoll = roll + mod + '=' + roll + '+' + mod;
+			}}>{attackRoll}</button
+		>
+		<button
+			on:click={(e) => {
+				const mod = rollCalc(attackModifier);
+				e.currentTarget.innerHTML = mod + '';
+			}}>Roll Mods Only</button
+		>
+		<button
+			on:click={() => {
+				const damage = rollCalc(damageCalc);
+				damageRoll = damage + '';
+			}}>{damageRoll}</button
+		>
+		<button
+			on:click={(e) => {
+				const roll = rollCalc([Dice.d20]);
+				const didCrit = roll >= 20 - critModifier;
+
+				critRoll = `${didCrit ? 'CRIT' : 'Normal'} (${roll})`;
+				e.currentTarget.innerHTML = `${didCrit ? 'CRIT' : 'Normal'} (${roll})`;
+			}}>Roll Crit</button
+		>
+	</div>
+	<div class="options">
+		<EntryPicker {queries} {selections} {onUpdateQuerySelection} />
 	</div>
 </div>
 
@@ -377,13 +421,20 @@
 		background-color: lightgray;
 		border-radius: 5px;
 		padding: 5px;
-		display: flex;
-		flex-direction: column;
+
+		display: grid;
+		grid-template-areas:
+			'header header'
+			'rolls buttons'
+			'picks empty';
+
+		grid-template-rows: min-content min-content 1fr;
+		grid-template-columns: 1fr min-content;
 
 		row-gap: 5px;
 		button {
 			width: 100px;
-			height: 50px;
+			height: 25px;
 		}
 	}
 
@@ -398,6 +449,7 @@
 
 		display: flex;
 		justify-content: space-between;
+		grid-area: header;
 	}
 	.entry {
 		flex: 1;

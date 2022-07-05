@@ -37,7 +37,22 @@ export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 	},
 	RANGER_MASTER: {
 		label: 'Ranger Master',
-		description: '+1 to range when shooting from cover'
+		description: '+1 to attack when shooting from cover',
+		queries: [
+			{
+				prompt: 'ranged attack from cover?',
+				options: [
+					{
+						label: 'No'
+					},
+					{
+						label: 'Yes',
+						attackBonus: [1],
+						description: '+1 attack'
+					}
+				]
+			}
+		]
 	},
 	MONK_MASTER: {
 		label: 'Monk Master',
