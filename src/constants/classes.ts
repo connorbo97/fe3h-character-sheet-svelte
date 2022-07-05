@@ -452,9 +452,6 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			}
 		},
 		whenEquipped: {
-			combatSkills: {
-				[COMBAT_SKILLS.HEAL_PLUS]: 1
-			},
 			xpMods: {
 				[WEAPON_TYPE.FAITH]: 1.6,
 				[WEAPON_TYPE.REASON]: 1.3
