@@ -83,6 +83,7 @@
 		<div class="weapons">
 			<Weapons
 				{allWeapons}
+				{unlockedClasses}
 				{equippedWeapons}
 				{onToggleEquippedWeapons}
 				{equippedCombatSkills}

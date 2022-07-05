@@ -66,9 +66,12 @@
 			on:change={(e) => {
 				const value = parseInt(e.currentTarget.value);
 
-				updateCurWeaponUses(value);
-
-				e.currentTarget.value = '';
+				if (value >= 0 && value <= maxUses) {
+					updateCurWeaponUses(value);
+					e.currentTarget.value = value + '';
+				} else {
+					e.currentTarget.value = maxUses + '';
+				}
 			}}
 			value={curUses}
 		/>

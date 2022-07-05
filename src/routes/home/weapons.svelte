@@ -4,6 +4,7 @@
 		BOW_WEAPONS,
 		FAITH_MAGIC,
 		FIST_WEAPONS,
+		getSuperiorityDieFromClasses,
 		LANCE_WEAPONS,
 		REASON_MAGIC,
 		SWORD_WEAPONS
@@ -17,11 +18,22 @@
 
 	export let allWeapons: any;
 
+	export let unlockedClasses: any;
+
 	export let weaponUses: { [s: string]: number };
 	export let onUpdateWeaponUses: any;
 
-	let curSuperiorityDies = 0;
+	let prevMax = { current: 0 };
+	$: maxSuperiorityDie = getSuperiorityDieFromClasses(unlockedClasses);
+	let curSuperiorityDies = maxSuperiorityDie;
 	let spellUseFlag = 0;
+
+	$: {
+		if (prevMax.current !== maxSuperiorityDie) {
+			curSuperiorityDies = maxSuperiorityDie;
+			prevMax.current = maxSuperiorityDie;
+		}
+	}
 
 	$: onToggleEquip = (weapon: any) => {
 		onToggleEquippedWeapons(weapon);
@@ -34,9 +46,22 @@
 	<div class="actions">
 		<div>
 			<span>Superiority Die Remaining:</span>
-			<input type="number" value={curSuperiorityDies} />
+			<input
+				type="number"
+				value={curSuperiorityDies}
+				on:change={(e) => {
+					const newValue = parseInt(e.currentTarget.value);
+					if (newValue >= 0 && newValue <= maxSuperiorityDie) {
+						curSuperiorityDies = newValue;
+						e.currentTarget.value = newValue + '';
+					} else {
+						e.currentTarget.value = curSuperiorityDies + '';
+					}
+				}}
+			/>
 		</div>
-		<button>Reset Superiority Dice</button>
+		<button on:click={() => (curSuperiorityDies = maxSuperiorityDie)}>Reset Superiority Dice</button
+		>
 		<button on:click={() => (spellUseFlag += 1)}>Reset Spell Uses</button>
 		<button on:click={resetEquippedWeapons}>Unequip all weapons</button>
 	</div>
