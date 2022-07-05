@@ -151,7 +151,6 @@
 					{allWeapons}
 					{allCombatSkills}
 					{allCombatArts}
-					{classXP}
 					{playerStats}
 					{onUpdatePlayerStats}
 					{playerSkillBonus}

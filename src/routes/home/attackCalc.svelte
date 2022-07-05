@@ -22,8 +22,8 @@
 		rollCalc,
 		rollDice
 	} from 'src/utils';
+	import AttackCalcHeader from './attackCalcHeader.svelte';
 	import EntryPicker from './queryPicker.svelte';
-	import OptionsPicker from './queryPicker.svelte';
 
 	export let equippedClass: string;
 	export let equippedCombatArts: Array<string>;
@@ -38,9 +38,9 @@
 	export let selectedWeapon: any;
 	export let setSelectedWeapon: any;
 
-	let selectedCombatArt: any;
+	export let selectedCombatArt: any;
+	export let setSelectedCombatArt: any;
 
-	$: allCombatArtFeatures = allCombatArts.fullFeatures;
 	$: dexMod = getModifierByPlayerStat(playerStats[PLAYER_STAT.DEX]);
 
 	// queries
@@ -81,32 +81,6 @@
 	$: onUpdateQuerySelection = (key: string, value: QueryOption) => {
 		selections = { ...selections, [key]: value };
 	};
-	$: console.log(queries, selections, queriesMap, equippedCombatSkills);
-
-	// selected weapon
-	$: weaponsOptions = equippedWeapons;
-	let weaponsSelect: any;
-	$: {
-		if (weaponsSelect && !equippedWeapons.includes(weaponsSelect?.value)) {
-			setSelectedWeapon('');
-			weaponsSelect.value = '';
-		}
-	}
-
-	// selected combat art
-	$: combatArtsOptions = equippedCombatArts.filter((art: string) => {
-		const compatibleWeapons = allCombatArtFeatures[art].compatibleWeapons || [];
-		const weaponType = WEAPON_TO_TYPE[selectedWeapon];
-
-		return compatibleWeapons.indexOf(weaponType) !== -1;
-	});
-	let combatArtsSelect: any;
-	$: {
-		if (combatArtsSelect && !allCombatArts.fullSet.has(combatArtsSelect?.value)) {
-			selectedCombatArt = '';
-			combatArtsSelect.value = '';
-		}
-	}
 
 	// crest activation
 	$: crestTrigger = new Set(CRESTS_TO_FEATURES[playerCrest.type]?.triggersOn);
@@ -246,63 +220,19 @@
 </script>
 
 <div class="container">
-	<div class="header">
-		<div class="entry">
-			<span class="label">
-				{`Weapon: `}
-			</span>
-			<select
-				bind:this={weaponsSelect}
-				on:change={(e) => {
-					setSelectedWeapon(e.currentTarget.value);
-					damageTypeSelection = '';
-				}}
-			>
-				<option value={''}> - </option>
-				{#each weaponsOptions as weapon}
-					<option value={weapon}>
-						{WEAPONS_TO_FEATURES[weapon].label}
-					</option>
-				{/each}
-			</select>
-		</div>
-		<div class="entry">
-			{WEAPONS_TO_FEATURES[selectedWeapon] &&
-				getWeaponDescription(WEAPONS_TO_FEATURES[selectedWeapon])}
-		</div>
-		<div class="entry">
-			<span class="label">
-				{`Combat Art: `}
-			</span>
-			<select
-				bind:this={combatArtsSelect}
-				on:change={(e) => {
-					selectedCombatArt = e.currentTarget.value;
-				}}
-			>
-				<option value={''}> - </option>
-				{#each combatArtsOptions as art}
-					<option value={art}>
-						{allCombatArtFeatures[art].label}
-					</option>
-				{/each}
-			</select>
-		</div>
-		<div class="entry">
-			{COMBAT_ARTS_TO_FEATURES[selectedCombatArt] &&
-				getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])}
-		</div>
-		{#if shouldRollCrest}
-			<div class="crest-container">
-				<img
-					class="crest-indicator"
-					src={CRESTS_TO_FEATURES[playerCrest.type].image}
-					alt={playerCrest.type}
-				/>
-				<span>DC {crestDC}</span>
-			</div>
-		{/if}
-	</div>
+	<AttackCalcHeader
+		{damageTypeSelection}
+		{allCombatArts}
+		{equippedCombatArts}
+		{equippedWeapons}
+		{selectedWeapon}
+		{setSelectedWeapon}
+		{selectedCombatArt}
+		{setSelectedCombatArt}
+		{shouldRollCrest}
+		{playerCrest}
+		{crestDC}
+	/>
 	<div class="calcs">
 		<div class="attack-container">
 			<h2 class="content">
@@ -465,23 +395,6 @@
 	.content {
 		margin: 0;
 	}
-
-	.header {
-		border: 1px solid black;
-		border-radius: 5px;
-		padding: 5px;
-
-		display: flex;
-		justify-content: space-between;
-		grid-area: header;
-	}
-	.entry {
-		flex: 1;
-	}
-
-	.crest-indicator {
-		width: 20px;
-	}
 	.attack-container {
 		display: flex;
 	}
@@ -496,11 +409,6 @@
 	}
 	.modifiers {
 		color: royalblue;
-	}
-
-	.crest-container {
-		display: flex;
-		align-items: center;
 	}
 
 	.options {

@@ -8,8 +8,6 @@
 	import Stats from './stats.svelte';
 	import Weapons from './weapons.svelte';
 
-	export let classXP: any;
-
 	export let allWeapons: any;
 	export let allCombatSkills: any;
 	export let allCombatArts: any;
@@ -98,6 +96,8 @@
 				{playerStats}
 				{selectedWeapon}
 				{setSelectedWeapon}
+				{selectedCombatArt}
+				{setSelectedCombatArt}
 			/>
 		</div>
 	</div>
