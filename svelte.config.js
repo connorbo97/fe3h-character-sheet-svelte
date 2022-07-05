@@ -1,6 +1,6 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-node';
 import preprocess from 'svelte-preprocess';
-import { resolve } from 'path'
+import { resolve } from 'path';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -12,7 +12,7 @@ const config = {
 				alias: {
 					$constants: resolve('./src/constants'),
 					$root: resolve('./src'),
-					src: resolve('./src'),
+					src: resolve('./src')
 				}
 			}
 		}

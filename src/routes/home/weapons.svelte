@@ -20,12 +20,26 @@
 	export let weaponUses: { [s: string]: number };
 	export let onUpdateWeaponUses: any;
 
+	let curSuperiorityDies = 0;
+	let spellUseFlag = 0;
+
 	$: onToggleEquip = (weapon: any) => {
 		onToggleEquippedWeapons(weapon);
 	};
+
+	$: resetEquippedWeapons = () => equippedWeapons.forEach((w: any) => onToggleEquippedWeapons(w));
 </script>
 
 <div class="container">
+	<div class="actions">
+		<div>
+			<span>Superiority Die Remaining:</span>
+			<input type="number" value={curSuperiorityDies} />
+		</div>
+		<button>Reset Superiority Dice</button>
+		<button on:click={() => (spellUseFlag += 1)}>Reset Spell Uses</button>
+		<button on:click={resetEquippedWeapons}>Unequip all weapons</button>
+	</div>
 	<div class="martial-weapons">
 		<div class="category">
 			<div class="label">Swords</div>
@@ -37,6 +51,7 @@
 						{weapon}
 						{onToggleEquip}
 						isMagic={false}
+						spellUseFlag={0}
 						{equippedCombatSkills}
 						{equippedClass}
 						{weaponUses}
@@ -55,6 +70,7 @@
 						{onToggleEquip}
 						{allWeapons}
 						isMagic={false}
+						spellUseFlag={0}
 						{equippedCombatSkills}
 						{equippedClass}
 						{weaponUses}
@@ -73,6 +89,7 @@
 						{onToggleEquip}
 						{allWeapons}
 						isMagic={false}
+						spellUseFlag={0}
 						{equippedCombatSkills}
 						{equippedClass}
 						{weaponUses}
@@ -91,6 +108,7 @@
 						{onToggleEquip}
 						{allWeapons}
 						isMagic={false}
+						spellUseFlag={0}
 						{equippedCombatSkills}
 						{equippedClass}
 						{weaponUses}
@@ -108,6 +126,7 @@
 						{weapon}
 						{onToggleEquip}
 						{allWeapons}
+						spellUseFlag={0}
 						isMagic={false}
 						{equippedCombatSkills}
 						{equippedClass}
@@ -128,6 +147,7 @@
 					{onToggleEquip}
 					{allWeapons}
 					isMagic={true}
+					{spellUseFlag}
 					{equippedCombatSkills}
 					{equippedClass}
 					{weaponUses}
@@ -144,6 +164,7 @@
 					{onToggleEquip}
 					{allWeapons}
 					isMagic={true}
+					{spellUseFlag}
 					{equippedCombatSkills}
 					{equippedClass}
 					{weaponUses}
@@ -162,7 +183,10 @@
 
 		column-gap: 5px;
 	}
-
+	.actions {
+		display: flex;
+		justify-content: space-around;
+	}
 	.martial-weapons {
 		display: flex;
 		justify-content: space-between;

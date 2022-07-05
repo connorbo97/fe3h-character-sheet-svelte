@@ -9,12 +9,14 @@
 	export let equippedCombatSkills: any;
 	export let onToggleEquip: any;
 	export let allWeapons: AllWeapons;
+	export let spellUseFlag: any;
 
 	export let isMagic: any;
 
 	export let weaponUses: { [s: string]: number };
 	export let onUpdateWeaponUses: any;
 
+	let prevSpellUseFlag = { current: spellUseFlag };
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
 	let prevMaxUses: any = { current: null };
 	$: maxUses =
@@ -27,9 +29,10 @@
 	};
 
 	$: {
-		if (maxUses !== prevMaxUses.current) {
+		if (prevSpellUseFlag.current != spellUseFlag || maxUses !== prevMaxUses.current) {
 			updateCurWeaponUses(maxUses);
 			prevMaxUses.current = maxUses;
+			prevSpellUseFlag.current = spellUseFlag;
 		}
 	}
 
