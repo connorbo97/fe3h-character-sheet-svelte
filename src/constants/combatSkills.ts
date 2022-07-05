@@ -1,5 +1,6 @@
 import { Dice } from './dice';
 import { WEAPONS } from './weapons';
+import { WEAPON_TYPE } from './weaponType';
 
 // Combat Skills
 export const COMBAT_SKILLS = {
@@ -41,6 +42,13 @@ export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 		queries: [
 			{
 				prompt: 'ranged attack from cover?',
+				compatibleWeapons: [
+					WEAPON_TYPE.SWORD,
+					WEAPON_TYPE.AXE,
+					WEAPON_TYPE.LANCE,
+					WEAPON_TYPE.FISTS,
+					WEAPON_TYPE.BOW
+				],
 				options: [
 					{
 						label: 'No'
@@ -82,11 +90,55 @@ export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 	},
 	DEATH_BLOW: {
 		label: 'Death Blow',
-		description: '+2 damage when initiating an attack on already damaged targets'
+		description: '+2 damage when initiating an attack on already damaged targets',
+		queries: [
+			{
+				prompt: 'is target damaged?',
+				compatibleWeapons: [
+					WEAPON_TYPE.SWORD,
+					WEAPON_TYPE.AXE,
+					WEAPON_TYPE.LANCE,
+					WEAPON_TYPE.FISTS,
+					WEAPON_TYPE.BOW
+				],
+				options: [
+					{
+						label: 'No'
+					},
+					{
+						label: 'Yes',
+						damageBonus: [2],
+						description: '+2 damage'
+					}
+				]
+			}
+		]
 	},
 	ARMORED_COMBAT: {
 		label: 'Armored Combat',
-		description: '+1 protection when initiating combat'
+		description: '+1 protection when initiating combat',
+		queries: [
+			{
+				prompt: 'are you initiating combat?',
+				compatibleWeapons: [
+					WEAPON_TYPE.SWORD,
+					WEAPON_TYPE.AXE,
+					WEAPON_TYPE.LANCE,
+					WEAPON_TYPE.FISTS,
+					WEAPON_TYPE.BOW
+				],
+				options: [
+					{
+						label: 'No'
+					},
+					{
+						label: 'Yes',
+						protectionBonus: 1,
+						description: '+1 protection'
+					}
+				]
+			}
+		]
 	},
 	GRAPPLER: {
 		label: 'Grappler',
@@ -96,7 +148,23 @@ export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 
 	FIENDISH_BLOW: {
 		label: 'Fiendish Blow',
-		description: '+2 damage when attacking an undamaged unit'
+		description: '+2 damage when attacking an undamaged unit',
+		queries: [
+			{
+				prompt: 'is target at full hp?',
+				compatibleWeapons: [WEAPON_TYPE.REASON, WEAPON_TYPE.FAITH],
+				options: [
+					{
+						label: 'No'
+					},
+					{
+						label: 'Yes',
+						damageBonus: [2],
+						description: '+2 damage'
+					}
+				]
+			}
+		]
 	},
 	HEAL_PLUS: {
 		label: 'Heal Plus',

@@ -100,6 +100,7 @@ declare global {
 
 	type Query = {
 		prompt: string;
+		compatibleWeapons: Array<string>;
 		options: Array<QueryOption>;
 		key?: string;
 	};
@@ -109,6 +110,7 @@ declare global {
 		acBonus?: number;
 		attackBonus?: Array<CalcEntry>;
 		damageBonus?: Array<CalcEntry>;
+		protectionBonus?: number;
 		critBonus?: number;
 	};
 
