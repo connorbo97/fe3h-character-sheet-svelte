@@ -9,7 +9,7 @@
 
 <div class="container">
 	{#each allCombatArts.fullArray as art}
-		<CombatArtsEntry {art} {equippedCombatArts} {onToggleCombatArts} />
+		<CombatArtsEntry {art} {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />
 	{/each}
 </div>
 
