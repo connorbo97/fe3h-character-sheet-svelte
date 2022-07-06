@@ -1,19 +1,13 @@
 <script lang="ts">
-	import { CLASS, CLASS_TO_FEATURES } from 'src/constants/classes';
+	import { CLASS_TO_FEATURES } from 'src/constants/classes';
 
-	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
-	import { COMBAT_SKILLS, COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
+	import { COMBAT_ARTS_TO_FEATURES } from 'src/constants/combatArts';
+	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
 	import { CRESTS_TO_FEATURES, CrestTrigger, CrestType } from 'src/constants/crests';
 	import { Dice } from 'src/constants/dice';
 	import { PLAYER_STAT, PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
 
-	import {
-		getWeaponDescription,
-		HEALING_MAGIC,
-		WEAPONS,
-		WEAPONS_TO_FEATURES,
-		WEAPON_TO_TYPE
-	} from 'src/constants/weapons';
+	import { HEALING_MAGIC, WEAPONS, WEAPON_TO_TYPE } from 'src/constants/weapons';
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
 	import {
 		checkCalcRequiresRoll,
@@ -42,6 +36,7 @@
 	export let selectedCombatArt: any;
 	export let setSelectedCombatArt: any;
 
+	$: weaponsToFeatures = allWeapons.fullFeatures;
 	$: dexMod = getModifierByPlayerStat(playerStats[PLAYER_STAT.DEX]);
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
 
@@ -51,7 +46,7 @@
 			const curQueries = COMBAT_SKILLS_TO_FEATURES[skill].queries || [];
 
 			curQueries.forEach((query, index) => {
-				if (query.compatibleWeapons.includes(WEAPONS_TO_FEATURES[selectedWeapon]?.type)) {
+				if (query.compatibleWeapons.includes(weaponsToFeatures[selectedWeapon]?.type)) {
 					const key = skill + '__' + index;
 					acc[key] = { ...query, key: skill + '__' + index };
 				}
@@ -95,7 +90,7 @@
 		) {
 			return (
 				(crestTrigger.has(CrestTrigger.MAGIC_ATTACK) &&
-					WEAPONS_TO_FEATURES[selectedWeapon]?.damage?.[0] === 0) ||
+					weaponsToFeatures[selectedWeapon]?.damage?.[0] === 0) ||
 				(crestTrigger.has(CrestTrigger.HEAL) && HEALING_MAGIC.has(selectedWeapon))
 			);
 		} else {
@@ -113,7 +108,7 @@
 
 	// Attack
 	$: attackDexModifier = dexMod;
-	$: weaponAttackModifier = WEAPONS_TO_FEATURES[selectedWeapon]?.attackBonus || 0;
+	$: weaponAttackModifier = weaponsToFeatures[selectedWeapon]?.attackBonus || 0;
 	$: weaponArtAttackModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.attackBonus || [];
 	$: skillAttackModifier = equippedCombatSkills.reduce((acc: any, skill: any) => {
 		return [
@@ -136,7 +131,7 @@
 	let attackRoll = 'Roll Attack';
 
 	// Damage
-	$: weaponDamageType = WEAPONS_TO_FEATURES[selectedWeapon]?.damageType;
+	$: weaponDamageType = weaponsToFeatures[selectedWeapon]?.damageType;
 	let damageTypeSelection = '';
 
 	$: {
@@ -151,7 +146,7 @@
 	$: damageBase = getModifierByPlayerStat(playerStats[damageTypeSelection] || 10);
 	$: damageTypeLabel = PLAYER_STAT_TO_SHORT_LABEL[damageTypeSelection];
 	$: weaponDamageModifier = [
-		...(WEAPONS_TO_FEATURES[selectedWeapon]?.damage || []),
+		...(weaponsToFeatures[selectedWeapon]?.damage || []),
 		...(selectedWeapon === WEAPONS.HEAL && hasHealPlus ? [2] : [])
 	];
 
@@ -168,7 +163,7 @@
 
 	// Crit
 	$: critDexModifier = -1;
-	$: weaponCritModifier = WEAPONS_TO_FEATURES[selectedWeapon]?.critBonus || 0;
+	$: weaponCritModifier = weaponsToFeatures[selectedWeapon]?.critBonus || 0;
 	$: weaponArtCritModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.critBonus || [];
 	$: optionsCritModifier = [];
 	$: critModifier = rollCalc([
@@ -184,18 +179,18 @@
 	// Range
 	$: equippedClassRangeModifier =
 		CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.bonusRange?.[
-			WEAPONS_TO_FEATURES[selectedWeapon]?.type
+			weaponsToFeatures[selectedWeapon]?.type
 		] || 0;
 	$: combatSkillsRangeModifier = equippedCombatSkills.reduce(
 		(acc, skill) =>
 			acc +
-			(COMBAT_SKILLS_TO_FEATURES[skill]?.bonusRange?.[WEAPONS_TO_FEATURES[selectedWeapon]?.type] ||
+			(COMBAT_SKILLS_TO_FEATURES[skill]?.bonusRange?.[weaponsToFeatures[selectedWeapon]?.type] ||
 				0),
 		0
 	);
 	$: optionsRangeModifier = 0;
 	$: calcWeaponRange = () => {
-		let baseWeaponRange = [...(WEAPONS_TO_FEATURES[selectedWeapon]?.range || [1])];
+		let baseWeaponRange = [...(weaponsToFeatures[selectedWeapon]?.range || [1])];
 
 		if (selectedWeapon === WEAPONS.RESTORE) {
 			baseWeaponRange = [1, 2 + 2 * getModifierByPlayerStat(playerStats[PLAYER_STAT.INT])];

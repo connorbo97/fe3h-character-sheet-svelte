@@ -35,7 +35,7 @@ declare global {
 		classUnlockSet: Set<string>;
 		fullSet: Set<string>;
 		fullArray: Array<string>;
-		fullFeatures: object;
+		fullFeatures: { [s: string]: WeaponFeatures };
 		weaponsToType: { [s: string]: string };
 		weaponsToLabel: { [s: string]: string };
 	};
