@@ -54,11 +54,9 @@
 
 <div class="container">
 	<button
-		class={isCustomUnlock
-			? 'custom-unlock'
-			: isClassUnlock || isTrainingWeapon
-			? 'class-unlock'
-			: ''}
+		class={`available-button ${isCustomUnlock ? 'custom-unlock' : ''} ${
+			allWeapons.fullSet.has(weapon) ? 'unlocked' : ''
+		}`}
 		title={weaponsToFeatures[weapon].reason}
 		on:click={() => {
 			open(CustomWeaponPrompt, {
@@ -112,10 +110,10 @@
 	}
 
 	.custom-unlock {
-		background-color: purple;
+		border-color: red;
 	}
 
-	.class-unlock {
+	.unlocked {
 		background-color: blue;
 	}
 
