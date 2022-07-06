@@ -278,14 +278,14 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		type: WEAPON_TYPE.BOW,
 		damage: [1],
 		attackBonus: 1,
-		range: [1, 2]
+		range: [2]
 	},
 	[WEAPONS.IRON_BOW]: {
 		label: 'Iron Bow',
 		description: 'superLongDescription',
 		type: WEAPON_TYPE.BOW,
 		damage: [Dice.d2, 1],
-		range: [1, 2]
+		range: [2]
 	},
 	[WEAPONS.STEEL_BOW]: {
 		label: 'Steel Bow',
@@ -293,7 +293,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		type: WEAPON_TYPE.BOW,
 		attackBonus: -1,
 		damage: [Dice.d3, 1],
-		range: [1, 2]
+		range: [2]
 	},
 	[WEAPONS.SHORT_BOW]: {
 		label: 'Short Bow',
@@ -301,7 +301,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		type: WEAPON_TYPE.BOW,
 		damage: [Dice.d2],
 		attackBonus: 1,
-		range: [1]
+		range: [1, 2]
 	},
 
 	[WEAPONS.TRAINING_GAUNTLETS]: {
