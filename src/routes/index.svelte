@@ -26,7 +26,6 @@
 		playerSkills: DEFAULT_PLAYER_SKILL_PROFICIENCY,
 		skillBonuses: DEFAULT_PLAYER_SKILL_BONUSES,
 		unlockedClasses: [],
-		unlockedClassesPicks: {},
 		customWeapons: {},
 		customCombatSkills: {},
 		customCombatArts: {},
@@ -53,10 +52,10 @@
 	$: playerSkillProficiency = fullSheet.playerSkills;
 	$: playerSkillBonus = fullSheet.skillBonuses;
 	$: unlockedClasses = fullSheet.unlockedClasses;
-	$: unlockedClassesPicks = fullSheet.unlockedClassesPicks;
 	$: name = fullSheet.playerName;
-	$: customCombatSkills = fullSheet.customCombatSkills;
 	$: customWeapons = fullSheet.customWeapons;
+	$: customCombatSkills = fullSheet.customCombatSkills;
+	$: customCombatArts = fullSheet.customCombatArts;
 	$: classXP = fullSheet.classXP;
 	$: weaponXP = fullSheet.weaponXP;
 	$: playerCrest = fullSheet.crest;
@@ -80,71 +79,77 @@
 		ready = true;
 	});
 
-	const onUpdateSheet = (property: string, value: any) => {
+	$: onUpdateSheet = (property: string, value: any) => {
 		fullSheet = { ...fullSheet, [property]: value };
 		localStorage.setItem('sheet', JSON.stringify(fullSheet));
 	};
-	const onUpdatePlayerStats = (newStats: any) => {
+	$: onUpdatePlayerStats = (newStats: any) => {
 		onUpdateSheet('playerStats', newStats);
 	};
-	const onUpdatePlayerName = (newName: any) => {
+	$: onUpdatePlayerName = (newName: any) => {
 		onUpdateSheet('playerName', newName);
 	};
-	const onToggleSkillProficiency = (skill: any) => {
+	$: onToggleSkillProficiency = (skill: any) => {
 		const curVal = playerSkillProficiency[skill];
 
 		onUpdateSheet('playerSkills', { ...playerSkillProficiency, [skill]: !curVal });
 	};
-	const setEquippedClass = (newClass: any) => {
+	$: setEquippedClass = (newClass: any) => {
 		equippedClass = newClass;
 	};
-	const setSelectedWeapon = (newWeapon: any) => {
+	$: setSelectedWeapon = (newWeapon: any) => {
 		selectedWeapon = newWeapon;
 	};
-	const setSelectedCombatArt = (art: any) => {
+	$: setSelectedCombatArt = (art: any) => {
 		selectedCombatArt = art;
 	};
-	const onToggleCombatArts = (targetArt: any) => {
+	$: onToggleCombatArts = (targetArt: any) => {
 		if (equippedCombatArts.indexOf(targetArt) !== -1) {
 			equippedCombatArts = equippedCombatArts.filter((art) => art !== targetArt);
 		} else if (equippedCombatArts.length < MAX_COMBAT_ARTS) {
 			equippedCombatArts = [...equippedCombatArts, targetArt];
 		}
 	};
-	const onToggleCombatSkill = (targetSkill: any) => {
+	$: onToggleCombatSkill = (targetSkill: any) => {
 		if (equippedCombatSkills.indexOf(targetSkill) !== -1) {
 			equippedCombatSkills = equippedCombatSkills.filter((skill) => skill !== targetSkill);
 		} else if (equippedCombatSkills.length < MAX_COMBAT_SKILLS) {
 			equippedCombatSkills = [...equippedCombatSkills, targetSkill];
 		}
 	};
-	const onToggleEquippedWeapons = (weapon: any) => {
+	$: onToggleEquippedWeapons = (weapon: any) => {
 		if (equippedWeapons.includes(weapon)) {
 			equippedWeapons = equippedWeapons.filter((w) => w !== weapon);
 		} else if (equippedWeapons.length < MAX_WEAPONS_EQUIPPED) {
 			equippedWeapons = [...equippedWeapons, weapon];
 		}
 	};
-	const onUpdateUnlockedClasses = (newClasses: Array<string>) => {
+	$: onUpdateUnlockedClasses = (newClasses: Array<string>) => {
 		onUpdateSheet('unlockedClasses', newClasses);
 	};
-	const onChangePage = (newPage: any) => {
+	$: onChangePage = (newPage: any) => {
 		currentPage = newPage;
 	};
-	const onUpdateWeaponXP = (weapon: any, total: any, level: string, mastered: boolean) => {
+	$: onUpdateWeaponXP = (weapon: any, total: any, level: string, mastered: boolean) => {
 		onUpdateSheet('weaponXP', { ...weaponXP, [weapon]: { total, level, mastered } });
 	};
-	const onUpdateClassXP = (targetClass: any, total: any, mastered: boolean) => {
+	$: onUpdateClassXP = (targetClass: any, total: any, mastered: boolean) => {
 		onUpdateSheet('classXP', { ...classXP, [targetClass]: { total, mastered } });
 	};
-	const onUpdateCrest = (newCrest: PlayerCrest) => {
+	$: onUpdateCrest = (newCrest: PlayerCrest) => {
 		onUpdateSheet('crest', newCrest);
 	};
-	const onUpdateWeaponUses = (weapon: any, newUses: any) => {
+	$: onUpdateWeaponUses = (weapon: any, newUses: any) => {
 		weaponUses = { ...weaponUses, [weapon]: newUses };
 	};
-	const onUpdateCustomWeapons = (newCustom: any) => {
+	$: onUpdateCustomWeapons = (newCustom: any) => {
 		onUpdateSheet('customWeapons', newCustom);
+	};
+	$: onUpdateCustomCombatArts = (newCustom: any) => {
+		onUpdateSheet('customCombatArts', newCustom);
+	};
+	$: onUpdateCustomCombatSkills = (newCustom: any) => {
+		onUpdateSheet('customCombatSkills', newCustom);
 	};
 </script>
 
@@ -162,7 +167,6 @@
 					{playerStats}
 					{onUpdatePlayerStats}
 					{playerSkillBonus}
-					{customCombatSkills}
 					{playerSkillProficiency}
 					{onToggleSkillProficiency}
 					{equippedWeapons}
@@ -184,8 +188,12 @@
 					{setSelectedWeapon}
 					{weaponUses}
 					{onUpdateWeaponUses}
+					{customCombatSkills}
+					{onUpdateCustomCombatSkills}
 					{customWeapons}
 					{onUpdateCustomWeapons}
+					{customCombatArts}
+					{onUpdateCustomCombatArts}
 				/>
 			</div>
 			<div class={currentPage === 'XP' ? '' : 'invisible'}>

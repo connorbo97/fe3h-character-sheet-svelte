@@ -30,6 +30,13 @@
 	export let onUpdatePlayerStats: any;
 
 	export let customCombatSkills: any;
+	export let onUpdateCustomCombatSkills: any;
+
+	export let customCombatArts: any;
+	export let onUpdateCustomCombatArts: any;
+
+	export let customWeapons: any;
+	export let onUpdateCustomWeapons: any;
 
 	export let playerSkillBonus: any;
 
@@ -50,9 +57,6 @@
 
 	export let unlockedClasses: any;
 	export let onUpdateUnlockedClasses: any;
-
-	export let customWeapons: any;
-	export let onUpdateCustomWeapons: any;
 </script>
 
 <div class="container">
@@ -74,6 +78,14 @@
 			{unlockedClasses}
 			{onUpdateUnlockedClasses}
 			{masteredClasses}
+			{customCombatSkills}
+			{onUpdateCustomCombatSkills}
+			{customWeapons}
+			{onUpdateCustomWeapons}
+			{customCombatArts}
+			{onUpdateCustomCombatArts}
+			{playerStats}
+			{onUpdatePlayerStats}
 		/>
 		<CombatSkills
 			{allCombatSkills}
