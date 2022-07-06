@@ -4,13 +4,11 @@
 
 	export let allCombatSkills: AllCombatSkills;
 
-	export let customCombatSkills: any;
-
 	export let equippedCombatSkills: any;
 	export let onToggleCombatSkill: any;
 
 	$: allCombatSkillsArr = allCombatSkills.fullArray;
-	$: allCombatSkillFeatures = { ...COMBAT_SKILLS_TO_FEATURES, ...customCombatSkills };
+	$: allCombatSkillFeatures = allCombatSkills.fullFeatures;
 </script>
 
 <div class="container">
@@ -31,7 +29,7 @@
 		flex-direction: column;
 
 		border-radius: 5px;
-		background-color: slateblue;
+		background-color: rgb(130, 116, 221);
 
 		flex: 1;
 		padding: 5px;

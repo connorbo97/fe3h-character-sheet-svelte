@@ -1,5 +1,6 @@
 import { COMBAT_ARTS } from './combatArts';
 import { COMBAT_SKILLS } from './combatSkills';
+import { PickOnePromptType } from './enums';
 import { PLAYER_SKILL } from './playerSkills';
 import { PLAYER_STAT } from './stats';
 import { WEAPONS } from './weapons';
@@ -86,18 +87,21 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 	},
 	[CLASS.SOLDIER]: {
 		unlocks: {
-			playerStats: {
-				pickOne: [
-					[
+			pickOne: [
+				{
+					type: PickOnePromptType.PlayerStat,
+					options: [
 						{
-							[PLAYER_STAT.DEX]: 12
+							stat: PLAYER_STAT.DEX,
+							value: 12
 						},
 						{
-							[PLAYER_STAT.STR]: 12
+							stat: PLAYER_STAT.STR,
+							value: 12
 						}
 					]
-				]
-			},
+				}
+			],
 			combatArts: {
 				[COMBAT_ARTS.REPOSITION]: 1
 			},
@@ -118,18 +122,21 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 	},
 	[CLASS.FIGHTER]: {
 		unlocks: {
-			playerStats: {
-				pickOne: [
-					[
+			pickOne: [
+				{
+					type: PickOnePromptType.PlayerStat,
+					options: [
 						{
-							[PLAYER_STAT.DEX]: 12
+							stat: PLAYER_STAT.DEX,
+							value: 12
 						},
 						{
-							[PLAYER_STAT.STR]: 12
+							stat: PLAYER_STAT.STR,
+							value: 12
 						}
 					]
-				]
-			},
+				}
+			],
 			combatArts: {
 				[COMBAT_ARTS.SHOVE]: 1
 			},
@@ -266,14 +273,18 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			},
 			weapons: {
 				[WEAPONS.STEEL_LANCE]: 1,
-				[WEAPONS.PIKE]: 1,
-				pickOne: [[WEAPONS.IRON_SWORD, WEAPONS.IRON_AXE, WEAPONS.IRON_BOW]]
-			}
+				[WEAPONS.PIKE]: 1
+			},
+			pickOne: [
+				{
+					type: PickOnePromptType.Weapon,
+					options: [WEAPONS.IRON_SWORD, WEAPONS.IRON_AXE, WEAPONS.IRON_BOW]
+				}
+			]
 		},
 		whenEquipped: {
 			xpMods: {
-				[WEAPON_TYPE.LANCE]: 1.6,
-				pickOne: [[{ weapons: [WEAPON_TYPE.SWORD, WEAPON_TYPE.AXE, WEAPON_TYPE.BOW], xp: 1.3 }]]
+				[WEAPON_TYPE.LANCE]: 1.6
 			},
 			toolProficiencies: {
 				[PLAYER_SKILL.LOCKPICKING]: 1
@@ -381,21 +392,37 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 	},
 	[CLASS.BRAWLER]: {
 		unlocks: {
-			hpBonus: 1,
-			playerStats: {
-				pickOne: [
-					[
+			pickOne: [
+				{
+					type: PickOnePromptType.PlayerStat,
+					description:
+						'Pick different stats per dropdown (e.g. if you pick 14 DEX in this dropdown, pick 12 STR in the other)',
+					options: [
 						{
-							[PLAYER_STAT.STR]: 12,
-							[PLAYER_STAT.DEX]: 14
+							stat: PLAYER_STAT.DEX,
+							value: 14
 						},
 						{
-							[PLAYER_STAT.STR]: 14,
-							[PLAYER_STAT.DEX]: 12
+							stat: PLAYER_STAT.STR,
+							value: 14
 						}
 					]
-				]
-			},
+				},
+				{
+					type: PickOnePromptType.PlayerStat,
+					options: [
+						{
+							stat: PLAYER_STAT.DEX,
+							value: 12
+						},
+						{
+							stat: PLAYER_STAT.STR,
+							value: 12
+						}
+					]
+				}
+			],
+			hpBonus: 1,
 			combatSkills: {
 				[COMBAT_SKILLS.MERCENARY_THIEF_SKILL]: 1
 			},
@@ -422,11 +449,6 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.INT]: 14
-			},
-			weapons: {
-				pickOne: [
-					[WEAPONS.FIRE, WEAPONS.THUNDER, WEAPONS.BLIZZARD, WEAPONS.WIND, 'DOUBLE_EXISTING']
-				]
 			}
 		},
 		whenEquipped: {

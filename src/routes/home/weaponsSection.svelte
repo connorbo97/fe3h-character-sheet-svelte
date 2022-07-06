@@ -1,7 +1,10 @@
 <script lang="ts">
-	import { WEAPON_TO_LABEL } from 'src/constants';
-	import { WEAPONS, WEAPONS_TO_FEATURES } from 'src/constants/weapons';
+	import { CONTEXTS } from 'src/constants';
+
+	import { WEAPONS } from 'src/constants/weapons';
 	import { checkHealPlus } from 'src/utils';
+	import { getContext } from 'svelte';
+	import CustomWeaponPrompt from './customWeaponPrompt.svelte';
 
 	export let weapon: any;
 	export let equippedClass: any;
@@ -10,17 +13,20 @@
 	export let onToggleEquip: any;
 	export let allWeapons: AllWeapons;
 	export let spellUseFlag: any;
+	export let customWeapons: any;
+	export let onUpdateCustomWeapons: any;
 
 	export let isMagic: any;
 
 	export let weaponUses: { [s: string]: number };
 	export let onUpdateWeaponUses: any;
+	const { open } = getContext(CONTEXTS.MODAL);
 
 	let prevSpellUseFlag = { current: spellUseFlag };
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
 	let prevMaxUses: any = { current: null };
 	$: maxUses =
-		(WEAPONS_TO_FEATURES[weapon]?.uses || 0) * (hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
+		(allWeapons.fullFeatures[weapon]?.uses || 0) * (hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
 	$: curUses = weaponUses[weapon];
 	$: updateCurWeaponUses = (newTotal: any) => {
 		if (newTotal <= maxUses && newTotal >= 0) {
@@ -42,17 +48,27 @@
 	$: isTrainingWeapon = weapon.indexOf('TRAINING') >= 0;
 
 	$: isUnlocked = isCustomUnlock || isClassUnlock || isTrainingWeapon;
+
+	$: weaponsToFeatures = allWeapons.fullFeatures;
 </script>
 
 <div class="container">
 	<button
-		class={isCustomUnlock
-			? 'custom-unlock'
-			: isClassUnlock || isTrainingWeapon
-			? 'class-unlock'
-			: ''}
+		class={`available-button ${isCustomUnlock ? 'custom-unlock' : ''} ${
+			allWeapons.fullSet.has(weapon) ? 'unlocked' : ''
+		}`}
+		title={weaponsToFeatures[weapon].reason}
+		on:click={() => {
+			open(CustomWeaponPrompt, {
+				weapon,
+				customWeapons,
+				weaponsToFeatures,
+				onUpdateCustomWeapons,
+				defaultReason: 'Manually added in weapons section'
+			});
+		}}
 	/>
-	<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
+	<div class={`label ${isMagic ? 'magic' : ''}`}>{allWeapons.weaponsToLabel[weapon]}</div>
 	{#if !isMagic}
 		<button
 			class={equippedWeapons.includes(weapon) ? 'equipped' : ''}
@@ -87,17 +103,24 @@
 		font-weight: normal;
 
 		justify-content: space-between;
+		align-items: center;
 		column-gap: 5px;
 		.label {
 			flex: 1;
+			&.magic {
+				font-size: 15px;
+			}
+		}
+		button {
+			height: 15px;
 		}
 	}
 
 	.custom-unlock {
-		background-color: purple;
+		border-color: red;
 	}
 
-	.class-unlock {
+	.unlocked {
 		background-color: blue;
 	}
 

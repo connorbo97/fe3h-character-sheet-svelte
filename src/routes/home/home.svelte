@@ -30,6 +30,13 @@
 	export let onUpdatePlayerStats: any;
 
 	export let customCombatSkills: any;
+	export let onUpdateCustomCombatSkills: any;
+
+	export let customCombatArts: any;
+	export let onUpdateCustomCombatArts: any;
+
+	export let customWeapons: any;
+	export let onUpdateCustomWeapons: any;
 
 	export let playerSkillBonus: any;
 
@@ -71,13 +78,16 @@
 			{unlockedClasses}
 			{onUpdateUnlockedClasses}
 			{masteredClasses}
-		/>
-		<CombatSkills
-			{allCombatSkills}
 			{customCombatSkills}
-			{equippedCombatSkills}
-			{onToggleCombatSkill}
+			{onUpdateCustomCombatSkills}
+			{customWeapons}
+			{onUpdateCustomWeapons}
+			{customCombatArts}
+			{onUpdateCustomCombatArts}
+			{playerStats}
+			{onUpdatePlayerStats}
 		/>
+		<CombatSkills {allCombatSkills} {equippedCombatSkills} {onToggleCombatSkill} />
 	</div>
 	<div class="rest">
 		<div class="weapons">
@@ -90,6 +100,8 @@
 				{equippedClass}
 				{weaponUses}
 				{onUpdateWeaponUses}
+				{customWeapons}
+				{onUpdateCustomWeapons}
 			/>
 		</div>
 		<div class="arts">
@@ -119,7 +131,7 @@
 	.container {
 		display: grid;
 		grid-template-areas: 'stats skills classes rest';
-		grid-template-columns: min-content 210px 210px 1fr;
+		grid-template-columns: min-content 200px 180px 1fr;
 		column-gap: 5px;
 
 		height: 100%;

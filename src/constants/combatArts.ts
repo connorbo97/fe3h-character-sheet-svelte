@@ -68,7 +68,7 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 		compatibleWeapons: [WEAPON_TYPE.LANCE],
 		damageBonus: [2],
 		attackBonus: [2],
-		dieCost: { roll: Dice.d20, target: 10, mod: -1 }
+		dieCost: { roll: Dice.d20, target: 10, mult: 2 }
 	},
 	[COMBAT_ARTS.SMASH]: {
 		label: 'Smash',
@@ -78,7 +78,7 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 		damageBonus: [1],
 		attackBonus: [4],
 		critBonus: [4],
-		dieCost: { roll: Dice.d20, target: 10, mod: -1 }
+		dieCost: { roll: Dice.d20, target: 10, mult: 2 }
 	},
 	[COMBAT_ARTS.CURVED_SHOT]: {
 		label: 'Curved Shot',
@@ -100,7 +100,7 @@ export const getCombatArtsDescription = (feature: ArtFeatures) => {
 	const { damageBonus, attackBonus, rangeBonus } = feature;
 	return [
 		attackBonus ? `${attackBonus} to attack` : '',
-		damageBonus ? printCalc(damageBonus) : '',
+		damageBonus ? `${printCalc(damageBonus)} damage` : '',
 		rangeBonus ? `Extra Range: ${rangeBonus}` : ''
 	]
 		.filter((a) => a)

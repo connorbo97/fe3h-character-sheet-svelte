@@ -3,7 +3,7 @@
 
 	import { getModifierByPlayerStat, rollD20 } from 'src/utils';
 	import {
-		CLASS_TO_FEATURES,
+		CONTEXTS,
 		CRESTS,
 		CRESTS_TO_FEATURES,
 		CrestType,
@@ -12,7 +12,7 @@
 	} from '../../constants';
 	import { getContext } from 'svelte';
 
-	const { open } = getContext('simple-modal');
+	const { open } = getContext(CONTEXTS.MODAL);
 
 	// state
 	export let stats = DEFAULT_PLAYER_STAT;

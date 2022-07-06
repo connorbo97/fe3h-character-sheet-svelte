@@ -278,14 +278,14 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		type: WEAPON_TYPE.BOW,
 		damage: [1],
 		attackBonus: 1,
-		range: [1, 2]
+		range: [2]
 	},
 	[WEAPONS.IRON_BOW]: {
 		label: 'Iron Bow',
 		description: 'superLongDescription',
 		type: WEAPON_TYPE.BOW,
 		damage: [Dice.d2, 1],
-		range: [1, 2]
+		range: [2]
 	},
 	[WEAPONS.STEEL_BOW]: {
 		label: 'Steel Bow',
@@ -293,7 +293,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		type: WEAPON_TYPE.BOW,
 		attackBonus: -1,
 		damage: [Dice.d3, 1],
-		range: [1, 2]
+		range: [2]
 	},
 	[WEAPONS.SHORT_BOW]: {
 		label: 'Short Bow',
@@ -301,7 +301,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		type: WEAPON_TYPE.BOW,
 		damage: [Dice.d2],
 		attackBonus: 1,
-		range: [1]
+		range: [1, 2]
 	},
 
 	[WEAPONS.TRAINING_GAUNTLETS]: {
@@ -353,6 +353,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		type: WEAPON_TYPE.REASON,
 		damage: [Dice.d2, 1],
 		damageType: [PLAYER_STAT.INT],
+		critBonus: 1,
 		attackBonus: -1,
 		range: [1, 2],
 		uses: 8
@@ -364,6 +365,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		attackBonus: 3,
 		damage: [1],
 		damageType: [PLAYER_STAT.INT],
+		critBonus: 2,
 		range: [1, 2],
 		uses: 12
 	},
@@ -374,6 +376,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d2, 1],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: -3,
+		critBonus: 3,
 		range: [1, 2],
 		uses: 10
 	},
@@ -394,6 +397,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d3, 1],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: -2,
+		critBonus: 2,
 		range: [1, 3],
 		uses: 4
 	},
@@ -404,6 +408,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d2, 1],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: 2,
+		critBonus: 2,
 		range: [1, 2],
 		uses: 6
 	},
@@ -414,6 +419,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d2, 1],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: 1,
+		critBonus: 1,
 		range: [1, 2],
 		uses: 10
 	},
@@ -424,6 +430,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d5],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: -3,
+		critBonus: 3,
 		range: [1, 2],
 		uses: 6
 	},
@@ -454,6 +461,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d2, 1],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: -2,
+		critBonus: 1,
 		range: [1, 2],
 		uses: 8
 	},
@@ -494,14 +502,6 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		uses: 5
 	}
 };
-
-export const WEAPON_TO_LABEL = Object.keys(WEAPONS_TO_FEATURES).reduce(
-	(acc: { [s: string]: string }, key) => {
-		acc[key] = WEAPONS_TO_FEATURES[key].label;
-		return acc;
-	},
-	{}
-);
 
 export const getWeaponDescription = (feature: WeaponFeatures) => {
 	const { damage, attackBonus, range } = feature;

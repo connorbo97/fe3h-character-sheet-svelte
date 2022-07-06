@@ -1,17 +1,25 @@
 <script lang="ts">
 	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
-	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
-	import { getWeaponDescription, WEAPONS_TO_FEATURES, WEAPON_TO_TYPE } from 'src/constants/weapons';
+	import { getWeaponDescription, WEAPON_TO_TYPE } from 'src/constants/weapons';
+	import { MAGIC_WEAPON_TYPES } from 'src/constants/weaponType';
 
+	export let allWeapons: AllWeapons;
 	export let equippedWeapons: any;
 	export let selectedWeapon: any;
 	export let setSelectedWeapon: any;
 	export let damageTypeSelection: any;
-	let weaponsSelect: any;
+	export let weaponsToFeatures: { [s: string]: WeaponFeatures };
+
+	$: weaponsOptions = [
+		...equippedWeapons,
+		...allWeapons.fullArray.filter((weapon) =>
+			MAGIC_WEAPON_TYPES.includes(weaponsToFeatures[weapon].type)
+		)
+	];
+
 	$: {
-		if (weaponsSelect && !equippedWeapons.includes(weaponsSelect?.value)) {
+		if (selectedWeapon && !weaponsOptions.includes(selectedWeapon)) {
 			setSelectedWeapon('');
-			weaponsSelect.value = '';
 		}
 	}
 
@@ -27,17 +35,11 @@
 		return compatibleWeapons.indexOf(weaponType) !== -1;
 	});
 
-	let combatArtsSelect: any;
 	$: {
-		if (combatArtsSelect && !combatArtsOptions.includes(combatArtsSelect?.value)) {
+		if (selectedCombatArt && !combatArtsOptions.includes(selectedCombatArt)) {
 			setSelectedCombatArt('');
-			combatArtsSelect.value = '';
 		}
 	}
-
-	export let shouldRollCrest: any;
-	export let playerCrest: any;
-	export let crestDC: any;
 </script>
 
 <div class="container">
@@ -45,57 +47,48 @@
 		<span class="label">
 			{`Weapon: `}
 		</span>
-		<select
-			bind:this={weaponsSelect}
-			on:change={(e) => {
-				setSelectedWeapon(e.currentTarget.value);
-				damageTypeSelection = '';
-			}}
-		>
-			<option value={''}> - </option>
-			{#each equippedWeapons as weapon}
-				<option value={weapon}>
-					{WEAPONS_TO_FEATURES[weapon].label}
-				</option>
-			{/each}
-		</select>
+		{#key weaponsOptions}
+			<select
+				on:change={(e) => {
+					setSelectedWeapon(e.currentTarget.value);
+					damageTypeSelection = '';
+				}}
+			>
+				<option value={''}> - </option>
+				{#each weaponsOptions as weapon}
+					<option value={weapon} selected={selectedWeapon === weapon}>
+						{weaponsToFeatures[weapon]?.label}
+					</option>
+				{/each}
+			</select>
+		{/key}
 	</div>
 	<div class="entry">
-		{WEAPONS_TO_FEATURES[selectedWeapon] &&
-			getWeaponDescription(WEAPONS_TO_FEATURES[selectedWeapon])}
+		{weaponsToFeatures[selectedWeapon] && getWeaponDescription(weaponsToFeatures[selectedWeapon])}
 	</div>
 	<div class="entry">
 		<span class="label">
 			{`Combat Art: `}
 		</span>
-		<select
-			bind:this={combatArtsSelect}
-			on:change={(e) => {
-				setSelectedCombatArt(e.currentTarget.value);
-			}}
-		>
-			<option value={''}> - </option>
-			{#each combatArtsOptions as art}
-				<option value={art}>
-					{allCombatArtFeatures[art].label}
-				</option>
-			{/each}
-		</select>
+		{#key combatArtsOptions}
+			<select
+				on:change={(e) => {
+					setSelectedCombatArt(e.currentTarget.value);
+				}}
+			>
+				<option value={''}> - </option>
+				{#each combatArtsOptions as art}
+					<option value={art} selected={selectedCombatArt === art}>
+						{allCombatArtFeatures[art].label}
+					</option>
+				{/each}
+			</select>
+		{/key}
 	</div>
 	<div class="entry">
 		{COMBAT_ARTS_TO_FEATURES[selectedCombatArt] &&
 			getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])}
 	</div>
-	{#if shouldRollCrest}
-		<div class="crest-container">
-			<img
-				class="crest-indicator"
-				src={CRESTS_TO_FEATURES[playerCrest.type].image}
-				alt={playerCrest.type}
-			/>
-			<span>DC {crestDC}</span>
-		</div>
-	{/if}
 </div>
 
 <style lang="scss">
@@ -108,15 +101,6 @@
 		justify-content: space-between;
 		grid-area: header;
 	}
-	.crest-container {
-		display: flex;
-		align-items: center;
-	}
-
-	.crest-indicator {
-		width: 20px;
-	}
-
 	.entry {
 		flex: 1;
 	}

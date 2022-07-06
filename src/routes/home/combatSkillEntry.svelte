@@ -26,7 +26,15 @@
 		/>
 	</div>
 	{#if !hideDescription}
-		<div class="description" on:click={() => (hideDescription = true)}>{feature?.description}</div>
+		<div class="description" on:click={() => (hideDescription = true)}>
+			{#if feature?.reason}
+				<div class="reason">{feature.reason}</div>
+				<br />
+			{/if}
+			<div>
+				{feature?.description}
+			</div>
+		</div>
 	{/if}
 </div>
 
@@ -55,7 +63,6 @@
 	.label {
 		flex: 1;
 		cursor: pointer;
-		font-size: 20px;
 	}
 	.description {
 		padding: 5px;
@@ -63,6 +70,8 @@
 		background-color: lightgray;
 		display: flex;
 		font-size: 12px;
+
+		flex-direction: column;
 	}
 
 	.equipped {
@@ -81,5 +90,9 @@
 
 	.flip {
 		transform: rotate(180deg);
+	}
+
+	.reason {
+		color: brown;
 	}
 </style>

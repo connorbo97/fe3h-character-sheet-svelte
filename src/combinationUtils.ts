@@ -3,7 +3,9 @@ import {
 	COMBAT_ARTS,
 	COMBAT_SKILLS,
 	WEAPONS,
-	COMBAT_ARTS_TO_FEATURES
+	COMBAT_ARTS_TO_FEATURES,
+	COMBAT_SKILLS_TO_FEATURES,
+	WEAPONS_TO_FEATURES
 } from './constants';
 import memoize from 'memoize-one';
 
@@ -52,6 +54,28 @@ const calculateAllWeaponsMemoized = memoize(
 		classUnlockSet.delete('pickOne');
 
 		const fullSet = new Set([...baseSet, ...customSet, ...equippedClassSet, ...classUnlockSet]);
+		const customWeaponFeatures = Object.keys(customWeapons).reduce(
+			(acc: any, cur: any) => {
+				acc[cur] = { ...WEAPONS_TO_FEATURES[cur], ...acc[cur] };
+				return acc;
+			},
+			{ ...customWeapons }
+		);
+		const fullFeatures = { ...WEAPONS_TO_FEATURES, ...customWeaponFeatures };
+		const weaponsToLabel = Object.keys(fullFeatures).reduce(
+			(acc: { [s: string]: string }, key: string) => {
+				acc[key] = fullFeatures[key].label;
+				return acc;
+			},
+			{}
+		);
+		const weaponsToType = Object.keys(fullFeatures).reduce(
+			(acc: { [s: string]: string }, key: string) => {
+				acc[key] = fullFeatures[key].type;
+				return acc;
+			},
+			{}
+		);
 
 		return {
 			customSet,
@@ -59,7 +83,9 @@ const calculateAllWeaponsMemoized = memoize(
 			classUnlockSet,
 			fullSet,
 			fullArray: Array.from(fullSet),
-			fullFeatures: { ...customWeapons }
+			fullFeatures,
+			weaponsToLabel,
+			weaponsToType
 		};
 	}
 );
@@ -95,12 +121,20 @@ const calculateAllCombatSkillsMemoized = (
 		}
 	});
 	const fullSet = new Set([...customSet, ...equippedClassSet, ...classUnlockSet]);
+	const customCombatSkillFeatures = Object.keys(customCombatSkills).reduce(
+		(acc: any, cur: any) => {
+			acc[cur] = { ...COMBAT_SKILLS_TO_FEATURES[cur], ...acc[cur] };
+			return acc;
+		},
+		{ ...customCombatSkills }
+	);
 	return {
 		customSet,
 		equippedClassSet,
 		classUnlockSet,
 		fullSet,
-		fullArray: Array.from(fullSet)
+		fullArray: Array.from(fullSet),
+		fullFeatures: { ...COMBAT_SKILLS_TO_FEATURES, ...customCombatSkillFeatures }
 	};
 };
 
@@ -111,7 +145,7 @@ export const calculateAllCombatArts = (
 ) =>
 	calculateAllCombatArtsMemoized(
 		fullSheet.unlockedClasses,
-		fullSheet.customWeapons,
+		fullSheet.customCombatArts,
 		fullSheet.classXP,
 		equippedClass,
 		allCombatSkillsSet
@@ -158,6 +192,13 @@ const calculateAllCombatArtsMemoized = (
 			? [COMBAT_ARTS.REPOSITION, COMBAT_ARTS.SWAP, COMBAT_ARTS.PULL_BACK, COMBAT_ARTS.SHOVE]
 			: [])
 	]);
+	const customCombatArtFeatures = Object.keys(customCombatArts).reduce(
+		(acc: any, cur: any) => {
+			acc[cur] = { ...COMBAT_ARTS_TO_FEATURES[cur], ...acc[cur] };
+			return acc;
+		},
+		{ ...customCombatArts }
+	);
 
 	return {
 		customSet,
@@ -165,6 +206,6 @@ const calculateAllCombatArtsMemoized = (
 		classUnlockSet,
 		fullSet,
 		fullArray: Array.from(fullSet),
-		fullFeatures: { ...customCombatArts, ...COMBAT_ARTS_TO_FEATURES }
+		fullFeatures: { ...COMBAT_ARTS_TO_FEATURES, ...customCombatArtFeatures }
 	};
 };

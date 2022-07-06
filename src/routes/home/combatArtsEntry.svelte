@@ -6,6 +6,10 @@
 	export let equippedCombatArts: any;
 	export let onToggleCombatArts: any;
 
+	export let allCombatArts: any;
+
+	$: features = allCombatArts.fullFeatures;
+
 	let hideDescription: any = false;
 </script>
 
@@ -17,7 +21,7 @@
 			disabled={equippedCombatArts.indexOf(art) === -1}
 		/> -->
 		<div class="label" on:click={() => (hideDescription = !hideDescription)}>
-			{COMBAT_ARTS_TO_FEATURES[art].label}
+			{features[art].label}
 		</div>
 		<div
 			class={`caret ${hideDescription ? 'flip' : ''}`}
@@ -34,7 +38,11 @@
 	</div>
 	{#if hideDescription}
 		<div class="description">
-			{COMBAT_ARTS_TO_FEATURES[art].description}
+			{#if features[art]?.reason}
+				<div class="reason">{features[art].reason}</div>
+				<br />
+			{/if}
+			{features[art].description}
 		</div>
 	{/if}
 </div>
@@ -72,6 +80,9 @@
 		background-color: lightgray;
 		padding: 5px;
 		border-radius: 5px;
+
+		display: flex;
+		flex-direction: column;
 	}
 	.label {
 		cursor: pointer;
@@ -83,5 +94,8 @@
 	}
 	.selected {
 		background-color: blue;
+	}
+	.reason {
+		color: brown;
 	}
 </style>

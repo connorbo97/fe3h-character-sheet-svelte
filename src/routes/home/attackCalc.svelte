@@ -1,19 +1,14 @@
 <script lang="ts">
-	import { CLASS, CLASS_TO_FEATURES } from 'src/constants/classes';
+	import { CONTEXTS } from 'src/constants';
 
-	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
-	import { COMBAT_SKILLS, COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
+	import { CLASS_TO_FEATURES } from 'src/constants/classes';
+
+	import { COMBAT_ARTS_TO_FEATURES } from 'src/constants/combatArts';
+	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
 	import { CRESTS_TO_FEATURES, CrestTrigger, CrestType } from 'src/constants/crests';
-	import { Dice } from 'src/constants/dice';
 	import { PLAYER_STAT, PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
 
-	import {
-		getWeaponDescription,
-		HEALING_MAGIC,
-		WEAPONS,
-		WEAPONS_TO_FEATURES,
-		WEAPON_TO_TYPE
-	} from 'src/constants/weapons';
+	import { HEALING_MAGIC, WEAPONS, WEAPON_TO_TYPE } from 'src/constants/weapons';
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
 	import {
 		checkCalcRequiresRoll,
@@ -21,11 +16,14 @@
 		getModifierByPlayerStat,
 		printCalc,
 		rollCalc,
-		rollDice
+		simplifyCalc
 	} from 'src/utils';
+	import { getContext } from 'svelte';
 	import AttackCalcHeader from './attackCalcHeader.svelte';
+	import AttackRollModal from './attackRollModal.svelte';
 	import EntryPicker from './queryPicker.svelte';
 
+	const { open } = getContext(CONTEXTS.MODAL);
 	export let equippedClass: string;
 	export let equippedCombatArts: Array<string>;
 	export let equippedCombatSkills: Array<string>;
@@ -42,8 +40,10 @@
 	export let selectedCombatArt: any;
 	export let setSelectedCombatArt: any;
 
+	$: weaponsToFeatures = allWeapons.fullFeatures;
 	$: dexMod = getModifierByPlayerStat(playerStats[PLAYER_STAT.DEX]);
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
+	$: selectedWeaponType = WEAPON_TO_TYPE[selectedWeapon];
 
 	// queries
 	$: calcQueriesMap = (): { [s: string]: Query } => {
@@ -51,7 +51,7 @@
 			const curQueries = COMBAT_SKILLS_TO_FEATURES[skill].queries || [];
 
 			curQueries.forEach((query, index) => {
-				if (query.compatibleWeapons.includes(WEAPONS_TO_FEATURES[selectedWeapon]?.type)) {
+				if (query.compatibleWeapons.includes(weaponsToFeatures[selectedWeapon]?.type)) {
 					const key = skill + '__' + index;
 					acc[key] = { ...query, key: skill + '__' + index };
 				}
@@ -95,7 +95,7 @@
 		) {
 			return (
 				(crestTrigger.has(CrestTrigger.MAGIC_ATTACK) &&
-					WEAPONS_TO_FEATURES[selectedWeapon]?.damage?.[0] === 0) ||
+					weaponsToFeatures[selectedWeapon]?.damage?.[0] === 0) ||
 				(crestTrigger.has(CrestTrigger.HEAL) && HEALING_MAGIC.has(selectedWeapon))
 			);
 		} else {
@@ -103,17 +103,23 @@
 		}
 	};
 
-	$: selectedWeaponType = WEAPON_TO_TYPE[selectedWeapon];
+	$: crestType = playerCrest.type;
+	$: crestName = CRESTS_TO_FEATURES[crestType]?.label;
+	$: crestDescription = CRESTS_TO_FEATURES[crestType]?.description;
+	$: crestDamageBonus = CRESTS_TO_FEATURES[crestType]?.damageBonus || [];
+	$: crestCombatArtDamageModifier = CRESTS_TO_FEATURES[crestType]?.combatArtDamageMultiplier || 1;
+	$: crestConservesResource = CRESTS_TO_FEATURES[crestType]?.conservesResource || false;
+	$: crestHPRecoveryPercent = CRESTS_TO_FEATURES[crestType]?.hpRecoveryPercent || 0;
 	$: shouldRollCrest = calcShouldRollCrest();
 	$: crestDC = shouldRollCrest
-		? CRESTS_TO_FEATURES[playerCrest.type].activationDC[
+		? CRESTS_TO_FEATURES[crestType].activationDC[
 				playerCrest.isMajor ? CrestType.MAJOR : CrestType.MINOR
 		  ]
-		: 21;
+		: Infinity;
 
 	// Attack
 	$: attackDexModifier = dexMod;
-	$: weaponAttackModifier = WEAPONS_TO_FEATURES[selectedWeapon]?.attackBonus || 0;
+	$: weaponAttackModifier = weaponsToFeatures[selectedWeapon]?.attackBonus || 0;
 	$: weaponArtAttackModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.attackBonus || [];
 	$: skillAttackModifier = equippedCombatSkills.reduce((acc: any, skill: any) => {
 		return [
@@ -131,12 +137,12 @@
 		attackDexModifier,
 		...optionalAttackModifier
 	].filter((a) => a !== 0);
-	$: attackModifierRequiresRoll = checkCalcRequiresRoll(attackModifier);
+	$: simplifiedAttackModifier = simplifyCalc(attackModifier);
 
 	let attackRoll = 'Roll Attack';
 
 	// Damage
-	$: weaponDamageType = WEAPONS_TO_FEATURES[selectedWeapon]?.damageType;
+	$: weaponDamageType = weaponsToFeatures[selectedWeapon]?.damageType;
 	let damageTypeSelection = '';
 
 	$: {
@@ -151,7 +157,7 @@
 	$: damageBase = getModifierByPlayerStat(playerStats[damageTypeSelection] || 10);
 	$: damageTypeLabel = PLAYER_STAT_TO_SHORT_LABEL[damageTypeSelection];
 	$: weaponDamageModifier = [
-		...(WEAPONS_TO_FEATURES[selectedWeapon]?.damage || []),
+		...(weaponsToFeatures[selectedWeapon]?.damage || []),
 		...(selectedWeapon === WEAPONS.HEAL && hasHealPlus ? [2] : [])
 	];
 
@@ -163,12 +169,13 @@
 		...weaponArtDamageModifier,
 		...optionsDamageModifier
 	].filter((a) => a !== 0);
+	$: simplifiedDamageCalc = simplifyCalc(damageCalc);
 
 	let damageRoll = 'roll damage';
 
 	// Crit
 	$: critDexModifier = -1;
-	$: weaponCritModifier = WEAPONS_TO_FEATURES[selectedWeapon]?.critBonus || 0;
+	$: weaponCritModifier = weaponsToFeatures[selectedWeapon]?.critBonus || 0;
 	$: weaponArtCritModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.critBonus || [];
 	$: optionsCritModifier = [];
 	$: critModifier = rollCalc([
@@ -184,18 +191,18 @@
 	// Range
 	$: equippedClassRangeModifier =
 		CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.bonusRange?.[
-			WEAPONS_TO_FEATURES[selectedWeapon]?.type
+			weaponsToFeatures[selectedWeapon]?.type
 		] || 0;
 	$: combatSkillsRangeModifier = equippedCombatSkills.reduce(
 		(acc, skill) =>
 			acc +
-			(COMBAT_SKILLS_TO_FEATURES[skill]?.bonusRange?.[WEAPONS_TO_FEATURES[selectedWeapon]?.type] ||
+			(COMBAT_SKILLS_TO_FEATURES[skill]?.bonusRange?.[weaponsToFeatures[selectedWeapon]?.type] ||
 				0),
 		0
 	);
 	$: optionsRangeModifier = 0;
 	$: calcWeaponRange = () => {
-		let baseWeaponRange = [...(WEAPONS_TO_FEATURES[selectedWeapon]?.range || [1])];
+		let baseWeaponRange = [...(weaponsToFeatures[selectedWeapon]?.range || [1])];
 
 		if (selectedWeapon === WEAPONS.RESTORE) {
 			baseWeaponRange = [1, 2 + 2 * getModifierByPlayerStat(playerStats[PLAYER_STAT.INT])];
@@ -216,21 +223,36 @@
 		return baseWeaponRange;
 	};
 	$: [weaponRangeMin, weaponRangeMax] = calcWeaponRange();
+
+	$: onOpenAttackModal = () =>
+		open(AttackRollModal, {
+			attackCalc: simplifiedAttackModifier,
+			damageCalc: simplifiedDamageCalc,
+			critModifier,
+			crestDC: shouldRollCrest ? crestDC : Infinity,
+			crestDamage: crestDamageBonus,
+			crestCombatArtDamageModifier,
+			combatArtDamageBonus: weaponArtDamageModifier,
+			crestType,
+			selectedWeapon,
+			selectedCombatArt,
+			allWeapons,
+			allCombatArts
+		});
 </script>
 
 <div class="container">
 	<AttackCalcHeader
 		{damageTypeSelection}
+		{weaponsToFeatures}
 		{allCombatArts}
+		{allWeapons}
 		{equippedCombatArts}
 		{equippedWeapons}
 		{selectedWeapon}
 		{setSelectedWeapon}
 		{selectedCombatArt}
 		{setSelectedCombatArt}
-		{shouldRollCrest}
-		{playerCrest}
-		{crestDC}
 	/>
 	<div class="calcs">
 		<div class="attack-container">
@@ -253,11 +275,9 @@
 						</span>
 					{/if}
 				</span>
-				{#if attackModifier.length > 0 && !attackModifierRequiresRoll}
-					<span>
-						= 1d20 <span class="modifiers">+ {rollCalc(attackModifier)}</span>
-					</span>
-				{/if}
+				<span>
+					= 1d20 <span class="modifiers">+ {printCalc(simplifiedAttackModifier)}</span>
+				</span>
 			</h2>
 		</div>
 		<div class="damage-container">
@@ -291,6 +311,7 @@
 							<span>+ {optionsDamageModifier}<span class="source">(options)</span></span>
 						{/if}
 					</span>
+					= <span>{printCalc(simplifiedDamageCalc)}</span>
 				{/if}
 			</h2>
 		</div>
@@ -315,7 +336,8 @@
 						<span>+ {optionsCritModifier}<span class="source">(options)</span></span>
 					{/if}
 				</span>
-				= {20 - critModifier} to 20
+				{#if critModifier >= 0}= {20 - critModifier} to 20{/if}
+				{#if critModifier < 0}= Can't Crit{/if}
 				<span />
 			</h2>
 		</div>
@@ -327,8 +349,16 @@
 				{/if}
 			</h2>
 		</div>
+		{#if shouldRollCrest}
+			<div class="crest-container">
+				<h2 class="content">
+					Crest of {crestName} (DC {crestDC}):
+					<span class="crest-description">{crestDescription}</span>
+				</h2>
+			</div>
+		{/if}
 	</div>
-	<div class="rolls">
+	<!-- <div class="rolls">
 		<button
 			on:click={() => {
 				const roll = rollDice(20);
@@ -356,6 +386,11 @@
 				critRoll = `${didCrit ? 'CRIT' : 'Normal'} (${roll})`;
 				e.currentTarget.innerHTML = `${didCrit ? 'CRIT' : 'Normal'} (${roll})`;
 			}}>Roll Crit</button
+		>
+	</div> -->
+	<div class="rolls">
+		<button style:height={'100%'} on:click={onOpenAttackModal} disabled={!selectedWeapon}
+			>ATTACK</button
 		>
 	</div>
 	<div class="options">
@@ -417,5 +452,10 @@
 		.reset {
 			width: 200px;
 		}
+	}
+
+	.crest-description {
+		font-size: 15px;
+		font-weight: normal;
 	}
 </style>
