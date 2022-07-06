@@ -10,6 +10,9 @@ export * from './constants/stats';
 export * from './constants/weaponLevel';
 export * from './constants/weapons';
 export * from './constants/weaponType';
+export * from './constants/enums';
+
+// enums
 
 export const MAX_COMBAT_ARTS = 3;
 export const MAX_COMBAT_SKILLS = 5;
