@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
 	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
-	import { getWeaponDescription, WEAPONS_TO_FEATURES, WEAPON_TO_TYPE } from 'src/constants/weapons';
+	import { getWeaponDescription, WEAPON_TO_TYPE } from 'src/constants/weapons';
 
 	export let equippedWeapons: any;
 	export let selectedWeapon: any;
 	export let setSelectedWeapon: any;
 	export let damageTypeSelection: any;
+	export let weaponsToFeatures: { [s: string]: WeaponFeatures };
 	let weaponsSelect: any;
 	$: {
 		if (weaponsSelect && !equippedWeapons.includes(weaponsSelect?.value)) {
@@ -55,14 +56,13 @@
 			<option value={''}> - </option>
 			{#each equippedWeapons as weapon}
 				<option value={weapon}>
-					{WEAPONS_TO_FEATURES[weapon].label}
+					{weaponsToFeatures[weapon].label}
 				</option>
 			{/each}
 		</select>
 	</div>
 	<div class="entry">
-		{WEAPONS_TO_FEATURES[selectedWeapon] &&
-			getWeaponDescription(WEAPONS_TO_FEATURES[selectedWeapon])}
+		{weaponsToFeatures[selectedWeapon] && getWeaponDescription(weaponsToFeatures[selectedWeapon])}
 	</div>
 	<div class="entry">
 		<span class="label">

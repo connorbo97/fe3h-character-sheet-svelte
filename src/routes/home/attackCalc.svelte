@@ -216,6 +216,7 @@
 <div class="container">
 	<AttackCalcHeader
 		{damageTypeSelection}
+		{weaponsToFeatures}
 		{allCombatArts}
 		{equippedCombatArts}
 		{equippedWeapons}
