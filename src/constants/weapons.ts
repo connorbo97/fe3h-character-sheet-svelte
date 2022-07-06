@@ -353,6 +353,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		type: WEAPON_TYPE.REASON,
 		damage: [Dice.d2, 1],
 		damageType: [PLAYER_STAT.INT],
+		critBonus: 1,
 		attackBonus: -1,
 		range: [1, 2],
 		uses: 8
@@ -364,6 +365,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		attackBonus: 3,
 		damage: [1],
 		damageType: [PLAYER_STAT.INT],
+		critBonus: 2,
 		range: [1, 2],
 		uses: 12
 	},
@@ -374,6 +376,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d2, 1],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: -3,
+		critBonus: 3,
 		range: [1, 2],
 		uses: 10
 	},
@@ -394,6 +397,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d3, 1],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: -2,
+		critBonus: 2,
 		range: [1, 3],
 		uses: 4
 	},
@@ -404,6 +408,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d2, 1],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: 2,
+		critBonus: 2,
 		range: [1, 2],
 		uses: 6
 	},
@@ -414,6 +419,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d2, 1],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: 1,
+		critBonus: 1,
 		range: [1, 2],
 		uses: 10
 	},
@@ -424,6 +430,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d5],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: -3,
+		critBonus: 3,
 		range: [1, 2],
 		uses: 6
 	},
@@ -454,6 +461,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		damage: [Dice.d2, 1],
 		damageType: [PLAYER_STAT.INT],
 		attackBonus: -2,
+		critBonus: 1,
 		range: [1, 2],
 		uses: 8
 	},
