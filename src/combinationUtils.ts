@@ -185,6 +185,6 @@ const calculateAllCombatArtsMemoized = (
 		classUnlockSet,
 		fullSet,
 		fullArray: Array.from(fullSet),
-		fullFeatures: { ...customCombatArts, ...COMBAT_ARTS_TO_FEATURES }
+		fullFeatures: { ...COMBAT_ARTS_TO_FEATURES, ...customCombatArts }
 	};
 };
