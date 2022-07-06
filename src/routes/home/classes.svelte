@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { BEGINNER_CLASSES, CLASS_TO_LABEL, INTERMEDIATE_CLASSES } from 'src/constants';
+	import PickOnePrompt from 'src/common/pickOnePrompt.svelte';
+
+	import { BEGINNER_CLASSES, CLASS_TO_LABEL, CONTEXTS, INTERMEDIATE_CLASSES } from 'src/constants';
+	import { CLASS_TO_FEATURES } from 'src/constants/classes';
+	import { getContext } from 'svelte';
+
+	const { open } = getContext(CONTEXTS.MODAL);
 
 	export let masteredClasses: any;
 
@@ -8,6 +14,15 @@
 
 	export let unlockedClasses: Array<string>;
 	export let onUpdateUnlockedClasses: Function;
+
+	export let customCombatSkills: any;
+	export let onUpdateCustomCombatSkills: any;
+	export let customCombatArts: any;
+	export let onUpdateCustomCombatArts: any;
+	export let customWeapons: any;
+	export let onUpdateCustomWeapons: any;
+	export let playerStats: any;
+	export let onUpdatePlayerStats: any;
 
 	$: classSet = new Set(unlockedClasses);
 
@@ -19,6 +34,21 @@
 		}
 	};
 
+	const promptUserIfRequired = (targetClass: any, onUnlockClass: any) => {
+		open(PickOnePrompt, {
+			pickOne: CLASS_TO_FEATURES[targetClass].unlocks.pickOne,
+			reason: `Unlocked by obtaining ${CLASS_TO_LABEL[targetClass]} class`,
+			customWeapons,
+			customCombatArts,
+			customCombatSkills,
+			onUpdateCustomCombatArts,
+			onUpdateCustomCombatSkills,
+			onUpdateCustomWeapons,
+			playerStats,
+			onUpdatePlayerStats,
+			onSubmit: onUnlockClass
+		});
+	};
 	const onToggleClassActive = (targetClass: string) => {
 		if (classSet.has(targetClass)) {
 			if (equippedClass === targetClass) {
@@ -26,7 +56,12 @@
 			}
 			onUpdateUnlockedClasses(Array.from(classSet).filter((val) => val !== targetClass));
 		} else {
-			onUpdateUnlockedClasses([...Array.from(classSet), targetClass]);
+			const onUnlockClass = () => onUpdateUnlockedClasses([...Array.from(classSet), targetClass]);
+			if (CLASS_TO_FEATURES[targetClass].unlocks.pickOne) {
+				promptUserIfRequired(targetClass, onUnlockClass);
+			} else {
+				onUnlockClass();
+			}
 		}
 	};
 </script>
