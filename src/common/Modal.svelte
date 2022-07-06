@@ -6,7 +6,6 @@
 	 */
 	export function bind(Component: any, props = {}) {
 		return function ModalComponent(options: any) {
-			console.log(options, props, options.props);
 			return new Component({
 				...options,
 				props: {
