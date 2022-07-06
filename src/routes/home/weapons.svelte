@@ -23,6 +23,9 @@
 	export let weaponUses: { [s: string]: number };
 	export let onUpdateWeaponUses: any;
 
+	export let customWeapons: any;
+	export let onUpdateCustomWeapons: any;
+
 	let prevMax = { current: 0 };
 	$: maxSuperiorityDie = getSuperiorityDieFromClasses(unlockedClasses);
 	let curSuperiorityDies = maxSuperiorityDie;
@@ -81,6 +84,8 @@
 						{equippedClass}
 						{weaponUses}
 						{onUpdateWeaponUses}
+						{customWeapons}
+						{onUpdateCustomWeapons}
 					/>
 				{/each}
 			</div>
@@ -100,6 +105,8 @@
 						{equippedClass}
 						{weaponUses}
 						{onUpdateWeaponUses}
+						{customWeapons}
+						{onUpdateCustomWeapons}
 					/>
 				{/each}
 			</div>
@@ -119,6 +126,8 @@
 						{equippedClass}
 						{weaponUses}
 						{onUpdateWeaponUses}
+						{customWeapons}
+						{onUpdateCustomWeapons}
 					/>
 				{/each}
 			</div>
@@ -138,6 +147,8 @@
 						{equippedClass}
 						{weaponUses}
 						{onUpdateWeaponUses}
+						{customWeapons}
+						{onUpdateCustomWeapons}
 					/>
 				{/each}
 			</div>
@@ -157,6 +168,8 @@
 						{equippedClass}
 						{weaponUses}
 						{onUpdateWeaponUses}
+						{customWeapons}
+						{onUpdateCustomWeapons}
 					/>
 				{/each}
 			</div>
@@ -177,6 +190,8 @@
 					{equippedClass}
 					{weaponUses}
 					{onUpdateWeaponUses}
+					{customWeapons}
+					{onUpdateCustomWeapons}
 				/>
 			{/each}
 		</div>
@@ -194,6 +209,8 @@
 					{equippedClass}
 					{weaponUses}
 					{onUpdateWeaponUses}
+					{customWeapons}
+					{onUpdateCustomWeapons}
 				/>
 			{/each}
 		</div>

@@ -218,6 +218,7 @@
 		{damageTypeSelection}
 		{weaponsToFeatures}
 		{allCombatArts}
+		{allWeapons}
 		{equippedCombatArts}
 		{equippedWeapons}
 		{selectedWeapon}

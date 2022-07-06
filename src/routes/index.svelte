@@ -56,6 +56,7 @@
 	$: unlockedClassesPicks = fullSheet.unlockedClassesPicks;
 	$: name = fullSheet.playerName;
 	$: customCombatSkills = fullSheet.customCombatSkills;
+	$: customWeapons = fullSheet.customWeapons;
 	$: classXP = fullSheet.classXP;
 	$: weaponXP = fullSheet.weaponXP;
 	$: playerCrest = fullSheet.crest;
@@ -142,6 +143,9 @@
 	const onUpdateWeaponUses = (weapon: any, newUses: any) => {
 		weaponUses = { ...weaponUses, [weapon]: newUses };
 	};
+	const onUpdateCustomWeapons = (newCustom: any) => {
+		onUpdateSheet('customWeapons', newCustom);
+	};
 </script>
 
 <div class={`${ready ? '' : 'no-clicks'} container`}>
@@ -180,6 +184,8 @@
 					{setSelectedWeapon}
 					{weaponUses}
 					{onUpdateWeaponUses}
+					{customWeapons}
+					{onUpdateCustomWeapons}
 				/>
 			</div>
 			<div class={currentPage === 'XP' ? '' : 'invisible'}>

@@ -50,6 +50,9 @@
 
 	export let unlockedClasses: any;
 	export let onUpdateUnlockedClasses: any;
+
+	export let customWeapons: any;
+	export let onUpdateCustomWeapons: any;
 </script>
 
 <div class="container">
@@ -90,6 +93,8 @@
 				{equippedClass}
 				{weaponUses}
 				{onUpdateWeaponUses}
+				{customWeapons}
+				{onUpdateCustomWeapons}
 			/>
 		</div>
 		<div class="arts">

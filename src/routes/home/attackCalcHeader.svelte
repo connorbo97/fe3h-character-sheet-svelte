@@ -2,7 +2,9 @@
 	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
 	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
 	import { getWeaponDescription, WEAPON_TO_TYPE } from 'src/constants/weapons';
+	import { MAGIC_WEAPON_TYPES, WEAPON_TYPE } from 'src/constants/weaponType';
 
+	export let allWeapons: AllWeapons;
 	export let equippedWeapons: any;
 	export let selectedWeapon: any;
 	export let setSelectedWeapon: any;
@@ -36,9 +38,18 @@
 		}
 	}
 
+	$: weaponsOptions = [
+		...equippedWeapons,
+		...allWeapons.fullArray.filter((weapon) =>
+			MAGIC_WEAPON_TYPES.includes(weaponsToFeatures[weapon].type)
+		)
+	];
+
 	export let shouldRollCrest: any;
 	export let playerCrest: any;
 	export let crestDC: any;
+
+	$: console.log(weaponsOptions, weaponsToFeatures);
 </script>
 
 <div class="container">
@@ -54,9 +65,9 @@
 			}}
 		>
 			<option value={''}> - </option>
-			{#each equippedWeapons as weapon}
+			{#each weaponsOptions as weapon}
 				<option value={weapon}>
-					{weaponsToFeatures[weapon].label}
+					{weaponsToFeatures[weapon]?.label}
 				</option>
 			{/each}
 		</select>

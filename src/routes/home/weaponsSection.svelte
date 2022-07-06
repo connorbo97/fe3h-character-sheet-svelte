@@ -1,6 +1,10 @@
 <script lang="ts">
+	import { CONTEXTS } from 'src/constants';
+
 	import { WEAPONS } from 'src/constants/weapons';
 	import { checkHealPlus } from 'src/utils';
+	import { getContext } from 'svelte';
+	import CustomWeaponPrompt from './customWeaponPrompt.svelte';
 
 	export let weapon: any;
 	export let equippedClass: any;
@@ -9,11 +13,14 @@
 	export let onToggleEquip: any;
 	export let allWeapons: AllWeapons;
 	export let spellUseFlag: any;
+	export let customWeapons: any;
+	export let onUpdateCustomWeapons: any;
 
 	export let isMagic: any;
 
 	export let weaponUses: { [s: string]: number };
 	export let onUpdateWeaponUses: any;
+	const { open } = getContext(CONTEXTS.MODAL);
 
 	let prevSpellUseFlag = { current: spellUseFlag };
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
@@ -50,6 +57,14 @@
 			: isClassUnlock || isTrainingWeapon
 			? 'class-unlock'
 			: ''}
+		on:click={() => {
+			open(CustomWeaponPrompt, {
+				weapon,
+				customWeapons,
+				weaponsToFeatures: allWeapons.fullFeatures,
+				onUpdateCustomWeapons
+			});
+		}}
 	/>
 	<div class="label">{allWeapons.weaponsToLabel[weapon]}</div>
 	{#if !isMagic}
