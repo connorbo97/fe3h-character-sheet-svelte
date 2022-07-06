@@ -223,6 +223,22 @@
 		return baseWeaponRange;
 	};
 	$: [weaponRangeMin, weaponRangeMax] = calcWeaponRange();
+
+	$: onOpenAttackModal = () =>
+		open(AttackRollModal, {
+			attackCalc: simplifiedAttackModifier,
+			damageCalc: simplifiedDamageCalc,
+			critModifier,
+			crestDC: shouldRollCrest ? crestDC : Infinity,
+			crestDamage: crestDamageBonus,
+			crestCombatArtDamageModifier,
+			combatArtDamageBonus: weaponArtDamageModifier,
+			crestType,
+			selectedWeapon,
+			selectedCombatArt,
+			allWeapons,
+			allCombatArts
+		});
 </script>
 
 <div class="container">
@@ -373,10 +389,8 @@
 		>
 	</div> -->
 	<div class="rolls">
-		<button
-			style:height={'100%'}
-			on:click={() => open(AttackRollModal, {})}
-			disabled={!selectedWeapon}>ATTACK</button
+		<button style:height={'100%'} on:click={onOpenAttackModal} disabled={!selectedWeapon}
+			>ATTACK</button
 		>
 	</div>
 	<div class="options">
