@@ -42,6 +42,7 @@ declare global {
 		classUnlockSet: Set<string>;
 		fullSet: Set<string>;
 		fullArray: Array<string>;
+		fullFeatures: { [s: string]: SkillFeatures };
 	};
 	type AllCombatArts = {
 		customSet: Set<string>;
