@@ -4,13 +4,11 @@
 
 	export let allCombatSkills: AllCombatSkills;
 
-	export let customCombatSkills: any;
-
 	export let equippedCombatSkills: any;
 	export let onToggleCombatSkill: any;
 
 	$: allCombatSkillsArr = allCombatSkills.fullArray;
-	$: allCombatSkillFeatures = { ...COMBAT_SKILLS_TO_FEATURES, ...customCombatSkills };
+	$: allCombatSkillFeatures = allCombatSkills.fullFeatures;
 </script>
 
 <div class="container">

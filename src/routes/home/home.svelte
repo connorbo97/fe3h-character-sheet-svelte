@@ -87,12 +87,7 @@
 			{playerStats}
 			{onUpdatePlayerStats}
 		/>
-		<CombatSkills
-			{allCombatSkills}
-			{customCombatSkills}
-			{equippedCombatSkills}
-			{onToggleCombatSkill}
-		/>
+		<CombatSkills {allCombatSkills} {equippedCombatSkills} {onToggleCombatSkill} />
 	</div>
 	<div class="rest">
 		<div class="weapons">
