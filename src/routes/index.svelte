@@ -160,60 +160,62 @@
 </script>
 
 <div class={`${ready ? '' : 'no-clicks'} container`}>
-	<Modal show={$modal}>
-		<div class="header">
-			<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} {currentPage} />
-		</div>
-		<div class="content">
-			<div class={currentPage === 'HOME' ? '' : 'invisible'}>
-				<Home
-					{allWeapons}
-					{allCombatSkills}
-					{allCombatArts}
-					{playerStats}
-					{onUpdatePlayerStats}
-					{playerSkillBonus}
-					{playerSkillProficiency}
-					{onToggleSkillProficiency}
-					{equippedWeapons}
-					{onToggleEquippedWeapons}
-					{equippedCombatArts}
-					{onToggleCombatArts}
-					{equippedClass}
-					{setEquippedClass}
-					{equippedCombatSkills}
-					{onToggleCombatSkill}
-					{unlockedClasses}
-					{onUpdateUnlockedClasses}
-					{masteredClasses}
-					{playerCrest}
-					{onUpdateCrest}
-					{selectedCombatArt}
-					{setSelectedCombatArt}
-					{selectedWeapon}
-					{setSelectedWeapon}
-					{weaponUses}
-					{onUpdateWeaponUses}
-					{customCombatSkills}
-					{onUpdateCustomCombatSkills}
-					{customWeapons}
-					{onUpdateCustomWeapons}
-					{customCombatArts}
-					{onUpdateCustomCombatArts}
-				/>
+	{#if ready}
+		<Modal show={$modal}>
+			<div class="header">
+				<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} {currentPage} />
 			</div>
-			<div class={currentPage === 'XP' ? '' : 'invisible'}>
-				{#if currentPage === 'XP'}
-					<Xp {unlockedClasses} {classXP} {weaponXP} {onUpdateClassXP} {onUpdateWeaponXP} />
-				{/if}
+			<div class="content">
+				<div class={currentPage === 'HOME' ? '' : 'invisible'}>
+					<Home
+						{allWeapons}
+						{allCombatSkills}
+						{allCombatArts}
+						{playerStats}
+						{onUpdatePlayerStats}
+						{playerSkillBonus}
+						{playerSkillProficiency}
+						{onToggleSkillProficiency}
+						{equippedWeapons}
+						{onToggleEquippedWeapons}
+						{equippedCombatArts}
+						{onToggleCombatArts}
+						{equippedClass}
+						{setEquippedClass}
+						{equippedCombatSkills}
+						{onToggleCombatSkill}
+						{unlockedClasses}
+						{onUpdateUnlockedClasses}
+						{masteredClasses}
+						{playerCrest}
+						{onUpdateCrest}
+						{selectedCombatArt}
+						{setSelectedCombatArt}
+						{selectedWeapon}
+						{setSelectedWeapon}
+						{weaponUses}
+						{onUpdateWeaponUses}
+						{customCombatSkills}
+						{onUpdateCustomCombatSkills}
+						{customWeapons}
+						{onUpdateCustomWeapons}
+						{customCombatArts}
+						{onUpdateCustomCombatArts}
+					/>
+				</div>
+				<div class={currentPage === 'XP' ? '' : 'invisible'}>
+					{#if currentPage === 'XP'}
+						<Xp {unlockedClasses} {classXP} {weaponXP} {onUpdateClassXP} {onUpdateWeaponXP} />
+					{/if}
+				</div>
+				<div class={currentPage === 'EDITOR' ? '' : 'invisible'}>
+					{#if currentPage === 'EDITOR'}
+						<Editor {fullSheet} {onChangeSheet} />
+					{/if}
+				</div>
 			</div>
-			<div class={currentPage === 'EDITOR' ? '' : 'invisible'}>
-				{#if currentPage === 'EDITOR'}
-					<Editor {fullSheet} {onChangeSheet} />
-				{/if}
-			</div>
-		</div>
-	</Modal>
+		</Modal>
+	{/if}
 	{#if !ready}
 		<div class="not-ready">Loading</div>
 	{/if}
