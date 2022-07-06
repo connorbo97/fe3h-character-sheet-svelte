@@ -1,26 +1,12 @@
 <script lang="ts">
+	import { onExportSheet } from 'src/utils';
+
 	export let currentPage: any;
 	export let fullSheet: any;
 	export let playerName: any;
 	export let onUpdatePlayerName: any;
 
 	export let onChangePage: any;
-
-	const download = (content: any, fileName: any, contentType: any) => {
-		var a = document.createElement('a');
-		var file = new Blob([content], { type: contentType });
-		a.href = URL.createObjectURL(file);
-		a.download = fileName;
-		a.click();
-	};
-	const onExportSheet = () => {
-		try {
-			download(JSON.stringify(fullSheet), `${fullSheet.playerName}-fe3h.json`, 'text/plain');
-		} catch (err) {
-			alert('Failed to export sheet, see console');
-			console.error(err);
-		}
-	};
 </script>
 
 <div class="container">
@@ -38,8 +24,10 @@
 	<button class={currentPage === 'XP' ? 'active' : ''} on:click={() => onChangePage('XP')}
 		>Weapon XP</button
 	>
-	<button>Page Placeholder</button>
-	<button on:click={onExportSheet}>Export Sheet</button>
+	<button class={currentPage === 'EDITOR' ? 'active' : ''} on:click={() => onChangePage('EDITOR')}
+		>Sheet Editor</button
+	>
+	<button on:click={() => onExportSheet(fullSheet)}>Export Sheet</button>
 </div>
 
 <style lang="scss">

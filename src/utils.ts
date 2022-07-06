@@ -61,3 +61,21 @@ export const rollCalc = (calc: Dice | Array<CalcEntry>) => {
 
 export const checkHealPlus = (equippedClass: string, equippedCombatSkills: Array<string>) =>
 	equippedCombatSkills.includes(COMBAT_SKILLS.HEAL_PLUS) || equippedClass === CLASS.PRIEST;
+
+// download utils
+
+const download = (content: any, fileName: any, contentType: any) => {
+	var a = document.createElement('a');
+	var file = new Blob([content], { type: contentType });
+	a.href = URL.createObjectURL(file);
+	a.download = fileName;
+	a.click();
+};
+export const onExportSheet = (fullSheet: CharacterSheet, prefix = '') => {
+	try {
+		download(JSON.stringify(fullSheet), `${prefix}${fullSheet.playerName}-fe3h.json`, 'text/plain');
+	} catch (err) {
+		alert('Failed to export sheet, see console');
+		console.error(err);
+	}
+};

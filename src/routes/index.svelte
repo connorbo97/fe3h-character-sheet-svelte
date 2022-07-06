@@ -1,4 +1,5 @@
 <script lang="ts">
+	var exports = {};
 	import { onMount } from 'svelte';
 
 	import {
@@ -19,6 +20,7 @@
 		calculateAllCombatSkills,
 		calculateAllWeapons
 	} from 'src/combinationUtils';
+	import Editor from './editor/editor.svelte';
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -79,6 +81,10 @@
 		ready = true;
 	});
 
+	$: onChangeSheet = (newSheet: any) => {
+		fullSheet = newSheet;
+		localStorage.setItem('sheet', JSON.stringify(newSheet));
+	};
 	$: onUpdateSheet = (property: string, value: any) => {
 		fullSheet = { ...fullSheet, [property]: value };
 		localStorage.setItem('sheet', JSON.stringify(fullSheet));
@@ -197,9 +203,15 @@
 				/>
 			</div>
 			<div class={currentPage === 'XP' ? '' : 'invisible'}>
-				<Xp {unlockedClasses} {classXP} {weaponXP} {onUpdateClassXP} {onUpdateWeaponXP} />
+				{#if currentPage === 'XP'}
+					<Xp {unlockedClasses} {classXP} {weaponXP} {onUpdateClassXP} {onUpdateWeaponXP} />
+				{/if}
 			</div>
-			<div class={currentPage === 'CUSTOM' ? '' : 'invisible'}>CUSTOM</div>
+			<div class={currentPage === 'EDITOR' ? '' : 'invisible'}>
+				{#if currentPage === 'EDITOR'}
+					<Editor {fullSheet} {onChangeSheet} />
+				{/if}
+			</div>
 		</div>
 	</Modal>
 	{#if !ready}
