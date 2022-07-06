@@ -100,7 +100,7 @@ export const getCombatArtsDescription = (feature: ArtFeatures) => {
 	const { damageBonus, attackBonus, rangeBonus } = feature;
 	return [
 		attackBonus ? `${attackBonus} to attack` : '',
-		damageBonus ? printCalc(damageBonus) : '',
+		damageBonus ? `${printCalc(damageBonus)} damage` : '',
 		rangeBonus ? `Extra Range: ${rangeBonus}` : ''
 	]
 		.filter((a) => a)
