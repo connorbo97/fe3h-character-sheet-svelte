@@ -1,7 +1,5 @@
-import type { CrestTrigger } from 'src/constants';
+import type { CrestTrigger, PickOnePromptType } from 'src/constants';
 import type { Dice } from 'src/constants/dice';
-
-export {};
 
 declare global {
 	type XPBlock = {
@@ -20,7 +18,6 @@ declare global {
 		playerSkills: any;
 		skillBonuses: any;
 		unlockedClasses: any;
-		unlockedClassesPicks: any;
 		customWeapons: any;
 		customCombatArts: any;
 		customCombatSkills: any;
@@ -69,7 +66,6 @@ declare global {
 	type CalcEntry = '-' | number | Dice;
 	declare type BasicStat = {
 		[s: string]: number | Array<any> | undefined;
-		pickOne?: Array<Array<any>>;
 	};
 
 	declare type ClassFeatures = {
@@ -91,6 +87,9 @@ declare global {
 		xpMods?: BasicStat;
 
 		combatSkills?: BasicStat;
+
+		// comes from unlock classes
+		pickOne?: any;
 
 		hpBonus?: number;
 		msBonus?: number;
@@ -129,6 +128,7 @@ declare global {
 		resilienceBonus?: number;
 		bonusCharges?: { [s: string]: number };
 		queries?: Array<Query>;
+		reason?: string;
 	}
 	interface ArtFeatures {
 		label: string;
@@ -139,6 +139,7 @@ declare global {
 		rangeBonus?: number;
 		critBonus?: Array<CalcEntry>;
 		dieCost?: { roll: number | Dice; target: number; mod: number };
+		reason?: string;
 	}
 	type WeaponFeatures = {
 		label: string;
@@ -152,5 +153,11 @@ declare global {
 		critBonus?: number;
 		uses?: number;
 		reason?: string;
+	};
+	type PickOnePromptOption = string | { stat: string; value: number };
+	type PickOnePrompt = {
+		type: PickOnePromptType;
+		description?: string;
+		options: Array<PickOnePromptOption>;
 	};
 }
