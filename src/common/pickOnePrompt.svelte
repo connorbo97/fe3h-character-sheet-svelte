@@ -42,7 +42,6 @@
 	};
 
 	$: handleSelection = (type: any, newValues: Array<PickOnePromptOption>) => {
-		debugger;
 		switch (type) {
 			case PickOnePromptType.Weapon:
 				const newCustomWeapons = newValues.reduce(
