@@ -48,6 +48,8 @@
 	$: isTrainingWeapon = weapon.indexOf('TRAINING') >= 0;
 
 	$: isUnlocked = isCustomUnlock || isClassUnlock || isTrainingWeapon;
+
+	$: weaponsToFeatures = allWeapons.fullFeatures;
 </script>
 
 <div class="container">
@@ -57,11 +59,12 @@
 			: isClassUnlock || isTrainingWeapon
 			? 'class-unlock'
 			: ''}
+		title={weaponsToFeatures[weapon].reason}
 		on:click={() => {
 			open(CustomWeaponPrompt, {
 				weapon,
 				customWeapons,
-				weaponsToFeatures: allWeapons.fullFeatures,
+				weaponsToFeatures,
 				onUpdateCustomWeapons,
 				defaultReason: 'Manually added in weapons section'
 			});

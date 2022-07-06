@@ -151,5 +151,6 @@ declare global {
 		followUpBonus?: number;
 		critBonus?: number;
 		uses?: number;
+		reason?: string;
 	};
 }
