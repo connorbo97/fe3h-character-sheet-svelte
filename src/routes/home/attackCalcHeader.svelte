@@ -48,8 +48,6 @@
 	export let shouldRollCrest: any;
 	export let playerCrest: any;
 	export let crestDC: any;
-
-	$: console.log(weaponsOptions, weaponsToFeatures);
 </script>
 
 <div class="container">
