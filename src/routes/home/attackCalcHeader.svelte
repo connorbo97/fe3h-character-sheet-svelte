@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
-	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
 	import { getWeaponDescription, WEAPON_TO_TYPE } from 'src/constants/weapons';
-	import { MAGIC_WEAPON_TYPES, WEAPON_TYPE } from 'src/constants/weaponType';
+	import { MAGIC_WEAPON_TYPES } from 'src/constants/weaponType';
 
 	export let allWeapons: AllWeapons;
 	export let equippedWeapons: any;
@@ -44,10 +43,6 @@
 			MAGIC_WEAPON_TYPES.includes(weaponsToFeatures[weapon].type)
 		)
 	];
-
-	export let shouldRollCrest: any;
-	export let playerCrest: any;
-	export let crestDC: any;
 </script>
 
 <div class="container">
@@ -95,16 +90,6 @@
 		{COMBAT_ARTS_TO_FEATURES[selectedCombatArt] &&
 			getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])}
 	</div>
-	{#if shouldRollCrest}
-		<div class="crest-container">
-			<img
-				class="crest-indicator"
-				src={CRESTS_TO_FEATURES[playerCrest.type].image}
-				alt={playerCrest.type}
-			/>
-			<span>DC {crestDC}</span>
-		</div>
-	{/if}
 </div>
 
 <style lang="scss">
@@ -116,10 +101,6 @@
 		display: flex;
 		justify-content: space-between;
 		grid-area: header;
-	}
-	.crest-container {
-		display: flex;
-		align-items: center;
 	}
 
 	.crest-indicator {

@@ -87,18 +87,20 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	[CRESTS.BLAIDDYD]: {
 		label: 'Blaiddyd',
 		description:
-			'When using a combat art, conserves superiority die and doubles any extra damage done by the weapon art if activated',
+			'When using a combat art, conserves superiority die and doubles any extra damage done by the combat art if activated',
 		image: blaiddydImage,
 		activationDC: ActivationRates.omega,
 		triggersOn: [CrestTrigger.COMBAT_ART],
-		conservesResource: true
+		conservesResource: true,
+		combatArtDamageMultiplier: 2
 	},
 	[CRESTS.CETHLEANN]: {
 		label: 'Cethleann',
 		description: 'When using recovery magic, heal the target for +2 HP if activated.',
 		image: cethleannImage,
 		activationDC: ActivationRates.beta,
-		triggersOn: [CrestTrigger.HEAL]
+		triggersOn: [CrestTrigger.HEAL],
+		damageBonus: [2]
 	},
 	[CRESTS.CICHOL]: {
 		label: 'Cichol',
@@ -110,10 +112,11 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	[CRESTS.CHARON]: {
 		label: 'Charon',
 		description:
-			'When using a combat art, doubles any extra damage done by the weapon art if activated',
+			'When using a combat art, doubles any extra damage done by the combat art if activated',
 		image: charonImage,
 		activationDC: ActivationRates.alpha,
-		triggersOn: [CrestTrigger.COMBAT_ART]
+		triggersOn: [CrestTrigger.COMBAT_ART],
+		combatArtDamageMultiplier: 2
 	},
 	[CRESTS.DAPHNEL]: {
 		label: 'Daphnel',
@@ -121,7 +124,8 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 			'When using a combat art, adds +2 damage if the combat art does damage if activated',
 		image: daphnelImage,
 		activationDC: ActivationRates.alpha,
-		triggersOn: [CrestTrigger.COMBAT_ART]
+		triggersOn: [CrestTrigger.COMBAT_ART],
+		damageBonus: [2]
 	},
 	[CRESTS.DOMINIC]: {
 		label: 'Dominic',
@@ -134,25 +138,19 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	[CRESTS.FLAMES]: {
 		label: 'Mystery Crest A',
 		description:
-			'Restores HP equal to 30% of damage dealt when using weapons, combat arts or attack magic.',
-		image: flamesImage,
-		activationDC: ActivationRates.omega,
-		triggersOn: [CrestTrigger.ATTACK]
-	},
-	[CRESTS.FLAMES]: {
-		label: 'Mystery Crest A',
-		description:
 			'Restores HP equal to 30% of damage dealt when using weapons, combat arts or attack magic. Also has a roughly 1 in 4 chance to raise Might by 5 and prevent counterattacks.',
 		image: flamesImage,
 		activationDC: ActivationRates.omega,
-		triggersOn: [CrestTrigger.ATTACK, CrestTrigger.COMBAT_ART, CrestTrigger.MAGIC_ATTACK]
+		triggersOn: [CrestTrigger.ATTACK, CrestTrigger.COMBAT_ART, CrestTrigger.MAGIC_ATTACK],
+		hpRecoveryPercent: 0.3
 	},
 	[CRESTS.FRALDARIUS]: {
 		label: 'Fraldarius',
 		description: 'When attacking with a weapon, adds +2 damage to the attack if activated',
 		image: fraldariusImage,
 		activationDC: ActivationRates.gamma,
-		triggersOn: [CrestTrigger.ATTACK]
+		triggersOn: [CrestTrigger.ATTACK],
+		damageBonus: [2]
 	},
 	[CRESTS.GAUTIER]: {
 		label: 'Gautier',
@@ -160,14 +158,16 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 			'When using a combat art, adds +2 damage if the combat art deals damage if activated',
 		image: gautierImage,
 		activationDC: ActivationRates.alpha,
-		triggersOn: [CrestTrigger.COMBAT_ART]
+		triggersOn: [CrestTrigger.COMBAT_ART],
+		damageBonus: [2]
 	},
 	[CRESTS.GLOUCESTER]: {
 		label: 'Gloucester',
 		description: 'When attacking with a spell, adds +2 damage to the attack if activated',
 		image: gloucesterImage,
 		activationDC: ActivationRates.omega,
-		triggersOn: [CrestTrigger.MAGIC_ATTACK]
+		triggersOn: [CrestTrigger.MAGIC_ATTACK],
+		damageBonus: [2]
 	},
 	[CRESTS.GONERIL]: {
 		label: 'Goneril',
@@ -182,7 +182,8 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 			'When attacking with a weapon, you may attack the target again if activated. (this follow up attack can also trigger the effect)',
 		image: indechImage,
 		activationDC: ActivationRates.omega,
-		triggersOn: [CrestTrigger.ATTACK]
+		triggersOn: [CrestTrigger.ATTACK],
+		damageBonus: [2]
 	},
 	[CRESTS.LAMINE]: {
 		label: 'Lamine',
@@ -197,7 +198,8 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 		description: 'When attacking with a spell, add +2 damage to the attack if activated.',
 		image: macuilImage,
 		activationDC: ActivationRates.omega,
-		triggersOn: [CrestTrigger.MAGIC_ATTACK]
+		triggersOn: [CrestTrigger.MAGIC_ATTACK],
+		damageBonus: [2]
 	},
 	[CRESTS.RIEGAN]: {
 		label: 'Riegan',
@@ -205,7 +207,8 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 			'When using a combat art, heal for 30% of the damage dealt if the combat art deals damage if activated',
 		image: rieganImage,
 		activationDC: ActivationRates.beta,
-		triggersOn: [CrestTrigger.COMBAT_ART]
+		triggersOn: [CrestTrigger.COMBAT_ART],
+		hpRecoveryPercent: 0.3
 	},
 	[CRESTS.SEIROS]: {
 		label: 'Seiros',
@@ -213,13 +216,15 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 			'When using a combat art, heal for 30% of the damage dealt if the combat art deals damage if activated',
 		image: seirosImage,
 		activationDC: ActivationRates.alpha,
-		triggersOn: [CrestTrigger.COMBAT_ART]
+		triggersOn: [CrestTrigger.COMBAT_ART],
+		hpRecoveryPercent: 0.3
 	},
 	[CRESTS.THE_BEAST]: {
 		label: 'Mystery Crest B',
 		description: 'When attacking with a weapon, add +2 damage',
 		activationDC: ActivationRates.gamma,
 		image: theBeastImage,
-		triggersOn: [CrestTrigger.COMBAT_ART]
+		triggersOn: [CrestTrigger.COMBAT_ART],
+		damageBonus: [2]
 	}
 };

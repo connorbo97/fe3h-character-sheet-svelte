@@ -39,6 +39,7 @@
 	$: weaponsToFeatures = allWeapons.fullFeatures;
 	$: dexMod = getModifierByPlayerStat(playerStats[PLAYER_STAT.DEX]);
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
+	$: selectedWeaponType = WEAPON_TO_TYPE[selectedWeapon];
 
 	// queries
 	$: calcQueriesMap = (): { [s: string]: Query } => {
@@ -98,13 +99,19 @@
 		}
 	};
 
-	$: selectedWeaponType = WEAPON_TO_TYPE[selectedWeapon];
+	$: crestType = playerCrest.type;
+	$: crestName = CRESTS_TO_FEATURES[crestType]?.label;
+	$: crestDescription = CRESTS_TO_FEATURES[crestType]?.description;
+	$: crestDamageBonus = CRESTS_TO_FEATURES[crestType]?.damageBonus || [];
+	$: crestCombatArtDamageModifier = CRESTS_TO_FEATURES[crestType]?.combatArtDamageMultiplier || 1;
+	$: crestConservesResource = CRESTS_TO_FEATURES[crestType]?.conservesResource || false;
+	$: crestHPRecoveryPercent = CRESTS_TO_FEATURES[crestType]?.hpRecoveryPercent || 0;
 	$: shouldRollCrest = calcShouldRollCrest();
 	$: crestDC = shouldRollCrest
-		? CRESTS_TO_FEATURES[playerCrest.type].activationDC[
+		? CRESTS_TO_FEATURES[crestType].activationDC[
 				playerCrest.isMajor ? CrestType.MAJOR : CrestType.MINOR
 		  ]
-		: 21;
+		: Infinity;
 
 	// Attack
 	$: attackDexModifier = dexMod;
@@ -225,9 +232,6 @@
 		{setSelectedWeapon}
 		{selectedCombatArt}
 		{setSelectedCombatArt}
-		{shouldRollCrest}
-		{playerCrest}
-		{crestDC}
 	/>
 	<div class="calcs">
 		<div class="attack-container">
@@ -324,6 +328,14 @@
 				{/if}
 			</h2>
 		</div>
+		{#if shouldRollCrest}
+			<div class="crest-container">
+				<h2 class="content">
+					Crest of {crestName} (DC {crestDC}):
+					<span class="crest-description">{crestDescription}</span>
+				</h2>
+			</div>
+		{/if}
 	</div>
 	<div class="rolls">
 		<button
@@ -414,5 +426,10 @@
 		.reset {
 			width: 200px;
 		}
+	}
+
+	.crest-description {
+		font-size: 15px;
+		font-weight: normal;
 	}
 </style>

@@ -56,10 +56,14 @@ declare global {
 	type CrestFeatures = {
 		label: string;
 		description: string;
+		damageBonus?: Array<CalcEntry>;
 		image: any;
 		activationDC: { [s in CrestType]: number };
 		triggersOn: Array<CrestTrigger>;
 
+		damageBonus?: Array<CalcEntry>;
+		combatArtDamageMultiplier?: number;
+		hpRecoveryPercent?: number;
 		conservesResource?: boolean;
 	};
 
@@ -139,7 +143,7 @@ declare global {
 		attackBonus?: Array<CalcEntry>;
 		rangeBonus?: number;
 		critBonus?: Array<CalcEntry>;
-		dieCost?: { roll: number | Dice; target: number; mod: number };
+		dieCost?: { roll: number | Dice; target: number; mod?: number; mult?: number };
 		reason?: string;
 	}
 	type WeaponFeatures = {
