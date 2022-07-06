@@ -129,7 +129,7 @@ export const calculateAllCombatArts = (
 ) =>
 	calculateAllCombatArtsMemoized(
 		fullSheet.unlockedClasses,
-		fullSheet.customWeapons,
+		fullSheet.customCombatArts,
 		fullSheet.classXP,
 		equippedClass,
 		allCombatSkillsSet
