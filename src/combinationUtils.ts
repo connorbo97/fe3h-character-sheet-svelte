@@ -53,6 +53,21 @@ const calculateAllWeaponsMemoized = memoize(
 		classUnlockSet.delete('pickOne');
 
 		const fullSet = new Set([...baseSet, ...customSet, ...equippedClassSet, ...classUnlockSet]);
+		const fullFeatures = { ...WEAPONS_TO_FEATURES, ...customWeapons };
+		const weaponsToLabel = Object.keys(fullFeatures).reduce(
+			(acc: { [s: string]: string }, key: string) => {
+				acc[key] = fullFeatures[key].label;
+				return acc;
+			},
+			{}
+		);
+		const weaponsToType = Object.keys(fullFeatures).reduce(
+			(acc: { [s: string]: string }, key: string) => {
+				acc[key] = fullFeatures[key].type;
+				return acc;
+			},
+			{}
+		);
 
 		return {
 			customSet,
@@ -60,7 +75,9 @@ const calculateAllWeaponsMemoized = memoize(
 			classUnlockSet,
 			fullSet,
 			fullArray: Array.from(fullSet),
-			fullFeatures: { ...WEAPONS_TO_FEATURES, ...customWeapons }
+			fullFeatures,
+			weaponsToLabel,
+			weaponsToType
 		};
 	}
 );
