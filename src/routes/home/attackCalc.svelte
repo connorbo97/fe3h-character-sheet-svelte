@@ -137,7 +137,7 @@
 		attackDexModifier,
 		...optionalAttackModifier
 	].filter((a) => a !== 0);
-	$: attackModifierRequiresRoll = checkCalcRequiresRoll(attackModifier);
+	$: simplifiedAttackModifier = simplifyCalc(attackModifier);
 
 	let attackRoll = 'Roll Attack';
 
@@ -169,6 +169,7 @@
 		...weaponArtDamageModifier,
 		...optionsDamageModifier
 	].filter((a) => a !== 0);
+	$: simplifiedDamageCalc = simplifyCalc(damageCalc);
 
 	let damageRoll = 'roll damage';
 
@@ -259,7 +260,7 @@
 					{/if}
 				</span>
 				<span>
-					= 1d20 <span class="modifiers">+ {printCalc(simplifyCalc(attackModifier))}</span>
+					= 1d20 <span class="modifiers">+ {printCalc(simplifiedAttackModifier)}</span>
 				</span>
 			</h2>
 		</div>
@@ -294,7 +295,7 @@
 							<span>+ {optionsDamageModifier}<span class="source">(options)</span></span>
 						{/if}
 					</span>
-					= <span>{printCalc(simplifyCalc(damageCalc))}</span>
+					= <span>{printCalc(simplifiedDamageCalc)}</span>
 				{/if}
 			</h2>
 		</div>
@@ -319,7 +320,8 @@
 						<span>+ {optionsCritModifier}<span class="source">(options)</span></span>
 					{/if}
 				</span>
-				= {20 - critModifier} to 20
+				{#if critModifier >= 0}= {20 - critModifier} to 20{/if}
+				{#if critModifier < 0}= Can't Crit{/if}
 				<span />
 			</h2>
 		</div>
