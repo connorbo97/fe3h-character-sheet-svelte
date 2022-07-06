@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { CONTEXTS } from 'src/constants';
+
 	import { CLASS_TO_FEATURES } from 'src/constants/classes';
 
 	import { COMBAT_ARTS_TO_FEATURES } from 'src/constants/combatArts';
 	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
 	import { CRESTS_TO_FEATURES, CrestTrigger, CrestType } from 'src/constants/crests';
-	import { Dice } from 'src/constants/dice';
 	import { PLAYER_STAT, PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
 
 	import { HEALING_MAGIC, WEAPONS, WEAPON_TO_TYPE } from 'src/constants/weapons';
@@ -15,11 +16,14 @@
 		getModifierByPlayerStat,
 		printCalc,
 		rollCalc,
-		rollDice
+		simplifyCalc
 	} from 'src/utils';
+	import { getContext } from 'svelte';
 	import AttackCalcHeader from './attackCalcHeader.svelte';
+	import AttackRollModal from './attackRollModal.svelte';
 	import EntryPicker from './queryPicker.svelte';
 
+	const { open } = getContext(CONTEXTS.MODAL);
 	export let equippedClass: string;
 	export let equippedCombatArts: Array<string>;
 	export let equippedCombatSkills: Array<string>;
@@ -254,11 +258,9 @@
 						</span>
 					{/if}
 				</span>
-				{#if attackModifier.length > 0 && !attackModifierRequiresRoll}
-					<span>
-						= 1d20 <span class="modifiers">+ {rollCalc(attackModifier)}</span>
-					</span>
-				{/if}
+				<span>
+					= 1d20 <span class="modifiers">+ {printCalc(simplifyCalc(attackModifier))}</span>
+				</span>
 			</h2>
 		</div>
 		<div class="damage-container">
@@ -292,6 +294,7 @@
 							<span>+ {optionsDamageModifier}<span class="source">(options)</span></span>
 						{/if}
 					</span>
+					= <span>{printCalc(simplifyCalc(damageCalc))}</span>
 				{/if}
 			</h2>
 		</div>
@@ -337,7 +340,7 @@
 			</div>
 		{/if}
 	</div>
-	<div class="rolls">
+	<!-- <div class="rolls">
 		<button
 			on:click={() => {
 				const roll = rollDice(20);
@@ -365,6 +368,13 @@
 				critRoll = `${didCrit ? 'CRIT' : 'Normal'} (${roll})`;
 				e.currentTarget.innerHTML = `${didCrit ? 'CRIT' : 'Normal'} (${roll})`;
 			}}>Roll Crit</button
+		>
+	</div> -->
+	<div class="rolls">
+		<button
+			style:height={'100%'}
+			on:click={() => open(AttackRollModal, {})}
+			disabled={!selectedWeapon}>ATTACK</button
 		>
 	</div>
 	<div class="options">

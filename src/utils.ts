@@ -59,6 +59,39 @@ export const rollCalc = (calc: Dice | Array<CalcEntry>) => {
 	}, 0);
 };
 
+export const simplifyCalc = (calc: Array<CalcEntry>) => {
+	let subtractFlag: any = false;
+	const SUBTRACT = '-';
+	const accStart: { remainingDice: Array<any>; numSum: number } = {
+		numSum: 0,
+		remainingDice: []
+	};
+	const diceValues = new Set(Object.values(Dice));
+	const { remainingDice, numSum } = calc.reduce((acc, calc: any) => {
+		if (calc === SUBTRACT) {
+			subtractFlag = true;
+		} else if (diceValues.has(calc)) {
+			if (subtractFlag) {
+				subtractFlag = false;
+				acc.remainingDice = [...acc.remainingDice, SUBTRACT, calc];
+			} else {
+				acc.remainingDice = [...acc.remainingDice, calc];
+			}
+		} else {
+			if (subtractFlag) {
+				subtractFlag = false;
+				accStart.numSum -= calc;
+			} else {
+				accStart.numSum += calc;
+			}
+		}
+
+		return acc;
+	}, accStart);
+
+	return [...remainingDice, numSum];
+};
+
 export const checkHealPlus = (equippedClass: string, equippedCombatSkills: Array<string>) =>
 	equippedCombatSkills.includes(COMBAT_SKILLS.HEAL_PLUS) || equippedClass === CLASS.PRIEST;
 
