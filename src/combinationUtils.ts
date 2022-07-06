@@ -4,6 +4,7 @@ import {
 	COMBAT_SKILLS,
 	WEAPONS,
 	COMBAT_ARTS_TO_FEATURES,
+	COMBAT_SKILLS_TO_FEATURES,
 	WEAPONS_TO_FEATURES
 } from './constants';
 import memoize from 'memoize-one';
@@ -118,7 +119,8 @@ const calculateAllCombatSkillsMemoized = (
 		equippedClassSet,
 		classUnlockSet,
 		fullSet,
-		fullArray: Array.from(fullSet)
+		fullArray: Array.from(fullSet),
+		fullFeatures: { ...COMBAT_SKILLS_TO_FEATURES, ...customCombatSkills }
 	};
 };
 
