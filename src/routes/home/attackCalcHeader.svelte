@@ -78,7 +78,7 @@
 			>
 				<option value={''}> - </option>
 				{#each combatArtsOptions as art}
-					<option value={art}>
+					<option value={art} selected={selectedCombatArt === art}>
 						{allCombatArtFeatures[art].label}
 					</option>
 				{/each}
