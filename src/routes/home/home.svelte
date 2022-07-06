@@ -131,7 +131,7 @@
 	.container {
 		display: grid;
 		grid-template-areas: 'stats skills classes rest';
-		grid-template-columns: min-content 210px 210px 1fr;
+		grid-template-columns: min-content 200px 180px 1fr;
 		column-gap: 5px;
 
 		height: 100%;
