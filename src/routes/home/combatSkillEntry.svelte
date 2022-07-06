@@ -63,7 +63,6 @@
 	.label {
 		flex: 1;
 		cursor: pointer;
-		font-size: 20px;
 	}
 	.description {
 		padding: 5px;
