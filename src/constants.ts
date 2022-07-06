@@ -41,3 +41,7 @@ export const DEFAULT_MOVEMENT_SPEED = 4;
 export const DEFAULT_MAX_HP = 8;
 export const DEFAULT_PROTECTION = 0;
 export const DEFAULT_RESILIENCE = 0;
+
+export const CONTEXTS = {
+	MODAL: 'simple-modal'
+};
