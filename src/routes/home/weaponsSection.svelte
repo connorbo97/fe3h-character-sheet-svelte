@@ -62,7 +62,8 @@
 				weapon,
 				customWeapons,
 				weaponsToFeatures: allWeapons.fullFeatures,
-				onUpdateCustomWeapons
+				onUpdateCustomWeapons,
+				defaultReason: 'Manually added in weapons section'
 			});
 		}}
 	/>
