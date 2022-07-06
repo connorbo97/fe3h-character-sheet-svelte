@@ -9,11 +9,17 @@
 	export let setSelectedWeapon: any;
 	export let damageTypeSelection: any;
 	export let weaponsToFeatures: { [s: string]: WeaponFeatures };
-	let weaponsSelect: any;
+
+	$: weaponsOptions = [
+		...equippedWeapons,
+		...allWeapons.fullArray.filter((weapon) =>
+			MAGIC_WEAPON_TYPES.includes(weaponsToFeatures[weapon].type)
+		)
+	];
+
 	$: {
-		if (weaponsSelect && !equippedWeapons.includes(weaponsSelect?.value)) {
+		if (selectedWeapon && !weaponsOptions.includes(selectedWeapon)) {
 			setSelectedWeapon('');
-			weaponsSelect.value = '';
 		}
 	}
 
@@ -29,20 +35,11 @@
 		return compatibleWeapons.indexOf(weaponType) !== -1;
 	});
 
-	let combatArtsSelect: any;
 	$: {
-		if (combatArtsSelect && !combatArtsOptions.includes(combatArtsSelect?.value)) {
+		if (selectedCombatArt && !combatArtsOptions.includes(selectedCombatArt)) {
 			setSelectedCombatArt('');
-			combatArtsSelect.value = '';
 		}
 	}
-
-	$: weaponsOptions = [
-		...equippedWeapons,
-		...allWeapons.fullArray.filter((weapon) =>
-			MAGIC_WEAPON_TYPES.includes(weaponsToFeatures[weapon].type)
-		)
-	];
 </script>
 
 <div class="container">
@@ -50,20 +47,21 @@
 		<span class="label">
 			{`Weapon: `}
 		</span>
-		<select
-			bind:this={weaponsSelect}
-			on:change={(e) => {
-				setSelectedWeapon(e.currentTarget.value);
-				damageTypeSelection = '';
-			}}
-		>
-			<option value={''}> - </option>
-			{#each weaponsOptions as weapon}
-				<option value={weapon}>
-					{weaponsToFeatures[weapon]?.label}
-				</option>
-			{/each}
-		</select>
+		{#key weaponsOptions}
+			<select
+				on:change={(e) => {
+					setSelectedWeapon(e.currentTarget.value);
+					damageTypeSelection = '';
+				}}
+			>
+				<option value={''}> - </option>
+				{#each weaponsOptions as weapon}
+					<option value={weapon} selected={selectedWeapon === weapon}>
+						{weaponsToFeatures[weapon]?.label}
+					</option>
+				{/each}
+			</select>
+		{/key}
 	</div>
 	<div class="entry">
 		{weaponsToFeatures[selectedWeapon] && getWeaponDescription(weaponsToFeatures[selectedWeapon])}
@@ -72,19 +70,20 @@
 		<span class="label">
 			{`Combat Art: `}
 		</span>
-		<select
-			bind:this={combatArtsSelect}
-			on:change={(e) => {
-				setSelectedCombatArt(e.currentTarget.value);
-			}}
-		>
-			<option value={''}> - </option>
-			{#each combatArtsOptions as art}
-				<option value={art}>
-					{allCombatArtFeatures[art].label}
-				</option>
-			{/each}
-		</select>
+		{#key combatArtsOptions}
+			<select
+				on:change={(e) => {
+					setSelectedCombatArt(e.currentTarget.value);
+				}}
+			>
+				<option value={''}> - </option>
+				{#each combatArtsOptions as art}
+					<option value={art}>
+						{allCombatArtFeatures[art].label}
+					</option>
+				{/each}
+			</select>
+		{/key}
 	</div>
 	<div class="entry">
 		{COMBAT_ARTS_TO_FEATURES[selectedCombatArt] &&
@@ -102,11 +101,6 @@
 		justify-content: space-between;
 		grid-area: header;
 	}
-
-	.crest-indicator {
-		width: 20px;
-	}
-
 	.entry {
 		flex: 1;
 	}
