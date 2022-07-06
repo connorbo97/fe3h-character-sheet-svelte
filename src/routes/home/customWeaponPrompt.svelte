@@ -20,7 +20,7 @@
 </script>
 
 <div class="container">
-	<h1>{alreadyCustom ? 'Adding' : 'Removing'} custom weapon:</h1>
+	<h1>{alreadyCustom ? 'Removing' : 'Adding'} custom weapon:</h1>
 	{#if !alreadyCustom}
 		<div class="content">
 			<div>Reason:</div>
