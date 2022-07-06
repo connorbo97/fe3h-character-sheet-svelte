@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { WEAPONS, WEAPONS_TO_FEATURES } from 'src/constants/weapons';
+	import { WEAPONS } from 'src/constants/weapons';
 	import { checkHealPlus } from 'src/utils';
 
 	export let weapon: any;
@@ -19,7 +19,7 @@
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
 	let prevMaxUses: any = { current: null };
 	$: maxUses =
-		(WEAPONS_TO_FEATURES[weapon]?.uses || 0) * (hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
+		(allWeapons.fullFeatures[weapon]?.uses || 0) * (hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
 	$: curUses = weaponUses[weapon];
 	$: updateCurWeaponUses = (newTotal: any) => {
 		if (newTotal <= maxUses && newTotal >= 0) {
