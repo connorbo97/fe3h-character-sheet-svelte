@@ -54,10 +54,13 @@ const calculateAllWeaponsMemoized = memoize(
 		classUnlockSet.delete('pickOne');
 
 		const fullSet = new Set([...baseSet, ...customSet, ...equippedClassSet, ...classUnlockSet]);
-		const customWeaponFeatures = Object.keys(customWeapons).reduce((acc: any, cur: any) => {
-			acc[cur] = { ...WEAPONS_TO_FEATURES[cur], ...acc[cur] };
-			return acc;
-		}, customWeapons);
+		const customWeaponFeatures = Object.keys(customWeapons).reduce(
+			(acc: any, cur: any) => {
+				acc[cur] = { ...WEAPONS_TO_FEATURES[cur], ...acc[cur] };
+				return acc;
+			},
+			{ ...customWeapons }
+		);
 		const fullFeatures = { ...WEAPONS_TO_FEATURES, ...customWeaponFeatures };
 		const weaponsToLabel = Object.keys(fullFeatures).reduce(
 			(acc: { [s: string]: string }, key: string) => {
@@ -118,10 +121,13 @@ const calculateAllCombatSkillsMemoized = (
 		}
 	});
 	const fullSet = new Set([...customSet, ...equippedClassSet, ...classUnlockSet]);
-	const customCombatSkillFeatures = Object.keys(customCombatSkills).reduce((acc: any, cur: any) => {
-		acc[cur] = { ...COMBAT_SKILLS_TO_FEATURES[cur], ...acc[cur] };
-		return acc;
-	}, customCombatSkills);
+	const customCombatSkillFeatures = Object.keys(customCombatSkills).reduce(
+		(acc: any, cur: any) => {
+			acc[cur] = { ...COMBAT_SKILLS_TO_FEATURES[cur], ...acc[cur] };
+			return acc;
+		},
+		{ ...customCombatSkills }
+	);
 	return {
 		customSet,
 		equippedClassSet,
@@ -186,10 +192,13 @@ const calculateAllCombatArtsMemoized = (
 			? [COMBAT_ARTS.REPOSITION, COMBAT_ARTS.SWAP, COMBAT_ARTS.PULL_BACK, COMBAT_ARTS.SHOVE]
 			: [])
 	]);
-	const customCombatArtFeatures = Object.keys(customCombatArts).reduce((acc: any, cur: any) => {
-		acc[cur] = { ...COMBAT_ARTS_TO_FEATURES[cur], ...acc[cur] };
-		return acc;
-	}, customCombatArts);
+	const customCombatArtFeatures = Object.keys(customCombatArts).reduce(
+		(acc: any, cur: any) => {
+			acc[cur] = { ...COMBAT_ARTS_TO_FEATURES[cur], ...acc[cur] };
+			return acc;
+		},
+		{ ...customCombatArts }
+	);
 
 	return {
 		customSet,
