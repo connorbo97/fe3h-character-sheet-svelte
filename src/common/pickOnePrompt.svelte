@@ -46,7 +46,7 @@
 			case PickOnePromptType.Weapon:
 				const newCustomWeapons = newValues.reduce(
 					(acc: any, weapon: any) => {
-						acc[weapon] = { ...WEAPONS_TO_FEATURES[weapon], ...acc[weapon], reason };
+						acc[weapon] = { ...acc[weapon], reason };
 
 						return acc;
 					},
@@ -57,7 +57,7 @@
 			case PickOnePromptType.CombatArt:
 				const newCombatArts = newValues.reduce(
 					(acc: any, art: any) => {
-						acc[art] = { ...COMBAT_ARTS_TO_FEATURES[art], ...acc[art], reason };
+						acc[art] = { ...acc[art], reason };
 
 						return acc;
 					},
@@ -68,7 +68,7 @@
 			case PickOnePromptType.CombatSkill:
 				const newCombatSkills = newValues.reduce(
 					(acc: any, skill: any) => {
-						acc[skill] = { ...COMBAT_SKILLS_TO_FEATURES[skill], ...acc[skill], reason };
+						acc[skill] = { ...acc[skill], reason };
 
 						return acc;
 					},

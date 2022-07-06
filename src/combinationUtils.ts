@@ -54,7 +54,11 @@ const calculateAllWeaponsMemoized = memoize(
 		classUnlockSet.delete('pickOne');
 
 		const fullSet = new Set([...baseSet, ...customSet, ...equippedClassSet, ...classUnlockSet]);
-		const fullFeatures = { ...WEAPONS_TO_FEATURES, ...customWeapons };
+		const customWeaponFeatures = Object.keys(customWeapons).reduce((acc: any, cur: any) => {
+			acc[cur] = { ...WEAPONS_TO_FEATURES[cur], ...acc[cur] };
+			return acc;
+		}, customWeapons);
+		const fullFeatures = { ...WEAPONS_TO_FEATURES, ...customWeaponFeatures };
 		const weaponsToLabel = Object.keys(fullFeatures).reduce(
 			(acc: { [s: string]: string }, key: string) => {
 				acc[key] = fullFeatures[key].label;
@@ -114,13 +118,17 @@ const calculateAllCombatSkillsMemoized = (
 		}
 	});
 	const fullSet = new Set([...customSet, ...equippedClassSet, ...classUnlockSet]);
+	const customCombatSkillFeatures = Object.keys(customCombatSkills).reduce((acc: any, cur: any) => {
+		acc[cur] = { ...COMBAT_SKILLS_TO_FEATURES[cur], ...acc[cur] };
+		return acc;
+	}, customCombatSkills);
 	return {
 		customSet,
 		equippedClassSet,
 		classUnlockSet,
 		fullSet,
 		fullArray: Array.from(fullSet),
-		fullFeatures: { ...COMBAT_SKILLS_TO_FEATURES, ...customCombatSkills }
+		fullFeatures: { ...COMBAT_SKILLS_TO_FEATURES, ...customCombatSkillFeatures }
 	};
 };
 
@@ -178,6 +186,10 @@ const calculateAllCombatArtsMemoized = (
 			? [COMBAT_ARTS.REPOSITION, COMBAT_ARTS.SWAP, COMBAT_ARTS.PULL_BACK, COMBAT_ARTS.SHOVE]
 			: [])
 	]);
+	const customCombatArtFeatures = Object.keys(customCombatArts).reduce((acc: any, cur: any) => {
+		acc[cur] = { ...COMBAT_ARTS_TO_FEATURES[cur], ...acc[cur] };
+		return acc;
+	}, customCombatArts);
 
 	return {
 		customSet,
@@ -185,6 +197,6 @@ const calculateAllCombatArtsMemoized = (
 		classUnlockSet,
 		fullSet,
 		fullArray: Array.from(fullSet),
-		fullFeatures: { ...COMBAT_ARTS_TO_FEATURES, ...customCombatArts }
+		fullFeatures: { ...COMBAT_ARTS_TO_FEATURES, ...customCombatArtFeatures }
 	};
 };

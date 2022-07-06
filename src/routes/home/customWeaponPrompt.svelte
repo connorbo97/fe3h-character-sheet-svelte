@@ -49,7 +49,7 @@
 				onUpdateCustomWeapons({
 					...customWeapons,
 					[weapon]: {
-						...weaponsToFeatures[weapon],
+						...customWeapons[weapon],
 						reason: reason
 					}
 				});
