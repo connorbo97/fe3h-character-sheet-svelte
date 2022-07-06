@@ -9,6 +9,7 @@
 		REASON_MAGIC,
 		SWORD_WEAPONS
 	} from 'src/constants';
+	import { WEAPON_TYPE } from 'src/constants/weaponType';
 	import WeaponsSection from './weaponsSection.svelte';
 
 	export let equippedWeapons: any;
@@ -31,6 +32,13 @@
 	let curSuperiorityDies = maxSuperiorityDie;
 	let spellUseFlag = 0;
 
+	$: allWeaponFeatures = allWeapons.fullFeatures;
+	$: reasonEntries = allWeapons.fullArray.filter(
+		(w: string) => allWeaponFeatures[w].type === WEAPON_TYPE.REASON
+	);
+	$: faithEntries = allWeapons.fullArray.filter(
+		(w: string) => allWeaponFeatures[w].type === WEAPON_TYPE.FAITH
+	);
 	$: {
 		if (prevMax.current !== maxSuperiorityDie) {
 			curSuperiorityDies = maxSuperiorityDie;
@@ -176,44 +184,52 @@
 		</div>
 	</div>
 	<div class="magic-weapons">
-		<div class="category">
-			<div class="label">Reason</div>
-			{#each REASON_MAGIC as weapon}
-				<WeaponsSection
-					{equippedWeapons}
-					{weapon}
-					{onToggleEquip}
-					{allWeapons}
-					isMagic={true}
-					{spellUseFlag}
-					{equippedCombatSkills}
-					{equippedClass}
-					{weaponUses}
-					{onUpdateWeaponUses}
-					{customWeapons}
-					{onUpdateCustomWeapons}
-				/>
-			{/each}
-		</div>
-		<div class="category">
-			<div class="label">Faith</div>
-			{#each FAITH_MAGIC as weapon}
-				<WeaponsSection
-					{equippedWeapons}
-					{weapon}
-					{onToggleEquip}
-					{allWeapons}
-					isMagic={true}
-					{spellUseFlag}
-					{equippedCombatSkills}
-					{equippedClass}
-					{weaponUses}
-					{onUpdateWeaponUses}
-					{customWeapons}
-					{onUpdateCustomWeapons}
-				/>
-			{/each}
-		</div>
+		{#if reasonEntries.length}
+			<div class="magic-category">
+				<div class="label">Reason</div>
+				<div class="category">
+					{#each reasonEntries as weapon}
+						<WeaponsSection
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							{allWeapons}
+							isMagic={true}
+							{spellUseFlag}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
+			</div>
+		{/if}
+		{#if faithEntries.length}
+			<div class="magic-category">
+				<div class="label">Faith</div>
+				<div class="category">
+					{#each faithEntries as weapon}
+						<WeaponsSection
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							{allWeapons}
+							isMagic={true}
+							{spellUseFlag}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
+			</div>
+		{/if}
 	</div>
 </div>
 
@@ -236,29 +252,30 @@
 		border-bottom: 1px solid black;
 	}
 
+	.label {
+		font-weight: bold;
+	}
 	.magic-weapons {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
+		.magic-category {
+			padding: 5px;
+			flex: 1;
+			&:not(:last-child) {
+				border-right: 1px solid black;
+			}
+		}
 		.category {
 			display: grid;
 			flex-direction: column;
-			flex: 1;
 			grid-template-columns: repeat(3, 1fr);
 			grid-template-rows: repeat(3, max-content) auto;
 			grid-auto-rows: max-content;
 			grid-auto-flow: column;
 
-			border-right: 1px solid black;
-
-			padding: 5px;
-			max-height: 120px;
-
 			column-gap: 5px;
-
-			.label {
-				font-weight: bold;
-			}
+			row-gap: 5px;
 		}
 	}
 
@@ -274,9 +291,5 @@
 		max-height: 120px;
 
 		column-gap: 5px;
-
-		.label {
-			font-weight: bold;
-		}
 	}
 </style>

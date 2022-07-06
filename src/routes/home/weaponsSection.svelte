@@ -68,7 +68,7 @@
 			});
 		}}
 	/>
-	<div class="label">{allWeapons.weaponsToLabel[weapon]}</div>
+	<div class={`label ${isMagic ? 'magic' : ''}`}>{allWeapons.weaponsToLabel[weapon]}</div>
 	{#if !isMagic}
 		<button
 			class={equippedWeapons.includes(weapon) ? 'equipped' : ''}
@@ -103,9 +103,16 @@
 		font-weight: normal;
 
 		justify-content: space-between;
+		align-items: center;
 		column-gap: 5px;
 		.label {
 			flex: 1;
+			&.magic {
+				font-size: 15px;
+			}
+		}
+		button {
+			height: 15px;
 		}
 	}
 
