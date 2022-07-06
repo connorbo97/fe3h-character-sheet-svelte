@@ -36,6 +36,8 @@ declare global {
 		fullSet: Set<string>;
 		fullArray: Array<string>;
 		fullFeatures: object;
+		weaponsToType: { [s: string]: string };
+		weaponsToLabel: { [s: string]: string };
 	};
 	type AllCombatSkills = {
 		customSet: Set<string>;
