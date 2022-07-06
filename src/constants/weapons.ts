@@ -495,14 +495,6 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	}
 };
 
-export const WEAPON_TO_LABEL = Object.keys(WEAPONS_TO_FEATURES).reduce(
-	(acc: { [s: string]: string }, key) => {
-		acc[key] = WEAPONS_TO_FEATURES[key].label;
-		return acc;
-	},
-	{}
-);
-
 export const getWeaponDescription = (feature: WeaponFeatures) => {
 	const { damage, attackBonus, range } = feature;
 	return [

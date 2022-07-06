@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { WEAPON_TO_LABEL } from 'src/constants';
 	import { WEAPONS, WEAPONS_TO_FEATURES } from 'src/constants/weapons';
 	import { checkHealPlus } from 'src/utils';
 
@@ -52,7 +51,7 @@
 			? 'class-unlock'
 			: ''}
 	/>
-	<div class="label">{WEAPON_TO_LABEL[weapon]}</div>
+	<div class="label">{allWeapons.weaponsToLabel[weapon]}</div>
 	{#if !isMagic}
 		<button
 			class={equippedWeapons.includes(weapon) ? 'equipped' : ''}
