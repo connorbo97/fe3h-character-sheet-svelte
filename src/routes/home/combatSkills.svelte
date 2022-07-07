@@ -29,7 +29,7 @@
 		flex-direction: column;
 
 		border-radius: 5px;
-		background-color: rgb(130, 116, 221);
+		background-color: rgb(166, 157, 227);
 
 		flex: 1;
 		padding: 5px;
