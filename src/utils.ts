@@ -129,9 +129,8 @@ export const rollVisualDice = (
 	dice: any = ['1d20'],
 	options: {
 		modifier?: Array<CalcEntry>;
-		disableClear?: boolean;
+		disableResultBox?: boolean;
 		onRollResult?: Function;
-		preventResultBox?: Boolean;
 		clearTimeout?: number;
 	} = {}
 ) => {
@@ -154,23 +153,24 @@ export const rollVisualDice = (
 			return;
 		}
 
-		const result = res.map(({ value }: { value: any }) => value);
+		const dieResult = res.map(({ value }: { value: any }) => value);
+		const finalCalc = [...dieResult, ...(options.modifier || [])];
+		const finalCalcResult = rollCalc([...dieResult, ...(options.modifier || [])]);
 
 		const resultBox = getDiceBoxResult();
-		if (resultBox && !options.preventResultBox) {
+		if (resultBox && !options.disableResultBox) {
 			resultBox.style.opacity = '1';
-			const finalCalc = [...result, ...(options.modifier || [])];
-			const finalCalcResult = rollCalc([...result, ...(options.modifier || [])]);
 			resultBox.innerHTML = `${printCalc(finalCalc)} = ${finalCalcResult}`;
-
-			if (options.onRollResult) {
-				options.onRollResult(finalCalcResult, result);
-			}
 		}
 
 		if (options.clearTimeout) {
 			clearTimer = setTimeout(onClearDiceRoll, options.clearTimeout);
 		}
+
+		return {
+			resultArray: finalCalc,
+			value: finalCalcResult
+		};
 	}, []);
 
 	window.diceBoxContainer.style.pointerEvents = 'auto';
