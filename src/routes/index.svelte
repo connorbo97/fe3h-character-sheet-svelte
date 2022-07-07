@@ -1,3 +1,6 @@
+<!-- <svelte:head>
+
+</svelte:head> -->
 <script lang="ts">
 	var exports = {};
 	import { onMount } from 'svelte';
@@ -21,6 +24,7 @@
 		calculateAllWeapons
 	} from 'src/combinationUtils';
 	import Editor from './editor/editor.svelte';
+	import { Dice } from 'src/constants/dice';
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -79,6 +83,24 @@
 		}
 
 		ready = true;
+
+		import('@3d-dice/dice-box').then((DiceBox) => {
+			//@ts-ignore
+			const diceBox = new DiceBox.default('#dice-box', {
+				//@ts-ignore
+				assetPath: '/assets/dice-box/', // required,
+				id: 'dice-canvas',
+				theme: 'default',
+				themeColor: '#F00000',
+				scale: 10,
+				gravity: 2
+			});
+			window.diceBoxContainer = document.getElementById('dice-box');
+			diceBox.init().then(() => {
+				window.diceBox = diceBox;
+			});
+			// ...
+		});
 	});
 
 	$: onChangeSheet = (newSheet: any) => {
@@ -162,6 +184,7 @@
 <div class={`${ready ? '' : 'no-clicks'} container`}>
 	{#if ready}
 		<Modal show={$modal}>
+			<div id="dice-box" on:click={() => console.log('index clicked')} />
 			<div class="header">
 				<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} {currentPage} />
 			</div>
@@ -223,8 +246,12 @@
 </div>
 
 <style lang="scss">
-	// :global {
-	// }
+	:global {
+		#dice-canvas {
+			width: 100vw;
+			height: 100vh;
+		}
+	}
 	.container {
 		display: grid;
 		grid-template-areas:
@@ -261,5 +288,16 @@
 		height: 0;
 		width: 0;
 		overflow: hidden;
+	}
+
+	#dice-box {
+		z-index: 1001;
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 0px;
+		overflow: visible;
+		pointer-events: none;
+		background: none !important;
 	}
 </style>

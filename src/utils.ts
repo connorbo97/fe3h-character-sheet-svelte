@@ -123,3 +123,16 @@ export const onExportSheet = (fullSheet: CharacterSheet, prefix = '') => {
 export const copyToClipboard = (text: any) => {
 	navigator.clipboard.writeText(text);
 };
+
+export const rollVisualD20 = (dice: any = ['1d20']) => {
+	window.diceBox.roll(dice);
+	window.diceBoxContainer.style.pointerEvents = 'auto';
+	window.diceBoxContainer.addEventListener(
+		'click',
+		() => {
+			window.diceBox.clear();
+			window.diceBoxContainer.style.pointerEvents = 'none';
+		},
+		{ once: true }
+	);
+};
