@@ -11,11 +11,11 @@
 	import { HEALING_MAGIC, WEAPONS, WEAPON_TO_TYPE } from 'src/constants/weapons';
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
 	import {
-		checkCalcRequiresRoll,
 		checkHealPlus,
 		getModifierByPlayerStat,
 		printCalc,
 		rollCalc,
+		setEquality,
 		simplifyCalc
 	} from 'src/utils';
 	import { getContext } from 'svelte';
@@ -65,6 +65,8 @@
 	};
 	$: queriesMap = calcQueriesMap();
 	$: queries = Object.values(queriesMap);
+	$: queryKeys = queries.map((q) => q.key);
+	let prevQueryKeys: any = { current: null };
 
 	let selections: { [s: string]: QueryOption } | undefined;
 	$: {
@@ -73,14 +75,15 @@
 				acc[query.key || ''] = query.options[0];
 				return acc;
 			}, {});
-		} else {
-			queries.forEach((query) => {
-				if (!selections?.[query.key || '']) {
-					(selections || {})[query.key || ''] = query.options[0];
-				}
-			});
+		} else if (!setEquality(new Set(prevQueryKeys.current), new Set(queryKeys))) {
+			prevQueryKeys.current = queryKeys;
+			selections = queries.reduce((acc: { [s: string]: QueryOption }, query: Query) => {
+				acc[query.key || ''] = query.options[0];
+				return acc;
+			}, {});
 		}
 	}
+
 	$: onUpdateQuerySelection = (key: string, value: QueryOption) => {
 		selections = { ...selections, [key]: value };
 	};
@@ -130,7 +133,15 @@
 				[])
 		];
 	}, []);
-	$: optionalAttackModifier = [];
+	$: optionalAttackModifier = Object.keys(selections || {}).reduce(
+		(acc: Array<CalcEntry>, key: string) => {
+			if (selections?.[key].attackBonus) {
+				acc = [...acc, ...(selections[key].attackBonus || [])];
+			}
+			return acc;
+		},
+		[]
+	);
 	$: attackModifier = [
 		...skillAttackModifier,
 		...weaponArtAttackModifier,
@@ -161,7 +172,15 @@
 	$: healPlusModifier = selectedWeapon === WEAPONS.HEAL && hasHealPlus ? 2 : 0;
 
 	$: weaponArtDamageModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.damageBonus || [];
-	$: optionsDamageModifier = [];
+	$: optionsDamageModifier = Object.keys(selections || {}).reduce(
+		(acc: Array<CalcEntry>, key: string) => {
+			if (selections?.[key].damageBonus) {
+				acc = [...acc, ...(selections[key].damageBonus || [])];
+			}
+			return acc;
+		},
+		[]
+	);
 	$: damageCalc = [
 		damageBase,
 		...weaponDamageModifier,
@@ -272,7 +291,9 @@
 					{/if}
 					{#if optionalAttackModifier.length > 0}
 						<span>
-							+ {printCalc(optionalAttackModifier)}<span class="source">(optionals)</span>
+							+ {printCalc(simplifyCalc(optionalAttackModifier))}<span class="source"
+								>(optionals)</span
+							>
 						</span>
 					{/if}
 				</span>
@@ -312,7 +333,11 @@
 							<span>+ {weaponArtDamageModifier}<span class="source">(combat art)</span></span>
 						{/if}
 						{#if optionsDamageModifier.length}
-							<span>+ {optionsDamageModifier}<span class="source">(options)</span></span>
+							<span
+								>+ {printCalc(simplifyCalc(optionsDamageModifier))}<span class="source"
+									>(options)</span
+								></span
+							>
 						{/if}
 					</span>
 					= <span>{printCalc(simplifiedDamageCalc)}</span>
@@ -362,36 +387,6 @@
 			</div>
 		{/if}
 	</div>
-	<!-- <div class="rolls">
-		<button
-			on:click={() => {
-				const roll = rollDice(20);
-				const mod = rollCalc(attackModifier);
-				attackRoll = roll + mod + '=' + roll + '+' + mod;
-			}}>{attackRoll}</button
-		>
-		<button
-			on:click={(e) => {
-				const mod = rollCalc(attackModifier);
-				e.currentTarget.innerHTML = mod + '';
-			}}>Roll Mods Only</button
-		>
-		<button
-			on:click={() => {
-				const damage = rollCalc(damageCalc);
-				damageRoll = damage + '';
-			}}>{damageRoll}</button
-		>
-		<button
-			on:click={(e) => {
-				const roll = rollCalc([Dice.d20]);
-				const didCrit = roll >= 20 - critModifier;
-
-				critRoll = `${didCrit ? 'CRIT' : 'Normal'} (${roll})`;
-				e.currentTarget.innerHTML = `${didCrit ? 'CRIT' : 'Normal'} (${roll})`;
-			}}>Roll Crit</button
-		>
-	</div> -->
 	<div class="rolls">
 		<button style:height={'100%'} on:click={onOpenAttackModal} disabled={!selectedWeapon}
 			>ATTACK</button
@@ -418,7 +413,7 @@
 		grid-template-areas:
 			'header header'
 			'rolls buttons'
-			'picks empty';
+			'picks picks';
 
 		grid-template-rows: min-content min-content 1fr;
 		grid-template-columns: 1fr min-content;
@@ -453,6 +448,7 @@
 		position: relative;
 		display: flex;
 		flex-direction: column;
+		grid-area: picks;
 		.reset {
 			width: 200px;
 		}
