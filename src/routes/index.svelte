@@ -85,6 +85,12 @@
 		ready = true;
 
 		import('@3d-dice/dice-box').then((DiceBox) => {
+			let diceBoxOptions;
+			try {
+				diceBoxOptions = JSON.parse(localStorage.getItem('diceBoxOptions') || '{}');
+			} catch (err) {
+				console.log(err);
+			}
 			//@ts-ignore
 			const diceBox = new DiceBox.default('#dice-box', {
 				//@ts-ignore
@@ -92,8 +98,16 @@
 				id: 'dice-canvas',
 				theme: 'default',
 				themeColor: '#F00000',
+				friction: 0.9,
 				scale: 10,
-				gravity: 2
+				gravity: 5,
+				mass: 8,
+				linearDamping: 0.6,
+				angularDamping: 0.6,
+				spinForce: 1,
+				throwForce: 15,
+				startingHeight: 5,
+				...diceBoxOptions
 			});
 			window.diceBoxContainer = document.getElementById('dice-box');
 			diceBox.init().then(() => {
@@ -184,7 +198,7 @@
 <div class={`${ready ? '' : 'no-clicks'} container`}>
 	{#if ready}
 		<Modal show={$modal}>
-			<div id="dice-box" on:click={() => console.log('index clicked')} />
+			<div id="dice-box" />
 			<div class="header">
 				<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} {currentPage} />
 			</div>
@@ -248,8 +262,8 @@
 <style lang="scss">
 	:global {
 		#dice-canvas {
-			width: 100vw;
-			height: 100vh;
+			width: calc(100vw - 20px);
+			height: calc(100vh - 20px);
 		}
 	}
 	.container {
