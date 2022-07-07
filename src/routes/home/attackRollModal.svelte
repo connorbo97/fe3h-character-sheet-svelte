@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
-	import { copyToClipboard, printCalc, rollCalc, rollDice } from 'src/utils';
+	import { copyToClipboard, printCalc, rollCalc, rollDice, rollVisualDice } from 'src/utils';
 
 	export let playerName: any;
 

@@ -124,15 +124,48 @@ export const copyToClipboard = (text: any) => {
 	navigator.clipboard.writeText(text);
 };
 
-export const rollVisualD20 = (dice: any = ['1d20']) => {
-	window.diceBox.roll(dice);
+const getDiceBoxResult = () => document.getElementById('dice-box-result');
+export const rollVisualDice = (
+	dice: any = ['1d20'],
+	options?: {
+		modifier?: Array<CalcEntry>;
+		disableClear?: boolean;
+		onRollResult?: Function;
+		preventResultBox?: Boolean;
+	}
+) => {
+	let waitFlag = true;
+	const res = window.diceBox.roll(dice).then((res: any) => {
+		if (!waitFlag) {
+			return;
+		}
+
+		const result = res.map(({ value }: { value: any }) => value);
+
+		const resultBox = getDiceBoxResult();
+		if (resultBox && !options?.preventResultBox) {
+			resultBox.style.opacity = '1';
+			const finalCalc = [...result, ...(options?.modifier || [])];
+			const finalCalcResult = rollCalc([...result, ...(options?.modifier || [])]);
+			resultBox.innerHTML = `${printCalc(finalCalc)} = ${finalCalcResult}`;
+
+			if (options?.onRollResult) {
+				options?.onRollResult(finalCalcResult, result);
+			}
+		}
+	}, []);
+
 	window.diceBoxContainer.style.pointerEvents = 'auto';
 	window.diceBoxContainer.addEventListener(
 		'click',
 		() => {
+			waitFlag = false;
 			window.diceBox.clear();
 			window.diceBoxContainer.style.pointerEvents = 'none';
+			(getDiceBoxResult()?.style || { opacity: 0 }).opacity = 0;
 		},
 		{ once: true }
 	);
+
+	return res;
 };

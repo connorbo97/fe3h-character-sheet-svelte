@@ -106,6 +106,7 @@
 				angularDamping: 0.6,
 				spinForce: 1,
 				throwForce: 15,
+				shadowTransparency: 0.6,
 				startingHeight: 5,
 				...diceBoxOptions
 			});
@@ -198,7 +199,9 @@
 <div class={`${ready ? '' : 'no-clicks'} container`}>
 	{#if ready}
 		<Modal show={$modal}>
-			<div id="dice-box" />
+			<div id="dice-box">
+				<span id="dice-box-result" />
+			</div>
 			<div class="header">
 				<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} {currentPage} />
 			</div>
@@ -313,5 +316,27 @@
 		overflow: visible;
 		pointer-events: none;
 		background: none !important;
+	}
+	#dice-box-result {
+		background-color: azure;
+		border: 2px solid black;
+		border-radius: 5px;
+		padding: 5px;
+		font-size: 30px;
+		// opacity: 0;
+		position: fixed;
+		z-index: 1;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		min-width: 200px;
+		min-height: 100px;
+
+		opacity: 0;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>
