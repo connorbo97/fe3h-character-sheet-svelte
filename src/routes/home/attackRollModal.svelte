@@ -100,7 +100,6 @@
 	$: attackRollText = `&{template:atk} {{rname=[${weaponLabel}](\`${damageResultText2})}} {{mod=${
 		selectedCombatArt ? allCombatArts.fullFeatures[selectedCombatArt]?.label : '+0'
 	}}} {{r1=[[1d20${prefixedAttackCalc}]]}} {{normal=1}} {{charname=${playerName}}}`;
-	$: console.log(attackRollText);
 </script>
 
 <div class="container">
