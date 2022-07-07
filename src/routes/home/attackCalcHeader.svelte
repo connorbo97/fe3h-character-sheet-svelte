@@ -62,9 +62,11 @@
 				{/each}
 			</select>
 		{/key}
-	</div>
-	<div class="entry">
-		{weaponsToFeatures[selectedWeapon] && getWeaponDescription(weaponsToFeatures[selectedWeapon])}
+		<div class="description">
+			{weaponsToFeatures[selectedWeapon]
+				? getWeaponDescription(weaponsToFeatures[selectedWeapon])
+				: ''}
+		</div>
 	</div>
 	<div class="entry">
 		<span class="label">
@@ -84,10 +86,11 @@
 				{/each}
 			</select>
 		{/key}
-	</div>
-	<div class="entry">
-		{COMBAT_ARTS_TO_FEATURES[selectedCombatArt] &&
-			getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])}
+		<div class="description">
+			{COMBAT_ARTS_TO_FEATURES[selectedCombatArt]
+				? getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])
+				: ''}
+		</div>
 	</div>
 </div>
 
@@ -103,5 +106,9 @@
 	}
 	.entry {
 		flex: 1;
+
+		display: flex;
+		flex-direction: column;
+		row-gap: 5px;
 	}
 </style>
