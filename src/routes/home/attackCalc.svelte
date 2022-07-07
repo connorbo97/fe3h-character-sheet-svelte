@@ -157,10 +157,8 @@
 	}
 	$: damageBase = getModifierByPlayerStat(playerStats[damageTypeSelection] || 10);
 	$: damageTypeLabel = PLAYER_STAT_TO_SHORT_LABEL[damageTypeSelection];
-	$: weaponDamageModifier = [
-		...(weaponsToFeatures[selectedWeapon]?.damage || []),
-		...(selectedWeapon === WEAPONS.HEAL && hasHealPlus ? [2] : [])
-	];
+	$: weaponDamageModifier = [...(weaponsToFeatures[selectedWeapon]?.damage || [])];
+	$: healPlusModifier = selectedWeapon === WEAPONS.HEAL && hasHealPlus ? 2 : 0;
 
 	$: weaponArtDamageModifier = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.damageBonus || [];
 	$: optionsDamageModifier = [];
@@ -168,6 +166,7 @@
 		damageBase,
 		...weaponDamageModifier,
 		...weaponArtDamageModifier,
+		healPlusModifier,
 		...optionsDamageModifier
 	].filter((a) => a !== 0);
 	$: simplifiedDamageCalc = simplifyCalc(damageCalc);
@@ -305,6 +304,9 @@
 					<span class="modifiers">
 						{#if weaponDamageModifier.length}
 							<span>+ {printCalc(weaponDamageModifier)}<span class="source">(weapon)</span></span>
+						{/if}
+						{#if healPlusModifier}
+							<span>+ {healPlusModifier}<span class="source">(Heal Plus)</span></span>
 						{/if}
 						{#if weaponArtDamageModifier.length}
 							<span>+ {weaponArtDamageModifier}<span class="source">(combat art)</span></span>
