@@ -1,6 +1,6 @@
 import { Dice } from './dice';
 import { WEAPONS } from './weapons';
-import { WEAPON_TYPE } from './weaponType';
+import { MARTIAL_WEAPON_TYPES, WEAPON_TYPE } from './weaponType';
 
 // Combat Skills
 export const COMBAT_SKILLS = {
@@ -42,13 +42,7 @@ export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 		queries: [
 			{
 				prompt: 'ranged attack from cover?',
-				compatibleWeapons: [
-					WEAPON_TYPE.SWORD,
-					WEAPON_TYPE.AXE,
-					WEAPON_TYPE.LANCE,
-					WEAPON_TYPE.FISTS,
-					WEAPON_TYPE.BOW
-				],
+				compatibleWeapons: MARTIAL_WEAPON_TYPES,
 				options: [
 					{
 						label: 'No'
