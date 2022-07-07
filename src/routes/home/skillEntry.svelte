@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { PROFICIENCY_BONUS } from 'src/constants';
+	import { Dice } from 'src/constants/dice';
 
 	import { PLAYER_SKILL_TO_LABEL, PLAYER_SKILL_TO_STAT } from 'src/constants/playerSkills';
 	import { PLAYER_STAT_TO_LABEL, PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
-	import { getModifierByPlayerStat } from 'src/utils';
+	import { getModifierByPlayerStat, rollVisualDice } from 'src/utils';
 
 	export let stats: any;
 	export let skillProficiency: any;
@@ -29,8 +30,14 @@
 		on:click={() => onToggleSkillProficiency(skill)}
 	/>
 	<div class="total">{skillBonusMod + skillProficiencyMod + skillStatModifier}</div>
-	<div class="label">
-		<span>{`${PLAYER_SKILL_TO_LABEL[skill]} `}</span>
+	<div
+		class="label"
+		on:click={() =>
+			rollVisualDice([Dice.d20], {
+				modifier: [skillBonusMod + skillProficiencyMod + skillStatModifier]
+			})}
+	>
+		<span class="label-text">{`${PLAYER_SKILL_TO_LABEL[skill]} `}</span>
 		{#if Array.isArray(skillStat)}
 			<select
 				name="stat-type"
@@ -55,6 +62,9 @@
 	.container {
 		display: flex;
 		column-gap: 3px;
+		&:hover {
+			color: royalblue;
+		}
 	}
 	.blue {
 		background-color: blue;
