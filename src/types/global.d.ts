@@ -1,7 +1,12 @@
+import type diceBoxEs from '@3d-dice/dice-box';
 import type { CrestTrigger, PickOnePromptType } from 'src/constants';
 import type { Dice } from 'src/constants/dice';
 
 declare global {
+	interface Window {
+		diceBox: diceBoxEs;
+		diceBoxContainer: any;
+	}
 	type XPBlock = {
 		total: number;
 		level: string;

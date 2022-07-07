@@ -28,6 +28,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@3d-dice/dice-box": "^1.0.5",
 		"@sveltejs/adapter-node": "^1.0.0-next.78",
 		"@sveltejs/adapter-static": "^1.0.0-next.34",
 		"jsoneditor": "^9.9.0",

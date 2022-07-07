@@ -3,13 +3,8 @@
 		DEFAULT_PLAYER_SKILL_BONUSES,
 		DEFAULT_PLAYER_SKILL_PROFICIENCY,
 		DEFAULT_PLAYER_STAT,
-		PLAYER_SKILL,
-		PLAYER_SKILL_TO_LABEL,
-		PLAYER_SKILL_TO_STAT,
-		PLAYER_STAT_TO_SHORT_LABEL,
-		PROFICIENCY_BONUS
+		PLAYER_SKILL
 	} from 'src/constants';
-	import { getModifierByPlayerStat } from 'src/utils';
 	import SkillEntry from './skillEntry.svelte';
 
 	export let stats = DEFAULT_PLAYER_STAT;
@@ -30,7 +25,7 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		background-color: red;
+		background-color: #f89090;
 		padding: 5px;
 		border-radius: 5px;
 		row-gap: 10px;
@@ -42,8 +37,5 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 10px;
-	}
-	.transparent {
-		background-color: transparent;
 	}
 </style>

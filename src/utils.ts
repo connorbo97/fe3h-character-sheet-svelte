@@ -20,14 +20,21 @@ export const calcDice = (die: CalcEntry) => {
 
 	return parseInt(times) * rollDice(parseInt(faces));
 };
-export const printCalc = (calc: Array<CalcEntry>): string =>
-	calc.reduce((acc: string, entry: number | string, index: number) => {
+export const printCalc = (calc: Array<CalcEntry>, addPlusSign?: boolean): string => {
+	const res = calc.reduce((acc: string, entry: number | string, index: number) => {
 		if (entry === '-' || parseInt(entry + '') < 0) {
 			acc = acc.substr(0, acc.length - 1);
 		}
 
 		return acc + (entry + '') + (index === calc.length - 1 ? '' : '+');
 	}, '');
+
+	if (res.toString()[0] !== '-' && addPlusSign) {
+		return '+' + res;
+	}
+
+	return res;
+};
 
 export const checkCalcRequiresRoll = (calc: Array<CalcEntry>) =>
 	calc.some((calc: any) => Object.values(Dice).includes(calc));
@@ -111,4 +118,73 @@ export const onExportSheet = (fullSheet: CharacterSheet, prefix = '') => {
 		alert('Failed to export sheet, see console');
 		console.error(err);
 	}
+};
+
+export const copyToClipboard = (text: any) => {
+	navigator.clipboard.writeText(text);
+};
+
+const getDiceBoxResult = () => document.getElementById('dice-box-result');
+export const rollVisualDice = (
+	dice: any = ['1d20'],
+	options: {
+		modifier?: Array<CalcEntry>;
+		disableResultBox?: boolean;
+		onRollResult?: Function;
+		clearTimeout?: number;
+	} = {}
+) => {
+	let waitFlag = true;
+	let clearTimer: any = null;
+	let submitReturn: any = null;
+
+	const onClearDiceRoll = () => {
+		waitFlag = false;
+		window.diceBox.clear();
+		window.diceBoxContainer.style.pointerEvents = 'none';
+		(getDiceBoxResult()?.style || { opacity: 0 }).opacity = 0;
+
+		if (clearTimer) {
+			clearTimeout(clearTimer);
+		}
+
+		if (submitReturn) {
+			submitReturn();
+		}
+	};
+
+	const res = window.diceBox.roll(dice).then((res: any) => {
+		if (!waitFlag) {
+			return;
+		}
+
+		const dieResult = res.map(({ value }: { value: any }) => value);
+		const finalCalc = [...dieResult, ...(options.modifier || [])];
+		const finalCalcResult = rollCalc([...dieResult, ...(options.modifier || [])]);
+
+		const resultBox = getDiceBoxResult();
+		if (resultBox && !options.disableResultBox) {
+			resultBox.style.opacity = '1';
+			resultBox.innerHTML = `${printCalc(finalCalc)} = ${finalCalcResult}`;
+		}
+
+		return new Promise((res, rej) => {
+			const returnValue = {
+				resultArray: finalCalc,
+				value: finalCalcResult
+			};
+
+			if (options.clearTimeout) {
+				submitReturn = () => res(returnValue);
+				clearTimer = setTimeout(onClearDiceRoll, options.clearTimeout);
+			} else {
+				res(returnValue);
+			}
+		});
+	}, []);
+
+	window.diceBoxContainer.style.pointerEvents = 'auto';
+	window.diceBoxContainer.addEventListener('click', onClearDiceRoll, { once: true });
+
+	return res;
 };

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Popup from './Popup.svelte';
 
-	import { getModifierByPlayerStat, rollD20 } from 'src/utils';
+	import { getModifierByPlayerStat, rollD20, rollVisualDice } from 'src/utils';
 	import {
 		CONTEXTS,
 		CRESTS,
@@ -38,8 +38,8 @@
 		const statBuff = getModifierByPlayerStat(stats[stat]);
 		const rng = rollD20();
 		const result = rng + statBuff;
-
-		open(Popup, { message: `${result} = ${rng} + ${statBuff}` });
+		rollVisualDice(['1d20'], { modifier: [statBuff] });
+		// open(Popup, { message: `${result} = ${rng} + ${statBuff}` });
 	};
 
 	const onPlayerStatChange = (stat: string, value: any) => {

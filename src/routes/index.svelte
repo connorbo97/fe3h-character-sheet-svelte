@@ -1,3 +1,6 @@
+<!-- <svelte:head>
+
+</svelte:head> -->
 <script lang="ts">
 	var exports = {};
 	import { onMount } from 'svelte';
@@ -21,6 +24,7 @@
 		calculateAllWeapons
 	} from 'src/combinationUtils';
 	import Editor from './editor/editor.svelte';
+	import { Dice } from 'src/constants/dice';
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -79,6 +83,39 @@
 		}
 
 		ready = true;
+
+		import('@3d-dice/dice-box').then((DiceBox) => {
+			let diceBoxOptions;
+			try {
+				diceBoxOptions = JSON.parse(localStorage.getItem('diceBoxOptions') || '{}');
+			} catch (err) {
+				console.log(err);
+			}
+			//@ts-ignore
+			const diceBox = new DiceBox.default('#dice-box', {
+				//@ts-ignore
+				assetPath: '/assets/dice-box/', // required,
+				id: 'dice-canvas',
+				theme: 'default',
+				themeColor: '#F00000',
+				friction: 0.9,
+				scale: 10,
+				gravity: 5,
+				mass: 8,
+				linearDamping: 0.6,
+				angularDamping: 0.6,
+				spinForce: 1,
+				throwForce: 15,
+				shadowTransparency: 0.6,
+				startingHeight: 5,
+				...diceBoxOptions
+			});
+			window.diceBoxContainer = document.getElementById('dice-box');
+			diceBox.init().then(() => {
+				window.diceBox = diceBox;
+			});
+			// ...
+		});
 	});
 
 	$: onChangeSheet = (newSheet: any) => {
@@ -162,12 +199,16 @@
 <div class={`${ready ? '' : 'no-clicks'} container`}>
 	{#if ready}
 		<Modal show={$modal}>
+			<div id="dice-box">
+				<span id="dice-box-result" />
+			</div>
 			<div class="header">
 				<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} {currentPage} />
 			</div>
 			<div class="content">
 				<div class={currentPage === 'HOME' ? '' : 'invisible'}>
 					<Home
+						playerName={name}
 						{allWeapons}
 						{allCombatSkills}
 						{allCombatArts}
@@ -222,8 +263,12 @@
 </div>
 
 <style lang="scss">
-	// :global {
-	// }
+	:global {
+		#dice-canvas {
+			width: calc(100vw - 20px);
+			height: calc(100vh - 20px);
+		}
+	}
 	.container {
 		display: grid;
 		grid-template-areas:
@@ -260,5 +305,38 @@
 		height: 0;
 		width: 0;
 		overflow: hidden;
+	}
+
+	#dice-box {
+		z-index: 1001;
+		position: fixed;
+		top: 0;
+		left: 0;
+		height: 0px;
+		overflow: visible;
+		pointer-events: none;
+		background: none !important;
+	}
+	#dice-box-result {
+		background-color: azure;
+		border: 2px solid black;
+		border-radius: 5px;
+		padding: 5px;
+		font-size: 30px;
+		// opacity: 0;
+		position: fixed;
+		z-index: 1;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+		min-width: 200px;
+		min-height: 100px;
+
+		opacity: 0;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 </style>

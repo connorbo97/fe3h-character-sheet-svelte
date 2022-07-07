@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
 	import { Dice } from 'src/constants/dice';
-	import { printCalc, rollCalc, rollDice } from 'src/utils';
+	import { copyToClipboard, printCalc, rollCalc, rollDice, rollVisualDice } from 'src/utils';
+
+	export let playerName: any;
 
 	export let allWeapons: any;
 	export let allCombatArts: any;
@@ -27,7 +29,6 @@
 
 	let damageRoll: any = 0;
 	let crestDamageRoll: any = 0;
-	$: damageRollText = damageRoll;
 
 	let critRoll: any = 0;
 
@@ -36,18 +37,38 @@
 	$: crestActivated = crestRoll >= crestDC;
 	$: crestDoesDamage = crestDamage.length || crestCombatArtDamageModifier > 1;
 
-	const onAttackRoll = () => {
-		attackRoll = rollDice(20);
+	$: prefixedAttackCalc = printCalc(attackCalc, true);
+
+	const onAttackRoll = async () => {
+		attackRoll = await rollVisualDice([Dice.d20], {
+			clearTimeout: 250,
+			disableResultBox: true
+		}).then((res: any) => res.value);
 		attackMod = rollCalc(attackCalc);
 	};
 	const onDamageRoll = () => {
 		damageRoll = rollCalc(damageCalc);
 	};
-	const onCritRoll = () => {
-		critRoll = rollDice(20);
+	const onCritRoll = async () => {
+		critRoll = await rollVisualDice([Dice.d20], {
+			clearTimeout: 250,
+			disableResultBox: true
+		}).then((res: any) => res.value);
 	};
-	$: onCrestRoll = () => {
-		crestRoll = rollDice(20);
+	$: getCrestDamageRollText = () => {
+		if (crestDamage.length) {
+			return printCalc(crestDamage);
+		} else if (crestCombatArtDamageModifier > 1) {
+			return `${crestCombatArtDamageModifier}*${printCalc(combatArtDamageBonus)}`;
+		}
+
+		return '0';
+	};
+	$: onCrestRoll = async () => {
+		crestRoll = await rollVisualDice([Dice.d20], {
+			clearTimeout: 250,
+			disableResultBox: true
+		}).then((res: any) => res.value);
 
 		if (crestRoll >= crestDC) {
 			if (crestDamage.length) {
@@ -56,30 +77,54 @@
 				crestDamageRoll = Math.round(rollCalc(combatArtDamageBonus) * crestCombatArtDamageModifier);
 			}
 		}
+
+		return crestDamageRoll;
 	};
-	const onRollAll = () => {
-		onAttackRoll();
-		onDamageRoll();
-		onCritRoll();
-		onCrestRoll();
+	const onRollAll = async () => {
+		try {
+			await onAttackRoll();
+			await onDamageRoll();
+			await onCritRoll();
+			await onCrestRoll();
+		} catch (err) {
+			alert('wait until all rolls have finished');
+		}
 	};
+
+	$: combatArtLabel = selectedCombatArt
+		? ` (${allCombatArts.fullFeatures[selectedCombatArt]?.label})`
+		: '';
+	$: weaponLabel = allWeapons.fullFeatures[selectedWeapon]?.label;
+	$: headerLabel = `${weaponLabel}` + combatArtLabel;
+	$: getDamageRollText = () => {
+		const critRoll = rollDice(20);
+		const crestRoll = rollDice(20);
+
+		const critActivated = critRoll > 20 - critModifier;
+		const crestActivated = critRoll > 20 - critModifier;
+		const calc = `${printCalc(damageCalc)}${
+			crestActivated && crestRoll >= crestDC ? `+${getCrestDamageRollText()}` : ''
+		}`;
+		return `/roll ${calc}${critActivated ? '+' + calc : ''}${
+			crestActivated ? ` [Crest Activated [${crestRoll}]]` : ''
+		}${critActivated ? ` [CRIT[${critRoll}]]` : ''} [ID${Math.floor(Math.random() * 1000000)}]`;
+	};
+	$: damageResultText2 = getDamageRollText();
+	$: attackRollText = `&{template:atk} {{rname=[${weaponLabel}](\`${damageResultText2})}} {{mod=${
+		selectedCombatArt ? allCombatArts.fullFeatures[selectedCombatArt]?.label : '+0'
+	}}} {{r1=[[1d20${prefixedAttackCalc}]]}} {{normal=1}} {{charname=${playerName}}}`;
 </script>
 
 <div class="container">
 	<div class="actions">
-		<span>
-			{allWeapons.fullFeatures[selectedWeapon].label}
-			{#if selectedCombatArt}
-				<span> ({allCombatArts.fullFeatures[selectedCombatArt].label})</span>
-			{/if}
-		</span>
+		<span> {headerLabel} </span>
 		<button on:click={onRollAll}>Roll everything</button>
-		<button>Copy to clipboard</button>
+		<button on:click={() => copyToClipboard(attackRollText)}>Copy to clipboard</button>
 	</div>
 	<div class="rolls">
 		<div class="attack">
 			<h3>Attack Modifier</h3>
-			<div class="content">{printCalc(attackCalc)}</div>
+			<div class="content">{prefixedAttackCalc}</div>
 			<button on:click={onAttackRoll}>Roll</button>
 		</div>
 		<div class="damage">
@@ -116,7 +161,7 @@
 	</div>
 	<div class="result">
 		<div class="attack" title={`${attackRoll} + ${attackMod}`}>{attackRoll + attackMod}</div>
-		<div class="damage">{damageRollText}</div>
+		<div class="damage">{damageRoll}</div>
 		<div class="crit">{critRoll >= 20 - critModifier ? 'CRIT' : 'Normal'} ({critRoll})</div>
 		<div class="crest">
 			{crestActivated ? 'ACTIVATED' : 'Normal'} ({crestRoll})
