@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
+	import { Dice } from 'src/constants/dice';
 	import { copyToClipboard, printCalc, rollCalc, rollDice, rollVisualDice } from 'src/utils';
 
 	export let playerName: any;
@@ -28,7 +29,6 @@
 
 	let damageRoll: any = 0;
 	let crestDamageRoll: any = 0;
-	$: damageRollText = damageRoll;
 
 	let critRoll: any = 0;
 
@@ -39,15 +39,21 @@
 
 	$: prefixedAttackCalc = printCalc(attackCalc, true);
 
-	const onAttackRoll = () => {
-		attackRoll = rollDice(20);
+	const onAttackRoll = async () => {
+		attackRoll = await rollVisualDice([Dice.d20], {
+			clearTimeout: 250,
+			disableResultBox: true
+		}).then((res: any) => res.value);
 		attackMod = rollCalc(attackCalc);
 	};
 	const onDamageRoll = () => {
 		damageRoll = rollCalc(damageCalc);
 	};
-	const onCritRoll = () => {
-		critRoll = rollDice(20);
+	const onCritRoll = async () => {
+		critRoll = await rollVisualDice([Dice.d20], {
+			clearTimeout: 250,
+			disableResultBox: true
+		}).then((res: any) => res.value);
 	};
 	$: getCrestDamageRollText = () => {
 		if (crestDamage.length) {
@@ -58,8 +64,11 @@
 
 		return '0';
 	};
-	$: onCrestRoll = () => {
-		crestRoll = rollDice(20);
+	$: onCrestRoll = async () => {
+		crestRoll = await rollVisualDice([Dice.d20], {
+			clearTimeout: 250,
+			disableResultBox: true
+		}).then((res: any) => res.value);
 
 		if (crestRoll >= crestDC) {
 			if (crestDamage.length) {
@@ -71,11 +80,15 @@
 
 		return crestDamageRoll;
 	};
-	const onRollAll = () => {
-		onAttackRoll();
-		onDamageRoll();
-		onCritRoll();
-		onCrestRoll();
+	const onRollAll = async () => {
+		try {
+			await onAttackRoll();
+			await onDamageRoll();
+			await onCritRoll();
+			await onCrestRoll();
+		} catch (err) {
+			alert('wait until all rolls have finished');
+		}
 	};
 
 	$: combatArtLabel = selectedCombatArt
@@ -148,7 +161,7 @@
 	</div>
 	<div class="result">
 		<div class="attack" title={`${attackRoll} + ${attackMod}`}>{attackRoll + attackMod}</div>
-		<div class="damage">{damageRollText}</div>
+		<div class="damage">{damageRoll}</div>
 		<div class="crit">{critRoll >= 20 - critModifier ? 'CRIT' : 'Normal'} ({critRoll})</div>
 		<div class="crest">
 			{crestActivated ? 'ACTIVATED' : 'Normal'} ({crestRoll})
