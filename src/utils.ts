@@ -136,6 +136,7 @@ export const rollVisualDice = (
 ) => {
 	let waitFlag = true;
 	let clearTimer: any = null;
+	let submitReturn: any = null;
 
 	const onClearDiceRoll = () => {
 		waitFlag = false;
@@ -145,6 +146,10 @@ export const rollVisualDice = (
 
 		if (clearTimer) {
 			clearTimeout(clearTimer);
+		}
+
+		if (submitReturn) {
+			submitReturn();
 		}
 	};
 
@@ -163,14 +168,19 @@ export const rollVisualDice = (
 			resultBox.innerHTML = `${printCalc(finalCalc)} = ${finalCalcResult}`;
 		}
 
-		if (options.clearTimeout) {
-			clearTimer = setTimeout(onClearDiceRoll, options.clearTimeout);
-		}
+		return new Promise((res, rej) => {
+			const returnValue = {
+				resultArray: finalCalc,
+				value: finalCalcResult
+			};
 
-		return {
-			resultArray: finalCalc,
-			value: finalCalcResult
-		};
+			if (options.clearTimeout) {
+				submitReturn = () => res(returnValue);
+				clearTimer = setTimeout(onClearDiceRoll, options.clearTimeout);
+			} else {
+				res(returnValue);
+			}
+		});
 	}, []);
 
 	window.diceBoxContainer.style.pointerEvents = 'auto';
