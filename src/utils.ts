@@ -20,14 +20,21 @@ export const calcDice = (die: CalcEntry) => {
 
 	return parseInt(times) * rollDice(parseInt(faces));
 };
-export const printCalc = (calc: Array<CalcEntry>): string =>
-	calc.reduce((acc: string, entry: number | string, index: number) => {
+export const printCalc = (calc: Array<CalcEntry>, addPlusSign?: boolean): string => {
+	const res = calc.reduce((acc: string, entry: number | string, index: number) => {
 		if (entry === '-' || parseInt(entry + '') < 0) {
 			acc = acc.substr(0, acc.length - 1);
 		}
 
 		return acc + (entry + '') + (index === calc.length - 1 ? '' : '+');
 	}, '');
+
+	if (res.toString()[0] !== '-' && addPlusSign) {
+		return '+' + res;
+	}
+
+	return res;
+};
 
 export const checkCalcRequiresRoll = (calc: Array<CalcEntry>) =>
 	calc.some((calc: any) => Object.values(Dice).includes(calc));
@@ -111,4 +118,8 @@ export const onExportSheet = (fullSheet: CharacterSheet, prefix = '') => {
 		alert('Failed to export sheet, see console');
 		console.error(err);
 	}
+};
+
+export const copyToClipboard = (text: any) => {
+	navigator.clipboard.writeText(text);
 };

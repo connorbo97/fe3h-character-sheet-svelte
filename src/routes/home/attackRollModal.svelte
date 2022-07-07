@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
-	import { Dice } from 'src/constants/dice';
-	import { printCalc, rollCalc, rollDice } from 'src/utils';
+	import { copyToClipboard, printCalc, rollCalc, rollDice } from 'src/utils';
+
+	export let playerName: any;
 
 	export let allWeapons: any;
 	export let allCombatArts: any;
@@ -36,6 +37,8 @@
 	$: crestActivated = crestRoll >= crestDC;
 	$: crestDoesDamage = crestDamage.length || crestCombatArtDamageModifier > 1;
 
+	$: prefixedAttackCalc = printCalc(attackCalc, true);
+
 	const onAttackRoll = () => {
 		attackRoll = rollDice(20);
 		attackMod = rollCalc(attackCalc);
@@ -45,6 +48,15 @@
 	};
 	const onCritRoll = () => {
 		critRoll = rollDice(20);
+	};
+	$: getCrestDamageRollText = () => {
+		if (crestDamage.length) {
+			return printCalc(crestDamage);
+		} else if (crestCombatArtDamageModifier > 1) {
+			return `${crestCombatArtDamageModifier}*${printCalc(combatArtDamageBonus)}`;
+		}
+
+		return '0';
 	};
 	$: onCrestRoll = () => {
 		crestRoll = rollDice(20);
@@ -56,6 +68,8 @@
 				crestDamageRoll = Math.round(rollCalc(combatArtDamageBonus) * crestCombatArtDamageModifier);
 			}
 		}
+
+		return crestDamageRoll;
 	};
 	const onRollAll = () => {
 		onAttackRoll();
@@ -63,23 +77,42 @@
 		onCritRoll();
 		onCrestRoll();
 	};
+
+	$: combatArtLabel = selectedCombatArt
+		? ` (${allCombatArts.fullFeatures[selectedCombatArt]?.label})`
+		: '';
+	$: weaponLabel = allWeapons.fullFeatures[selectedWeapon]?.label;
+	$: headerLabel = `${weaponLabel}` + combatArtLabel;
+	$: getDamageRollText = () => {
+		const critRoll = rollDice(20);
+		const crestRoll = rollDice(20);
+
+		const critActivated = critRoll > 20 - critModifier;
+		const crestActivated = critRoll > 20 - critModifier;
+		const calc = `${printCalc(damageCalc)}${
+			crestActivated && crestRoll >= crestDC ? `+${getCrestDamageRollText()}` : ''
+		}`;
+		return `/roll ${calc}${critActivated ? '+' + calc : ''}${
+			crestActivated ? ` [Crest Activated [${crestRoll}]]` : ''
+		}${critActivated ? ` [CRIT[${critRoll}]]` : ''} [ID${Math.floor(Math.random() * 1000000)}]`;
+	};
+	$: damageResultText2 = getDamageRollText();
+	$: attackRollText = `&{template:atk} {{rname=[${weaponLabel}](\`${damageResultText2})}} {{mod=${
+		selectedCombatArt ? allCombatArts.fullFeatures[selectedCombatArt]?.label : '+0'
+	}}} {{r1=[[1d20${prefixedAttackCalc}]]}} {{normal=1}} {{charname=${playerName}}}`;
+	$: console.log(attackRollText);
 </script>
 
 <div class="container">
 	<div class="actions">
-		<span>
-			{allWeapons.fullFeatures[selectedWeapon].label}
-			{#if selectedCombatArt}
-				<span> ({allCombatArts.fullFeatures[selectedCombatArt].label})</span>
-			{/if}
-		</span>
+		<span> {headerLabel} </span>
 		<button on:click={onRollAll}>Roll everything</button>
-		<button>Copy to clipboard</button>
+		<button on:click={() => copyToClipboard(attackRollText)}>Copy to clipboard</button>
 	</div>
 	<div class="rolls">
 		<div class="attack">
 			<h3>Attack Modifier</h3>
-			<div class="content">{printCalc(attackCalc)}</div>
+			<div class="content">{prefixedAttackCalc}</div>
 			<button on:click={onAttackRoll}>Roll</button>
 		</div>
 		<div class="damage">

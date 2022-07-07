@@ -8,6 +8,8 @@
 	import Stats from './stats.svelte';
 	import Weapons from './weapons.svelte';
 
+	export let playerName: any;
+
 	export let allWeapons: any;
 	export let allCombatSkills: any;
 	export let allCombatArts: any;
@@ -110,6 +112,7 @@
 		<div class="other">
 			<CombatStats stats={playerStats} {equippedClass} {unlockedClasses} {equippedCombatSkills} />
 			<AttackCalc
+				{playerName}
 				{equippedClass}
 				{equippedWeapons}
 				{equippedCombatArts}

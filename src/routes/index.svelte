@@ -168,6 +168,7 @@
 			<div class="content">
 				<div class={currentPage === 'HOME' ? '' : 'invisible'}>
 					<Home
+						playerName={name}
 						{allWeapons}
 						{allCombatSkills}
 						{allCombatArts}

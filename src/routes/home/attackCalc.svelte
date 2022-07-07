@@ -24,6 +24,7 @@
 	import EntryPicker from './queryPicker.svelte';
 
 	const { open } = getContext(CONTEXTS.MODAL);
+	export let playerName: any;
 	export let equippedClass: string;
 	export let equippedCombatArts: Array<string>;
 	export let equippedCombatSkills: Array<string>;
@@ -226,6 +227,7 @@
 
 	$: onOpenAttackModal = () =>
 		open(AttackRollModal, {
+			playerName,
 			attackCalc: simplifiedAttackModifier,
 			damageCalc: simplifiedDamageCalc,
 			critModifier,
