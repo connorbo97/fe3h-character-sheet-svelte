@@ -2,7 +2,7 @@
 	import { onDestroy } from 'svelte';
 
 	export let timeout = 500;
-	export let tooltipStyle = '';
+	export let tooltipStyle = 'RIGHT_START';
 	export let tooltipClass = '';
 	export let showing = false;
 
@@ -68,8 +68,8 @@
 
 <slot />
 <div class="hidden" bind:this={helper}>
-	<div class="TOOLTIP_tooltip-positioner">
-		<div class={`${tooltipClass} ${contentClass} TOOLTIP_tooltip_container ${tooltipStyle} `}>
+	<div class={`TOOLTIP_tooltip-positioner ${tooltipStyle}`}>
+		<div class={`${tooltipClass} ${contentClass} TOOLTIP_tooltip_container ${tooltipStyle}`}>
 			<slot name="t">tooltip</slot>
 		</div>
 	</div>
@@ -91,15 +91,20 @@
 	.TOOLTIP_tooltip-positioner {
 		position: absolute;
 		pointer-events: none;
-		z-index: -1;
 		width: 100vw;
 		height: 100vh;
 		display: flex;
 		top: -5px;
-		left: 5px;
 
+		&.RIGHT_START {
+			left: 5px;
+		}
 		&.CENTER {
-			left: 0px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+		&.LEFT_END {
+			right: 10px;
 		}
 	}
 	.TOOLTIP_tooltip_container {
@@ -112,10 +117,18 @@
 		padding: 5px;
 		transform: translateY(-100%);
 		top: 0;
-		left: 0;
 		font-size: 15px;
+
+		&.RIGHT_START {
+			left: 0;
+		}
 		&.CENTER {
+			left: 50%;
 			transform: translate(-50%, -100%);
+		}
+		&.LEFT_END {
+			left: inherit;
+			right: 0;
 		}
 	}
 	.hidden {
