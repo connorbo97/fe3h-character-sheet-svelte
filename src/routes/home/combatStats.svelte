@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SvelteTip from 'src/common/SvelteTip.svelte';
 	import {
 		CLASS_TO_FEATURES,
 		DEFAULT_ARMOR_CLASS,
@@ -117,19 +118,20 @@
 </script>
 
 <div class="container">
-	<div
-		style:flex={0}
-		title={`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${skillBonus} (combat skill bonus) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
-	>
-		<div class="big-text">
-			AC: {ac}
+	<SvelteTip tooltipClass="test">
+		<div slot="t">
+			{`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${skillBonus} (combat skill bonus) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
 		</div>
-		<div class="terrain-container">
-			<div>Terrain:</div>
-			<input type="number" value={terrainMod} on:input={onTerrainModChange} />
+		<div>
+			<div class="big-text">
+				AC: {ac}
+			</div>
+			<div class="terrain-container">
+				<div>Terrain:</div>
+				<input type="number" value={terrainMod} on:input={onTerrainModChange} />
+			</div>
 		</div>
-	</div>
-
+	</SvelteTip>
 	<div
 		class="big-text"
 		title={`Speed = ${DEFAULT_MOVEMENT_SPEED} + ${equippedClassMovementBonus} (from class) + ${skillMovementBonus} (from combat skills)`}

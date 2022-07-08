@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SvelteTip from 'src/common/SvelteTip.svelte';
 	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
 	import { Dice } from 'src/constants/dice';
 	import { copyToClipboard, printCalc, rollCalc, rollDice, rollVisualDice } from 'src/utils';
@@ -160,7 +161,12 @@
 		</div>
 	</div>
 	<div class="result">
-		<div class="attack" title={`${attackRoll} + ${attackMod}`}>{attackRoll + attackMod}</div>
+		<div class="attack">
+			<SvelteTip tooltipStyle="CENTER">
+				<div>{attackRoll + attackMod}</div>
+				<div slot="t">{`${attackRoll} + ${attackMod}`}</div>
+			</SvelteTip>
+		</div>
 		<div class="damage">{damageRoll}</div>
 		<div class="crit">{critRoll >= 20 - critModifier ? 'CRIT' : 'Normal'} ({critRoll})</div>
 		<div class="crest">
