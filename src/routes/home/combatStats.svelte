@@ -118,7 +118,7 @@
 </script>
 
 <div class="container">
-	<SvelteTip tooltipClass="test">
+	<SvelteTip tooltipStyle="CENTER">
 		<div slot="t">
 			{`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${skillBonus} (combat skill bonus) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
 		</div>
@@ -132,32 +132,38 @@
 			</div>
 		</div>
 	</SvelteTip>
-	<div
-		class="big-text"
-		title={`Speed = ${DEFAULT_MOVEMENT_SPEED} + ${equippedClassMovementBonus} (from class) + ${skillMovementBonus} (from combat skills)`}
-	>
-		Speed: {ms}
-	</div>
-
-	<div
-		class="big-text"
-		title={`HP Max = ${DEFAULT_MAX_HP} + ${unlockedClassHpBonus} (from unlocked classes) + ${intermediateClassHpBonus} (from being a intermediate class) + ${skillHPBonus} (from combat skills) + ${conMod} (CON modifier)`}
-	>
-		HP Max: {hpMax}
-	</div>
-
-	<div
-		class="big-text"
-		title={`Protection = ${DEFAULT_PROTECTION} + ${unlockedClassProtectionBonus} (from unlocked classes) + ${intermediateClassProtectionBonus} (from being a intermediate martial class) + ${equippedClassProtectionBonus} (from equipped class) + ${skillProtectionBonus} (from skills)`}
-	>
-		Protection: {protections}
-	</div>
-	<div
-		class="big-text"
-		title={`Resilience = ${DEFAULT_RESILIENCE} + ${unlockedClassResilienceBonus} (from unlocked classes) + ${intermediateClassResilienceBonus} (from being a intermediate magic class) + ${equippedClassResilienceBonus} (from equipped class) + ${skillResilienceBonus} (from skills)`}
-	>
-		Resilience: {resilience}
-	</div>
+	<SvelteTip>
+		<div slot="t">
+			{`Speed = ${DEFAULT_MOVEMENT_SPEED} + ${equippedClassMovementBonus} (from class) + ${skillMovementBonus} (from combat skills)`}
+		</div>
+		<div class="big-text">
+			Speed: {ms}
+		</div>
+	</SvelteTip>
+	<SvelteTip>
+		<div slot="t">
+			{`HP Max = ${DEFAULT_MAX_HP} + ${unlockedClassHpBonus} (from unlocked classes) + ${intermediateClassHpBonus} (from being a intermediate class) + ${skillHPBonus} (from combat skills) + ${conMod} (CON modifier)`}
+		</div>
+		<div class="big-text">
+			HP Max: {hpMax}
+		</div>
+	</SvelteTip>
+	<SvelteTip tooltipStyle="LEFT_END">
+		<div slot="t">
+			{`Protection = ${DEFAULT_PROTECTION} + ${unlockedClassProtectionBonus} (from unlocked classes) + ${intermediateClassProtectionBonus} (from being a intermediate martial class) + ${equippedClassProtectionBonus} (from equipped class) + ${skillProtectionBonus} (from skills)`}
+		</div>
+		<div class="big-text">
+			Protection: {protections}
+		</div>
+	</SvelteTip>
+	<SvelteTip tooltipStyle="LEFT_END">
+		<div slot="t">
+			{`Resilience = ${DEFAULT_RESILIENCE} + ${unlockedClassResilienceBonus} (from unlocked classes) + ${intermediateClassResilienceBonus} (from being a intermediate magic class) + ${equippedClassResilienceBonus} (from equipped class) + ${skillResilienceBonus} (from skills)`}
+		</div>
+		<div class="big-text">
+			Resilience: {resilience}
+		</div>
+	</SvelteTip>
 </div>
 
 <style lang="scss">
