@@ -5,6 +5,9 @@
 	export let tooltipStyle = 'RIGHT_START';
 	export let tooltipClass = '';
 	export let showing = false;
+	export let disabled = false;
+
+	const prevDisabled: any = { current: disabled };
 
 	let hovered = false;
 	const timer: any = { current: null };
@@ -16,7 +19,7 @@
 	$: tooltip = helper?.childNodes[0];
 	$: {
 		tooltip;
-		if (content && prevContent.current !== content) {
+		if (content && (prevContent.current !== content || prevDisabled.current !== disabled)) {
 			const mouseEnterListener = () => {
 				timer.current = setTimeout(() => {
 					hovered = true;
@@ -34,14 +37,21 @@
 				prevContentEl.removeEventListener('mouseenter', prevContent.mouseEnterListener);
 				prevContentEl.removeEventListener('mouseleave', prevContent.mouseLeaveListener);
 			}
-			prevContent.current = content;
-			prevContent.mouseEnterListener = mouseEnterListener;
-			prevContent.mouseLeaveListener = mouseLeaveListener;
-			content.id += 'TOOLTIP_container';
 
-			content?.addEventListener('mouseenter', mouseEnterListener);
-			content?.addEventListener('mouseleave', mouseLeaveListener);
+			if (!disabled) {
+				prevContent.current = content;
+				prevContent.mouseEnterListener = mouseEnterListener;
+				prevContent.mouseLeaveListener = mouseLeaveListener;
+				content.id += 'TOOLTIP_container';
+
+				content?.addEventListener('mouseenter', mouseEnterListener);
+				content?.addEventListener('mouseleave', mouseLeaveListener);
+			} else {
+				content.id = '';
+			}
 		}
+
+		prevDisabled.current = disabled;
 	}
 	$: {
 		tooltip;
