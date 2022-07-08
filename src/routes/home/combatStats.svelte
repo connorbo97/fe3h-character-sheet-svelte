@@ -122,7 +122,7 @@
 		<div slot="t">
 			{`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${skillBonus} (combat skill bonus) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
 		</div>
-		<div>
+		<div style:flex="0">
 			<div class="big-text">
 				AC: {ac}
 			</div>
@@ -140,9 +140,9 @@
 			Speed: {ms}
 		</div>
 	</SvelteTip>
-	<SvelteTip>
+	<SvelteTip tooltipStyle="LEFT_END">
 		<div slot="t">
-			{`HP Max = ${DEFAULT_MAX_HP} + ${unlockedClassHpBonus} (from unlocked classes) + ${intermediateClassHpBonus} (from being a intermediate class) + ${skillHPBonus} (from combat skills) + ${conMod} (CON modifier)`}
+			{`HP Max = ${DEFAULT_MAX_HP} + ${unlockedClassHpBonus} (from unlocked classes) + ${intermediateClassHpBonus} (from unlocking an intermediate class) + ${skillHPBonus} (from combat skills) + ${conMod} (CON modifier)`}
 		</div>
 		<div class="big-text">
 			HP Max: {hpMax}
@@ -150,15 +150,15 @@
 	</SvelteTip>
 	<SvelteTip tooltipStyle="LEFT_END">
 		<div slot="t">
-			{`Protection = ${DEFAULT_PROTECTION} + ${unlockedClassProtectionBonus} (from unlocked classes) + ${intermediateClassProtectionBonus} (from being a intermediate martial class) + ${equippedClassProtectionBonus} (from equipped class) + ${skillProtectionBonus} (from skills)`}
+			{`Protection = ${DEFAULT_PROTECTION} + ${unlockedClassProtectionBonus} (from unlocked classes) + ${intermediateClassProtectionBonus} (from unlocking an intermediate martial class) + ${equippedClassProtectionBonus} (from equipped class) + ${skillProtectionBonus} (from skills)`}
 		</div>
 		<div class="big-text">
 			Protection: {protections}
 		</div>
 	</SvelteTip>
-	<SvelteTip tooltipStyle="LEFT_END">
+	<SvelteTip tooltipStyle="LEFT_END" hiddenFirst>
 		<div slot="t">
-			{`Resilience = ${DEFAULT_RESILIENCE} + ${unlockedClassResilienceBonus} (from unlocked classes) + ${intermediateClassResilienceBonus} (from being a intermediate magic class) + ${equippedClassResilienceBonus} (from equipped class) + ${skillResilienceBonus} (from skills)`}
+			{`Resilience = ${DEFAULT_RESILIENCE} + ${unlockedClassResilienceBonus} (from unlocked classes) + ${intermediateClassResilienceBonus} (from unlocking an intermediate magic class) + ${equippedClassResilienceBonus} (from equipped class) + ${skillResilienceBonus} (from skills)`}
 		</div>
 		<div class="big-text">
 			Resilience: {resilience}
