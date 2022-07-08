@@ -1,26 +1,53 @@
 <script lang="ts">
 	import { CONTEXTS } from 'src/constants';
+	import { getWeaponDescription } from 'src/constants/weapons';
 	import { getContext, onMount } from 'svelte';
 
 	const { close } = getContext(CONTEXTS.MODAL);
 	export let defaultReason: string = '';
-	export let weapon: string;
+	export let weapon: any;
 	export let weaponsToFeatures: { [s: string]: WeaponFeatures };
 	export let customWeapons: { [s: string]: WeaponFeatures };
 	export let onUpdateCustomWeapons: Function;
 
-	$: alreadyCustom = customWeapons[weapon];
+	$: alreadyCustom = Array.isArray(weapon) ? false : customWeapons[weapon];
 
 	let reason: string = defaultReason;
 	let input: any;
 
+	let selected = Array.isArray(weapon) ? weapon[0] : weapon;
+	$: console.log(selected);
 	onMount(() => {
 		input?.select();
 	});
+	$: onSubmitForm = () => {
+		if (alreadyCustom) {
+			const { [selected]: removed, ...rest } = customWeapons;
+			onUpdateCustomWeapons(rest);
+		} else {
+			onUpdateCustomWeapons({
+				...customWeapons,
+				[selected]: {
+					...customWeapons[selected],
+					reason: reason
+				}
+			});
+		}
+		close();
+	};
 </script>
 
 <div class="container">
 	<h1>{alreadyCustom ? 'Removing' : 'Adding'} custom weapon:</h1>
+	{#if Array.isArray(weapon)}
+		<select on:change={(e) => (selected = e.currentTarget.value)}>
+			{#each weapon as w}
+				<option value={w} selected={w === selected}>
+					{weaponsToFeatures[w].label}: {getWeaponDescription(weaponsToFeatures[w])}
+				</option>
+			{/each}
+		</select>
+	{/if}
 	{#if !alreadyCustom}
 		<div class="content">
 			<div>Reason:</div>
@@ -39,23 +66,8 @@
 			{customWeapons[weapon]?.reason}
 		</div>
 	{/if}
-	<button
-		class="action"
-		on:click={() => {
-			if (alreadyCustom) {
-				const { [weapon]: removed, ...rest } = customWeapons;
-				onUpdateCustomWeapons(rest);
-			} else {
-				onUpdateCustomWeapons({
-					...customWeapons,
-					[weapon]: {
-						...customWeapons[weapon],
-						reason: reason
-					}
-				});
-			}
-			close();
-		}}>Click to {alreadyCustom ? 'Remove' : 'Submit'}</button
+	<button class="action" on:click={onSubmitForm}
+		>Click to {alreadyCustom ? 'Remove' : 'Submit'}</button
 	>
 </div>
 

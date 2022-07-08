@@ -1,7 +1,7 @@
 import { Dice } from './dice';
 import { PLAYER_STAT } from './stats';
 import { WEAPON_LEVEL } from './weaponLevel';
-import { WEAPON_TYPE } from './weaponType';
+import { MAGIC_WEAPON_TYPES, WEAPON_TYPE } from './weaponType';
 
 export const LEVEL_UP_ORDER = [
 	WEAPON_LEVEL.E,
@@ -503,14 +503,29 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	}
 };
 
+const [MAGIC_WEAPONS, MARTIAL_WEAPONS] = Object.keys(WEAPONS_TO_FEATURES).reduce(
+	(acc: any, w: any) => {
+		if (MAGIC_WEAPON_TYPES.includes(WEAPONS_TO_FEATURES[w].type)) {
+			acc[0].push(w);
+		} else {
+			acc[1].push(w);
+		}
+
+		return acc;
+	},
+	[[], []]
+);
+export { MAGIC_WEAPONS, MARTIAL_WEAPONS };
+
 export const getWeaponDescription = (feature: WeaponFeatures) => {
-	const { damage, attackBonus, range } = feature;
+	const { damage, attackBonus, range, critBonus } = feature;
 	return [
 		attackBonus ? `${attackBonus} to attack` : '',
 		`Damage: ${damage.reduce((acc, cur, i) => {
 			return acc + cur + (i === damage.length - 1 ? '' : parseInt(cur + '') < 0 ? '-' : '+');
 		}, '')}`,
-		`Range: ${Array.isArray(range) ? range?.join('-') : range}`
+		`Range: ${Array.isArray(range) ? range?.join('-') : range}`,
+		critBonus ? `Crit Bonus: ${critBonus}` : ''
 	]
 		.filter((a) => a)
 		.join(', ');
