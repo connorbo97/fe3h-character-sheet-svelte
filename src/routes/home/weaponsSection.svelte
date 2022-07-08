@@ -1,4 +1,6 @@
 <script lang="ts">
+	import SvelteTip from 'src/common/SvelteTip.svelte';
+
 	import { CONTEXTS } from 'src/constants';
 
 	import { WEAPONS } from 'src/constants/weapons';
@@ -50,24 +52,27 @@
 	$: isUnlocked = isCustomUnlock || isClassUnlock || isTrainingWeapon;
 
 	$: weaponsToFeatures = allWeapons.fullFeatures;
+	$: weaponIsDisabled = !weaponsToFeatures[weapon].reason;
 </script>
 
 <div class="container">
-	<button
-		class={`available-button ${isCustomUnlock ? 'custom-unlock' : ''} ${
-			allWeapons.fullSet.has(weapon) ? 'unlocked' : ''
-		}`}
-		title={weaponsToFeatures[weapon].reason}
-		on:click={() => {
-			open(CustomWeaponPrompt, {
-				weapon,
-				customWeapons,
-				weaponsToFeatures,
-				onUpdateCustomWeapons,
-				defaultReason: 'Manually added in weapons section'
-			});
-		}}
-	/>
+	<SvelteTip disabled={weaponIsDisabled}>
+		<button
+			class={`available-button ${isCustomUnlock ? 'custom-unlock' : ''} ${
+				allWeapons.fullSet.has(weapon) ? 'unlocked' : ''
+			}`}
+			on:click={() => {
+				open(CustomWeaponPrompt, {
+					weapon,
+					customWeapons,
+					weaponsToFeatures,
+					onUpdateCustomWeapons,
+					defaultReason: 'Manually added in weapons section'
+				});
+			}}
+		/>
+		<div slot="t">{weaponsToFeatures[weapon].reason}</div>
+	</SvelteTip>
 	<div class={`label ${isMagic ? 'magic' : ''}`}>{allWeapons.weaponsToLabel[weapon]}</div>
 	{#if !isMagic}
 		<button
@@ -119,6 +124,10 @@
 	.custom-unlock {
 		border-color: red;
 	}
+
+	// .available-button {
+	// 	cursor: pointer !important;
+	// }
 
 	.unlocked {
 		background-color: blue;
