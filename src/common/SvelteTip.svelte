@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { TooltipStyle } from 'src/constants/enums';
+
 	import { onDestroy } from 'svelte';
 
 	export let timeout = 500;
-	export let tooltipStyle = 'RIGHT_START';
+	export let tooltipStyle: TooltipStyle = TooltipStyle.RIGHT_START;
 	export let tooltipClass = '';
 	export let showing = false;
 	export let disabled = false;
