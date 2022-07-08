@@ -1,4 +1,4 @@
-import { COMBAT_SKILLS, CLASS } from './constants';
+import { COMBAT_SKILLS, CLASS, CrestType } from './constants';
 import { Dice } from './constants/dice';
 
 export const setEquality = (as: Set<any>, bs: Set<any>) => {
@@ -194,3 +194,6 @@ export const rollVisualDice = (
 
 	return res;
 };
+
+export const getCrestStrengthText = (bool: any) => (bool ? 'Major' : 'Minor');
+export const getCrestStrength = (bool: any) => (bool ? CrestType.MAJOR : CrestType.MINOR);
