@@ -16,7 +16,7 @@
 	let input: any;
 
 	let selected = Array.isArray(weapon) ? weapon[0] : weapon;
-	$: console.log(selected);
+
 	onMount(() => {
 		input?.select();
 	});
