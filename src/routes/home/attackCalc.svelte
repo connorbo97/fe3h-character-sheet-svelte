@@ -128,8 +128,8 @@
 	$: skillAttackModifier = equippedCombatSkills.reduce((acc: any, skill: any) => {
 		return [
 			...acc,
-			...(COMBAT_SKILLS_TO_FEATURES[skill].attackBonus?.['ANY'] ||
-				COMBAT_SKILLS_TO_FEATURES[skill].attackBonus?.[selectedWeaponType] ||
+			...(COMBAT_SKILLS_TO_FEATURES[skill].attackBonus?.[selectedWeaponType] ||
+				COMBAT_SKILLS_TO_FEATURES[skill].attackBonus?.['ANY'] ||
 				[])
 		];
 	}, []);
@@ -150,8 +150,6 @@
 		...optionalAttackModifier
 	].filter((a) => a !== 0);
 	$: simplifiedAttackModifier = simplifyCalc(attackModifier);
-
-	let attackRoll = 'Roll Attack';
 
 	// Damage
 	$: weaponDamageType = weaponsToFeatures[selectedWeapon]?.damageType;
@@ -190,8 +188,6 @@
 	].filter((a) => a !== 0);
 	$: simplifiedDamageCalc = simplifyCalc(damageCalc);
 
-	let damageRoll = 'roll damage';
-
 	// Crit
 	$: critDexModifier = -1;
 	$: weaponCritModifier = weaponsToFeatures[selectedWeapon]?.critBonus || 0;
@@ -204,8 +200,6 @@
 		...weaponArtCritModifier,
 		...optionsCritModifier
 	]);
-
-	let critRoll = 'Click to roll crit';
 
 	// Range
 	$: equippedClassRangeModifier =
@@ -287,6 +281,11 @@
 					{#if weaponArtAttackModifier.length}
 						<span>
 							+ {printCalc(weaponArtAttackModifier)}<span class="source">(combat art)</span>
+						</span>
+					{/if}
+					{#if skillAttackModifier.length}
+						<span>
+							+ {printCalc(skillAttackModifier)}<span class="source">(combat skills)</span>
 						</span>
 					{/if}
 					{#if optionalAttackModifier.length > 0}

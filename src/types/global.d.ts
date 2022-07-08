@@ -45,6 +45,7 @@ declare global {
 		customSet: Set<string>;
 		equippedClassSet: Set<string>;
 		classUnlockSet: Set<string>;
+		weaponXPLevelSkillSet: Set<string>;
 		fullSet: Set<string>;
 		fullArray: Array<string>;
 		fullFeatures: { [s: string]: SkillFeatures };
@@ -78,6 +79,13 @@ declare global {
 		[s: string]: number | Array<any> | undefined;
 	};
 
+	declare type XPLevelFeatures = {
+		unlocks?: StatBlock;
+		removes?: StatBlock;
+	};
+	declare type WeaponLevelFeatures = {
+		[s: string]: XPLevelFeatures;
+	};
 	declare type ClassFeatures = {
 		canUseMagic?: boolean;
 		unlocks: StatBlock;
@@ -129,6 +137,7 @@ declare global {
 		label: string;
 		description: string;
 		acBonus?: number;
+		acBonusCompatibility?: Array<string>;
 		msBonus?: number;
 		hpBonus?: number;
 		bonusRange?: { [s: string]: number };
