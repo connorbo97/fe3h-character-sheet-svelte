@@ -39,10 +39,11 @@
 			}
 
 			if (!disabled) {
+				content.id += 'TOOLTIP_container';
+
 				prevContent.current = content;
 				prevContent.mouseEnterListener = mouseEnterListener;
 				prevContent.mouseLeaveListener = mouseLeaveListener;
-				content.id += 'TOOLTIP_container';
 
 				content?.addEventListener('mouseenter', mouseEnterListener);
 				content?.addEventListener('mouseleave', mouseLeaveListener);
