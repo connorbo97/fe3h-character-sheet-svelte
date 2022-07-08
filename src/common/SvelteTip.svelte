@@ -4,6 +4,7 @@
 	export let timeout = 500;
 	export let tooltipStyle = '';
 	export let tooltipClass = '';
+	export let showing = false;
 
 	let hovered = false;
 	const timer: any = { current: null };
@@ -46,7 +47,7 @@
 		tooltip;
 		contentClass;
 		if (content) {
-			if (hovered) {
+			if (showing || hovered) {
 				content?.appendChild(tooltip);
 			} else {
 				try {
@@ -112,6 +113,7 @@
 		transform: translateY(-100%);
 		top: 0;
 		left: 0;
+		font-size: 15px;
 		&.CENTER {
 			transform: translate(-50%, -100%);
 		}
