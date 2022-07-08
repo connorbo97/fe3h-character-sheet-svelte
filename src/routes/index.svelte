@@ -246,7 +246,21 @@
 				</div>
 				<div class={currentPage === 'XP' ? '' : 'invisible'}>
 					{#if currentPage === 'XP'}
-						<Xp {unlockedClasses} {classXP} {weaponXP} {onUpdateClassXP} {onUpdateWeaponXP} />
+						<Xp
+							{unlockedClasses}
+							{classXP}
+							{weaponXP}
+							{onUpdateClassXP}
+							{onUpdateWeaponXP}
+							{customCombatArts}
+							{customCombatSkills}
+							{customWeapons}
+							{playerStats}
+							{onUpdatePlayerStats}
+							{onUpdateCustomCombatArts}
+							{onUpdateCustomCombatSkills}
+							{onUpdateCustomWeapons}
+						/>
 					{/if}
 				</div>
 				<div class={currentPage === 'EDITOR' ? '' : 'invisible'}>
