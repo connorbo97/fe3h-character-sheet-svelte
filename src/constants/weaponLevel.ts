@@ -1,4 +1,6 @@
 import { COMBAT_SKILLS } from './combatSkills';
+import { WEAPONS } from './weapons';
+import { PickOnePromptType } from './enums';
 import { WEAPON_TYPE } from './weaponType';
 
 export const WEAPON_LEVEL: { [s: string]: string } = {
@@ -55,7 +57,7 @@ export const WEAPON_LEVEL_TO_LABEL = {
 	[WEAPON_LEVEL.S]: 'S'
 };
 
-export const WEAPON_TYPES_TO_LEVEL_FEATURES = {
+export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLevelFeatures } } = {
 	[WEAPON_TYPE.SWORD]: {
 		[WEAPON_LEVEL.E]: {
 			unlocks: {}
@@ -539,7 +541,13 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES = {
 		},
 		[WEAPON_LEVEL.E_PLUS]: {
 			unlocks: {
-				combatSkills: { [COMBAT_SKILLS.REASON_PROWESS_1]: 1 }
+				combatSkills: { [COMBAT_SKILLS.REASON_PROWESS_1]: 1 },
+				pickOne: [
+					{
+						type: PickOnePromptType.Weapon,
+						options: [WEAPONS.FIRE, WEAPONS.WIND, WEAPONS.THUNDER, WEAPONS.BLIZZARD]
+					}
+				]
 			}
 		},
 		[WEAPON_LEVEL.D]: {

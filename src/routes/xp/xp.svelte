@@ -1,8 +1,11 @@
 <script lang="ts">
+	import PickOnePrompt from 'src/common/pickOnePrompt.svelte';
+
 	import {
 		BEGINNER_CLASSES,
 		BEGINNER_MASTERY_REQ,
 		CLASS_TO_LABEL,
+		CONTEXTS,
 		INTERMEDIATE_CLASSES,
 		INTERMEDIATE_MASTERY_REQ,
 		LEVEL_UP_ORDER,
@@ -12,6 +15,9 @@
 		WEAPON_TYPE,
 		WEAPON_TYPE_TO_LABEL
 	} from 'src/constants';
+	import { WEAPON_TYPES_TO_LEVEL_FEATURES } from 'src/constants/weaponLevel';
+	import { getContext } from 'svelte';
+	const { open } = getContext(CONTEXTS.MODAL);
 
 	export let unlockedClasses: any;
 	export let weaponXP: any;
@@ -19,6 +25,76 @@
 
 	export let onUpdateClassXP: any;
 	export let onUpdateWeaponXP: any;
+
+	export let customCombatArts: any;
+	export let customCombatSkills: any;
+	export let customWeapons: any;
+	export let playerStats: any;
+
+	export let onUpdatePlayerStats: any;
+	export let onUpdateCustomCombatArts: any;
+	export let onUpdateCustomCombatSkills: any;
+	export let onUpdateCustomWeapons: any;
+
+	let resetInputs = true;
+
+	$: promptWeaponLevelUp = (type: any, level, onSuccess) => {
+		const pickOne = WEAPON_TYPES_TO_LEVEL_FEATURES[type][level]?.unlocks?.pickOne;
+		if (!pickOne) {
+			return onSuccess();
+		}
+
+		open(PickOnePrompt, {
+			pickOne,
+			onSubmit: onSuccess,
+			reason: `Unlocked ${WEAPON_TYPE_TO_LABEL[type]} level ${WEAPON_LEVEL_TO_LABEL[level]}`,
+			customCombatArts,
+			customCombatSkills,
+			customWeapons,
+			playerStats,
+			onUpdatePlayerStats,
+			onUpdateClassXP,
+			onUpdateCustomCombatArts,
+			onUpdateCustomCombatSkills,
+			onUpdateCustomWeapons
+		});
+	};
+	$: onWeaponXpChange = (e: any, { curLevel, curXP, maxXP, type }: any) => {
+		let parsedValue = parseInt(e.currentTarget.value);
+		let newLevel = curLevel;
+
+		let newXP = curXP + parsedValue;
+		const target = e.currentTarget;
+
+		const onSuccess = () => {
+			onUpdateWeaponXP(type, newXP, newLevel);
+			target.value = '';
+			resetInputs != resetInputs;
+		};
+
+		if (newXP >= maxXP) {
+			newLevel = LEVEL_UP_ORDER[LEVEL_UP_ORDER.indexOf(curLevel) + 1] || curLevel;
+			newXP = newXP - maxXP;
+
+			promptWeaponLevelUp(type, newLevel, onSuccess);
+		} else {
+			onSuccess();
+		}
+	};
+	$: onWeaponChangeLevel = (e: any, { type, curLevel }: any) => {
+		const newLevel = e.currentTarget.value;
+
+		const onSuccess = () => {
+			onUpdateWeaponXP(type, 0, newLevel);
+			resetInputs != resetInputs;
+		};
+
+		if (!curLevel || LEVEL_UP_ORDER.indexOf(curLevel) < LEVEL_UP_ORDER.indexOf(newLevel)) {
+			promptWeaponLevelUp(type, newLevel, onSuccess);
+		} else {
+			onSuccess();
+		}
+	};
 </script>
 
 <div class="container">
@@ -37,35 +113,18 @@
 				<div class="prompt">XP to Add</div>
 				<input
 					type="number"
-					on:change={(e) => {
-						let parsedValue = parseInt(e.currentTarget.value);
-						let newLevel = curLevel;
-
-						let newXP = curXP + parsedValue;
-
-						if (newXP >= maxXP) {
-							newLevel = LEVEL_UP_ORDER[LEVEL_UP_ORDER.indexOf(curLevel) + 1] || curLevel;
-							newXP = newXP - maxXP;
-						}
-
-						onUpdateWeaponXP(type, newXP, newLevel);
-
-						e.currentTarget.value = '';
-					}}
+					on:change={(e) => onWeaponXpChange(e, { curLevel, curXP, maxXP, type })}
 				/>
 			</div>
-			<select
-				name="weapon_level"
-				on:change={(e) => {
-					onUpdateWeaponXP(type, 0, e.currentTarget.value);
-				}}
-			>
-				{#each Object.keys(WEAPON_LEVEL) as level}
-					<option value={WEAPON_LEVEL[level]} selected={curLevel === level}>
-						{WEAPON_LEVEL_TO_LABEL[level]}</option
-					>
-				{/each}
-			</select>
+			{#key resetInputs}
+				<select name="weapon_level" on:change={(e) => onWeaponChangeLevel(e, { type, curLevel })}>
+					{#each Object.keys(WEAPON_LEVEL) as level}
+						<option value={WEAPON_LEVEL[level]} selected={curLevel === level}>
+							{WEAPON_LEVEL_TO_LABEL[level]}</option
+						>
+					{/each}
+				</select>
+			{/key}
 		{/each}
 	</div>
 	<div class="category" style:background-color={'#a178ad'}>
