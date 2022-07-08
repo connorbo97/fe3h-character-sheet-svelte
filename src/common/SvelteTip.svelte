@@ -104,7 +104,7 @@
 	:global {
 		#TOOLTIP_container {
 			position: relative;
-			cursor: help;
+			cursor: context-menu;
 		}
 		.TOOLTIP_tooltip_container {
 			position: relative;
