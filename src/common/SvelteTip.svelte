@@ -6,6 +6,7 @@
 	export let tooltipClass = '';
 	export let showing = false;
 	export let disabled = false;
+	export let hiddenFirst = false;
 
 	const prevDisabled: any = { current: disabled };
 
@@ -14,7 +15,7 @@
 	let helper: any;
 
 	const prevContent: any = { current: null, mouseEnterListener: null, mouseLeaveListener: null };
-	$: content = helper?.previousElementSibling;
+	$: content = hiddenFirst ? helper?.nextElementSibling : helper?.previousElementSibling;
 	$: contentClass = content?.className.split(' ')?.find((c: any) => c.indexOf('s-') === 0);
 	$: tooltip = helper?.childNodes[0];
 	$: {
@@ -77,14 +78,25 @@
 	});
 </script>
 
-<slot />
-<div class="hidden" bind:this={helper}>
-	<div class={`TOOLTIP_tooltip-positioner ${tooltipStyle}`}>
-		<div class={`${tooltipClass} ${contentClass} TOOLTIP_tooltip_container ${tooltipStyle}`}>
-			<slot name="t">tooltip</slot>
+{#if hiddenFirst}
+	<div class="hidden" bind:this={helper}>
+		<div class={`TOOLTIP_tooltip-positioner ${tooltipStyle}`}>
+			<div class={`${tooltipClass} ${contentClass} TOOLTIP_tooltip_container ${tooltipStyle}`}>
+				<slot name="t">tooltip</slot>
+			</div>
 		</div>
 	</div>
-</div>
+{/if}
+<slot />
+{#if !hiddenFirst}
+	<div class="hidden" bind:this={helper}>
+		<div class={`TOOLTIP_tooltip-positioner ${tooltipStyle}`}>
+			<div class={`${tooltipClass} ${contentClass} TOOLTIP_tooltip_container ${tooltipStyle}`}>
+				<slot name="t">tooltip</slot>
+			</div>
+		</div>
+	</div>
+{/if}
 
 <style lang="scss">
 	:global {
