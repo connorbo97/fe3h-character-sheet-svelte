@@ -62,6 +62,7 @@
 	.container {
 		display: flex;
 		column-gap: 3px;
+		cursor: pointer;
 		&:hover {
 			color: royalblue;
 		}

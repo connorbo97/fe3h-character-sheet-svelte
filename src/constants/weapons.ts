@@ -1,35 +1,6 @@
 import { Dice } from './dice';
 import { PLAYER_STAT } from './stats';
-import { WEAPON_LEVEL } from './weaponLevel';
-import { WEAPON_TYPE } from './weaponType';
-
-export const LEVEL_UP_ORDER = [
-	WEAPON_LEVEL.E,
-	WEAPON_LEVEL.E_PLUS,
-	WEAPON_LEVEL.D,
-	WEAPON_LEVEL.D_PLUS,
-	WEAPON_LEVEL.C,
-	WEAPON_LEVEL.C_PLUS,
-	WEAPON_LEVEL.B,
-	WEAPON_LEVEL.B_PLUS,
-	WEAPON_LEVEL.A,
-	WEAPON_LEVEL.A_PLUS,
-	WEAPON_LEVEL.S
-];
-
-export const WEAPON_LEVEL_TO_LABEL = {
-	[WEAPON_LEVEL.E]: 'E',
-	[WEAPON_LEVEL.E_PLUS]: 'E+',
-	[WEAPON_LEVEL.D]: 'D',
-	[WEAPON_LEVEL.D_PLUS]: 'D+',
-	[WEAPON_LEVEL.C]: 'C',
-	[WEAPON_LEVEL.C_PLUS]: 'C+',
-	[WEAPON_LEVEL.B]: 'B',
-	[WEAPON_LEVEL.B_PLUS]: 'B+',
-	[WEAPON_LEVEL.A]: 'A',
-	[WEAPON_LEVEL.A_PLUS]: 'A+',
-	[WEAPON_LEVEL.S]: 'S'
-};
+import { MAGIC_WEAPON_TYPES, WEAPON_TYPE } from './weaponType';
 
 export const WEAPONS = {
 	TRAINING_SWORD: 'TRAINING_SWORD',
@@ -503,14 +474,29 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	}
 };
 
+const [MAGIC_WEAPONS, MARTIAL_WEAPONS] = Object.keys(WEAPONS_TO_FEATURES).reduce(
+	(acc: any, w: any) => {
+		if (MAGIC_WEAPON_TYPES.includes(WEAPONS_TO_FEATURES[w].type)) {
+			acc[0].push(w);
+		} else {
+			acc[1].push(w);
+		}
+
+		return acc;
+	},
+	[[], []]
+);
+export { MAGIC_WEAPONS, MARTIAL_WEAPONS };
+
 export const getWeaponDescription = (feature: WeaponFeatures) => {
-	const { damage, attackBonus, range } = feature;
+	const { damage, attackBonus, range, critBonus } = feature;
 	return [
 		attackBonus ? `${attackBonus} to attack` : '',
 		`Damage: ${damage.reduce((acc, cur, i) => {
 			return acc + cur + (i === damage.length - 1 ? '' : parseInt(cur + '') < 0 ? '-' : '+');
 		}, '')}`,
-		`Range: ${Array.isArray(range) ? range?.join('-') : range}`
+		`Range: ${Array.isArray(range) ? range?.join('-') : range}`,
+		critBonus ? `Crit Bonus: ${critBonus}` : ''
 	]
 		.filter((a) => a)
 		.join(', ');

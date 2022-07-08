@@ -5,6 +5,9 @@ import {
 	WEAPONS,
 	COMBAT_ARTS_TO_FEATURES,
 	COMBAT_SKILLS_TO_FEATURES,
+	WEAPON_TYPES_TO_LEVEL_FEATURES,
+	LEVEL_UP_ORDER,
+	WEAPON_LEVEL,
 	WEAPONS_TO_FEATURES
 } from './constants';
 import memoize from 'memoize-one';
@@ -95,12 +98,14 @@ export const calculateAllCombatSkills = (fullSheet: CharacterSheet, equippedClas
 		fullSheet.unlockedClasses,
 		fullSheet.customCombatSkills,
 		fullSheet.classXP,
+		fullSheet.weaponXP,
 		equippedClass
 	);
 const calculateAllCombatSkillsMemoized = (
 	unlockedClasses: Array<string>,
 	customCombatSkills: object,
 	classXP: XPMap,
+	weaponXP: XPMap,
 	equippedClass: string
 ): AllCombatSkills => {
 	const customSet: Set<string> = new Set(Object.keys(customCombatSkills));
@@ -120,7 +125,50 @@ const calculateAllCombatSkillsMemoized = (
 			Object.keys(masteredSkills).forEach((w) => classUnlockSet.add(w));
 		}
 	});
-	const fullSet = new Set([...customSet, ...equippedClassSet, ...classUnlockSet]);
+
+	// skills from weapon XP
+	const weaponXPLevelSkillSet = Object.keys(weaponXP).reduce(
+		(acc: Set<string>, weaponType: string) => {
+			const { level: originalLevel } = weaponXP[weaponType] || {};
+			const levelFeatures = WEAPON_TYPES_TO_LEVEL_FEATURES[weaponType];
+			const level = originalLevel || WEAPON_LEVEL.E;
+
+			if (!level) {
+				return acc;
+			}
+
+			let end = Infinity;
+			const levelsToCheck = LEVEL_UP_ORDER.filter((curLvl, index) => {
+				if (level === curLvl) {
+					end = index;
+				}
+
+				return index <= end;
+			});
+
+			levelsToCheck.forEach((curLvl) => {
+				const curFeatures = levelFeatures[curLvl];
+
+				if (curFeatures.removes?.combatSkills) {
+					Object.keys(curFeatures.removes.combatSkills).forEach((skill) => acc.delete(skill));
+				}
+
+				if (curFeatures.unlocks?.combatSkills) {
+					Object.keys(curFeatures.unlocks.combatSkills).forEach((skill) => acc.add(skill));
+				}
+			});
+
+			return acc;
+		},
+		new Set()
+	);
+
+	const fullSet = new Set([
+		...customSet,
+		...equippedClassSet,
+		...classUnlockSet,
+		...weaponXPLevelSkillSet
+	]);
 	const customCombatSkillFeatures = Object.keys(customCombatSkills).reduce(
 		(acc: any, cur: any) => {
 			acc[cur] = { ...COMBAT_SKILLS_TO_FEATURES[cur], ...acc[cur] };
@@ -132,6 +180,7 @@ const calculateAllCombatSkillsMemoized = (
 		customSet,
 		equippedClassSet,
 		classUnlockSet,
+		weaponXPLevelSkillSet,
 		fullSet,
 		fullArray: Array.from(fullSet),
 		fullFeatures: { ...COMBAT_SKILLS_TO_FEATURES, ...customCombatSkillFeatures }

@@ -44,50 +44,57 @@
 
 <div class="container">
 	<div class="entry">
-		<span class="label">
-			{`Weapon: `}
-		</span>
-		{#key weaponsOptions}
-			<select
-				on:change={(e) => {
-					setSelectedWeapon(e.currentTarget.value);
-					damageTypeSelection = '';
-				}}
-			>
-				<option value={''}> - </option>
-				{#each weaponsOptions as weapon}
-					<option value={weapon} selected={selectedWeapon === weapon}>
-						{weaponsToFeatures[weapon]?.label}
-					</option>
-				{/each}
-			</select>
-		{/key}
+		<div class="selection">
+			<span class="label">
+				{`Weapon: `}
+			</span>
+			{#key weaponsOptions}
+				<select
+					on:change={(e) => {
+						setSelectedWeapon(e.currentTarget.value);
+						damageTypeSelection = '';
+					}}
+				>
+					<option value={''}> - </option>
+					{#each weaponsOptions as weapon}
+						<option value={weapon} selected={selectedWeapon === weapon}>
+							{weaponsToFeatures[weapon]?.label}
+						</option>
+					{/each}
+				</select>
+			{/key}
+		</div>
+		<div class="description">
+			{weaponsToFeatures[selectedWeapon]
+				? getWeaponDescription(weaponsToFeatures[selectedWeapon])
+				: ''}
+		</div>
 	</div>
 	<div class="entry">
-		{weaponsToFeatures[selectedWeapon] && getWeaponDescription(weaponsToFeatures[selectedWeapon])}
-	</div>
-	<div class="entry">
-		<span class="label">
-			{`Combat Art: `}
-		</span>
-		{#key combatArtsOptions}
-			<select
-				on:change={(e) => {
-					setSelectedCombatArt(e.currentTarget.value);
-				}}
-			>
-				<option value={''}> - </option>
-				{#each combatArtsOptions as art}
-					<option value={art} selected={selectedCombatArt === art}>
-						{allCombatArtFeatures[art].label}
-					</option>
-				{/each}
-			</select>
-		{/key}
-	</div>
-	<div class="entry">
-		{COMBAT_ARTS_TO_FEATURES[selectedCombatArt] &&
-			getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])}
+		<div class="selection">
+			<span class="label">
+				{`Combat Art: `}
+			</span>
+			{#key combatArtsOptions}
+				<select
+					on:change={(e) => {
+						setSelectedCombatArt(e.currentTarget.value);
+					}}
+				>
+					<option value={''}> - </option>
+					{#each combatArtsOptions as art}
+						<option value={art} selected={selectedCombatArt === art}>
+							{allCombatArtFeatures[art].label}
+						</option>
+					{/each}
+				</select>
+			{/key}
+		</div>
+		<div class="description">
+			{COMBAT_ARTS_TO_FEATURES[selectedCombatArt]
+				? getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])
+				: ''}
+		</div>
 	</div>
 </div>
 
@@ -100,8 +107,20 @@
 		display: flex;
 		justify-content: space-between;
 		grid-area: header;
+		column-gap: 5px;
 	}
 	.entry {
 		flex: 1;
+
+		display: flex;
+		flex-direction: column;
+		row-gap: 5px;
+	}
+	.selection {
+		display: flex;
+		column-gap: 5px;
+		select {
+			flex: 1;
+		}
 	}
 </style>

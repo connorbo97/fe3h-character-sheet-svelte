@@ -1,5 +1,11 @@
-import { PLAYER_STAT, COMBAT_SKILLS, CLASS } from './constants';
+import { COMBAT_SKILLS, CLASS, CrestType } from './constants';
 import { Dice } from './constants/dice';
+
+export const setEquality = (as: Set<any>, bs: Set<any>) => {
+	if (as.size !== bs.size) return false;
+	for (var a of as) if (!bs.has(a)) return false;
+	return true;
+};
 
 export const getModifierByPlayerStat = (stat: number) => {
 	if (stat === undefined) {
@@ -188,3 +194,6 @@ export const rollVisualDice = (
 
 	return res;
 };
+
+export const getCrestStrengthText = (bool: any) => (bool ? 'Major' : 'Minor');
+export const getCrestStrength = (bool: any) => (bool ? CrestType.MAJOR : CrestType.MINOR);

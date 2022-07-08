@@ -1,7 +1,13 @@
 <script lang="ts">
 	import Popup from './Popup.svelte';
 
-	import { getModifierByPlayerStat, rollD20, rollVisualDice } from 'src/utils';
+	import {
+		getCrestStrength,
+		getCrestStrengthText,
+		getModifierByPlayerStat,
+		rollD20,
+		rollVisualDice
+	} from 'src/utils';
 	import {
 		CONTEXTS,
 		CRESTS,
@@ -11,6 +17,8 @@
 		PLAYER_STAT_TO_LABEL
 	} from '../../constants';
 	import { getContext } from 'svelte';
+	import SvelteTip from 'src/common/SvelteTip.svelte';
+	import { ActivationRates } from 'src/constants/crests';
 
 	const { open } = getContext(CONTEXTS.MODAL);
 
@@ -70,15 +78,25 @@
 	{/each}
 	<div class="crest">
 		{#if playerCrestFeatures?.image}
-			<img
-				style:border-color={playerCrest.isMajor ? 'slateblue' : 'lightskyblue'}
-				class="crest-image"
-				src={playerCrestFeatures.image}
-				title={`${playerCrestFeatures?.description} DC ${
-					playerCrestFeatures.activationDC[playerCrest.isMajor ? CrestType.MAJOR : CrestType.MINOR]
-				}`}
-				alt={playerCrest?.type}
-			/>
+			<SvelteTip>
+				<div slot="t">
+					<div>
+						<u
+							>Crest of {playerCrestFeatures?.label} ({getCrestStrengthText(playerCrest?.isMajor)},
+							DC {playerCrestFeatures.activationDC[getCrestStrength(playerCrest.type)]})</u
+						>
+					</div>
+					{`${playerCrestFeatures?.description}`}
+				</div>
+				<div class="image-container">
+					<img
+						style:border-color={playerCrest.isMajor ? 'slateblue' : 'lightskyblue'}
+						class="crest-image"
+						src={playerCrestFeatures.image}
+						alt={playerCrest?.type}
+					/>
+				</div>
+			</SvelteTip>
 		{/if}
 		<select
 			name="crest"
@@ -116,8 +134,9 @@
 		justify-content: flex-start;
 		align-items: stretch;
 
-		row-gap: 20px;
-		background-color: blue;
+		row-gap: 17px;
+		border-radius: 5px;
+		background-color: rgb(71, 140, 201);
 
 		padding: 10px;
 		height: calc(100% - 20px);
@@ -160,5 +179,6 @@
 		background-color: white;
 		border-radius: 100%;
 		border: 5px solid gray;
+		width: 95%;
 	}
 </style>

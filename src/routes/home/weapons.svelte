@@ -2,22 +2,26 @@
 	import {
 		AXE_WEAPONS,
 		BOW_WEAPONS,
-		FAITH_MAGIC,
+		CONTEXTS,
 		FIST_WEAPONS,
 		getSuperiorityDieFromClasses,
 		LANCE_WEAPONS,
-		REASON_MAGIC,
 		SWORD_WEAPONS
 	} from 'src/constants';
+	import { MAGIC_WEAPONS } from 'src/constants/weapons';
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
+	import { getContext } from 'svelte';
+	import CustomWeaponPrompt from './customWeaponPrompt.svelte';
 	import WeaponsSection from './weaponsSection.svelte';
+
+	const { open } = getContext(CONTEXTS.MODAL);
 
 	export let equippedWeapons: any;
 	export let onToggleEquippedWeapons: any;
 	export let equippedCombatSkills: any;
 	export let equippedClass: any;
 
-	export let allWeapons: any;
+	export let allWeapons: AllWeapons;
 
 	export let unlockedClasses: any;
 
@@ -51,13 +55,25 @@
 	};
 
 	$: resetEquippedWeapons = () => equippedWeapons.forEach((w: any) => onToggleEquippedWeapons(w));
+
+	$: promptNewMagicWeapon = () => {
+		open(CustomWeaponPrompt, {
+			weapon: MAGIC_WEAPONS.filter((w: any) => !allWeapons.fullSet.has(w)),
+			weaponsToFeatures: allWeaponFeatures,
+			defaultReason: 'Manually added in magic weapons section',
+			customWeapons,
+			onUpdateCustomWeapons
+		});
+	};
 </script>
 
 <div class="container">
 	<div class="actions">
-		<div>
-			<span>Superiority Die Remaining:</span>
+		<u>Martial Weapons</u>
+		<div class="superiority-die">
+			<span>Superiority Dies:</span>
 			<input
+				style:width="50px"
 				type="number"
 				value={curSuperiorityDies}
 				on:change={(e) => {
@@ -183,6 +199,12 @@
 			</div>
 		</div>
 	</div>
+	{#if reasonEntries.length || faithEntries.length}
+		<span style:display="flex">
+			<u style:flex="1">Magic Weapons</u>
+			<button on:click={promptNewMagicWeapon}>Add new magic weapon</button>
+		</span>
+	{/if}
 	<div class="magic-weapons">
 		{#if reasonEntries.length}
 			<div class="magic-category">
@@ -243,7 +265,15 @@
 	}
 	.actions {
 		display: flex;
-		justify-content: space-around;
+		justify-content: space-between;
+		column-gap: 5px;
+	}
+
+	.superiority-die {
+		display: flex;
+		justify-content: flex-end;
+		column-gap: 5px;
+		flex: 1;
 	}
 	.martial-weapons {
 		display: flex;
