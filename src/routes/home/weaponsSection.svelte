@@ -2,8 +2,9 @@
 	import SvelteTip from 'src/common/SvelteTip.svelte';
 
 	import { CONTEXTS } from 'src/constants';
+	import { TooltipStyle } from 'src/constants/enums';
 
-	import { WEAPONS } from 'src/constants/weapons';
+	import { getWeaponDescription, WEAPONS } from 'src/constants/weapons';
 	import { checkHealPlus } from 'src/utils';
 	import { getContext } from 'svelte';
 	import CustomWeaponPrompt from './customWeaponPrompt.svelte';
@@ -73,12 +74,17 @@
 		/>
 		<div slot="t">{weaponsToFeatures[weapon].reason}</div>
 	</SvelteTip>
-	<div class={`label ${isMagic ? 'magic' : ''}`}>{allWeapons.weaponsToLabel[weapon]}</div>
+	<SvelteTip tooltipStyle={TooltipStyle.CENTER} timeout={300}>
+		<div slot="t">{getWeaponDescription(allWeapons.fullFeatures[weapon])}</div>
+		<div class={`label ${isMagic ? 'magic' : ''}`}>{allWeapons.weaponsToLabel[weapon]}</div>
+	</SvelteTip>
 	{#if !isMagic}
-		<button
-			class={equippedWeapons.includes(weapon) ? 'equipped' : ''}
-			on:click={() => onToggleEquip(weapon, isUnlocked)}
-		/>
+		<div class="equip-button">
+			<button
+				class={`${equippedWeapons.includes(weapon) ? 'equipped' : ''}`}
+				on:click={() => onToggleEquip(weapon, isUnlocked)}
+			/>
+		</div>
 	{/if}
 	{#if isMagic}
 		<input
@@ -111,13 +117,18 @@
 		align-items: center;
 		column-gap: 5px;
 		.label {
-			flex: 1;
 			&.magic {
 				font-size: 15px;
 			}
 		}
 		button {
 			height: 15px;
+		}
+
+		.equip-button {
+			flex: 1;
+			display: flex;
+			justify-content: flex-end;
 		}
 	}
 
