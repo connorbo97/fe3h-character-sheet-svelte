@@ -116,8 +116,9 @@
 		justify-content: flex-start;
 		align-items: stretch;
 
-		row-gap: 20px;
-		background-color: blue;
+		row-gap: 17px;
+		border-radius: 5px;
+		background-color: rgb(71, 140, 201);
 
 		padding: 10px;
 		height: calc(100% - 20px);
@@ -150,7 +151,6 @@
 	}
 
 	.crest {
-		flex: 1;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
@@ -160,5 +160,6 @@
 		background-color: white;
 		border-radius: 100%;
 		border: 5px solid gray;
+		width: 95%;
 	}
 </style>
