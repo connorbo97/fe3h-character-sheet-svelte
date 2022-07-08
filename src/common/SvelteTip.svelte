@@ -91,7 +91,6 @@
 		#TOOLTIP_container {
 			position: relative;
 			cursor: help;
-			z-index: 999;
 		}
 		.TOOLTIP_tooltip_container {
 			position: relative;
