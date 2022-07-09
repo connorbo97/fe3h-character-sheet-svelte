@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { COMBAT_ARTS_TO_FEATURES, MAX_COMBAT_ARTS } from 'src/constants';
+	import { WEAPON_TYPE_TO_IMAGE } from 'src/constants/weaponType';
 
 	export let art: any;
 
@@ -8,7 +9,10 @@
 
 	export let allCombatArts: any;
 
+	export let equippedWeaponTypes: Set<any>;
+
 	$: features = allCombatArts.fullFeatures;
+	$: compatibleWeapons = features[art]?.compatibleWeapons || [];
 
 	let hideDescription: any = false;
 </script>
@@ -21,10 +25,21 @@
 			disabled={equippedCombatArts.indexOf(art) === -1}
 		/> -->
 		<div class="label" on:click={() => (hideDescription = !hideDescription)}>
-			{features[art].label}
+			<span>
+				{features[art].label}
+			</span>
+			{#each compatibleWeapons as type}
+				{#if WEAPON_TYPE_TO_IMAGE[type]}
+					<img
+						class={`icon ${equippedWeaponTypes?.has(type) ? 'equipped' : 'not-equipped'}`}
+						src={WEAPON_TYPE_TO_IMAGE[type]}
+						alt="icon"
+					/>
+				{/if}
+			{/each}
 		</div>
 		<div
-			class={`caret ${hideDescription ? 'flip' : ''}`}
+			class={`caret ${hideDescription ? '' : 'flip'}`}
 			on:click={() => (hideDescription = !hideDescription)}
 		>
 			v
@@ -87,6 +102,8 @@
 	.label {
 		cursor: pointer;
 		flex: 1;
+		display: flex;
+		align-items: center;
 	}
 
 	.equipped {
@@ -97,5 +114,14 @@
 	}
 	.reason {
 		color: brown;
+	}
+
+	.icon {
+		height: 15px;
+		border-radius: 5px;
+		margin-left: 5px;
+	}
+	.not-equipped {
+		filter: opacity(0.2);
 	}
 </style>

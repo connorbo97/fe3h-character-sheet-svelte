@@ -35,6 +35,6 @@
 		padding: 5px;
 
 		overflow-y: scroll;
-		height: 100%;
+		height: calc(50% - 10px);
 	}
 </style>

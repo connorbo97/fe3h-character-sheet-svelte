@@ -107,7 +107,7 @@
 		/>
 	</div>
 	<div class="arts">
-		<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />
+		<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} {equippedWeapons} />
 		<CombatSkills {allCombatSkills} {equippedCombatSkills} {onToggleCombatSkill} />
 	</div>
 	<div class="rest">
@@ -164,6 +164,7 @@
 		display: grid;
 		grid-template-areas: 'stats skills classes arts rest';
 		grid-template-columns: min-content 200px 160px 180px 1fr;
+		grid-template-rows: 100%;
 		column-gap: 5px;
 
 		height: 100%;
@@ -216,6 +217,8 @@
 		grid-area: arts;
 		display: flex;
 		flex-direction: column;
+
+		height: 100%;
 
 		row-gap: 5px;
 	}
