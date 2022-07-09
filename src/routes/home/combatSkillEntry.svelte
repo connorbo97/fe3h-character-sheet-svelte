@@ -42,6 +42,7 @@
 	.container {
 		display: flex;
 		flex-direction: column;
+		margin-right: 5px;
 		row-gap: 5px;
 
 		button {

@@ -67,6 +67,7 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 5px;
+		margin-right: 5px;
 	}
 
 	.caret {
