@@ -2,6 +2,7 @@
 	import SvelteTip from 'src/common/SvelteTip.svelte';
 	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
 	import { Dice } from 'src/constants/dice';
+	import { TooltipStyle } from 'src/constants/enums';
 	import { copyToClipboard, printCalc, rollCalc, rollDice, rollVisualDice } from 'src/utils';
 
 	export let playerName: any;
@@ -162,7 +163,7 @@
 	</div>
 	<div class="result">
 		<div class="attack">
-			<SvelteTip tooltipStyle="CENTER">
+			<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
 				<div>{attackRoll + attackMod}</div>
 				<div slot="t">{`${attackRoll} + ${attackMod}`}</div>
 			</SvelteTip>
