@@ -1,8 +1,6 @@
 <script lang="ts">
-	import SvelteTip from 'src/common/SvelteTip.svelte';
 	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
 	import { Dice } from 'src/constants/dice';
-	import { TooltipStyle } from 'src/constants/enums';
 	import { copyToClipboard, printCalc, rollCalc, rollDice, rollVisualDice } from 'src/utils';
 
 	export let playerName: any;
@@ -26,13 +24,13 @@
 
 	let crestSuccess: boolean = false;
 
-	let attackRoll: any = 0;
-	let attackMod: any = 0;
+	let attackRoll: any = '';
+	let attackMod: any = '';
 
-	let damageRoll: any = 0;
-	let crestDamageRoll: any = 0;
+	let damageRoll: any = '';
+	let crestDamageRoll: any = '';
 
-	let critRoll: any = 0;
+	let critRoll: any = '';
 
 	let crestRoll: any = 0;
 
@@ -42,6 +40,7 @@
 	$: prefixedAttackCalc = printCalc(attackCalc, true);
 
 	const onAttackRoll = async () => {
+		attackRoll = '';
 		attackRoll = await rollVisualDice([Dice.d20], {
 			clearTimeout: 250,
 			disableResultBox: true
@@ -49,9 +48,11 @@
 		attackMod = rollCalc(attackCalc);
 	};
 	const onDamageRoll = () => {
+		damageRoll = '';
 		damageRoll = rollCalc(damageCalc);
 	};
 	const onCritRoll = async () => {
+		critRoll = '';
 		critRoll = await rollVisualDice([Dice.d20], {
 			clearTimeout: 250,
 			disableResultBox: true
@@ -67,6 +68,7 @@
 		return '0';
 	};
 	$: onCrestRoll = async () => {
+		crestRoll = '';
 		crestRoll = await rollVisualDice([Dice.d20], {
 			clearTimeout: 250,
 			disableResultBox: true
@@ -82,12 +84,20 @@
 
 		return crestDamageRoll;
 	};
-	const onRollAll = async () => {
+	$: onRollAll = async () => {
+		attackRoll = '';
+		damageRoll = '';
+		critRoll = '';
+		crestRoll = '';
 		try {
 			await onAttackRoll();
+			if (critModifier >= 0) {
+				await onCritRoll();
+			}
+			if (crestType) {
+				await onCrestRoll();
+			}
 			await onDamageRoll();
-			await onCritRoll();
-			await onCrestRoll();
 		} catch (err) {
 			alert('wait until all rolls have finished');
 		}
@@ -129,6 +139,26 @@
 			<div class="content">{prefixedAttackCalc}</div>
 			<button on:click={onAttackRoll}>Roll</button>
 		</div>
+		{#if critModifier >= 0}
+			<div class="crit">
+				<h3>Crit Range</h3>
+				<div class="content">
+					<span>{20 - critModifier} - 20</span>
+					<button on:click={onCritRoll}>Roll</button>
+				</div>
+			</div>
+		{/if}
+		{#if crestType}
+			<div class="crest">
+				<h3>Crest</h3>
+				<div class="content">
+					{#if crestDC && crestDC <= 20}
+						<span>DC {crestDC}</span>
+					{/if}
+					<button on:click={onCrestRoll}>Roll</button>
+				</div>
+			</div>
+		{/if}
 		<div class="damage">
 			<h3>Damage</h3>
 			<div class="content">
@@ -139,48 +169,42 @@
 			</div>
 			<button on:click={onDamageRoll}>Roll</button>
 		</div>
-		<div class="crit">
-			<h3>Crit Range</h3>
-			<div class="content">
-				{#if critModifier < 0}
-					<span>Can't Crit</span>
-				{/if}
-				{#if critModifier >= 0}
-					<span>{20 - critModifier} - 20</span>
-				{/if}
-				<button on:click={onCritRoll}>Roll</button>
-			</div>
-		</div>
-		<div class="crest">
-			<h3>Crest</h3>
-			<div class="content">
-				{#if crestDC && crestDC <= 20}
-					<span>DC {crestDC}</span>
-				{/if}
-				<button on:click={onCrestRoll}>Roll</button>
-			</div>
-		</div>
 	</div>
 	<div class="result">
 		<div class="attack">
-			<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
-				<div>{attackRoll + attackMod}</div>
-				<div slot="t">{`${attackRoll} + ${attackMod}`}</div>
-			</SvelteTip>
+			<div>
+				{attackRoll !== '' && attackMod !== ''
+					? `${attackRoll} + ${attackMod} = ${attackRoll + attackMod}`
+					: '...'}
+			</div>
 		</div>
-		<div class="damage">{damageRoll}</div>
-		<div class="crit">{critRoll >= 20 - critModifier ? 'CRIT' : 'Normal'} ({critRoll})</div>
-		<div class="crest">
-			{crestActivated ? 'ACTIVATED' : 'Normal'} ({crestRoll})
-			{#if crestActivated}
-				{#if crestType && !crestDoesDamage}<span class="description"
-						>{CRESTS_TO_FEATURES[crestType]?.description}</span
-					>{/if}
-				{#if crestDoesDamage && crestDamageRoll}
-					+ {crestDamageRoll} damage
+		{#if critModifier >= 0}
+			<div class="crit">
+				{#if critRoll !== ''}
+					<span class={critRoll >= 20 - critModifier ? 'cs' : ''}>
+						{critRoll >= 20 - critModifier ? 'CRIT' : 'Normal'}
+					</span>
+					({critRoll})
 				{/if}
-			{/if}
-		</div>
+				{#if critRoll === ''}
+					...
+				{/if}
+			</div>
+		{/if}
+		{#if crestType}
+			<div class="crest">
+				{crestActivated ? 'ACTIVATED' : 'Normal'} ({crestRoll})
+				{#if crestActivated}
+					{#if crestType && !crestDoesDamage}<span class="description"
+							>{CRESTS_TO_FEATURES[crestType]?.description}</span
+						>{/if}
+					{#if crestDoesDamage && crestDamageRoll}
+						+ {crestDamageRoll} damage
+					{/if}
+				{/if}
+			</div>
+		{/if}
+		<div class="damage">{damageRoll === '' ? '...' : damageRoll}</div>
 	</div>
 </div>
 
@@ -242,5 +266,9 @@
 				font-size: 12px;
 			}
 		}
+	}
+
+	.cs {
+		color: green;
 	}
 </style>
