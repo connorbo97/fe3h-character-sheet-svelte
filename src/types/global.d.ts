@@ -154,6 +154,7 @@ declare global {
 		description: string;
 		compatibleWeapons?: Array<string>;
 		damageBonus?: Array<CalcEntry>;
+		attackNote?: string;
 		attackBonus?: Array<CalcEntry>;
 		rangeBonus?: number;
 		critBonus?: Array<CalcEntry>;

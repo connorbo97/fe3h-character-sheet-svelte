@@ -50,10 +50,10 @@
 	let crestRoll: any = '';
 
 	$: isHealWeapon = HEALING_MAGIC.has(selectedWeapon);
-	const calcBaseDieCost = () => {
+	$: calcBaseDieCost = () => {
 		const combatArtDieCost = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.dieCost;
-		const selectedWeaponDieCost = allWeapons.fullFeatures[selectedWeapon]?.dieCost;
-		if (!selectedCombatArt || !selectedWeaponDieCost || !combatArtDieCost) {
+
+		if (!selectedCombatArt || !combatArtDieCost) {
 			return 1;
 		}
 
@@ -278,11 +278,16 @@
 						? `${attackRoll} + ${attackMod} = ${attackRoll + attackMod}`
 						: '...'}
 				</div>
+				{#if attackRoll !== '' && allCombatArts.fullFeatures[selectedCombatArt]?.attackNote}
+					<div class="combat-art-note">
+						{allCombatArts.fullFeatures[selectedCombatArt]?.attackNote}
+					</div>
+				{/if}
 				{#if superiorityDieCost > 1}
-					<div>Cost {superiorityDieCost - 1} extra superiority die</div>
+					<div class="cf">Cost {superiorityDieCost - 1} extra superiority die</div>
 				{/if}
 				{#if superiorityDieCost < 1}
-					<div>Cost 0 superiority die</div>
+					<div class="cs">Cost 0 superiority die</div>
 				{/if}
 			</div>
 		{/if}
@@ -417,6 +422,9 @@
 				font-size: 12px;
 			}
 		}
+		.combat-art-note {
+			color: #7dbff0;
+		}
 	}
 
 	.damage {
@@ -425,5 +433,9 @@
 
 	.cs {
 		color: green;
+	}
+
+	.cf {
+		color: maroon;
 	}
 </style>

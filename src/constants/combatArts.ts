@@ -1,4 +1,4 @@
-import { printCalc } from 'src/utils';
+import { addNumberPrefix, printCalc } from 'src/utils';
 import { Dice } from './dice';
 import { WEAPON_TYPE } from './weaponType';
 
@@ -57,14 +57,14 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 	},
 	[COMBAT_ARTS.WRATH_STRIKE]: {
 		label: 'Wrath Strike',
-		description: '+1 damage, +2 to attack',
+		description: '',
 		compatibleWeapons: [WEAPON_TYPE.SWORD],
 		damageBonus: [1],
 		attackBonus: [2]
 	},
 	[COMBAT_ARTS.TEMPEST_LANCE]: {
 		label: 'Tempest Lance',
-		description: '+2 damage, +2 to attack. 50% chance to lose an extra superiority die',
+		description: '',
 		compatibleWeapons: [WEAPON_TYPE.LANCE],
 		damageBonus: [2],
 		attackBonus: [2],
@@ -72,8 +72,7 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 	},
 	[COMBAT_ARTS.SMASH]: {
 		label: 'Smash',
-		description:
-			'+1 damage, +4 to attack, +4 to crit rate. 50% chance to lose an extra superiority die',
+		description: '',
 		compatibleWeapons: [WEAPON_TYPE.AXE],
 		damageBonus: [1],
 		attackBonus: [4],
@@ -82,7 +81,7 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 	},
 	[COMBAT_ARTS.CURVED_SHOT]: {
 		label: 'Curved Shot',
-		description: '+4 to attack',
+		description: '',
 		compatibleWeapons: [WEAPON_TYPE.BOW],
 		attackBonus: [4],
 		rangeBonus: 1
@@ -90,19 +89,43 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 	[COMBAT_ARTS.FADING_BLOW]: {
 		label: 'Fading Blow',
 		description:
-			'+2 to damage, +2 to attack, +6 AC on retaliatory attack. After combat, move away from the target 1 square if possible.',
+			'Add +6 to AC against retaliatory attack. After combat, move away from the target 1 square if possible',
 		compatibleWeapons: [WEAPON_TYPE.FISTS],
 		attackBonus: [2],
+		attackNote:
+			'Add +6 to AC against retaliatory attack. After combat, move away from the target 1 square if possible',
 		damageBonus: [2]
 	}
 };
-export const getCombatArtsDescription = (feature: ArtFeatures) => {
-	const { damageBonus, attackBonus, rangeBonus } = feature;
-	return [
-		attackBonus ? `${attackBonus} to attack` : '',
-		damageBonus ? `${printCalc(damageBonus)} damage` : '',
-		rangeBonus ? `Extra Range: ${rangeBonus}` : ''
+export const getCombatArtsDescription = (
+	feature: ArtFeatures,
+	options: { disableDescription?: boolean } = {}
+) => {
+	const { disableDescription } = options;
+	const { damageBonus, attackBonus, rangeBonus, dieCost, compatibleWeapons, description } = feature;
+	const { roll, target, mod = 0 } = dieCost || {};
+	let dieCostText = '1';
+
+	if (roll == Dice.d20) {
+		dieCostText = '1' + (mod > 0 ? '+' : '') + mod + '(DC ' + target + ')';
+	} else if (target === 1) {
+		dieCostText = '' + 1 + mod;
+	}
+
+	let attackBonusText = printCalc(attackBonus || []);
+
+	if (attackBonusText[0] !== '-') {
+		attackBonusText = '+' + attackBonusText;
+	}
+
+	const res = [
+		attackBonus ? `Attack: ${attackBonusText}` : '',
+		damageBonus ? `Damage: ${printCalc(damageBonus)}` : '',
+		rangeBonus ? `Extra Range: ${rangeBonus}` : '',
+		compatibleWeapons ? `Cost: ${dieCostText}` : ''
 	]
 		.filter((a) => a)
 		.join(', ');
+
+	return res + (description && !disableDescription ? `. Extra features: ${description}` : '');
 };

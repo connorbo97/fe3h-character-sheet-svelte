@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { COMBAT_ARTS_TO_FEATURES, MAX_COMBAT_ARTS } from 'src/constants';
+	import { getCombatArtsDescription } from 'src/constants/combatArts';
 	import { WEAPON_TYPE_TO_IMAGE } from 'src/constants/weaponType';
 
 	export let art: any;
@@ -15,6 +16,8 @@
 	$: compatibleWeapons = features[art]?.compatibleWeapons || [];
 
 	let hideDescription: any = false;
+
+	$: descriptionText = getCombatArtsDescription(features[art], { disableDescription: true });
 </script>
 
 <div class="container">
@@ -57,7 +60,15 @@
 				<div class="reason">{features[art].reason}</div>
 				<br />
 			{/if}
-			{features[art].description}
+			{#if descriptionText}
+				<span>{descriptionText}</span>
+			{/if}
+			{#if features[art]?.description}
+				{#if descriptionText}
+					<br />
+				{/if}
+				<div class="description-extra">{features[art].description}</div>
+			{/if}
 		</div>
 	{/if}
 </div>
@@ -115,6 +126,9 @@
 	}
 	.reason {
 		color: brown;
+	}
+	.description-extra {
+		color: #9a1aa0;
 	}
 
 	.icon {
