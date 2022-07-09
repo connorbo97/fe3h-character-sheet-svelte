@@ -5,6 +5,7 @@ import {
 	TRAINING_WEAPONS_SET,
 	COMBAT_ARTS_TO_FEATURES,
 	COMBAT_SKILLS_TO_FEATURES,
+	WEAPON_TYPE,
 	WEAPON_TYPES_TO_LEVEL_FEATURES,
 	LEVEL_UP_ORDER,
 	WEAPON_LEVEL,
@@ -243,12 +244,21 @@ const calculateAllCombatArtsMemoized = (
 		{ ...customCombatArts }
 	);
 
+	const fullFeatures = { ...COMBAT_ARTS_TO_FEATURES, ...customCombatArtFeatures };
+
+	const weaponOrder = Object.keys(WEAPON_TYPE);
+	const fullArray = Array.from(fullSet).sort((a, b) => {
+		const aI = weaponOrder.indexOf(fullFeatures[a].type);
+		const bI = weaponOrder.indexOf(fullFeatures[b].type);
+		return aI <= bI ? 1 : -1;
+	});
+
 	return {
 		customSet,
 		equippedClassSet,
 		classUnlockSet,
 		fullSet,
-		fullArray: Array.from(fullSet),
-		fullFeatures: { ...COMBAT_ARTS_TO_FEATURES, ...customCombatArtFeatures }
+		fullArray,
+		fullFeatures
 	};
 };
