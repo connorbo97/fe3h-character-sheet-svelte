@@ -2,8 +2,13 @@
 	import { PROFICIENCY_BONUS } from 'src/constants';
 	import { Dice } from 'src/constants/dice';
 
-	import { PLAYER_SKILL_TO_LABEL, PLAYER_SKILL_TO_STAT } from 'src/constants/playerSkills';
-	import { PLAYER_STAT_TO_LABEL, PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
+	import {
+		getTextFromSkillProficiency,
+		PLAYER_SKILL_TO_LABEL,
+		PLAYER_SKILL_TO_STAT,
+		SkillProficiency
+	} from 'src/constants/playerSkills';
+	import { PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
 	import { getModifierByPlayerStat, rollVisualDice } from 'src/utils';
 
 	export let stats: any;
@@ -13,7 +18,10 @@
 	export let skill: any;
 
 	$: skillBonusMod = skillBonus[skill] || 0;
-	$: skillProficiencyMod = skillProficiency[skill] ? PROFICIENCY_BONUS : 0;
+	$: skillProficiencyMod =
+		skillProficiency[skill] > SkillProficiency.NONE
+			? PROFICIENCY_BONUS * (skillProficiency[skill] || 1)
+			: 0;
 	$: skillStat = PLAYER_SKILL_TO_STAT[skill];
 
 	let selectedStat = Array.isArray(skillStat) ? skillStat[0] : skillStat;
@@ -26,18 +34,20 @@
 
 <div class="container">
 	<button
-		class={`${skillProficiencyMod ? 'blue' : 'white'}`}
+		class={getTextFromSkillProficiency(skillProficiency[skill])}
 		on:click={() => onToggleSkillProficiency(skill)}
 	/>
-	<div class="total">{skillBonusMod + skillProficiencyMod + skillStatModifier}</div>
-	<div
-		class="label"
-		on:click={() =>
-			rollVisualDice([Dice.d20], {
-				modifier: [skillBonusMod + skillProficiencyMod + skillStatModifier]
-			})}
-	>
-		<span class="label-text">{`${PLAYER_SKILL_TO_LABEL[skill]} `}</span>
+	<div class="label">
+		<span
+			class="label-text"
+			on:click={() =>
+				rollVisualDice([Dice.d20], {
+					modifier: [skillBonusMod + skillProficiencyMod + skillStatModifier]
+				})}
+		>
+			<span class="total">{skillBonusMod + skillProficiencyMod + skillStatModifier}</span>
+			{`${PLAYER_SKILL_TO_LABEL[skill]} `}
+		</span>
 		{#if Array.isArray(skillStat)}
 			<select
 				name="stat-type"
@@ -62,12 +72,21 @@
 	.container {
 		display: flex;
 		column-gap: 3px;
+		> button {
+			cursor: pointer;
+		}
+	}
+	.label-text {
 		cursor: pointer;
 		&:hover {
 			color: royalblue;
 		}
 	}
-	.blue {
+
+	.expert {
+		background-color: green;
+	}
+	.proficient {
 		background-color: blue;
 	}
 </style>

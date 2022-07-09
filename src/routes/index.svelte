@@ -24,7 +24,7 @@
 		calculateAllWeapons
 	} from 'src/combinationUtils';
 	import Editor from './editor/editor.svelte';
-	import { Dice } from 'src/constants/dice';
+	import { SkillProficiency } from 'src/constants/playerSkills';
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -133,9 +133,18 @@
 		onUpdateSheet('playerName', newName);
 	};
 	$: onToggleSkillProficiency = (skill: any) => {
-		const curVal = playerSkillProficiency[skill];
+		const curVal = playerSkillProficiency[skill] || SkillProficiency.NONE;
+		let newVal;
 
-		onUpdateSheet('playerSkills', { ...playerSkillProficiency, [skill]: !curVal });
+		if (curVal === SkillProficiency.NONE) {
+			newVal = SkillProficiency.PROFICIENT;
+		} else if (curVal === SkillProficiency.PROFICIENT) {
+			newVal = SkillProficiency.EXPERT;
+		} else if (curVal === SkillProficiency.EXPERT) {
+			newVal = SkillProficiency.NONE;
+		}
+
+		onUpdateSheet('playerSkills', { ...playerSkillProficiency, [skill]: newVal });
 	};
 	$: setEquippedClass = (newClass: any) => {
 		equippedClass = newClass;
