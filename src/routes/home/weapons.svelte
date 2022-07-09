@@ -76,7 +76,6 @@
 
 		return acc;
 	}, new Set());
-	$: console.log(allMartialWeaponTypes);
 	$: trainingWeaponsSet = new Set(
 		allMartialWeaponTypes.size < 4 ? Array.from(TRAINING_WEAPONS_SET) : []
 	);
