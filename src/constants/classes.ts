@@ -362,9 +362,6 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 				[PLAYER_STAT.STR]: 12,
 				[PLAYER_STAT.CON]: 14
 			},
-			combatSkills: {
-				[COMBAT_SKILLS.MERCENARY_THIEF_SKILL]: 1
-			},
 			weapons: {
 				[WEAPONS.STEEL_AXE]: 1,
 				[WEAPONS.STEEL_LANCE]: 1,
@@ -376,9 +373,6 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		whenEquipped: {
 			followUpBonus: -1,
 			protectionBonus: 1,
-			weapons: {
-				[WEAPONS.IRON_SHIELD]: 1
-			},
 			xpMods: {
 				[WEAPON_TYPE.AXE]: 1.6,
 				[WEAPON_TYPE.LANCE]: 1.6

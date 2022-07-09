@@ -15,21 +15,41 @@
 		PLAYER_STAT
 	} from 'src/constants';
 	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
+	import { TooltipStyle } from 'src/constants/enums';
+	import { WEAPONS_TO_FEATURES } from 'src/constants/weapons';
 	import { getModifierByPlayerStat } from 'src/utils';
 
 	export let stats: any;
 	export let unlockedClasses: Array<string>;
 	export let equippedClass: string;
 	export let equippedCombatSkills: Array<string>;
+	export let allWeapons: AllWeapons;
+
+	export let selectedWeapon: string;
 
 	let terrainMod = 0;
 	$: dexMod = getModifierByPlayerStat(stats[PLAYER_STAT.DEX]);
 	$: dodgeRate = 0;
 	$: weaponBonus = 0;
-	$: skillBonus = equippedCombatSkills.reduce((acc, cur) => {
-		return acc + (COMBAT_SKILLS_TO_FEATURES[cur].acBonus || 0);
+	$: allWeaponFeatures = allWeapons.fullFeatures;
+	$: selectedWeaponType = allWeaponFeatures[selectedWeapon]?.type;
+	$: selectedWeaponAcBonus = allWeaponFeatures[selectedWeapon]?.acBonus || 0;
+	$: acSkillBonus = equippedCombatSkills.reduce((acc, cur) => {
+		const features = COMBAT_SKILLS_TO_FEATURES[cur];
+		const { acBonusCompatibility, acBonus } = features || {};
+		if (acBonus && (!acBonusCompatibility || acBonusCompatibility.includes(selectedWeaponType))) {
+			return acc + (COMBAT_SKILLS_TO_FEATURES[cur].acBonus || 0);
+		}
+		return acc;
 	}, 0);
-	$: ac = DEFAULT_ARMOR_CLASS + dexMod + dodgeRate + weaponBonus + skillBonus + terrainMod;
+	$: ac =
+		DEFAULT_ARMOR_CLASS +
+		dexMod +
+		dodgeRate +
+		weaponBonus +
+		selectedWeaponAcBonus +
+		acSkillBonus +
+		terrainMod;
 
 	$: equippedClassMovementBonus = CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.msBonus || 0;
 	$: skillMovementBonus = 0;
@@ -106,6 +126,9 @@
 		equippedClassResilienceBonus +
 		skillResilienceBonus;
 
+	$: selectedWeaponFollupMod = allWeapons.fullFeatures[selectedWeapon]?.followUpBonus || 0;
+	$: followUp = dexMod + selectedWeaponFollupMod;
+
 	const onTerrainModChange = (e: any) => {
 		const input = parseInt(e.currentTarget.value);
 
@@ -118,11 +141,16 @@
 </script>
 
 <div class="container">
-	<SvelteTip tooltipStyle="CENTER">
+	<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
 		<div slot="t">
-			{`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${skillBonus} (combat skill bonus) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
+			{`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${acSkillBonus} (combat skill bonus) + ${selectedWeaponAcBonus} (selected weapon) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
 		</div>
-		<div>
+		<div
+			style:flex="0"
+			style:display="flex"
+			style:flex-direction="column"
+			style:justify-content="center"
+		>
 			<div class="big-text">
 				AC: {ac}
 			</div>
@@ -132,33 +160,41 @@
 			</div>
 		</div>
 	</SvelteTip>
-	<SvelteTip>
-		<div slot="t">
+	<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
+		<div slot="t" class="skinny-tooltip">
 			{`Speed = ${DEFAULT_MOVEMENT_SPEED} + ${equippedClassMovementBonus} (from class) + ${skillMovementBonus} (from combat skills)`}
 		</div>
-		<div class="big-text">
+		<div class="big-text skinny">
 			Speed: {ms}
 		</div>
 	</SvelteTip>
-	<SvelteTip>
-		<div slot="t">
-			{`HP Max = ${DEFAULT_MAX_HP} + ${unlockedClassHpBonus} (from unlocked classes) + ${intermediateClassHpBonus} (from being a intermediate class) + ${skillHPBonus} (from combat skills) + ${conMod} (CON modifier)`}
+	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
+		<div slot="t" class="skinny-tooltip">
+			{`HP Max = ${DEFAULT_MAX_HP} + ${unlockedClassHpBonus} (from unlocked classes) + ${intermediateClassHpBonus} (from unlocking an intermediate class) + ${skillHPBonus} (from combat skills) + ${conMod} (CON modifier)`}
 		</div>
-		<div class="big-text">
+		<div class="big-text skinny" style:flex="0">
 			HP Max: {hpMax}
 		</div>
 	</SvelteTip>
-	<SvelteTip tooltipStyle="LEFT_END">
+	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
 		<div slot="t">
-			{`Protection = ${DEFAULT_PROTECTION} + ${unlockedClassProtectionBonus} (from unlocked classes) + ${intermediateClassProtectionBonus} (from being a intermediate martial class) + ${equippedClassProtectionBonus} (from equipped class) + ${skillProtectionBonus} (from skills)`}
+			{`Follow Up = ${dexMod} (dex modifier) + ${selectedWeaponFollupMod} (selected weapon)`}
+		</div>
+		<div class="big-text">
+			Follow Up: {followUp}
+		</div>
+	</SvelteTip>
+	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
+		<div slot="t">
+			{`Protection = ${DEFAULT_PROTECTION} + ${unlockedClassProtectionBonus} (from unlocked classes) + ${intermediateClassProtectionBonus} (from unlocking an intermediate martial class) + ${equippedClassProtectionBonus} (from equipped class) + ${skillProtectionBonus} (from skills)`}
 		</div>
 		<div class="big-text">
 			Protection: {protections}
 		</div>
 	</SvelteTip>
-	<SvelteTip tooltipStyle="LEFT_END">
+	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END} hiddenFirst>
 		<div slot="t">
-			{`Resilience = ${DEFAULT_RESILIENCE} + ${unlockedClassResilienceBonus} (from unlocked classes) + ${intermediateClassResilienceBonus} (from being a intermediate magic class) + ${equippedClassResilienceBonus} (from equipped class) + ${skillResilienceBonus} (from skills)`}
+			{`Resilience = ${DEFAULT_RESILIENCE} + ${unlockedClassResilienceBonus} (from unlocked classes) + ${intermediateClassResilienceBonus} (from unlocking an intermediate magic class) + ${equippedClassResilienceBonus} (from equipped class) + ${skillResilienceBonus} (from skills)`}
 		</div>
 		<div class="big-text">
 			Resilience: {resilience}
@@ -178,11 +214,14 @@
 		align-items: center;
 
 		> * {
-			flex: 1;
-			padding: 5px;
+			width: 100%;
+			padding: 10px;
 			text-align: center;
+			height: 40px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
-
 		> *:not(:last-child) {
 			border-right: 1px solid black;
 		}
@@ -199,5 +238,12 @@
 		input {
 			width: 30px;
 		}
+	}
+	.skinny.skinny {
+		// flex: 0;
+		white-space: nowrap;
+	}
+	.skinny-tooltip {
+		white-space: normal;
 	}
 </style>

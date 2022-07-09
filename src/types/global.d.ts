@@ -157,7 +157,7 @@ declare global {
 		attackBonus?: Array<CalcEntry>;
 		rangeBonus?: number;
 		critBonus?: Array<CalcEntry>;
-		dieCost?: { roll: number | Dice; target: number; mod?: number; mult?: number };
+		dieCost?: { roll: number | Dice; target: number; mod?: number };
 		reason?: string;
 	}
 	type WeaponFeatures = {
@@ -169,9 +169,11 @@ declare global {
 		range: Array<number | string>;
 		attackBonus?: number;
 		followUpBonus?: number;
+		acBonus?: number;
 		critBonus?: number;
 		uses?: number;
 		reason?: string;
+		dieCost?: { roll: CalcEntry; target: number; mult?: number };
 	};
 	type PickOnePromptOption = string | { stat: string; value: number };
 	type PickOnePrompt = {

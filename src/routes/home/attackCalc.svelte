@@ -35,12 +35,19 @@
 	export let allWeapons: AllWeapons;
 	export let allCombatArts: AllCombatArts;
 
+	export let weaponUses: any;
+	export let onUpdateWeaponUses: any;
+
 	export let selectedWeapon: any;
 	export let setSelectedWeapon: any;
 
 	export let selectedCombatArt: any;
 	export let setSelectedCombatArt: any;
 
+	export let curSuperiorityDies: any;
+	export let setCurSuperiorityDie: any;
+
+	let showModal;
 	$: weaponsToFeatures = allWeapons.fullFeatures;
 	$: dexMod = getModifierByPlayerStat(playerStats[PLAYER_STAT.DEX]);
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
@@ -99,7 +106,8 @@
 		) {
 			return (
 				(crestTrigger.has(CrestTrigger.MAGIC_ATTACK) &&
-					weaponsToFeatures[selectedWeapon]?.damage?.[0] === 0) ||
+					weaponsToFeatures[selectedWeapon]?.damage?.[0] !== 0 &&
+					!HEALING_MAGIC.has(selectedWeapon)) ||
 				(crestTrigger.has(CrestTrigger.HEAL) && HEALING_MAGIC.has(selectedWeapon))
 			);
 		} else {
@@ -113,8 +121,9 @@
 	$: crestDamageBonus = CRESTS_TO_FEATURES[crestType]?.damageBonus || [];
 	$: crestCombatArtDamageModifier = CRESTS_TO_FEATURES[crestType]?.combatArtDamageMultiplier || 1;
 	$: crestConservesResource = CRESTS_TO_FEATURES[crestType]?.conservesResource || false;
-	$: crestHPRecoveryPercent = CRESTS_TO_FEATURES[crestType]?.hpRecoveryPercent || 0;
+	// $: crestHPRecoveryPercent = CRESTS_TO_FEATURES[crestType]?.hpRecoveryPercent || 0;
 	$: shouldRollCrest = calcShouldRollCrest();
+	console.log(shouldRollCrest);
 	$: crestDC = shouldRollCrest
 		? CRESTS_TO_FEATURES[crestType].activationDC[
 				playerCrest.isMajor ? CrestType.MAJOR : CrestType.MINOR
@@ -153,10 +162,12 @@
 
 	// Damage
 	$: weaponDamageType = weaponsToFeatures[selectedWeapon]?.damageType;
+	let prevWeaponDamageType = { current: weaponDamageType };
 	let damageTypeSelection = '';
 
 	$: {
-		if (!damageTypeSelection) {
+		if (!damageTypeSelection || prevWeaponDamageType.current !== weaponDamageType) {
+			prevWeaponDamageType.current = weaponDamageType;
 			if (weaponDamageType) {
 				damageTypeSelection = weaponDamageType[0];
 			} else {
@@ -237,170 +248,185 @@
 	};
 	$: [weaponRangeMin, weaponRangeMax] = calcWeaponRange();
 
-	$: onOpenAttackModal = () =>
-		open(AttackRollModal, {
-			playerName,
-			attackCalc: simplifiedAttackModifier,
-			damageCalc: simplifiedDamageCalc,
-			critModifier,
-			crestDC: shouldRollCrest ? crestDC : Infinity,
-			crestDamage: crestDamageBonus,
-			crestCombatArtDamageModifier,
-			combatArtDamageBonus: weaponArtDamageModifier,
-			crestType,
-			selectedWeapon,
-			selectedCombatArt,
-			allWeapons,
-			allCombatArts
-		});
+	$: onOpenAttackModal = () => (showModal = true);
+
+	$: isHealWeapon = HEALING_MAGIC.has(selectedWeapon);
 </script>
 
-<div class="container">
-	<AttackCalcHeader
-		{damageTypeSelection}
-		{weaponsToFeatures}
-		{allCombatArts}
-		{allWeapons}
-		{equippedCombatArts}
-		{equippedWeapons}
-		{selectedWeapon}
-		{setSelectedWeapon}
-		{selectedCombatArt}
-		{setSelectedCombatArt}
-	/>
-	<div class="calcs">
-		<div class="attack-container">
-			<h2 class="content">
-				Attack: 1d20
-				<span class="modifiers">
-					{#if attackDexModifier}
-						<span>+ {attackDexModifier}<span class="source">(dex)</span></span>
-					{/if}
-					{#if weaponAttackModifier}
-						<span>+ {weaponAttackModifier}<span class="source">(weapon)</span></span>{/if}
-					{#if weaponArtAttackModifier.length}
-						<span>
-							+ {printCalc(weaponArtAttackModifier)}<span class="source">(combat art)</span>
-						</span>
-					{/if}
-					{#if skillAttackModifier.length}
-						<span>
-							+ {printCalc(skillAttackModifier)}<span class="source">(combat skills)</span>
-						</span>
-					{/if}
-					{#if optionalAttackModifier.length > 0}
-						<span>
-							+ {printCalc(simplifyCalc(optionalAttackModifier))}<span class="source"
-								>(optionals)</span
-							>
-						</span>
-					{/if}
-				</span>
-				<span>
-					= 1d20 <span class="modifiers">+ {printCalc(simplifiedAttackModifier)}</span>
-				</span>
-			</h2>
-		</div>
-		<div class="damage-container">
-			<h2 class="content">
-				Damage: {#if selectedWeapon}
-					{damageBase}{#if damageTypeSelection && (weaponDamageType || []).length <= 1}
-						<span>({damageTypeLabel})</span>
-					{/if}{#if weaponDamageType && weaponDamageType.length > 1}
-						<select
-							on:change={(e) => {
-								damageTypeSelection = e.currentTarget.value;
-							}}
-						>
-							<option value={''}>-</option>
-							{#each weaponDamageType as type}
-								<option value={type} selected={type === damageTypeSelection}
-									>{PLAYER_STAT_TO_SHORT_LABEL[type]}</option
-								>
-							{/each}
-						</select>
-					{/if}
-
+{#if !showModal}
+	<div class="container">
+		<AttackCalcHeader
+			{damageTypeSelection}
+			{weaponsToFeatures}
+			{allCombatArts}
+			{allWeapons}
+			{equippedCombatArts}
+			{equippedWeapons}
+			{selectedWeapon}
+			{setSelectedWeapon}
+			{selectedCombatArt}
+			{setSelectedCombatArt}
+		/>
+		<div class="calcs">
+			<div class="attack-container">
+				<h2 class="content">
+					Attack: 1d20
 					<span class="modifiers">
-						{#if weaponDamageModifier.length}
-							<span>+ {printCalc(weaponDamageModifier)}<span class="source">(weapon)</span></span>
+						{#if attackDexModifier}
+							<span>+ {attackDexModifier}<span class="source">(dex)</span></span>
 						{/if}
-						{#if healPlusModifier}
-							<span>+ {healPlusModifier}<span class="source">(Heal Plus)</span></span>
+						{#if weaponAttackModifier}
+							<span>+ {weaponAttackModifier}<span class="source">(weapon)</span></span>{/if}
+						{#if weaponArtAttackModifier.length}
+							<span>
+								+ {printCalc(weaponArtAttackModifier)}<span class="source">(combat art)</span>
+							</span>
 						{/if}
-						{#if weaponArtDamageModifier.length}
-							<span>+ {weaponArtDamageModifier}<span class="source">(combat art)</span></span>
+						{#if skillAttackModifier.length}
+							<span>
+								+ {printCalc(skillAttackModifier)}<span class="source">(combat skills)</span>
+							</span>
 						{/if}
-						{#if optionsDamageModifier.length}
+						{#if optionalAttackModifier.length > 0}
+							<span>
+								+ {printCalc(simplifyCalc(optionalAttackModifier))}<span class="source"
+									>(optionals)</span
+								>
+							</span>
+						{/if}
+					</span>
+					<span>
+						= 1d20 <span class="modifiers">+ {printCalc(simplifiedAttackModifier)}</span>
+					</span>
+				</h2>
+			</div>
+			<div class="damage-container">
+				<h2 class="content">
+					{isHealWeapon ? 'HP Restored' : 'Damage'}: {#if selectedWeapon}
+						{damageBase}{#if damageTypeSelection && (weaponDamageType || []).length <= 1}
+							<span>({damageTypeLabel})</span>
+						{/if}{#if weaponDamageType && weaponDamageType.length > 1}
+							<select
+								on:change={(e) => {
+									damageTypeSelection = e.currentTarget.value;
+								}}
+							>
+								<option value={''}>-</option>
+								{#each weaponDamageType as type}
+									<option value={type} selected={type === damageTypeSelection}
+										>{PLAYER_STAT_TO_SHORT_LABEL[type]}</option
+									>
+								{/each}
+							</select>
+						{/if}
+
+						<span class="modifiers">
+							{#if weaponDamageModifier.length}
+								<span>+ {printCalc(weaponDamageModifier)}<span class="source">(weapon)</span></span>
+							{/if}
+							{#if healPlusModifier}
+								<span>+ {healPlusModifier}<span class="source">(Heal Plus)</span></span>
+							{/if}
+							{#if weaponArtDamageModifier.length}
+								<span>+ {weaponArtDamageModifier}<span class="source">(combat art)</span></span>
+							{/if}
+							{#if optionsDamageModifier.length}
+								<span
+									>+ {printCalc(simplifyCalc(optionsDamageModifier))}<span class="source"
+										>(options)</span
+									></span
+								>
+							{/if}
+						</span>
+						= <span>{printCalc(simplifiedDamageCalc)}</span>
+					{/if}
+				</h2>
+			</div>
+			<div class="crit-container">
+				<h2 class="content">
+					Crit Modifier: {dexMod + critDexModifier}<span class="source"
+						>(Dex{critDexModifier > 0 ? '+' + critDexModifier : critDexModifier})</span
+					>
+					<span class="modifiers">
+						{#if weaponCritModifier}
 							<span
-								>+ {printCalc(simplifyCalc(optionsDamageModifier))}<span class="source"
-									>(options)</span
+								>{weaponCritModifier > 0 ? '+ ' + weaponCritModifier : weaponCritModifier}<span
+									class="source">(weapon)</span
 								></span
 							>
 						{/if}
+						{#if weaponArtCritModifier.length}
+							<span
+								>+ {printCalc(weaponArtCritModifier)}<span class="source">(combat art)</span></span
+							>
+						{/if}
+						{#if optionsCritModifier.length}
+							<span>+ {optionsCritModifier}<span class="source">(options)</span></span>
+						{/if}
 					</span>
-					= <span>{printCalc(simplifiedDamageCalc)}</span>
-				{/if}
-			</h2>
-		</div>
-		<div class="crit-container">
-			<h2 class="content">
-				Crit Modifier: {dexMod + critDexModifier}<span class="source"
-					>(Dex{critDexModifier > 0 ? '+' + critDexModifier : critDexModifier})</span
-				>
-				<span class="modifiers">
-					{#if weaponCritModifier}
-						<span
-							>{weaponCritModifier > 0 ? '+ ' + weaponCritModifier : weaponCritModifier}<span
-								class="source">(weapon)</span
-							></span
-						>
-					{/if}
-					{#if weaponArtCritModifier.length}
-						<span>+ {printCalc(weaponArtCritModifier)}<span class="source">(combat art)</span></span
-						>
-					{/if}
-					{#if optionsCritModifier.length}
-						<span>+ {optionsCritModifier}<span class="source">(options)</span></span>
-					{/if}
-				</span>
-				{#if critModifier >= 0}= {20 - critModifier} to 20{/if}
-				{#if critModifier < 0}= Can't Crit{/if}
-				<span />
-			</h2>
-		</div>
-		<div class="range-container">
-			<h2 class="content">
-				Range: {#if selectedWeapon}
-					{weaponRangeMin}
-					{#if weaponRangeMax !== weaponRangeMin}to {weaponRangeMax}{/if}
-				{/if}
-			</h2>
-		</div>
-		{#if shouldRollCrest}
-			<div class="crest-container">
-				<h2 class="content">
-					Crest of {crestName} (DC {crestDC}):
-					<span class="crest-description">{crestDescription}</span>
+					{#if critModifier >= 0}= {20 - critModifier} to 20{/if}
+					{#if critModifier < 0}= Can't Crit{/if}
+					<span />
 				</h2>
 			</div>
-		{/if}
+			<div class="range-container">
+				<h2 class="content">
+					Range: {#if selectedWeapon}
+						{weaponRangeMin}
+						{#if weaponRangeMax !== weaponRangeMin}to {weaponRangeMax}{/if}
+					{/if}
+				</h2>
+			</div>
+			{#if shouldRollCrest}
+				<div class="crest-container">
+					<h2 class="content">
+						Crest of {crestName} (DC {crestDC}):
+						<span class="crest-description">{crestDescription}</span>
+					</h2>
+				</div>
+			{/if}
+		</div>
+		<div class="rolls">
+			<button style:height={'100%'} on:click={onOpenAttackModal} disabled={!selectedWeapon}
+				>ATTACK</button
+			>
+		</div>
+		<div class="options">
+			<button
+				class="reset"
+				on:click={() => {
+					selections = {};
+				}}>Reset Queries</button
+			>
+			<EntryPicker {queries} {selections} {onUpdateQuerySelection} />
+		</div>
 	</div>
-	<div class="rolls">
-		<button style:height={'100%'} on:click={onOpenAttackModal} disabled={!selectedWeapon}
-			>ATTACK</button
-		>
+{/if}
+{#if showModal}
+	<div class="attack-roll-container">
+		<AttackRollModal
+			{playerName}
+			{critModifier}
+			{crestCombatArtDamageModifier}
+			{selectedWeapon}
+			{weaponUses}
+			{onUpdateWeaponUses}
+			{crestConservesResource}
+			{selectedCombatArt}
+			{allWeapons}
+			{allCombatArts}
+			{curSuperiorityDies}
+			{setCurSuperiorityDie}
+			onCloseModal={() => (showModal = false)}
+			attackCalc={simplifiedAttackModifier}
+			damageCalc={simplifiedDamageCalc}
+			crestDC={shouldRollCrest ? crestDC : Infinity}
+			crestDamage={crestDamageBonus}
+			crestType={shouldRollCrest ? crestType : ''}
+			combatArtDamageBonus={weaponArtDamageModifier}
+		/>
 	</div>
-	<div class="options">
-		<button
-			class="reset"
-			on:click={() => {
-				selections = {};
-			}}>Reset Queries</button
-		>
-		<EntryPicker {queries} {selections} {onUpdateQuerySelection} />
-	</div>
-</div>
+{/if}
 
 <style lang="scss">
 	.container {
@@ -422,6 +448,11 @@
 			width: 100px;
 			height: 25px;
 		}
+	}
+	.attack-roll-container {
+		background-color: lightgray;
+		border-radius: 5px;
+		padding: 5px;
 	}
 
 	.content {
