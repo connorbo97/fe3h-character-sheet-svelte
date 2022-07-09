@@ -110,7 +110,13 @@
 			<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />
 		</div>
 		<div class="other">
-			<CombatStats stats={playerStats} {equippedClass} {unlockedClasses} {equippedCombatSkills} />
+			<CombatStats
+				stats={playerStats}
+				{equippedClass}
+				{unlockedClasses}
+				{equippedCombatSkills}
+				{selectedWeapon}
+			/>
 			<AttackCalc
 				{playerName}
 				{equippedClass}
