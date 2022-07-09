@@ -169,9 +169,11 @@ declare global {
 		range: Array<number | string>;
 		attackBonus?: number;
 		followUpBonus?: number;
+		acBonus?: number;
 		critBonus?: number;
 		uses?: number;
 		reason?: string;
+		dieCost?: { roll: number | Dice; target: number; mod?: number };
 	};
 	type PickOnePromptOption = string | { stat: string; value: number };
 	type PickOnePrompt = {
