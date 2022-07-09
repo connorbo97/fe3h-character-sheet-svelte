@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SvelteTip from 'src/common/SvelteTip.svelte';
 
-	import { CONTEXTS } from 'src/constants';
+	import { CONTEXTS, MAX_WEAPONS_EQUIPPED } from 'src/constants';
 	import { TooltipStyle } from 'src/constants/enums';
 
 	import { getWeaponDescription, WEAPONS } from 'src/constants/weapons';
@@ -84,6 +84,8 @@
 			<button
 				class={`${equippedWeapons.includes(weapon) ? 'equipped' : ''}`}
 				on:click={() => onToggleEquip(weapon, isUnlocked)}
+				disabled={equippedWeapons.length >= MAX_WEAPONS_EQUIPPED &&
+					!equippedWeapons.includes(weapon)}
 			/>
 		</div>
 	{/if}

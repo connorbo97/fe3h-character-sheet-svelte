@@ -7,7 +7,7 @@
 		LANCE_WEAPONS,
 		SWORD_WEAPONS
 	} from 'src/constants';
-	import { MAGIC_WEAPONS } from 'src/constants/weapons';
+	import { MAGIC_WEAPONS, TRAINING_WEAPONS_SET } from 'src/constants/weapons';
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
 	import { getContext } from 'svelte';
 	import CustomWeaponPrompt from './customWeaponPrompt.svelte';
@@ -56,6 +56,20 @@
 			onUpdateCustomWeapons
 		});
 	};
+
+	$: allWeaponsSet = allWeapons.fullSet;
+	$: unlockedSwords = SWORD_WEAPONS.filter(
+		(w) => allWeaponsSet.has(w) && !TRAINING_WEAPONS_SET.has(w)
+	);
+	$: unlockedLances = LANCE_WEAPONS.filter(
+		(w) => allWeaponsSet.has(w) && !TRAINING_WEAPONS_SET.has(w)
+	);
+	$: unlockedAxes = AXE_WEAPONS.filter((w) => allWeaponsSet.has(w) && !TRAINING_WEAPONS_SET.has(w));
+	$: unlockedBows = BOW_WEAPONS.filter((w) => allWeaponsSet.has(w) && !TRAINING_WEAPONS_SET.has(w));
+	$: unlockedFists = FIST_WEAPONS.filter(
+		(w) => allWeaponsSet.has(w) && !TRAINING_WEAPONS_SET.has(w)
+	);
+	$: trainingWeapons = Array.from(TRAINING_WEAPONS_SET);
 </script>
 
 <div class="container">
@@ -88,94 +102,125 @@
 		<button on:click={resetEquippedWeapons}>Unequip all weapons</button>
 	</div>
 	<div class="martial-weapons">
-		<div class="category">
-			<div class="label">Swords</div>
-			<div class="category-container">
-				{#each SWORD_WEAPONS as weapon}
-					<WeaponsSection
-						{allWeapons}
-						{equippedWeapons}
-						{weapon}
-						{onToggleEquip}
-						isMagic={false}
-						spellUseFlag={0}
-						{equippedCombatSkills}
-						{equippedClass}
-						{weaponUses}
-						{onUpdateWeaponUses}
-						{customWeapons}
-						{onUpdateCustomWeapons}
-					/>
-				{/each}
+		{#if unlockedSwords.length}
+			<div class="category">
+				<div class="label">Swords</div>
+				<div class="category-container">
+					{#each unlockedSwords as weapon}
+						<WeaponsSection
+							{allWeapons}
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							isMagic={false}
+							spellUseFlag={0}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
 			</div>
-		</div>
-		<div class="category">
-			<div class="label">Lances</div>
-			<div class="category-container">
-				{#each LANCE_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapons}
-						{weapon}
-						{onToggleEquip}
-						{allWeapons}
-						isMagic={false}
-						spellUseFlag={0}
-						{equippedCombatSkills}
-						{equippedClass}
-						{weaponUses}
-						{onUpdateWeaponUses}
-						{customWeapons}
-						{onUpdateCustomWeapons}
-					/>
-				{/each}
+		{/if}
+		{#if unlockedLances.length}
+			<div class="category">
+				<div class="label">Lances</div>
+				<div class="category-container">
+					{#each unlockedLances as weapon}
+						<WeaponsSection
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							{allWeapons}
+							isMagic={false}
+							spellUseFlag={0}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
 			</div>
-		</div>
-		<div class="category">
-			<div class="label">Axes</div>
-			<div class="category-container">
-				{#each AXE_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapons}
-						{weapon}
-						{onToggleEquip}
-						{allWeapons}
-						isMagic={false}
-						spellUseFlag={0}
-						{equippedCombatSkills}
-						{equippedClass}
-						{weaponUses}
-						{onUpdateWeaponUses}
-						{customWeapons}
-						{onUpdateCustomWeapons}
-					/>
-				{/each}
+		{/if}
+		{#if unlockedAxes.length}
+			<div class="category">
+				<div class="label">Axes</div>
+				<div class="category-container">
+					{#each unlockedAxes as weapon}
+						<WeaponsSection
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							{allWeapons}
+							isMagic={false}
+							spellUseFlag={0}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
 			</div>
-		</div>
-		<div class="category">
-			<div class="label">Bows</div>
-			<div class="category-container">
-				{#each BOW_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapons}
-						{weapon}
-						{onToggleEquip}
-						{allWeapons}
-						isMagic={false}
-						spellUseFlag={0}
-						{equippedCombatSkills}
-						{equippedClass}
-						{weaponUses}
-						{onUpdateWeaponUses}
-						{customWeapons}
-						{onUpdateCustomWeapons}
-					/>
-				{/each}
+		{/if}
+		{#if unlockedBows.length}
+			<div class="category">
+				<div class="label">Bows</div>
+				<div class="category-container">
+					{#each unlockedBows as weapon}
+						<WeaponsSection
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							{allWeapons}
+							isMagic={false}
+							spellUseFlag={0}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
 			</div>
-		</div>
+		{/if}
+		{#if unlockedFists.length}
+			<div class="category">
+				<div class="label">Fists</div>
+				<div class="category-container">
+					{#each unlockedFists as weapon}
+						<WeaponsSection
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							{allWeapons}
+							spellUseFlag={0}
+							isMagic={false}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
+			</div>
+		{/if}
 		<div class="category">
-			<div class="label">Fists</div>
+			<div class="label">Training Weapons</div>
 			<div class="category-container">
-				{#each FIST_WEAPONS as weapon}
+				{#each trainingWeapons as weapon}
 					<WeaponsSection
 						{equippedWeapons}
 						{weapon}

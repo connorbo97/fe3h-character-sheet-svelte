@@ -308,7 +308,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			weapons: {
 				[WEAPONS.STEEL_BOW]: 1,
 				[WEAPONS.SHORT_BOW]: 1,
-				[WEAPONS.IRON_SWORD]: 1
+				[WEAPONS.IRON_LANCE]: 1
 			}
 		},
 		whenEquipped: {
