@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants';
+	import { COMBAT_SKILLS_TO_FEATURES, MAX_COMBAT_SKILLS } from 'src/constants';
 	import CombatSkillEntry from './combatSkillEntry.svelte';
 
 	export let allCombatSkills: AllCombatSkills;
@@ -12,6 +12,10 @@
 </script>
 
 <div class="container">
+	<div class="header">
+		<u>Combat Skills ({equippedCombatSkills.length}/{MAX_COMBAT_SKILLS})</u>
+		<!-- <button on:click={openAddPrompt}> + </button> -->
+	</div>
 	{#each allCombatSkillsArr as skill}
 		<CombatSkillEntry
 			{skill}
@@ -35,6 +39,11 @@
 		padding: 5px;
 
 		overflow-y: scroll;
-		height: 100%;
+		height: calc(50% - 10px);
+	}
+
+	.header {
+		display: flex;
+		justify-content: space-between;
 	}
 </style>

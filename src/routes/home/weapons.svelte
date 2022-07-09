@@ -7,8 +7,8 @@
 		LANCE_WEAPONS,
 		SWORD_WEAPONS
 	} from 'src/constants';
-	import { MAGIC_WEAPONS } from 'src/constants/weapons';
-	import { WEAPON_TYPE } from 'src/constants/weaponType';
+	import { MAGIC_WEAPONS, MARTIAL_WEAPONS, TRAINING_WEAPONS_SET } from 'src/constants/weapons';
+	import { MAGIC_WEAPON_TYPES, WEAPON_TYPE } from 'src/constants/weaponType';
 	import { getContext } from 'svelte';
 	import CustomWeaponPrompt from './customWeaponPrompt.svelte';
 	import WeaponsSection from './weaponsSection.svelte';
@@ -47,19 +47,51 @@
 
 	$: resetEquippedWeapons = () => equippedWeapons.forEach((w: any) => onToggleEquippedWeapons(w));
 
-	$: promptNewMagicWeapon = () => {
+	$: promptNewMartialWeapon = () => {
 		open(CustomWeaponPrompt, {
-			weapon: MAGIC_WEAPONS.filter((w: any) => !allWeapons.fullSet.has(w)),
+			weapon: MARTIAL_WEAPONS.filter((w: any) => !allWeapons.fullSet.has(w)),
 			weaponsToFeatures: allWeaponFeatures,
-			defaultReason: 'Manually added in magic weapons section',
+			defaultReason: 'Manually added in weapons section',
 			customWeapons,
 			onUpdateCustomWeapons
 		});
 	};
+	$: promptNewMagicWeapon = () => {
+		open(CustomWeaponPrompt, {
+			weapon: MAGIC_WEAPONS.filter((w: any) => !allWeapons.fullSet.has(w)),
+			weaponsToFeatures: allWeaponFeatures,
+			defaultReason: 'Manually added in weapons section',
+			customWeapons,
+			onUpdateCustomWeapons
+		});
+	};
+
+	$: allWeaponsSet = allWeapons.fullSet;
+	$: allMartialWeaponTypes = allWeapons.fullArray.reduce((acc, w) => {
+		const type = allWeaponFeatures[w].type;
+
+		if (!TRAINING_WEAPONS_SET.has(w) && !MAGIC_WEAPON_TYPES.includes(type)) {
+			acc.add(type);
+		}
+
+		return acc;
+	}, new Set());
+	$: trainingWeaponsSet = new Set(
+		allMartialWeaponTypes.size < 4 ? Array.from(TRAINING_WEAPONS_SET) : []
+	);
+	$: unlockedSwords = SWORD_WEAPONS.filter(
+		(w) => allWeaponsSet.has(w) && !trainingWeaponsSet.has(w)
+	);
+	$: unlockedLances = LANCE_WEAPONS.filter(
+		(w) => allWeaponsSet.has(w) && !trainingWeaponsSet.has(w)
+	);
+	$: unlockedAxes = AXE_WEAPONS.filter((w) => allWeaponsSet.has(w) && !trainingWeaponsSet.has(w));
+	$: unlockedBows = BOW_WEAPONS.filter((w) => allWeaponsSet.has(w) && !trainingWeaponsSet.has(w));
+	$: unlockedFists = FIST_WEAPONS.filter((w) => allWeaponsSet.has(w) && !trainingWeaponsSet.has(w));
 </script>
 
 <div class="container">
-	<div class="actions">
+	<div class="actions" style:white-space="nowrap">
 		<u>Martial Weapons</u>
 		<div class="superiority-die">
 			<span>Superiority Dies:</span>
@@ -83,137 +115,23 @@
 				}}
 			/>
 		</div>
-		<button on:click={() => (curSuperiorityDies = maxSuperiorityDie)}>Reset Superiority Dice</button
-		>
+		<button on:click={() => setCurSuperiorityDie(maxSuperiorityDie)}>Reset Superiority Dice</button>
 		<button on:click={() => (spellUseFlag += 1)}>Reset Spell Uses</button>
 		<button on:click={resetEquippedWeapons}>Unequip all weapons</button>
 	</div>
 	<div class="martial-weapons">
-		<div class="category">
-			<div class="label">Swords</div>
-			<div class="category-container">
-				{#each SWORD_WEAPONS as weapon}
-					<WeaponsSection
-						{allWeapons}
-						{equippedWeapons}
-						{weapon}
-						{onToggleEquip}
-						isMagic={false}
-						spellUseFlag={0}
-						{equippedCombatSkills}
-						{equippedClass}
-						{weaponUses}
-						{onUpdateWeaponUses}
-						{customWeapons}
-						{onUpdateCustomWeapons}
-					/>
-				{/each}
-			</div>
-		</div>
-		<div class="category">
-			<div class="label">Lances</div>
-			<div class="category-container">
-				{#each LANCE_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapons}
-						{weapon}
-						{onToggleEquip}
-						{allWeapons}
-						isMagic={false}
-						spellUseFlag={0}
-						{equippedCombatSkills}
-						{equippedClass}
-						{weaponUses}
-						{onUpdateWeaponUses}
-						{customWeapons}
-						{onUpdateCustomWeapons}
-					/>
-				{/each}
-			</div>
-		</div>
-		<div class="category">
-			<div class="label">Axes</div>
-			<div class="category-container">
-				{#each AXE_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapons}
-						{weapon}
-						{onToggleEquip}
-						{allWeapons}
-						isMagic={false}
-						spellUseFlag={0}
-						{equippedCombatSkills}
-						{equippedClass}
-						{weaponUses}
-						{onUpdateWeaponUses}
-						{customWeapons}
-						{onUpdateCustomWeapons}
-					/>
-				{/each}
-			</div>
-		</div>
-		<div class="category">
-			<div class="label">Bows</div>
-			<div class="category-container">
-				{#each BOW_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapons}
-						{weapon}
-						{onToggleEquip}
-						{allWeapons}
-						isMagic={false}
-						spellUseFlag={0}
-						{equippedCombatSkills}
-						{equippedClass}
-						{weaponUses}
-						{onUpdateWeaponUses}
-						{customWeapons}
-						{onUpdateCustomWeapons}
-					/>
-				{/each}
-			</div>
-		</div>
-		<div class="category">
-			<div class="label">Fists</div>
-			<div class="category-container">
-				{#each FIST_WEAPONS as weapon}
-					<WeaponsSection
-						{equippedWeapons}
-						{weapon}
-						{onToggleEquip}
-						{allWeapons}
-						spellUseFlag={0}
-						isMagic={false}
-						{equippedCombatSkills}
-						{equippedClass}
-						{weaponUses}
-						{onUpdateWeaponUses}
-						{customWeapons}
-						{onUpdateCustomWeapons}
-					/>
-				{/each}
-			</div>
-		</div>
-	</div>
-	{#if reasonEntries.length || faithEntries.length}
-		<span style:display="flex">
-			<u style:flex="1">Magic Weapons</u>
-			<button on:click={promptNewMagicWeapon}>Add new magic weapon</button>
-		</span>
-	{/if}
-	<div class="magic-weapons">
-		{#if reasonEntries.length}
-			<div class="magic-category">
-				<div class="label">Reason</div>
-				<div class="category">
-					{#each reasonEntries as weapon}
+		{#if unlockedSwords.length}
+			<div class="category">
+				<div class="label">Swords</div>
+				<div class="category-container">
+					{#each unlockedSwords as weapon}
 						<WeaponsSection
+							{allWeapons}
 							{equippedWeapons}
 							{weapon}
 							{onToggleEquip}
-							{allWeapons}
-							isMagic={true}
-							{spellUseFlag}
+							isMagic={false}
+							spellUseFlag={0}
 							{equippedCombatSkills}
 							{equippedClass}
 							{weaponUses}
@@ -225,11 +143,132 @@
 				</div>
 			</div>
 		{/if}
-		{#if faithEntries.length}
+		{#if unlockedLances.length}
+			<div class="category">
+				<div class="label">Lances</div>
+				<div class="category-container">
+					{#each unlockedLances as weapon}
+						<WeaponsSection
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							{allWeapons}
+							isMagic={false}
+							spellUseFlag={0}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
+			</div>
+		{/if}
+		{#if unlockedAxes.length}
+			<div class="category">
+				<div class="label">Axes</div>
+				<div class="category-container">
+					{#each unlockedAxes as weapon}
+						<WeaponsSection
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							{allWeapons}
+							isMagic={false}
+							spellUseFlag={0}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
+			</div>
+		{/if}
+		{#if unlockedBows.length}
+			<div class="category">
+				<div class="label">Bows</div>
+				<div class="category-container">
+					{#each unlockedBows as weapon}
+						<WeaponsSection
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							{allWeapons}
+							isMagic={false}
+							spellUseFlag={0}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
+			</div>
+		{/if}
+		{#if unlockedFists.length}
+			<div class="category">
+				<div class="label">Fists</div>
+				<div class="category-container">
+					{#each unlockedFists as weapon}
+						<WeaponsSection
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							{allWeapons}
+							spellUseFlag={0}
+							isMagic={false}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
+			</div>
+		{/if}
+		{#if trainingWeaponsSet.size > 0}
+			<div class="category">
+				<div class="label">Training Weapons</div>
+				<div class="category-container">
+					{#each Array.from(trainingWeaponsSet) as weapon}
+						<WeaponsSection
+							{equippedWeapons}
+							{weapon}
+							{onToggleEquip}
+							{allWeapons}
+							spellUseFlag={0}
+							isMagic={false}
+							{equippedCombatSkills}
+							{equippedClass}
+							{weaponUses}
+							{onUpdateWeaponUses}
+							{customWeapons}
+							{onUpdateCustomWeapons}
+						/>
+					{/each}
+				</div>
+			</div>
+		{/if}
+	</div>
+	<span style:display="flex">
+		<u style:flex="1">Magic Weapons</u>
+		<button on:click={promptNewMartialWeapon}>Add new martial weapon</button>
+		<button on:click={promptNewMagicWeapon}>Add new magic weapon</button>
+	</span>
+	<div class="magic-weapons">
+		{#if reasonEntries.length || faithEntries.length}
 			<div class="magic-category">
-				<div class="label">Faith</div>
 				<div class="category">
-					{#each faithEntries as weapon}
+					{#each [...reasonEntries, ...faithEntries] as weapon}
 						<WeaponsSection
 							{equippedWeapons}
 							{weapon}
@@ -253,11 +292,14 @@
 
 <style lang="scss">
 	.container {
+		display: flex;
+		flex-direction: column;
 		background-color: darksalmon;
 		border-radius: 5px;
 		padding: 5px;
 
 		column-gap: 5px;
+		height: calc(100% - 10px);
 	}
 	.actions {
 		display: flex;
@@ -276,6 +318,8 @@
 		justify-content: space-between;
 
 		border-bottom: 1px solid black;
+		flex: 1;
+		height: 100%;
 	}
 
 	.label {
@@ -295,10 +339,8 @@
 		.category {
 			display: grid;
 			flex-direction: column;
-			grid-template-columns: repeat(3, 1fr);
-			grid-template-rows: repeat(3, max-content) auto;
+			grid-template-columns: repeat(4, 1fr);
 			grid-auto-rows: max-content;
-			grid-auto-flow: column;
 
 			column-gap: 5px;
 			row-gap: 5px;
@@ -309,14 +351,15 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-		flex-wrap: wrap;
 		&:not(:last-child) {
 			border-right: 1px solid black;
 		}
 		padding: 5px;
-		max-height: 120px;
-
-		column-gap: 5px;
+	}
+	.category-container {
+		display: flex;
+		flex-direction: column;
+		row-gap: 5px;
 	}
 
 	.danger {

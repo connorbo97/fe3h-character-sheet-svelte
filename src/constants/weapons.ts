@@ -51,6 +51,13 @@ export const WEAPONS = {
 	IRON_SHIELD: 'IRON_SHIELD'
 };
 
+export const TRAINING_WEAPONS_SET = new Set([
+	WEAPONS.TRAINING_SWORD,
+	WEAPONS.TRAINING_LANCE,
+	WEAPONS.TRAINING_AXE,
+	WEAPONS.TRAINING_BOW,
+	WEAPONS.TRAINING_GAUNTLETS
+]);
 export const SWORD_WEAPONS = [WEAPONS.TRAINING_SWORD, WEAPONS.IRON_SWORD, WEAPONS.STEEL_SWORD];
 export const LANCE_WEAPONS = [
 	WEAPONS.TRAINING_LANCE,
@@ -295,7 +302,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	},
 
 	[WEAPONS.TRAINING_GAUNTLETS]: {
-		label: 'Training Gauntlets',
+		label: 'Training Fists',
 		description: '',
 		type: WEAPON_TYPE.FISTS,
 		acBonus: 1,
@@ -304,7 +311,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		range: [1]
 	},
 	[WEAPONS.IRON_GAUNTLETS]: {
-		label: 'Iron Gauntlets',
+		label: 'Iron Fists',
 		description: '',
 		type: WEAPON_TYPE.FISTS,
 		damage: [1],
@@ -312,7 +319,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		range: [1]
 	},
 	[WEAPONS.STEEL_GAUNTLETS]: {
-		label: 'Steel Gauntlets',
+		label: 'Steel Fists',
 		description: '',
 		type: WEAPON_TYPE.FISTS,
 		attackBonus: -1,

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SvelteTip from 'src/common/SvelteTip.svelte';
 
-	import { CONTEXTS } from 'src/constants';
+	import { CONTEXTS, MAX_WEAPONS_EQUIPPED } from 'src/constants';
 	import { TooltipStyle } from 'src/constants/enums';
 
 	import { getWeaponDescription, WEAPONS } from 'src/constants/weapons';
@@ -54,11 +54,11 @@
 	$: isUnlocked = isCustomUnlock || isClassUnlock || isTrainingWeapon;
 
 	$: weaponsToFeatures = allWeapons.fullFeatures;
-	$: weaponIsDisabled = !weaponsToFeatures[weapon].reason;
+	$: tooltipText = weaponsToFeatures[weapon].reason;
 </script>
 
 <div class="container">
-	<SvelteTip disabled={weaponIsDisabled}>
+	<SvelteTip disabled={!tooltipText}>
 		<button
 			class={`available-button ${isCustomUnlock ? 'custom-unlock' : ''} ${
 				allWeapons.fullSet.has(weapon) ? 'unlocked' : ''
@@ -84,6 +84,8 @@
 			<button
 				class={`${equippedWeapons.includes(weapon) ? 'equipped' : ''}`}
 				on:click={() => onToggleEquip(weapon, isUnlocked)}
+				disabled={equippedWeapons.length >= MAX_WEAPONS_EQUIPPED &&
+					!equippedWeapons.includes(weapon)}
 			/>
 		</div>
 	{/if}
@@ -121,6 +123,7 @@
 		align-items: center;
 		column-gap: 5px;
 		.label {
+			line-height: 15px;
 			&.magic {
 				font-size: 15px;
 			}

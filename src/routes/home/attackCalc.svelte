@@ -123,7 +123,6 @@
 	$: crestConservesResource = CRESTS_TO_FEATURES[crestType]?.conservesResource || false;
 	// $: crestHPRecoveryPercent = CRESTS_TO_FEATURES[crestType]?.hpRecoveryPercent || 0;
 	$: shouldRollCrest = calcShouldRollCrest();
-	console.log(shouldRollCrest);
 	$: crestDC = shouldRollCrest
 		? CRESTS_TO_FEATURES[crestType].activationDC[
 				playerCrest.isMajor ? CrestType.MAJOR : CrestType.MINOR

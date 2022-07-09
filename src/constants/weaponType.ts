@@ -3,6 +3,12 @@
 import { PLAYER_SKILL } from './playerSkills';
 import { PLAYER_STAT } from './stats';
 
+import SwordImg from '../images/weapons/sword.png';
+import LanceImg from '../images/weapons/lance.png';
+import AxeImg from '../images/weapons/axe.png';
+import BowImg from '../images/weapons/bow.png';
+import FistsImg from '../images/weapons/fists.png';
+
 export const WEAPON_TYPE = {
 	SWORD: 'SWORD',
 	LANCE: 'LANCE',
@@ -50,3 +56,16 @@ export const MARTIAL_WEAPON_TYPES = [
 	WEAPON_TYPE.FISTS
 ];
 export const MAGIC_WEAPON_TYPES = [WEAPON_TYPE.REASON, WEAPON_TYPE.FAITH];
+
+export const WEAPON_TYPE_TO_IMAGE = {
+	[WEAPON_TYPE.SWORD]: SwordImg,
+	[WEAPON_TYPE.LANCE]: LanceImg,
+	[WEAPON_TYPE.AXE]: AxeImg,
+	[WEAPON_TYPE.BOW]: BowImg,
+	[WEAPON_TYPE.FISTS]: FistsImg,
+	[WEAPON_TYPE.HEAVY_ARMOR]: null,
+	[WEAPON_TYPE.RIDING]: null,
+	[WEAPON_TYPE.REASON]: null,
+	[WEAPON_TYPE.FAITH]: null,
+	[WEAPON_TYPE.LEADERSHIP]: null
+};

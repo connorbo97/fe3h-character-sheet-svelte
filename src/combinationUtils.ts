@@ -2,9 +2,10 @@ import {
 	CLASS_TO_FEATURES,
 	COMBAT_ARTS,
 	COMBAT_SKILLS,
-	WEAPONS,
+	TRAINING_WEAPONS_SET,
 	COMBAT_ARTS_TO_FEATURES,
 	COMBAT_SKILLS_TO_FEATURES,
+	WEAPON_TYPE,
 	WEAPON_TYPES_TO_LEVEL_FEATURES,
 	LEVEL_UP_ORDER,
 	WEAPON_LEVEL,
@@ -26,13 +27,7 @@ const calculateAllWeaponsMemoized = memoize(
 		classXP: XPMap,
 		equippedClass: string
 	): AllWeapons => {
-		const baseSet = [
-			WEAPONS.TRAINING_SWORD,
-			WEAPONS.TRAINING_LANCE,
-			WEAPONS.TRAINING_AXE,
-			WEAPONS.TRAINING_BOW,
-			WEAPONS.TRAINING_GAUNTLETS
-		];
+		const baseSet = Array.from(TRAINING_WEAPONS_SET);
 		const customSet: Set<string> = new Set(Object.keys(customWeapons));
 		const equippedClassSet: Set<string> = new Set(
 			Object.keys(CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.weapons || {})
@@ -249,12 +244,21 @@ const calculateAllCombatArtsMemoized = (
 		{ ...customCombatArts }
 	);
 
+	const fullFeatures = { ...COMBAT_ARTS_TO_FEATURES, ...customCombatArtFeatures };
+
+	const weaponOrder = Object.keys(WEAPON_TYPE);
+	const fullArray = Array.from(fullSet).sort((a, b) => {
+		const aI = weaponOrder.indexOf(fullFeatures[a].type);
+		const bI = weaponOrder.indexOf(fullFeatures[b].type);
+		return aI <= bI ? 1 : -1;
+	});
+
 	return {
 		customSet,
 		equippedClassSet,
 		classUnlockSet,
 		fullSet,
-		fullArray: Array.from(fullSet),
-		fullFeatures: { ...COMBAT_ARTS_TO_FEATURES, ...customCombatArtFeatures }
+		fullArray,
+		fullFeatures
 	};
 };

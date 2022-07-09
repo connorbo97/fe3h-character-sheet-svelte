@@ -201,5 +201,6 @@ export const rollVisualDice = (
 	});
 };
 
+export const addNumberPrefix = (num) => `${num > 0 ? '+' : ''}${num}`;
 export const getCrestStrengthText = (bool: any) => (bool ? 'Major' : 'Minor');
 export const getCrestStrength = (bool: any) => (bool ? CrestType.MAJOR : CrestType.MINOR);
