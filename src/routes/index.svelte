@@ -183,7 +183,13 @@
 		onUpdateSheet('crest', newCrest);
 	};
 	$: onUpdateWeaponUses = (weapon: any, newUses: any) => {
-		weaponUses = { ...weaponUses, [weapon]: newUses };
+		let finalUses = newUses;
+		if (newUses < 0) {
+			finalUses = weaponUses[weapon] + newUses;
+		}
+		finalUses = Math.max(finalUses, 0);
+
+		weaponUses = { ...weaponUses, [weapon]: finalUses };
 	};
 	$: onUpdateCustomWeapons = (newCustom: any) => {
 		onUpdateSheet('customWeapons', newCustom);
