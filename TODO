@@ -1,0 +1,28 @@
+add "loadable" sheets for NPCs
+
+fix superiority dice reset button not re-enabling attack button
+
+disable weapon equip buttons when max are equipped
+
+add disable state to classes
+
+add ability to add custom combat art
+
+add ability to add custom combat skills
+
+add more prompts to XP level ups
+
+add ability to roll dice that are not real (by multiplying them by 2 then modulusing the result by 2)
+
+add dice options tab
+
+add changes log
+
+add more "chore" skills
+
+full replace all usages of MAP_TO_FEATURES
+
+
+add "aggro" indicator
+
+add "Copy result to clipboard" on attack modal to allow everyone to paste their attack + their damage nicely
