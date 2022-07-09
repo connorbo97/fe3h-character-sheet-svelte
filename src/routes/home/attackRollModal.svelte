@@ -171,7 +171,7 @@
 		: '';
 	$: weaponLabel = allWeapons.fullFeatures[selectedWeapon]?.label;
 	$: headerLabel = `${weaponLabel}` + combatArtLabel;
-	$: getDamageRollText = () => {
+	$: getRoll20Text = () => {
 		const critRoll = 20;
 		const crestRoll = rollDice(20);
 
@@ -180,14 +180,12 @@
 		const calc = `${printCalc(damageCalc)}${
 			crestActivated && crestRoll >= crestDC ? `+${getCrestDamageRollText()}` : ''
 		}`;
-		return `/roll ${calc}${
+		const damageResultText2 = `/roll ${calc}${
 			critActivated ? '+' + (critRoll === 20 ? calc + '+' + calc : calc) : ''
 		}${crestActivated ? ` [Crest Activated [${crestRoll}]]` : ''}${
 			critActivated ? ` [CRIT[${critRoll}]]` : ''
 		} [ID${Math.floor(Math.random() * 1000000)}]`;
-	};
-	$: getRoll20Text = () => {
-		const damageResultText2 = getDamageRollText();
+
 		const attackRollText = `&{template:atk} {{rname=[${weaponLabel}](\`${damageResultText2})}} {{mod=${
 			selectedCombatArt ? allCombatArts.fullFeatures[selectedCombatArt]?.label : '+0'
 		}}} {{r1=[[1d20${prefixedAttackCalc}]]}} {{normal=1}} {{charname=${playerName}}}`;
