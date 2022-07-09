@@ -83,8 +83,7 @@
 				}}
 			/>
 		</div>
-		<button on:click={() => (curSuperiorityDies = maxSuperiorityDie)}>Reset Superiority Dice</button
-		>
+		<button on:click={() => setCurSuperiorityDie(maxSuperiorityDie)}>Reset Superiority Dice</button>
 		<button on:click={() => (spellUseFlag += 1)}>Reset Spell Uses</button>
 		<button on:click={resetEquippedWeapons}>Unequip all weapons</button>
 	</div>
