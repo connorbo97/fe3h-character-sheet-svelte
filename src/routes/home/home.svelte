@@ -105,6 +105,9 @@
 			{playerStats}
 			{onUpdatePlayerStats}
 		/>
+	</div>
+	<div class="arts">
+		<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />
 		<CombatSkills {allCombatSkills} {equippedCombatSkills} {onToggleCombatSkill} />
 	</div>
 	<div class="rest">
@@ -123,9 +126,6 @@
 				{customWeapons}
 				{onUpdateCustomWeapons}
 			/>
-		</div>
-		<div class="arts">
-			<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} />
 		</div>
 		<div class="other">
 			<CombatStats
@@ -162,8 +162,8 @@
 <style lang="scss">
 	.container {
 		display: grid;
-		grid-template-areas: 'stats skills classes rest';
-		grid-template-columns: min-content 200px 180px 1fr;
+		grid-template-areas: 'stats skills classes arts rest';
+		grid-template-columns: min-content 200px 160px 180px 1fr;
 		column-gap: 5px;
 
 		height: 100%;
@@ -193,8 +193,8 @@
 		display: grid;
 		grid-template-areas:
 			'weapons weapons'
-			'arts other';
-		grid-template-rows: min-content 1fr;
+			'other other';
+		grid-template-rows: max-content 1fr;
 		grid-template-columns: 185px 1fr;
 		row-gap: 5px;
 		column-gap: 5px;
@@ -215,5 +215,8 @@
 	.arts {
 		grid-area: arts;
 		display: flex;
+		flex-direction: column;
+
+		row-gap: 5px;
 	}
 </style>

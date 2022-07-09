@@ -125,6 +125,8 @@
 		border-radius: 5px;
 
 		row-gap: 10px;
+		height: 100%;
+		overflow-y: scroll;
 	}
 
 	.label {
@@ -138,10 +140,13 @@
 	}
 	.class-container {
 		display: flex;
+		align-items: center;
+		> button {
+			height: 20px;
+		}
 	}
 	.class-label {
 		flex: 1;
-		white-space: nowrap;
 	}
 
 	.active {

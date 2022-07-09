@@ -302,7 +302,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	},
 
 	[WEAPONS.TRAINING_GAUNTLETS]: {
-		label: 'Training Gauntlets',
+		label: 'Training Fists',
 		description: '',
 		type: WEAPON_TYPE.FISTS,
 		acBonus: 1,
@@ -311,7 +311,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		range: [1]
 	},
 	[WEAPONS.IRON_GAUNTLETS]: {
-		label: 'Iron Gauntlets',
+		label: 'Iron Fists',
 		description: '',
 		type: WEAPON_TYPE.FISTS,
 		damage: [1],
@@ -319,7 +319,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		range: [1]
 	},
 	[WEAPONS.STEEL_GAUNTLETS]: {
-		label: 'Steel Gauntlets',
+		label: 'Steel Fists',
 		description: '',
 		type: WEAPON_TYPE.FISTS,
 		attackBonus: -1,

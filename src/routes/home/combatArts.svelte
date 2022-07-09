@@ -18,13 +18,13 @@
 		display: flex;
 		flex-direction: column;
 		background-color: aquamarine;
+		flex: 1;
 
 		border-radius: 5px;
 		padding: 5px;
 
 		row-gap: 5px;
 
-		width: 100%;
 		overflow-y: scroll;
 	}
 </style>

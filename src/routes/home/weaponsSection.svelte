@@ -123,6 +123,7 @@
 		align-items: center;
 		column-gap: 5px;
 		.label {
+			line-height: 15px;
 			&.magic {
 				font-size: 15px;
 			}
