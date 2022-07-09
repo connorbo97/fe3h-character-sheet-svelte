@@ -25,6 +25,7 @@
 	} from 'src/combinationUtils';
 	import Editor from './editor/editor.svelte';
 	import { SkillProficiency } from 'src/constants/playerSkills';
+	import { CLASS } from 'src/constants/classes';
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -177,7 +178,13 @@
 		}
 	};
 	$: onUpdateUnlockedClasses = (newClasses: Array<string>) => {
-		onUpdateSheet('unlockedClasses', newClasses);
+		const classOrder = Object.values(CLASS);
+		const a = [...newClasses].sort((a, b) => {
+			const aI = classOrder.indexOf(a);
+			const bI = classOrder.indexOf(b);
+			return aI > bI ? 1 : -1;
+		});
+		onUpdateSheet('unlockedClasses', a);
 	};
 	$: onChangePage = (newPage: any) => {
 		currentPage = newPage;
