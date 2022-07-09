@@ -153,10 +153,12 @@
 
 	// Damage
 	$: weaponDamageType = weaponsToFeatures[selectedWeapon]?.damageType;
+	let prevWeaponDamageType = { current: weaponDamageType };
 	let damageTypeSelection = '';
 
 	$: {
-		if (!damageTypeSelection) {
+		if (!damageTypeSelection || prevWeaponDamageType.current !== weaponDamageType) {
+			prevWeaponDamageType.current = weaponDamageType;
 			if (weaponDamageType) {
 				damageTypeSelection = weaponDamageType[0];
 			} else {
