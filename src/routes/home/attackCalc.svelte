@@ -249,6 +249,8 @@
 	$: [weaponRangeMin, weaponRangeMax] = calcWeaponRange();
 
 	$: onOpenAttackModal = () => (showModal = true);
+
+	$: isHealWeapon = HEALING_MAGIC.has(selectedWeapon);
 </script>
 
 {#if !showModal}
@@ -300,7 +302,7 @@
 			</div>
 			<div class="damage-container">
 				<h2 class="content">
-					Damage: {#if selectedWeapon}
+					{isHealWeapon ? 'HP Restored' : 'Damage'}: {#if selectedWeapon}
 						{damageBase}{#if damageTypeSelection && (weaponDamageType || []).length <= 1}
 							<span>({damageTypeLabel})</span>
 						{/if}{#if weaponDamageType && weaponDamageType.length > 1}

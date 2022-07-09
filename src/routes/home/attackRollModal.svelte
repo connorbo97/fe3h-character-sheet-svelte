@@ -4,7 +4,8 @@
 
 	import { CRESTS_TO_FEATURES, CRESTS_TO_LABELS } from 'src/constants/crests';
 	import { Dice } from 'src/constants/dice';
-	import { MAGIC_WEAPONS } from 'src/constants/weapons';
+	import { TooltipStyle } from 'src/constants/enums';
+	import { HEALING_MAGIC, MAGIC_WEAPONS } from 'src/constants/weapons';
 	import { copyToClipboard, printCalc, rollCalc, rollDice, rollVisualDice } from 'src/utils';
 
 	export let playerName: any;
@@ -48,6 +49,7 @@
 
 	let crestRoll: any = '';
 
+	$: isHealWeapon = HEALING_MAGIC.has(selectedWeapon);
 	const calcBaseDieCost = () => {
 		const dieCost = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.dieCost;
 		if (!selectedCombatArt || !dieCost) {
@@ -123,10 +125,12 @@
 		crestRoll = '';
 
 		try {
-			await onAttackRoll();
+			if (!isHealWeapon) {
+				await onAttackRoll();
+			}
 			superiorityDieCost = calcBaseDieCost();
 
-			if (critModifier >= 0) {
+			if (!isHealWeapon && critModifier >= 0) {
 				await onCritRoll();
 			}
 			if (crestType) {
@@ -208,20 +212,22 @@
 		<!-- </div> -->
 	</div>
 	<div class="rolls">
-		<div class="attack">
-			<h3>Attack</h3>
-			<div class="content">{prefixedAttackCalc}</div>
-			{#if attackRoll}
-				<SvelteTip>
-					<button on:click={onAttackRoll}>Re-roll</button>
-					<div slot="t">
-						Only meant to be used for advantage/disadvantage. Will not automatically decrement your
-						superiority die or weapon uses
-					</div>
-				</SvelteTip>
-			{/if}
-		</div>
-		{#if critModifier >= 0}
+		{#if !isHealWeapon}
+			<div class="attack">
+				<h3>Attack</h3>
+				<div class="content">{prefixedAttackCalc}</div>
+				{#if attackRoll}
+					<SvelteTip>
+						<button on:click={onAttackRoll}>Re-roll</button>
+						<div slot="t">
+							Only meant to be used for advantage/disadvantage. Will not automatically decrement
+							your superiority die or weapon uses
+						</div>
+					</SvelteTip>
+				{/if}
+			</div>
+		{/if}
+		{#if !isHealWeapon && critModifier >= 0}
 			<div class="crit">
 				<h3>Crit Range</h3>
 				<div class="content">
@@ -231,18 +237,21 @@
 			</div>
 		{/if}
 		{#if crestType}
-			<div class="crest">
-				<h3>Crest of {CRESTS_TO_LABELS[crestType]}</h3>
-				<div class="content">
-					{#if crestDC && crestDC <= 20}
-						<span>DC {crestDC}</span>
-					{/if}
+			<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
+				<div class="crest">
+					<h3>Crest of {CRESTS_TO_LABELS[crestType]}</h3>
+					<div class="content">
+						{#if crestDC && crestDC <= 20}
+							<span>DC {crestDC}</span>
+						{/if}
+					</div>
 				</div>
-				<!-- <button on:click={onCrestRoll}>Roll</button> -->
-			</div>
+				<div slot="t">{CRESTS_TO_FEATURES[crestType].description}</div>
+			</SvelteTip>
+			<!-- <button on:click={onCrestRoll}>Roll</button> -->
 		{/if}
 		<div class="damage">
-			<h3>Damage</h3>
+			<h3>{isHealWeapon ? 'HP Restored' : 'Damage'}</h3>
 			<div class="content">
 				{printCalc(damageCalc)}
 				{#if crestSuccess && crestDamage}
@@ -253,17 +262,19 @@
 		</div>
 	</div>
 	<div class="result">
-		<div class="attack">
-			<div>
-				{attackRoll !== '' && attackMod !== ''
-					? `${attackRoll} + ${attackMod} = ${attackRoll + attackMod}`
-					: '...'}
+		{#if !isHealWeapon}
+			<div class="attack">
+				<div>
+					{attackRoll !== '' && attackMod !== ''
+						? `${attackRoll} + ${attackMod} = ${attackRoll + attackMod}`
+						: '...'}
+				</div>
+				{#if superiorityDieCost > 1}
+					<div>Cost {superiorityDieCost - 1} extra superiority die</div>
+				{/if}
 			</div>
-			{#if superiorityDieCost > 1}
-				<div>Cost {superiorityDieCost - 1} extra superiority die</div>
-			{/if}
-		</div>
-		{#if critModifier >= 0}
+		{/if}
+		{#if !isHealWeapon && critModifier >= 0}
 			<div class="crit">
 				{#if critRoll !== ''}
 					<div class="">
