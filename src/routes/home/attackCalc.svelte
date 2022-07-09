@@ -106,7 +106,8 @@
 		) {
 			return (
 				(crestTrigger.has(CrestTrigger.MAGIC_ATTACK) &&
-					weaponsToFeatures[selectedWeapon]?.damage?.[0] === 0) ||
+					weaponsToFeatures[selectedWeapon]?.damage?.[0] !== 0 &&
+					!HEALING_MAGIC.has(selectedWeapon)) ||
 				(crestTrigger.has(CrestTrigger.HEAL) && HEALING_MAGIC.has(selectedWeapon))
 			);
 		} else {
@@ -120,8 +121,9 @@
 	$: crestDamageBonus = CRESTS_TO_FEATURES[crestType]?.damageBonus || [];
 	$: crestCombatArtDamageModifier = CRESTS_TO_FEATURES[crestType]?.combatArtDamageMultiplier || 1;
 	$: crestConservesResource = CRESTS_TO_FEATURES[crestType]?.conservesResource || false;
-	$: crestHPRecoveryPercent = CRESTS_TO_FEATURES[crestType]?.hpRecoveryPercent || 0;
+	// $: crestHPRecoveryPercent = CRESTS_TO_FEATURES[crestType]?.hpRecoveryPercent || 0;
 	$: shouldRollCrest = calcShouldRollCrest();
+	console.log(shouldRollCrest);
 	$: crestDC = shouldRollCrest
 		? CRESTS_TO_FEATURES[crestType].activationDC[
 				playerCrest.isMajor ? CrestType.MAJOR : CrestType.MINOR
