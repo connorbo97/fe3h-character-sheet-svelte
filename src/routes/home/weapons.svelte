@@ -7,7 +7,7 @@
 		LANCE_WEAPONS,
 		SWORD_WEAPONS
 	} from 'src/constants';
-	import { MAGIC_WEAPONS, TRAINING_WEAPONS_SET } from 'src/constants/weapons';
+	import { MAGIC_WEAPONS, MARTIAL_WEAPONS, TRAINING_WEAPONS_SET } from 'src/constants/weapons';
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
 	import { getContext } from 'svelte';
 	import CustomWeaponPrompt from './customWeaponPrompt.svelte';
@@ -47,11 +47,20 @@
 
 	$: resetEquippedWeapons = () => equippedWeapons.forEach((w: any) => onToggleEquippedWeapons(w));
 
+	$: promptNewMartialWeapon = () => {
+		open(CustomWeaponPrompt, {
+			weapon: MARTIAL_WEAPONS.filter((w: any) => !allWeapons.fullSet.has(w)),
+			weaponsToFeatures: allWeaponFeatures,
+			defaultReason: 'Manually added in weapons section',
+			customWeapons,
+			onUpdateCustomWeapons
+		});
+	};
 	$: promptNewMagicWeapon = () => {
 		open(CustomWeaponPrompt, {
 			weapon: MAGIC_WEAPONS.filter((w: any) => !allWeapons.fullSet.has(w)),
 			weaponsToFeatures: allWeaponFeatures,
-			defaultReason: 'Manually added in magic weapons section',
+			defaultReason: 'Manually added in weapons section',
 			customWeapons,
 			onUpdateCustomWeapons
 		});
@@ -239,12 +248,11 @@
 			</div>
 		</div>
 	</div>
-	{#if reasonEntries.length || faithEntries.length}
-		<span style:display="flex">
-			<u style:flex="1">Magic Weapons</u>
-			<button on:click={promptNewMagicWeapon}>Add new magic weapon</button>
-		</span>
-	{/if}
+	<span style:display="flex">
+		<u style:flex="1">Magic Weapons</u>
+		<button on:click={promptNewMartialWeapon}>Add new martial weapon</button>
+		<button on:click={promptNewMagicWeapon}>Add new magic weapon</button>
+	</span>
 	<div class="magic-weapons">
 		{#if reasonEntries.length}
 			<div class="magic-category">
