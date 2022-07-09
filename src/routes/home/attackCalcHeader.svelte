@@ -10,6 +10,7 @@
 	export let damageTypeSelection: any;
 	export let weaponsToFeatures: { [s: string]: WeaponFeatures };
 
+	$: selectedWeaponType = weaponsToFeatures[selectedWeapon]?.type;
 	$: weaponsOptions = [
 		...equippedWeapons,
 		...allWeapons.fullArray.filter((weapon) =>
@@ -30,9 +31,8 @@
 	$: allCombatArtFeatures = allCombatArts.fullFeatures;
 	$: combatArtsOptions = equippedCombatArts.filter((art: string) => {
 		const compatibleWeapons = allCombatArtFeatures[art].compatibleWeapons || [];
-		const weaponType = WEAPON_TO_TYPE[selectedWeapon];
 
-		return compatibleWeapons.indexOf(weaponType) !== -1;
+		return compatibleWeapons.indexOf(selectedWeaponType) !== -1;
 	});
 
 	$: {
@@ -71,30 +71,32 @@
 		</div>
 	</div>
 	<div class="entry">
-		<div class="selection">
-			<span class="label">
-				{`Combat Art: `}
-			</span>
-			{#key combatArtsOptions}
-				<select
-					on:change={(e) => {
-						setSelectedCombatArt(e.currentTarget.value);
-					}}
-				>
-					<option value={''}> - </option>
-					{#each combatArtsOptions as art}
-						<option value={art} selected={selectedCombatArt === art}>
-							{allCombatArtFeatures[art].label}
-						</option>
-					{/each}
-				</select>
-			{/key}
-		</div>
-		<div class="description">
-			{COMBAT_ARTS_TO_FEATURES[selectedCombatArt]
-				? getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])
-				: ''}
-		</div>
+		{#if combatArtsOptions.length > 0}
+			<div class="selection">
+				<span class="label">
+					{`Combat Art: `}
+				</span>
+				{#key combatArtsOptions}
+					<select
+						on:change={(e) => {
+							setSelectedCombatArt(e.currentTarget.value);
+						}}
+					>
+						<option value={''}> - </option>
+						{#each combatArtsOptions as art}
+							<option value={art} selected={selectedCombatArt === art}>
+								{allCombatArtFeatures[art].label}
+							</option>
+						{/each}
+					</select>
+				{/key}
+			</div>
+			<div class="description">
+				{COMBAT_ARTS_TO_FEATURES[selectedCombatArt]
+					? getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])
+					: ''}
+			</div>
+		{/if}
 	</div>
 </div>
 
