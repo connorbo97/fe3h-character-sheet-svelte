@@ -141,6 +141,10 @@
 				{equippedWeapons}
 				{equippedCombatArts}
 				{equippedCombatSkills}
+				{weaponUses}
+				{onUpdateWeaponUses}
+				{curSuperiorityDies}
+				{setCurSuperiorityDie}
 				{allWeapons}
 				{allCombatArts}
 				{playerCrest}

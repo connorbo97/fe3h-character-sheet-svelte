@@ -66,6 +66,11 @@
 			<input
 				style:width="50px"
 				type="number"
+				class={curSuperiorityDies === 0
+					? 'bad'
+					: curSuperiorityDies <= Math.ceil(maxSuperiorityDie / 3)
+					? 'danger'
+					: ''}
 				value={curSuperiorityDies}
 				on:change={(e) => {
 					const newValue = parseInt(e.currentTarget.value);
@@ -312,5 +317,12 @@
 		max-height: 120px;
 
 		column-gap: 5px;
+	}
+
+	.danger {
+		background-color: rgba(233, 156, 32, 0.617);
+	}
+	.bad {
+		background-color: red;
 	}
 </style>

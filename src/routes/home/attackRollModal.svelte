@@ -1,12 +1,23 @@
 <script lang="ts">
-	import { CRESTS_TO_FEATURES } from 'src/constants/crests';
+	import SvelteTip from 'src/common/SvelteTip.svelte';
+	import { COMBAT_ARTS_TO_FEATURES } from 'src/constants/combatArts';
+
+	import { CRESTS_TO_FEATURES, CRESTS_TO_LABELS } from 'src/constants/crests';
 	import { Dice } from 'src/constants/dice';
+	import { MAGIC_WEAPONS } from 'src/constants/weapons';
 	import { copyToClipboard, printCalc, rollCalc, rollDice, rollVisualDice } from 'src/utils';
 
 	export let playerName: any;
 
+	export let onCloseModal: any;
+
 	export let allWeapons: any;
 	export let allCombatArts: any;
+
+	export let weaponUses: any;
+	export let onUpdateWeaponUses: any;
+
+	export let crestConservesResource: any;
 
 	export let attackCalc: any;
 	export let damageCalc: any;
@@ -22,6 +33,9 @@
 	export let selectedWeapon: any;
 	export let selectedCombatArt: any;
 
+	export let curSuperiorityDies: any;
+	export let setCurSuperiorityDie: any;
+
 	let crestSuccess: boolean = false;
 
 	let attackRoll: any = '';
@@ -34,9 +48,21 @@
 
 	let crestRoll: any = '';
 
-	$: crestActivated = crestRoll >= crestDC;
-	$: crestDoesDamage = crestDamage.length || crestCombatArtDamageModifier > 1;
+	const calcBaseDieCost = () => {
+		const dieCost = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.dieCost;
+		if (!selectedCombatArt || !dieCost) {
+			return 1;
+		}
 
+		return rollCalc([dieCost?.roll]) >= dieCost.target ? 2 : 1;
+	};
+	$: curWeaponUses =
+		weaponUses[selectedWeapon] === undefined ? Infinity : weaponUses[selectedWeapon];
+	let superiorityDieCost = 1;
+	let superiorityDieCostModifier = 1;
+	let weaponCostModifier = 1;
+
+	$: crestActivated = crestRoll >= crestDC;
 	$: prefixedAttackCalc = printCalc(attackCalc, true);
 
 	const onAttackRoll = async () => {
@@ -87,21 +113,43 @@
 		return crestDamageRoll;
 	};
 	$: onRollAll = async () => {
+		superiorityDieCost = 1;
+		weaponCostModifier = 1;
+		superiorityDieCostModifier = 1;
+
 		attackRoll = '';
 		damageRoll = '';
 		critRoll = '';
 		crestRoll = '';
+
 		try {
 			await onAttackRoll();
+			superiorityDieCost = calcBaseDieCost();
+
 			if (critModifier >= 0) {
 				await onCritRoll();
 			}
 			if (crestType) {
 				await onCrestRoll();
+				if (crestRoll >= crestDC && crestConservesResource) {
+					if (selectedCombatArt) {
+						superiorityDieCostModifier = 0;
+					} else if (MAGIC_WEAPONS.includes(selectedWeapon)) {
+						weaponCostModifier = 0;
+					}
+				}
 			}
 			await onDamageRoll();
 		} catch (err) {
 			alert('wait until all rolls have finished');
+		}
+
+		if (weaponCostModifier !== 0) {
+			onUpdateWeaponUses(selectedWeapon, -1 * weaponCostModifier);
+		}
+
+		if (selectedCombatArt) {
+			setCurSuperiorityDie(curSuperiorityDies - superiorityDieCost * superiorityDieCostModifier);
 		}
 	};
 
@@ -140,19 +188,38 @@
 		crestDamageRoll ? ` + ${crestDamageRoll} (crest)` : ''
 	}${didCrit ? `) * ${critMultiplier} (crit)` : ''}`;
 	$: finalDamageRoll = critMultiplier * baseDamageRoll;
+
+	$: rollDisabled = (selectedCombatArt && curSuperiorityDies <= 0) || curWeaponUses <= 0;
 </script>
 
 <div class="container">
 	<div class="actions">
 		<span> {headerLabel} </span>
-		<button on:click={onRollAll}>Roll everything</button>
+		<button on:click={onRollAll} disabled={rollDisabled}>
+			{rollDisabled
+				? curWeaponUses <= 0
+					? 'Out of weapon uses'
+					: 'Out of Superiority Dies'
+				: 'Roll Attack'}
+		</button>
 		<button on:click={() => copyToClipboard(getRoll20Text())}>Copy to clipboard</button>
+		<!-- <div style:display="flex" style:flex="1" style:justify-content="flex-end"> -->
+		<button style:flex="1" on:click={onCloseModal}>Back</button>
+		<!-- </div> -->
 	</div>
 	<div class="rolls">
 		<div class="attack">
 			<h3>Attack</h3>
 			<div class="content">{prefixedAttackCalc}</div>
-			<button on:click={onAttackRoll}>Roll</button>
+			{#if attackRoll}
+				<SvelteTip>
+					<button on:click={onAttackRoll}>Re-roll</button>
+					<div slot="t">
+						Only meant to be used for advantage/disadvantage. Will not automatically decrement your
+						superiority die or weapon uses
+					</div>
+				</SvelteTip>
+			{/if}
 		</div>
 		{#if critModifier >= 0}
 			<div class="crit">
@@ -160,18 +227,18 @@
 				<div class="content">
 					<span>{20 - critModifier} - 20</span>
 				</div>
-				<button on:click={onCritRoll}>Roll</button>
+				<!-- <button on:click={onCritRoll}>Roll</button> -->
 			</div>
 		{/if}
 		{#if crestType}
 			<div class="crest">
-				<h3>Crest</h3>
+				<h3>Crest of {CRESTS_TO_LABELS[crestType]}</h3>
 				<div class="content">
 					{#if crestDC && crestDC <= 20}
 						<span>DC {crestDC}</span>
 					{/if}
 				</div>
-				<button on:click={onCrestRoll}>Roll</button>
+				<!-- <button on:click={onCrestRoll}>Roll</button> -->
 			</div>
 		{/if}
 		<div class="damage">
@@ -182,7 +249,7 @@
 					<span>+ crestDamage</span>
 				{/if}
 			</div>
-			<button on:click={onDamageRoll}>Roll</button>
+			<!-- <button on:click={onDamageRoll}>Roll</button> -->
 		</div>
 	</div>
 	<div class="result">
@@ -192,14 +259,24 @@
 					? `${attackRoll} + ${attackMod} = ${attackRoll + attackMod}`
 					: '...'}
 			</div>
+			{#if superiorityDieCost > 1}
+				<div>Cost {superiorityDieCost - 1} extra superiority die</div>
+			{/if}
 		</div>
 		{#if critModifier >= 0}
 			<div class="crit">
 				{#if critRoll !== ''}
-					<span class={critRoll >= 20 - critModifier ? 'cs' : ''}>
-						{critRoll >= 20 - critModifier ? 'CRIT' : 'Normal'}
-					</span>
-					<span class={critRoll === 20 ? 'cs' : ''}>({critRoll})</span>
+					<div class="">
+						<span class={critRoll >= 20 - critModifier ? 'cs' : ''}>
+							{critRoll >= 20 - critModifier ? 'CRIT' : 'Normal'}
+						</span>
+						<span class={critRoll === 20 ? 'cs' : ''}>({critRoll})</span>
+					</div>
+					{#if critRoll >= 20 - critModifier}
+						<div>
+							{critRoll === 20 ? '3' : '2'}x Damage
+						</div>
+					{/if}
 				{/if}
 				{#if critRoll === ''}
 					...
@@ -209,14 +286,18 @@
 		{#if crestType}
 			<div class="crest">
 				{#if crestRoll !== ''}
-					{crestActivated ? 'ACTIVATED' : 'Normal'} ({crestRoll})
 					{#if crestActivated}
-						{#if crestType && !crestDoesDamage}<span class="description"
-								>{CRESTS_TO_FEATURES[crestType]?.description}</span
-							>{/if}
-						{#if crestDoesDamage && crestDamageRoll}
-							+ {crestDamageRoll} damage
+						<div>
+							<span class="cs">ACTIVATED</span><span>({crestRoll})</span>
+						</div>
+						{#if crestType}
+							<div class="description">
+								{CRESTS_TO_FEATURES[crestType]?.description}
+							</div>
 						{/if}
+					{/if}
+					{#if !crestActivated}
+						<span>Normal</span><span>({crestRoll})</span>
 					{/if}
 				{/if}
 				{#if crestRoll === ''}
@@ -243,6 +324,13 @@
 		h3 {
 			margin: 0;
 		}
+	}
+
+	.actions {
+		display: flex;
+		column-gap: 10px;
+		align-items: center;
+		padding: 5px;
 	}
 	.rolls {
 		display: flex;
@@ -285,6 +373,12 @@
 			}
 
 			min-height: 50px;
+		}
+		.attack,
+		.crit {
+			display: flex;
+			flex-direction: column;
+			row-gap: 5px;
 		}
 
 		.crest {

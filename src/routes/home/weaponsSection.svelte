@@ -29,7 +29,8 @@
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
 	let prevMaxUses: any = { current: null };
 	$: maxUses =
-		(allWeapons.fullFeatures[weapon]?.uses || 0) * (hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
+		(allWeapons.fullFeatures[weapon]?.uses || Infinity) *
+		(hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
 	$: curUses = weaponUses[weapon];
 	$: updateCurWeaponUses = (newTotal: any) => {
 		if (newTotal <= maxUses && newTotal >= 0) {
@@ -89,7 +90,8 @@
 	{#if isMagic}
 		<div class="equip-button">
 			<input
-				class={`count ${curUses === maxUses ? 'max' : ''}`}
+				class={'count ' +
+					(curUses === 0 ? 'bad' : curUses <= Math.ceil(maxUses / 3) ? 'danger' : '')}
 				type="number"
 				on:change={(e) => {
 					const value = parseInt(e.currentTarget.value);
@@ -152,5 +154,12 @@
 	.count {
 		width: 30px;
 		border: 1px solid black;
+	}
+
+	.danger {
+		background-color: rgba(233, 156, 32, 0.617);
+	}
+	.bad {
+		background-color: red;
 	}
 </style>
