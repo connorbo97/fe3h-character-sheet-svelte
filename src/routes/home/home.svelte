@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { getSuperiorityDieFromClasses } from 'src/constants/classes';
+
 	import AttackCalc from './attackCalc.svelte';
 	import Classes from './classes.svelte';
 	import CombatArts from './combatArts.svelte';
@@ -59,6 +61,20 @@
 
 	export let unlockedClasses: any;
 	export let onUpdateUnlockedClasses: any;
+
+	let prevMax = { current: 0 };
+	$: maxSuperiorityDie = getSuperiorityDieFromClasses(unlockedClasses);
+	let curSuperiorityDies = maxSuperiorityDie;
+	$: {
+		if (prevMax.current !== maxSuperiorityDie) {
+			curSuperiorityDies = maxSuperiorityDie;
+			prevMax.current = maxSuperiorityDie;
+		}
+	}
+
+	const setCurSuperiorityDie = (val) => {
+		curSuperiorityDies = val;
+	};
 </script>
 
 <div class="container">
@@ -95,13 +111,15 @@
 		<div class="weapons">
 			<Weapons
 				{allWeapons}
-				{unlockedClasses}
 				{equippedWeapons}
 				{onToggleEquippedWeapons}
 				{equippedCombatSkills}
 				{equippedClass}
 				{weaponUses}
 				{onUpdateWeaponUses}
+				{curSuperiorityDies}
+				{maxSuperiorityDie}
+				{setCurSuperiorityDie}
 				{customWeapons}
 				{onUpdateCustomWeapons}
 			/>

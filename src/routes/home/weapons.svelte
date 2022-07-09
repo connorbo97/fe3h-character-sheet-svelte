@@ -4,7 +4,6 @@
 		BOW_WEAPONS,
 		CONTEXTS,
 		FIST_WEAPONS,
-		getSuperiorityDieFromClasses,
 		LANCE_WEAPONS,
 		SWORD_WEAPONS
 	} from 'src/constants';
@@ -23,17 +22,16 @@
 
 	export let allWeapons: AllWeapons;
 
-	export let unlockedClasses: any;
-
 	export let weaponUses: { [s: string]: number };
 	export let onUpdateWeaponUses: any;
 
 	export let customWeapons: any;
 	export let onUpdateCustomWeapons: any;
 
-	let prevMax = { current: 0 };
-	$: maxSuperiorityDie = getSuperiorityDieFromClasses(unlockedClasses);
-	let curSuperiorityDies = maxSuperiorityDie;
+	export let curSuperiorityDies: any;
+	export let maxSuperiorityDie: any;
+	export let setCurSuperiorityDie: any;
+
 	let spellUseFlag = 0;
 
 	$: allWeaponFeatures = allWeapons.fullFeatures;
@@ -43,13 +41,6 @@
 	$: faithEntries = allWeapons.fullArray.filter(
 		(w: string) => allWeaponFeatures[w].type === WEAPON_TYPE.FAITH
 	);
-	$: {
-		if (prevMax.current !== maxSuperiorityDie) {
-			curSuperiorityDies = maxSuperiorityDie;
-			prevMax.current = maxSuperiorityDie;
-		}
-	}
-
 	$: onToggleEquip = (weapon: any) => {
 		onToggleEquippedWeapons(weapon);
 	};
@@ -79,7 +70,7 @@
 				on:change={(e) => {
 					const newValue = parseInt(e.currentTarget.value);
 					if (newValue >= 0 && newValue <= maxSuperiorityDie) {
-						curSuperiorityDies = newValue;
+						setCurSuperiorityDie(newValue);
 						e.currentTarget.value = newValue + '';
 					} else {
 						e.currentTarget.value = curSuperiorityDies + '';
