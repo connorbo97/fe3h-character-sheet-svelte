@@ -157,7 +157,7 @@ declare global {
 		attackBonus?: Array<CalcEntry>;
 		rangeBonus?: number;
 		critBonus?: Array<CalcEntry>;
-		dieCost?: { roll: number | Dice; target: number; mod?: number; mult?: number };
+		dieCost?: { roll: number | Dice; target: number; mod?: number };
 		reason?: string;
 	}
 	type WeaponFeatures = {
