@@ -23,6 +23,7 @@
 	export let unlockedClasses: Array<string>;
 	export let equippedClass: string;
 	export let equippedCombatSkills: Array<string>;
+	export let allWeapons: AllWeapons;
 
 	export let selectedWeapon: string;
 
@@ -30,7 +31,9 @@
 	$: dexMod = getModifierByPlayerStat(stats[PLAYER_STAT.DEX]);
 	$: dodgeRate = 0;
 	$: weaponBonus = 0;
-	$: selectedWeaponType = WEAPONS_TO_FEATURES[selectedWeapon]?.type;
+	$: allWeaponFeatures = allWeapons.fullFeatures;
+	$: selectedWeaponType = allWeaponFeatures[selectedWeapon]?.type;
+	$: selectedWeaponAcBonus = allWeaponFeatures[selectedWeapon]?.acBonus || 0;
 	$: acSkillBonus = equippedCombatSkills.reduce((acc, cur) => {
 		const features = COMBAT_SKILLS_TO_FEATURES[cur];
 		const { acBonusCompatibility, acBonus } = features || {};
@@ -39,7 +42,14 @@
 		}
 		return acc;
 	}, 0);
-	$: ac = DEFAULT_ARMOR_CLASS + dexMod + dodgeRate + weaponBonus + acSkillBonus + terrainMod;
+	$: ac =
+		DEFAULT_ARMOR_CLASS +
+		dexMod +
+		dodgeRate +
+		weaponBonus +
+		selectedWeaponAcBonus +
+		acSkillBonus +
+		terrainMod;
 
 	$: equippedClassMovementBonus = CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.msBonus || 0;
 	$: skillMovementBonus = 0;
@@ -116,6 +126,9 @@
 		equippedClassResilienceBonus +
 		skillResilienceBonus;
 
+	$: selectedWeaponFollupMod = allWeapons.fullFeatures[selectedWeapon]?.followUpBonus || 0;
+	$: followUp = dexMod + selectedWeaponFollupMod;
+
 	const onTerrainModChange = (e: any) => {
 		const input = parseInt(e.currentTarget.value);
 
@@ -130,7 +143,7 @@
 <div class="container">
 	<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
 		<div slot="t">
-			{`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${acSkillBonus} (combat skill bonus) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
+			{`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${acSkillBonus} (combat skill bonus) + ${selectedWeaponAcBonus} (selected weapon) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
 		</div>
 		<div
 			style:flex="0"
@@ -165,6 +178,14 @@
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
 		<div slot="t">
+			{`Follow Up = ${dexMod} (dex modifier) + ${selectedWeaponFollupMod} (selected weapon)`}
+		</div>
+		<div class="big-text">
+			Follow Up: {followUp}
+		</div>
+	</SvelteTip>
+	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
+		<div slot="t">
 			{`Protection = ${DEFAULT_PROTECTION} + ${unlockedClassProtectionBonus} (from unlocked classes) + ${intermediateClassProtectionBonus} (from unlocking an intermediate martial class) + ${equippedClassProtectionBonus} (from equipped class) + ${skillProtectionBonus} (from skills)`}
 		</div>
 		<div class="big-text">
@@ -193,12 +214,9 @@
 		align-items: center;
 
 		> * {
-			flex: 1;
-			padding: 5px;
+			width: 100%;
+			padding: 10px;
 			text-align: center;
-		}
-
-		> * {
 			height: 40px;
 			display: flex;
 			justify-content: center;
@@ -222,7 +240,7 @@
 		}
 	}
 	.skinny.skinny {
-		flex: 0;
+		// flex: 0;
 		white-space: nowrap;
 	}
 	.skinny-tooltip {

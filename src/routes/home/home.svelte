@@ -130,6 +130,7 @@
 		<div class="other">
 			<CombatStats
 				stats={playerStats}
+				{allWeapons}
 				{equippedClass}
 				{unlockedClasses}
 				{equippedCombatSkills}
