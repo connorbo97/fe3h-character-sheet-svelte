@@ -54,11 +54,11 @@
 	$: isUnlocked = isCustomUnlock || isClassUnlock || isTrainingWeapon;
 
 	$: weaponsToFeatures = allWeapons.fullFeatures;
-	$: weaponIsDisabled = !weaponsToFeatures[weapon].reason;
+	$: tooltipText = weaponsToFeatures[weapon].reason;
 </script>
 
 <div class="container">
-	<SvelteTip disabled={weaponIsDisabled}>
+	<SvelteTip disabled={!tooltipText}>
 		<button
 			class={`available-button ${isCustomUnlock ? 'custom-unlock' : ''} ${
 				allWeapons.fullSet.has(weapon) ? 'unlocked' : ''
