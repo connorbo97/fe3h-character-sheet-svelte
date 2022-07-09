@@ -87,22 +87,24 @@
 		</div>
 	{/if}
 	{#if isMagic}
-		<input
-			class={`count ${curUses === maxUses ? 'max' : ''}`}
-			type="number"
-			on:change={(e) => {
-				const value = parseInt(e.currentTarget.value);
+		<div class="equip-button">
+			<input
+				class={`count ${curUses === maxUses ? 'max' : ''}`}
+				type="number"
+				on:change={(e) => {
+					const value = parseInt(e.currentTarget.value);
 
-				if (value >= 0 && value <= maxUses) {
-					updateCurWeaponUses(value);
-					e.currentTarget.value = value + '';
-				} else {
-					e.currentTarget.value = maxUses + '';
-				}
-			}}
-			value={curUses}
-		/>
-		/<span style:width={'15px'}>{maxUses}</span>
+					if (value >= 0 && value <= maxUses) {
+						updateCurWeaponUses(value);
+						e.currentTarget.value = value + '';
+					} else {
+						e.currentTarget.value = maxUses + '';
+					}
+				}}
+				value={curUses}
+			/>
+			/<span style:width={'15px'}>{maxUses}</span>
+		</div>
 	{/if}
 </div>
 
