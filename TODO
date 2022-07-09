@@ -4,14 +4,6 @@ add ability to roll dice that are not real (by multiplying them by 2 then modulu
 
 add learning form to XP page
 
-add changes log
-
-add more "chore" skills
-
-full replace all usages of MAP_TO_FEATURES
-
-add "aggro" indicator
-
 add "Copy result to clipboard" on attack modal to allow everyone to paste their attack + their damage nicely
 
 implement more of the xp level ups
@@ -26,3 +18,9 @@ add ability to add custom combat art
 
 add ability to add custom combat skills
 add disable state to classes
+
+add changes log
+
+full replace all usages of MAP_TO_FEATURES
+
+add "aggro" indicator for when enemies will aggro
