@@ -155,7 +155,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	},
 	[WEAPONS.IRON_SWORD]: {
 		label: 'Iron Sword',
-		description: '+1 to attack, 1d2+1 damage',
+		description: '',
 		type: WEAPON_TYPE.SWORD,
 		damage: [Dice.d2, 1],
 		attackBonus: 1,
@@ -321,7 +321,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	},
 	[WEAPONS.CLOTH_GAUNTLETS]: {
 		label: 'Hand Wraps',
-		description: "doesn't consume combat arts",
+		description: "Doesn't consume superiority dies when using combat arts",
 		type: WEAPON_TYPE.FISTS,
 		acBonus: 1,
 		followUpBonus: 1,
@@ -442,7 +442,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	},
 	[WEAPONS.NOSFERATU]: {
 		label: 'Nosferatu',
-		description: '',
+		description: 'Heals user for damage dealt / 2 (rounded down)',
 		type: WEAPON_TYPE.FAITH,
 		damage: [1],
 		damageType: [PLAYER_STAT.INT],
@@ -514,14 +514,15 @@ const [MAGIC_WEAPONS, MARTIAL_WEAPONS] = Object.keys(WEAPONS_TO_FEATURES).reduce
 export { MAGIC_WEAPONS, MARTIAL_WEAPONS };
 
 export const getWeaponDescription = (feature: WeaponFeatures) => {
-	const { damage, attackBonus, range, critBonus } = feature;
+	const { damage, attackBonus, range, critBonus, description } = feature;
 	return [
 		attackBonus ? `${attackBonus} to attack` : '',
 		`Damage: ${damage.reduce((acc, cur, i) => {
 			return acc + cur + (i === damage.length - 1 ? '' : parseInt(cur + '') < 0 ? '-' : '+');
 		}, '')}`,
 		`Range: ${Array.isArray(range) ? range?.join('-') : range}`,
-		critBonus ? `Crit Bonus: ${critBonus}` : ''
+		critBonus ? `Crit Bonus: ${critBonus}` : '',
+		description
 	]
 		.filter((a) => a)
 		.join(', ');
