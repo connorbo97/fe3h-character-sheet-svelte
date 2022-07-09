@@ -173,7 +173,7 @@ declare global {
 		critBonus?: number;
 		uses?: number;
 		reason?: string;
-		dieCost?: { roll: number | Dice; target: number; mod?: number };
+		dieCost?: { roll: CalcEntry; target: number; mult?: number };
 	};
 	type PickOnePromptOption = string | { stat: string; value: number };
 	type PickOnePrompt = {

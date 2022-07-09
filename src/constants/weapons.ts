@@ -328,7 +328,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		attackBonus: 1,
 		damage: [0],
 		range: [1],
-		dieCost: { roll: 1, target: 0, mod: -Infinity }
+		dieCost: { roll: 1, target: 0, mult: 0 }
 	},
 
 	[WEAPONS.FIRE]: {

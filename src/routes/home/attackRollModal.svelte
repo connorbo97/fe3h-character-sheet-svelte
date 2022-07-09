@@ -51,12 +51,16 @@
 
 	$: isHealWeapon = HEALING_MAGIC.has(selectedWeapon);
 	const calcBaseDieCost = () => {
-		const dieCost = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.dieCost;
-		if (!selectedCombatArt || !dieCost) {
+		const combatArtDieCost = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.dieCost;
+		const selectedWeaponDieCost = allWeapons.fullFeatures[selectedWeapon]?.dieCost;
+		if (!selectedCombatArt || !selectedWeaponDieCost || !combatArtDieCost) {
 			return 1;
 		}
 
-		return rollCalc([dieCost?.roll]) >= dieCost.target ? 2 : 1;
+		const combatArtAffectedDieCost = rollCalc([combatArtDieCost.roll]) >= combatArtDieCost.target;
+		const combatArtDieMod = combatArtDieCost?.mod || 0;
+
+		return combatArtAffectedDieCost ? Math.max(1 + combatArtDieMod, 0) : 1;
 	};
 	$: curWeaponUses =
 		weaponUses[selectedWeapon] === undefined ? Infinity : weaponUses[selectedWeapon];
@@ -128,7 +132,12 @@
 			if (!isHealWeapon) {
 				await onAttackRoll();
 			}
-			superiorityDieCost = calcBaseDieCost();
+			const {
+				roll = 0,
+				target = 1,
+				mult = 1
+			} = allWeapons.fullFeatures[selectedWeapon].dieCost || {};
+			superiorityDieCost = calcBaseDieCost() * (rollCalc([roll]) >= target ? mult : 1);
 
 			if (!isHealWeapon && critModifier >= 0) {
 				await onCritRoll();
@@ -271,6 +280,9 @@
 				</div>
 				{#if superiorityDieCost > 1}
 					<div>Cost {superiorityDieCost - 1} extra superiority die</div>
+				{/if}
+				{#if superiorityDieCost < 1}
+					<div>Cost 0 superiority die</div>
 				{/if}
 			</div>
 		{/if}
