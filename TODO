@@ -1,7 +1,5 @@
 add "loadable" sheets for NPCs
 
-fix superiority dice reset button not re-enabling attack button
-
 disable weapon equip buttons when max are equipped
 
 add disable state to classes
@@ -22,7 +20,8 @@ add more "chore" skills
 
 full replace all usages of MAP_TO_FEATURES
 
-
 add "aggro" indicator
 
 add "Copy result to clipboard" on attack modal to allow everyone to paste their attack + their damage nicely
+
+equipped combat art ac bonus
