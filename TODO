@@ -1,18 +1,8 @@
-add "loadable" sheets for NPCs
-
-disable weapon equip buttons when max are equipped
-
-add disable state to classes
-
-add ability to add custom combat art
-
-add ability to add custom combat skills
-
-add more prompts to XP level ups
-
+For Sure
+-=---=---=---=---=--
 add ability to roll dice that are not real (by multiplying them by 2 then modulusing the result by 2)
 
-add dice options tab
+add learning form to XP page
 
 add changes log
 
@@ -24,4 +14,15 @@ add "aggro" indicator
 
 add "Copy result to clipboard" on attack modal to allow everyone to paste their attack + their damage nicely
 
-equipped combat art ac bonus
+implement more of the xp level ups
+
+add "loadable" sheets for NPCs
+
+NOT REALLY SURE
+-=---=---=---=---=---=---=---=---=--
+add dice options tab
+
+add ability to add custom combat art
+
+add ability to add custom combat skills
+add disable state to classes
