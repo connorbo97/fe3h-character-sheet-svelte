@@ -132,67 +132,73 @@ export const copyToClipboard = (text: any) => {
 
 const getDiceBoxResult = () => document.getElementById('dice-box-result');
 export const rollVisualDice = (
-	dice: any = ['1d20'],
+	dice: any = [Dice.d20],
 	options: {
+		disableRollOnCancel?: any;
 		modifier?: Array<CalcEntry>;
 		disableResultBox?: boolean;
 		onRollResult?: Function;
 		clearTimeout?: number;
 	} = {}
 ) => {
-	let waitFlag = true;
-	let clearTimer: any = null;
-	let submitReturn: any = null;
+	return new Promise((resolve) => {
+		let waitFlag = true;
+		let clearTimer: any = null;
+		let submitReturn: any = null;
 
-	const onClearDiceRoll = () => {
-		waitFlag = false;
-		window.diceBox.clear();
-		window.diceBoxContainer.style.pointerEvents = 'none';
-		(getDiceBoxResult()?.style || { opacity: 0 }).opacity = 0;
+		let rollHasFinished = false;
 
-		if (clearTimer) {
-			clearTimeout(clearTimer);
-		}
+		const onClearDiceRoll = () => {
+			waitFlag = false;
+			window.diceBox.clear();
+			window.diceBoxContainer.style.pointerEvents = 'none';
+			(getDiceBoxResult()?.style || { opacity: 0 }).opacity = 0;
 
-		if (submitReturn) {
-			submitReturn();
-		}
-	};
+			if (clearTimer) {
+				clearTimeout(clearTimer);
+			}
 
-	const res = window.diceBox.roll(dice).then((res: any) => {
-		if (!waitFlag) {
-			return;
-		}
+			if (submitReturn) {
+				submitReturn();
+			} else if (!rollHasFinished && !options?.disableRollOnCancel) {
+				const resultArray = dice.map((die: any) => rollCalc([die]));
+				resolve({ value: resultArray.reduce((acc: number, r: number) => acc + r), resultArray });
+			}
+		};
 
-		const dieResult = res.map(({ value }: { value: any }) => value);
-		const finalCalc = [...dieResult, ...(options.modifier || [])];
-		const finalCalcResult = rollCalc([...dieResult, ...(options.modifier || [])]);
+		window.diceBox.roll(dice).then((res: any) => {
+			rollHasFinished = true;
 
-		const resultBox = getDiceBoxResult();
-		if (resultBox && !options.disableResultBox) {
-			resultBox.style.opacity = '1';
-			resultBox.innerHTML = `${printCalc(finalCalc)} = ${finalCalcResult}`;
-		}
+			if (!waitFlag) {
+				return;
+			}
 
-		return new Promise((res, rej) => {
+			const dieResult = res.map(({ value }: { value: any }) => value);
+			const finalCalc = [...dieResult, ...(options.modifier || [])];
+			const finalCalcResult = rollCalc([...dieResult, ...(options.modifier || [])]);
+
+			const resultBox = getDiceBoxResult();
+			if (resultBox && !options.disableResultBox) {
+				resultBox.style.opacity = '1';
+				resultBox.innerHTML = `${printCalc(finalCalc)} = ${finalCalcResult}`;
+			}
+
 			const returnValue = {
 				resultArray: finalCalc,
 				value: finalCalcResult
 			};
 
 			if (options.clearTimeout) {
-				submitReturn = () => res(returnValue);
+				submitReturn = () => resolve(returnValue);
 				clearTimer = setTimeout(onClearDiceRoll, options.clearTimeout);
 			} else {
-				res(returnValue);
+				resolve(returnValue);
 			}
 		});
-	}, []);
 
-	window.diceBoxContainer.style.pointerEvents = 'auto';
-	window.diceBoxContainer.addEventListener('click', onClearDiceRoll, { once: true });
-
-	return res;
+		window.diceBoxContainer.style.pointerEvents = 'auto';
+		window.diceBoxContainer.addEventListener('click', onClearDiceRoll, { once: true });
+	});
 };
 
 export const getCrestStrengthText = (bool: any) => (bool ? 'Major' : 'Minor');

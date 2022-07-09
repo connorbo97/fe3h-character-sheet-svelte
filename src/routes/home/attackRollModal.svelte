@@ -32,7 +32,7 @@
 
 	let critRoll: any = '';
 
-	let crestRoll: any = 0;
+	let crestRoll: any = '';
 
 	$: crestActivated = crestRoll >= crestDC;
 	$: crestDoesDamage = crestDamage.length || crestCombatArtDamageModifier > 1;
@@ -80,6 +80,8 @@
 			} else if (crestCombatArtDamageModifier > 1) {
 				crestDamageRoll = Math.round(rollCalc(combatArtDamageBonus) * crestCombatArtDamageModifier);
 			}
+		} else {
+			crestDamageRoll = '';
 		}
 
 		return crestDamageRoll;
@@ -109,7 +111,7 @@
 	$: weaponLabel = allWeapons.fullFeatures[selectedWeapon]?.label;
 	$: headerLabel = `${weaponLabel}` + combatArtLabel;
 	$: getDamageRollText = () => {
-		const critRoll = rollDice(20);
+		const critRoll = 20;
 		const crestRoll = rollDice(20);
 
 		const critActivated = critRoll > 20 - critModifier;
@@ -117,25 +119,38 @@
 		const calc = `${printCalc(damageCalc)}${
 			crestActivated && crestRoll >= crestDC ? `+${getCrestDamageRollText()}` : ''
 		}`;
-		return `/roll ${calc}${critActivated ? '+' + calc : ''}${
-			crestActivated ? ` [Crest Activated [${crestRoll}]]` : ''
-		}${critActivated ? ` [CRIT[${critRoll}]]` : ''} [ID${Math.floor(Math.random() * 1000000)}]`;
+		return `/roll ${calc}${
+			critActivated ? '+' + (critRoll === 20 ? calc + '+' + calc : calc) : ''
+		}${crestActivated ? ` [Crest Activated [${crestRoll}]]` : ''}${
+			critActivated ? ` [CRIT[${critRoll}]]` : ''
+		} [ID${Math.floor(Math.random() * 1000000)}]`;
 	};
-	$: damageResultText2 = getDamageRollText();
-	$: attackRollText = `&{template:atk} {{rname=[${weaponLabel}](\`${damageResultText2})}} {{mod=${
-		selectedCombatArt ? allCombatArts.fullFeatures[selectedCombatArt]?.label : '+0'
-	}}} {{r1=[[1d20${prefixedAttackCalc}]]}} {{normal=1}} {{charname=${playerName}}}`;
+	$: getRoll20Text = () => {
+		const damageResultText2 = getDamageRollText();
+		const attackRollText = `&{template:atk} {{rname=[${weaponLabel}](\`${damageResultText2})}} {{mod=${
+			selectedCombatArt ? allCombatArts.fullFeatures[selectedCombatArt]?.label : '+0'
+		}}} {{r1=[[1d20${prefixedAttackCalc}]]}} {{normal=1}} {{charname=${playerName}}}`;
+		return attackRollText;
+	};
+
+	$: didCrit = critRoll >= 20 - critModifier;
+	$: critMultiplier = didCrit ? (critRoll === 20 ? 3 : 2) : 1;
+	$: baseDamageRoll = parseInt(damageRoll) + parseInt(crestDamageRoll || 0);
+	$: baseDamageRollText = `${didCrit ? '(' : ''}${damageRoll}${
+		crestDamageRoll ? ` + ${crestDamageRoll} (crest)` : ''
+	}${didCrit ? `) * ${critMultiplier} (crit)` : ''}`;
+	$: finalDamageRoll = critMultiplier * baseDamageRoll;
 </script>
 
 <div class="container">
 	<div class="actions">
 		<span> {headerLabel} </span>
 		<button on:click={onRollAll}>Roll everything</button>
-		<button on:click={() => copyToClipboard(attackRollText)}>Copy to clipboard</button>
+		<button on:click={() => copyToClipboard(getRoll20Text())}>Copy to clipboard</button>
 	</div>
 	<div class="rolls">
 		<div class="attack">
-			<h3>Attack Modifier</h3>
+			<h3>Attack</h3>
 			<div class="content">{prefixedAttackCalc}</div>
 			<button on:click={onAttackRoll}>Roll</button>
 		</div>
@@ -144,8 +159,8 @@
 				<h3>Crit Range</h3>
 				<div class="content">
 					<span>{20 - critModifier} - 20</span>
-					<button on:click={onCritRoll}>Roll</button>
 				</div>
+				<button on:click={onCritRoll}>Roll</button>
 			</div>
 		{/if}
 		{#if crestType}
@@ -155,8 +170,8 @@
 					{#if crestDC && crestDC <= 20}
 						<span>DC {crestDC}</span>
 					{/if}
-					<button on:click={onCrestRoll}>Roll</button>
 				</div>
+				<button on:click={onCrestRoll}>Roll</button>
 			</div>
 		{/if}
 		<div class="damage">
@@ -184,7 +199,7 @@
 					<span class={critRoll >= 20 - critModifier ? 'cs' : ''}>
 						{critRoll >= 20 - critModifier ? 'CRIT' : 'Normal'}
 					</span>
-					({critRoll})
+					<span class={critRoll === 20 ? 'cs' : ''}>({critRoll})</span>
 				{/if}
 				{#if critRoll === ''}
 					...
@@ -193,18 +208,30 @@
 		{/if}
 		{#if crestType}
 			<div class="crest">
-				{crestActivated ? 'ACTIVATED' : 'Normal'} ({crestRoll})
-				{#if crestActivated}
-					{#if crestType && !crestDoesDamage}<span class="description"
-							>{CRESTS_TO_FEATURES[crestType]?.description}</span
-						>{/if}
-					{#if crestDoesDamage && crestDamageRoll}
-						+ {crestDamageRoll} damage
+				{#if crestRoll !== ''}
+					{crestActivated ? 'ACTIVATED' : 'Normal'} ({crestRoll})
+					{#if crestActivated}
+						{#if crestType && !crestDoesDamage}<span class="description"
+								>{CRESTS_TO_FEATURES[crestType]?.description}</span
+							>{/if}
+						{#if crestDoesDamage && crestDamageRoll}
+							+ {crestDamageRoll} damage
+						{/if}
 					{/if}
+				{/if}
+				{#if crestRoll === ''}
+					...
 				{/if}
 			</div>
 		{/if}
-		<div class="damage">{damageRoll === '' ? '...' : damageRoll}</div>
+		<div class="damage" style:flex-direction="column">
+			{#if damageRoll}
+				<div>{baseDamageRollText} {`= ${finalDamageRoll}`}</div>
+			{/if}
+			{#if !damageRoll}
+				...
+			{/if}
+		</div>
 	</div>
 </div>
 
@@ -223,15 +250,20 @@
 		justify-content: space-between;
 		background-color: bisque;
 		border-radius: 5px;
+		text-align: center;
 		> * {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			row-gap: 5px;
 			flex: 1;
-			padding: 5px;
+			padding: 10px;
 			&:not(:last-child) {
 				border-right: 1px solid black;
+			}
+
+			> * {
+				flex: 1;
 			}
 		}
 	}
@@ -240,6 +272,8 @@
 		flex-direction: row;
 		justify-content: space-between;
 		background-color: lightyellow;
+		border-radius: 5px;
+		text-align: center;
 		> * {
 			display: flex;
 			justify-content: center;
@@ -266,6 +300,10 @@
 				font-size: 12px;
 			}
 		}
+	}
+
+	.damage {
+		flex: 2;
 	}
 
 	.cs {
