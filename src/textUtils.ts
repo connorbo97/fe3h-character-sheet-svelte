@@ -6,7 +6,9 @@ export const getCrestStrengthText = (bool: any) => (bool ? 'Major' : 'Minor');
 export const classBuilder = (...args) => {
 	const newArgs = args.map((a) => {
 		if (typeof a === 'object') {
-			return Object.keys(a).filter((key) => a[key]);
+			return Object.keys(a)
+				.filter((key) => a[key])
+				.join(' ');
 		}
 		return a;
 	});
