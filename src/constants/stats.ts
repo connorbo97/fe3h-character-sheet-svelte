@@ -22,5 +22,7 @@ export const PLAYER_STAT_TO_SHORT_LABEL = {
 	[PLAYER_STAT.CON]: 'Con',
 	[PLAYER_STAT.INT]: 'Int',
 	[PLAYER_STAT.WIS]: 'Wis',
-	[PLAYER_STAT.CHA]: 'Cha'
+	[PLAYER_STAT.CHA]: 'Cha',
+	// added b/c of XP rolling riding
+	ANIMAL_HANDLING: 'AnHan'
 };
