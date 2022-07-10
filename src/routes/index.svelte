@@ -6,6 +6,7 @@
 	import { onMount } from 'svelte';
 
 	import {
+		DEFAULT_DICE_OPTIONS,
 		DEFAULT_PLAYER_SKILL_BONUSES,
 		DEFAULT_PLAYER_SKILL_PROFICIENCY,
 		DEFAULT_PLAYER_STAT,
@@ -26,6 +27,7 @@
 	import Editor from './editor/editor.svelte';
 	import { SkillProficiency } from 'src/constants/playerSkills';
 	import { CLASS } from 'src/constants/classes';
+	import DiceEditor from './dice-editor/diceEditor.svelte';
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -94,21 +96,7 @@
 			}
 			//@ts-ignore
 			const diceBox = new DiceBox.default('#dice-box', {
-				//@ts-ignore
-				assetPath: '/assets/dice-box/', // required,
-				id: 'dice-canvas',
-				theme: 'default',
-				themeColor: '#F00000',
-				friction: 0.9,
-				scale: 10,
-				gravity: 5,
-				mass: 8,
-				linearDamping: 0.6,
-				angularDamping: 0.6,
-				spinForce: 1,
-				throwForce: 15,
-				shadowTransparency: 0.6,
-				startingHeight: 5,
+				...DEFAULT_DICE_OPTIONS,
 				...diceBoxOptions
 			});
 			window.diceBoxContainer = document.getElementById('dice-box');
@@ -290,6 +278,11 @@
 				<div class={currentPage === 'EDITOR' ? '' : 'invisible'}>
 					{#if currentPage === 'EDITOR'}
 						<Editor {fullSheet} {onChangeSheet} />
+					{/if}
+				</div>
+				<div class={currentPage === 'DICE_EDITOR' ? '' : 'invisible'}>
+					{#if currentPage === 'DICE_EDITOR'}
+						<DiceEditor />
 					{/if}
 				</div>
 			</div>

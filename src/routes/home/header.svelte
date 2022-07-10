@@ -27,6 +27,12 @@
 	<button class={currentPage === 'EDITOR' ? 'active' : ''} on:click={() => onChangePage('EDITOR')}
 		>Sheet Editor</button
 	>
+	<button
+		class={currentPage === 'DICE_EDITOR' ? 'active' : ''}
+		on:click={() => onChangePage('DICE_EDITOR')}
+	>
+		Dice Editor
+	</button>
 	<button on:click={() => onExportSheet(fullSheet)}>Export Sheet</button>
 </div>
 
