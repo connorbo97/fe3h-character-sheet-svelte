@@ -1,5 +1,4 @@
 import { PLAYER_STAT } from './constants/stats';
-import { CLASS, BEGINNER_CLASSES, INTERMEDIATE_CLASSES } from './constants/classes';
 
 export * from './constants/classes';
 export * from './constants/combatArts';
@@ -53,7 +52,7 @@ export const DEFAULT_DICE_OPTIONS = {
 	assetPath: '/assets/dice-box/', // required,
 	id: 'dice-canvas',
 	theme: 'default',
-	themeColor: '#F00000',
+	themeColor: '#FF0000',
 	friction: 0.9,
 	scale: 10,
 	gravity: 5,
