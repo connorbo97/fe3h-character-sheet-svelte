@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { CONTEXTS, PickOnePromptType } from 'src/constants';
 
-	import { COMBAT_ARTS_TO_FEATURES } from 'src/constants/combatArts';
+	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
 	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
 	import { PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
 
-	import { WEAPONS_TO_FEATURES } from 'src/constants/weapons';
+	import { getWeaponDescription, WEAPONS_TO_FEATURES } from 'src/constants/weapons';
 	import { getContext } from 'svelte';
 
 	const { close } = getContext(CONTEXTS.MODAL);
@@ -29,11 +29,20 @@
 	const getOptionLabel = (type: PickOnePromptType, option: PickOnePromptOption) => {
 		switch (type) {
 			case PickOnePromptType.Weapon:
-				return WEAPONS_TO_FEATURES[option.toString()].label;
+				return (
+					WEAPONS_TO_FEATURES[option.toString()].label +
+					': ' +
+					getWeaponDescription(WEAPONS_TO_FEATURES[option.toString()])
+				);
 			case PickOnePromptType.CombatArt:
 				return COMBAT_ARTS_TO_FEATURES[option.toString()].label;
+				': ' + getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[option.toString()]);
 			case PickOnePromptType.CombatSkill:
-				return COMBAT_SKILLS_TO_FEATURES[option.toString()].label;
+				return (
+					COMBAT_SKILLS_TO_FEATURES[option.toString()].label +
+					': ' +
+					COMBAT_SKILLS_TO_FEATURES[option.toString()].description
+				);
 			case PickOnePromptType.PlayerStat:
 				const safeStat = typeof option === 'string' ? option : option.stat;
 				const safeValue = typeof option === 'string' ? option : option.value;
@@ -120,6 +129,7 @@
 			{#if entry.description}
 				<span class="description">{entry.description}</span>
 			{/if}
+			<!-- {#key } -->
 			<select
 				name={entry.type + index}
 				on:change={(e) => {
@@ -129,11 +139,24 @@
 			>
 				<option value={null}>-</option>
 				{#each entry.options as option}
-					<option value={JSON.stringify(option)}>{getOptionLabel(entry.type, option)}</option>
+					<option value={JSON.stringify(option)} selected={selections[index] === option}
+						>{getOptionLabel(entry.type, option)}</option
+					>
 				{/each}
 			</select>
+			<!-- {/key} -->
 		{/each}
 	</div>
+	<button
+		on:click={() => {
+			selections = pickOne.map((entry) => {
+				// random number between 0 * length -1
+				const rng = Math.floor(Math.random() * entry.options.length);
+
+				return entry.options[rng];
+			});
+		}}>Randomize</button
+	>
 	<button
 		class="submit"
 		disabled={!selections.every((s) => s !== null)}
