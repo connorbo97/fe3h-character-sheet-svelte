@@ -2,10 +2,6 @@ For Sure
 -=---=---=---=---=--
 add ability to roll dice that are not real (by multiplying them by 2 then modulusing the result by 2)
 
-add learning form to XP page
-
-add "Copy result to clipboard" on attack modal to allow everyone to paste their attack + their damage nicely
-
 implement more of the xp level ups
 
 add "loadable" sheets for NPCs
