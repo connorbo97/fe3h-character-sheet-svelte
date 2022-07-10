@@ -98,7 +98,7 @@
 			<input
 				style:width="50px"
 				type="number"
-				class={curSuperiorityDies === 0
+				class={curSuperiorityDies <= 0
 					? 'bad'
 					: curSuperiorityDies <= Math.ceil(maxSuperiorityDie / 3)
 					? 'danger'
