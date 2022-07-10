@@ -6,9 +6,11 @@
 	import { Dice } from 'src/constants/dice';
 	import { TooltipStyle } from 'src/constants/enums';
 	import { HEALING_MAGIC, MAGIC_WEAPONS } from 'src/constants/weapons';
+	import { checkCalcRequiresRoll } from 'src/rollUtils';
 	import {
 		classBuilder,
 		copyToClipboard,
+		isDice,
 		printCalc,
 		rollCalc,
 		rollDice,
@@ -86,9 +88,15 @@
 		}).then((res: any) => res.value);
 		attackMod = rollCalc(attackCalc);
 	};
-	const onDamageRoll = () => {
+	const onDamageRoll = async () => {
 		damageRoll = '';
-		damageRoll = rollCalc(damageCalc);
+		if (checkCalcRequiresRoll(damageCalc)) {
+			const mod = damageCalc.filter((d) => !isDice(d));
+			const dice = damageCalc.filter(isDice);
+			damageRoll = await rollVisualDice(dice, { modifier: mod }).then((res) => res.value);
+		} else {
+			damageRoll = rollCalc(damageCalc);
+		}
 	};
 	const onCritRoll = async () => {
 		critRoll = '';
@@ -444,7 +452,11 @@
 		{/if}
 		<div class="damage" style:flex-direction="column">
 			{#if damageRoll}
-				<div>{baseDamageRollText} {`= ${finalDamageRoll}`}</div>
+				<div>
+					{baseDamageRollText}{baseDamageRollText !== damageRoll + ''
+						? ` = ${finalDamageRoll}`
+						: ''}
+				</div>
 			{/if}
 			{#if !damageRoll}
 				...
