@@ -482,9 +482,9 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 };
 
 export const SUPERIORITY_DIE_TO_CLASSES: { [n: number]: Set<string> } = {
-	1: new Set(Object.values(CLASS)),
-	3: new Set(BEGINNER_CLASSES),
-	5: new Set(INTERMEDIATE_CLASSES)
+	2: new Set(Object.values(CLASS)),
+	4: new Set(BEGINNER_CLASSES),
+	6: new Set(INTERMEDIATE_CLASSES)
 };
 export const getSuperiorityDieFromClasses = (unlockedClasses: Array<any>) => {
 	return Object.keys(SUPERIORITY_DIE_TO_CLASSES).reduce((acc: number, die: any) => {
@@ -492,5 +492,5 @@ export const getSuperiorityDieFromClasses = (unlockedClasses: Array<any>) => {
 			return Math.max(parseInt(die), acc);
 		}
 		return acc;
-	}, 0);
+	}, 2);
 };
