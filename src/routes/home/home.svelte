@@ -135,6 +135,8 @@
 				{unlockedClasses}
 				{equippedCombatSkills}
 				{selectedWeapon}
+				{equippedWeapons}
+				{equippedCombatArts}
 			/>
 			<AttackCalc
 				{playerName}
