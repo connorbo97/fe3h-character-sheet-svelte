@@ -27,6 +27,9 @@
 			const mouseEnterListener = () => {
 				timer.current = setTimeout(() => {
 					hovered = true;
+					if (content?.style) {
+						content.style.zIndex = content?.style?.zIndex || 1;
+					}
 					timer.current = null;
 				}, timeout);
 			};
@@ -35,6 +38,9 @@
 					clearTimeout(timer.current);
 				}
 				hovered = false;
+				if (content?.style) {
+					content.style.zIndex = content?.style?.zIndex === '1' ? 0 : content?.style?.zIndex;
+				}
 			};
 			const prevContentEl: any = prevContent.current;
 			if (prevContentEl) {
