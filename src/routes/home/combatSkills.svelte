@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { COMBAT_SKILLS_TO_FEATURES, MAX_COMBAT_SKILLS } from 'src/constants';
+	import SvelteTip from 'src/common/SvelteTip.svelte';
+	import { MAX_COMBAT_SKILLS } from 'src/constants';
+	import { TooltipStyle } from 'src/constants/enums';
 	import CombatSkillEntry from './combatSkillEntry.svelte';
 
 	export let allCombatSkills: AllCombatSkills;
@@ -13,7 +15,20 @@
 
 <div class="container">
 	<div class="header">
-		<u>Combat Skills ({equippedCombatSkills.length}/{MAX_COMBAT_SKILLS})</u>
+		<u>
+			Combat Skills
+			<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
+				<span
+					on:click={() =>
+						equippedCombatSkills.forEach((s) => {
+							onToggleCombatSkill(s);
+						})}
+				>
+					({equippedCombatSkills.length}/{MAX_COMBAT_SKILLS})
+				</span>
+				<div slot="t">Click to Clear All</div>
+			</SvelteTip>
+		</u>
 		<!-- <button on:click={openAddPrompt}> + </button> -->
 	</div>
 	{#each allCombatSkillsArr as skill}
