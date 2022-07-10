@@ -1,5 +1,4 @@
 import { PLAYER_STAT } from './constants/stats';
-import { CLASS, BEGINNER_CLASSES, INTERMEDIATE_CLASSES } from './constants/classes';
 
 export * from './constants/classes';
 export * from './constants/combatArts';
@@ -47,4 +46,21 @@ export const DEFAULT_RESILIENCE = 0;
 
 export const CONTEXTS = {
 	MODAL: 'simple-modal'
+};
+
+export const DEFAULT_DICE_OPTIONS = {
+	assetPath: '/assets/dice-box/', // required,
+	id: 'dice-canvas',
+	theme: 'default',
+	themeColor: '#FF0000',
+	friction: 0.9,
+	scale: 10,
+	gravity: 5,
+	mass: 8,
+	linearDamping: 0.6,
+	angularDamping: 0.6,
+	spinForce: 1,
+	throwForce: 15,
+	shadowTransparency: 0.6,
+	startingHeight: 5
 };
