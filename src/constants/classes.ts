@@ -391,6 +391,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 					type: PickOnePromptType.PlayerStat,
 					description:
 						'Pick different stats per dropdown (e.g. if you pick 14 DEX in this dropdown, pick 12 STR in the other)',
+					disableRandom: true,
 					options: [
 						{
 							stat: PLAYER_STAT.DEX,

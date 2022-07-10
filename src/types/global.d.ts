@@ -180,6 +180,7 @@ declare global {
 	type PickOnePrompt = {
 		type: PickOnePromptType;
 		description?: string;
+		disableRandom?: boolean;
 		options: Array<PickOnePromptOption>;
 	};
 }

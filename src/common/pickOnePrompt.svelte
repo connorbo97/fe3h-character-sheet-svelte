@@ -119,24 +119,27 @@
 		onSubmit();
 		close();
 	};
+	$: randomDisabled = pickOne.some((p) => p.disableRandom);
 </script>
 
 <div class="container">
 	<h1>Making choice(s) because: <span class="reason">{reason}</span></h1>
 	<div class="content">
-		<button
-			style:align-self="center"
-			on:click={() => {
-				selections = pickOne.map((entry) => {
-					// random number between 0 * length -1
-					const rng = Math.floor(Math.random() * entry.options.length);
+		{#if !randomDisabled}
+			<button
+				style:align-self="center"
+				on:click={() => {
+					selections = pickOne.map((entry) => {
+						// random number between 0 * length -1
+						const rng = Math.floor(Math.random() * entry.options.length);
 
-					return entry.options[rng];
-				});
-			}}
-		>
-			Randomize Choices
-		</button>
+						return entry.options[rng];
+					});
+				}}
+			>
+				Randomize Choices
+			</button>
+		{/if}
 		{#each pickOne as entry, index}
 			<h2>Pick a {entry.type}</h2>
 			{#if entry.description}
