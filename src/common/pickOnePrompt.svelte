@@ -124,6 +124,19 @@
 <div class="container">
 	<h1>Making choice(s) because: <span class="reason">{reason}</span></h1>
 	<div class="content">
+		<button
+			style:align-self="center"
+			on:click={() => {
+				selections = pickOne.map((entry) => {
+					// random number between 0 * length -1
+					const rng = Math.floor(Math.random() * entry.options.length);
+
+					return entry.options[rng];
+				});
+			}}
+		>
+			Randomize Choices
+		</button>
 		{#each pickOne as entry, index}
 			<h2>Pick a {entry.type}</h2>
 			{#if entry.description}
@@ -147,16 +160,6 @@
 			<!-- {/key} -->
 		{/each}
 	</div>
-	<button
-		on:click={() => {
-			selections = pickOne.map((entry) => {
-				// random number between 0 * length -1
-				const rng = Math.floor(Math.random() * entry.options.length);
-
-				return entry.options[rng];
-			});
-		}}>Randomize</button
-	>
 	<button
 		class="submit"
 		disabled={!selections.every((s) => s !== null)}
