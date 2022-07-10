@@ -193,6 +193,14 @@
 <div class="container">
 	<div class="weapon-xp-container">
 		<div class="category">
+			<u>Type</u>
+			<u style:text-align="center" style:white-space="nowrap" style:width="0"
+				>XP (Current XP / XP Required to Level Up)</u
+			>
+			<span />
+			<u style:text-align="center" style:white-space="nowrap" style:width="0">Lvl</u>
+			<u style:text-align="center" style:white-space="nowrap" style:width="0">Stat Modifier</u>
+			<span />
 			{#each Object.keys(WEAPON_TYPE) as type}
 				{@const curXP = weaponXP[type]?.total || 0}
 				{@const curLevel = weaponXP[type]?.level || WEAPON_LEVEL.E}
@@ -219,6 +227,24 @@
 						{/each}
 					</select>
 				{/key}
+				{#if WEAPON_TYPE_TO_STAT[type].length > 1}
+					<select
+						on:change={(e) => {
+							statPerWeaponType = { ...statPerWeaponType, [type]: e.currentTarget.value };
+						}}
+					>
+						{#each WEAPON_TYPE_TO_STAT[type] as stat}
+							<option value={stat} selected={statPerWeaponType[type] === stat}
+								>{PLAYER_STAT_TO_SHORT_LABEL[stat]}</option
+							>
+						{/each}
+					</select>
+				{/if}
+				{#if WEAPON_TYPE_TO_STAT[type].length <= 1}
+					<span style:text-align="center"
+						>{PLAYER_STAT_TO_SHORT_LABEL[WEAPON_TYPE_TO_STAT[type][0]]}</span
+					>
+				{/if}
 				<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER} tooltipPositionerStyle="z-index: 100">
 					<button
 						disabled={rollsRemaining <= 0}
@@ -283,6 +309,14 @@
 		</div>
 	</div>
 	<div class="category" style:background-color={'#d277ed'}>
+		<u>Class</u>
+		<u style:text-align="center" style:white-space="nowrap" style:width="0"
+			>Class XP (Current Battles / Battles Required to Master)</u
+		>
+		<span />
+		<span />
+		<span />
+		<span />
 		{#each unlockedClasses as curClass}
 			{@const curXP = classXP[curClass]?.total || 0}
 			{@const maxXP = BEGINNER_CLASSES.has(curClass)
@@ -321,6 +355,7 @@
 			</div>
 			<span />
 			<span />
+			<span />
 		{/each}
 	</div>
 </div>
@@ -345,7 +380,7 @@
 		border-radius: 5px;
 
 		display: grid;
-		grid-template-columns: max-content 1fr max-content min-content max-content;
+		grid-template-columns: max-content 1fr max-content min-content min-content max-content;
 		grid-auto-rows: min-content;
 		gap: 5px;
 	}
