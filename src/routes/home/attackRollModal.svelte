@@ -118,6 +118,124 @@
 
 		return crestDamageRoll;
 	};
+
+	$: combatArtLabel = selectedCombatArt
+		? ` (${allCombatArts.fullFeatures[selectedCombatArt]?.label})`
+		: '';
+	$: weaponLabel = allWeapons.fullFeatures[selectedWeapon]?.label;
+	$: headerLabel = `${weaponLabel}` + combatArtLabel;
+	$: didCrit = critRoll >= 20 - critModifier;
+	$: critMultiplier = didCrit ? (critRoll === 20 ? 3 : 2) : 1;
+	$: baseDamageRoll = parseInt(damageRoll) + parseInt(crestDamageRoll || 0);
+	$: baseDamageRollText = `${didCrit ? '(' : ''}${damageRoll}${
+		crestDamageRoll ? ` + ${crestDamageRoll} (crest)` : ''
+	}${didCrit ? `) * ${critMultiplier} (crit)` : ''}`;
+	$: finalDamageRoll = critMultiplier * baseDamageRoll;
+	$: critRangeText = critModifier === 0 ? 20 : `${20 - critModifier} - 20`;
+
+	$: rollDisabled = (selectedCombatArt && curSuperiorityDies <= 0) || curWeaponUses <= 0;
+
+	$: getRoll20Text = () => {
+		const critRoll = 20;
+		const crestRoll = rollDice(20);
+
+		const critActivated = critRoll > 20 - critModifier;
+		const crestActivated = critRoll > 20 - critModifier;
+		const calc = `${printCalc(damageCalc)}${
+			crestActivated && crestRoll >= crestDC ? `+${getCrestDamageRollText()}` : ''
+		}`;
+		const damageResultText2 = `/roll ${calc}${
+			critActivated ? '+' + (critRoll === 20 ? calc + '+' + calc : calc) : ''
+		}${crestActivated ? ` [Crest Activated [${crestRoll}]]` : ''}${
+			critActivated ? ` [CRIT[${critRoll}]]` : ''
+		} [ID${Math.floor(Math.random() * 1000000)}]`;
+
+		const attackRollText = `&{template:atk} {{rname=[${weaponLabel}](\`${damageResultText2})}} {{mod=${
+			selectedCombatArt ? allCombatArts.fullFeatures[selectedCombatArt]?.label : '+0'
+		}}} {{r1=[[1d20${prefixedAttackCalc}]]}} {{normal=1}} {{charname=${playerName}}}`;
+
+		return attackRollText;
+	};
+	// $: DEPRECATED_getRoll20ResultText = () => {
+	// 	const intro = `&{template:desc} {{desc=${weaponLabel}${
+	// 		selectedCombatArt ? ` (${allCombatArts.fullFeatures[selectedCombatArt]?.label})` : ''
+	// 	} attack from ${playerName}}}`;
+	// 	const attackRollText = `&{template:simple} {{rname=Attack Roll}} {{normal=1}} {{r1=${attackRoll} + ${attackMod} = ${
+	// 		attackRoll + attackMod
+	// 	}}}`;
+	// 	const critRollText =
+	// 		critRoll !== ''
+	// 			? `&{template:simple} {{rname=Crit Roll}} {{mod=${critRangeText}}} {{r1=${critRoll} + ${critModifier}${
+	// 					didCrit ? ` = (CRIT)` : ''
+	// 			  }}} {{normal=1}} ${didCrit ? `{{charname=${critModifier}x damage}}` : ''}`
+	// 			: '';
+	// 	const crestRollText =
+	// 		crestType && crestRoll !== ''
+	// 			? `&{template:simple} {{rname=Crest Roll}} {{mod=DC ${crestDC}}} {{r1=${crestRoll}${
+	// 					crestActivated ? ' = (ACTIVATED)' : ''
+	// 			  }}} {{normal=1}} ${
+	// 					crestActivated ? `{{charname=${CRESTS_TO_FEATURES[crestType].description}}}` : ''
+	// 			  }`
+	// 			: '';
+	// 	// const damageRollText = `&{template:dmg} {{rname=Damage}} {{damage=1}} {{dmg1flag=1}} {{dmg1=${baseDamageRollText}}} {{dmg2flag=1}} {{dmg2== ${finalDamageRoll}}}`;
+	// 	const damageRollText = `&{template:simple} {{rname=Damage}} {{normal=1}} {{r1=${finalDamageRoll}}} {{charname=${baseDamageRollText}}}`;
+
+	// 	return [intro, attackRollText, critRollText, crestRollText, damageRollText].join('\n');
+	// };
+
+	$: getRoll20AttackResultText = (addIntro = false) => {
+		const attackRollText = `&{template:simple} {{rname=Attack Roll}} {{normal=1}} {{r1=${
+			attackRoll + attackMod
+		}}} {{charname=${attackRoll} + ${attackMod}}}`;
+
+		if (addIntro) {
+			return [
+				`&{template:desc} {{desc=${weaponLabel}${
+					selectedCombatArt ? ` (${allCombatArts.fullFeatures[selectedCombatArt]?.label})` : ''
+				} attack roll from ${playerName}}}`,
+				attackRollText
+			].join('\n');
+		}
+
+		return attackRollText;
+	};
+	$: getRoll20DamageResultText = (addIntro = false) => {
+		const damageResultText = `&{template:simple} {{rname=Damage}} {{normal=1}} {{r1=${finalDamageRoll}}} {{charname=${baseDamageRollText}}}`;
+
+		if (addIntro) {
+			return [
+				`&{template:desc} {{desc=${weaponLabel}${
+					selectedCombatArt ? ` (${allCombatArts.fullFeatures[selectedCombatArt]?.label})` : ''
+				} damage roll from ${playerName}}}`,
+				damageResultText
+			].join('\n');
+		}
+
+		return damageResultText;
+	};
+	$: getRoll20ResultText = () => {
+		const intro = `&{template:desc} {{desc=${weaponLabel}${
+			selectedCombatArt ? ` (${allCombatArts.fullFeatures[selectedCombatArt]?.label})` : ''
+		} attack from ${playerName}}}`;
+		const attackRollText = getRoll20AttackResultText();
+		const critRollText =
+			critRoll !== ''
+				? `&{template:simple} {{rname=Crit Roll}} {{mod=${critRangeText}}} {{r1=${
+						didCrit ? `CRIT` : 'normal'
+				  } (${critRoll})}} {{normal=1}} ${didCrit ? `{{charname=${critMultiplier}x damage}}` : ''}`
+				: '';
+		const crestRollText =
+			crestType && crestRoll !== ''
+				? `&{template:simple} {{rname=Crest Roll}} {{mod=DC ${crestDC}}} {{r1=${
+						crestActivated ? `ACTIVATED` : 'normal'
+				  } (${crestRoll})}}$ {{normal=1}} ${
+						crestActivated ? `{{charname=${CRESTS_TO_FEATURES[crestType].description}}}` : ''
+				  }`
+				: '';
+		const damageRollText = getRoll20DamageResultText();
+
+		return [intro, attackRollText, critRollText, crestRollText, damageRollText].join('\n');
+	};
 	$: onRollAll = async () => {
 		superiorityDieCost = 1;
 		weaponCostModifier = 1;
@@ -165,55 +283,40 @@
 			setCurSuperiorityDie(curSuperiorityDies - superiorityDieCost * superiorityDieCostModifier);
 		}
 	};
-
-	$: combatArtLabel = selectedCombatArt
-		? ` (${allCombatArts.fullFeatures[selectedCombatArt]?.label})`
-		: '';
-	$: weaponLabel = allWeapons.fullFeatures[selectedWeapon]?.label;
-	$: headerLabel = `${weaponLabel}` + combatArtLabel;
-	$: getRoll20Text = () => {
-		const critRoll = 20;
-		const crestRoll = rollDice(20);
-
-		const critActivated = critRoll > 20 - critModifier;
-		const crestActivated = critRoll > 20 - critModifier;
-		const calc = `${printCalc(damageCalc)}${
-			crestActivated && crestRoll >= crestDC ? `+${getCrestDamageRollText()}` : ''
-		}`;
-		const damageResultText2 = `/roll ${calc}${
-			critActivated ? '+' + (critRoll === 20 ? calc + '+' + calc : calc) : ''
-		}${crestActivated ? ` [Crest Activated [${crestRoll}]]` : ''}${
-			critActivated ? ` [CRIT[${critRoll}]]` : ''
-		} [ID${Math.floor(Math.random() * 1000000)}]`;
-
-		const attackRollText = `&{template:atk} {{rname=[${weaponLabel}](\`${damageResultText2})}} {{mod=${
-			selectedCombatArt ? allCombatArts.fullFeatures[selectedCombatArt]?.label : '+0'
-		}}} {{r1=[[1d20${prefixedAttackCalc}]]}} {{normal=1}} {{charname=${playerName}}}`;
-		return attackRollText;
-	};
-
-	$: didCrit = critRoll >= 20 - critModifier;
-	$: critMultiplier = didCrit ? (critRoll === 20 ? 3 : 2) : 1;
-	$: baseDamageRoll = parseInt(damageRoll) + parseInt(crestDamageRoll || 0);
-	$: baseDamageRollText = `${didCrit ? '(' : ''}${damageRoll}${
-		crestDamageRoll ? ` + ${crestDamageRoll} (crest)` : ''
-	}${didCrit ? `) * ${critMultiplier} (crit)` : ''}`;
-	$: finalDamageRoll = critMultiplier * baseDamageRoll;
-
-	$: rollDisabled = (selectedCombatArt && curSuperiorityDies <= 0) || curWeaponUses <= 0;
 </script>
 
 <div class="container">
 	<div class="actions">
 		<span> {headerLabel} </span>
-		<button on:click={onRollAll} disabled={rollDisabled}>
+		<button
+			on:click={() => onRollAll().then(() => copyToClipboard(getRoll20ResultText()))}
+			disabled={rollDisabled}
+		>
 			{rollDisabled
 				? curWeaponUses <= 0
 					? 'Out of weapon uses'
 					: 'Out of Superiority Dies'
 				: 'Roll Attack'}
 		</button>
-		<button on:click={() => copyToClipboard(getRoll20Text())}>Copy to clipboard</button>
+		<button
+			disabled={attackRoll === ''}
+			on:click={() => {
+				copyToClipboard(getRoll20ResultText());
+			}}
+		>
+			Copy Results
+		</button>
+		<button
+			disabled={attackRoll === ''}
+			on:click={() => copyToClipboard(getRoll20AttackResultText(true))}
+			>Copy Attack Result Only</button
+		>
+		<button
+			disabled={attackRoll === ''}
+			on:click={() => copyToClipboard(getRoll20DamageResultText(true))}
+			>Copy Damage Result Only</button
+		>
+		<button on:click={() => copyToClipboard(getRoll20Text())}>Copy Attack Command</button>
 		<!-- <div style:display="flex" style:flex="1" style:justify-content="flex-end"> -->
 		<button style:flex="1" on:click={onCloseModal}>Back</button>
 		<!-- </div> -->
@@ -238,7 +341,7 @@
 			<div class="crit">
 				<h3>Crit Range</h3>
 				<div class="content">
-					<span>{20 - critModifier} - 20</span>
+					<span>{critRangeText}</span>
 				</div>
 				<!-- <button on:click={onCritRoll}>Roll</button> -->
 			</div>
