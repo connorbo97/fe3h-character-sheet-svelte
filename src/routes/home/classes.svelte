@@ -1,8 +1,10 @@
 <script lang="ts">
 	import PickOnePrompt from 'src/common/pickOnePrompt.svelte';
+	import SvelteTip from 'src/common/SvelteTip.svelte';
 
 	import { BEGINNER_CLASSES, CLASS_TO_LABEL, CONTEXTS, INTERMEDIATE_CLASSES } from 'src/constants';
 	import { CLASS_TO_FEATURES } from 'src/constants/classes';
+	import { classBuilder } from 'src/textUtils';
 	import { getContext } from 'svelte';
 
 	const { open } = getContext(CONTEXTS.MODAL);
@@ -70,20 +72,26 @@
 	<div class="category">
 		<div class="label">Beginner</div>
 		<div class="classes-container">
-			{#each Array.from(BEGINNER_CLASSES) as beginnerClass}
+			{#each Array.from(BEGINNER_CLASSES) as targetClass}
 				<div class="class-container">
-					<button
-						class={classSet?.has(beginnerClass) ? 'active' : 'not-active'}
-						on:click={() => onToggleClassActive(beginnerClass)}
-					/>
-					<div
-						class={`${masteredClasses.indexOf(beginnerClass) !== -1 ? 'mastered' : ''} class-label`}
-					>
-						{CLASS_TO_LABEL[beginnerClass]}
+					<SvelteTip disabled={!masteredClasses.includes(targetClass)}>
+						<button
+							class={classBuilder({
+								mastered: masteredClasses.includes(targetClass),
+								active: classSet?.has(targetClass),
+								'not-active': classSet?.has(targetClass)
+							})}
+							on:click={() => onToggleClassActive(targetClass)}
+						/>
+
+						<div slot="t">Mastered</div>
+					</SvelteTip>
+					<div class={`class-label`}>
+						{CLASS_TO_LABEL[targetClass]}
 					</div>
 					<button
-						class={equippedClass === beginnerClass ? 'equipped' : ''}
-						on:click={() => onToggleEquipClass(beginnerClass)}
+						class={equippedClass === targetClass ? 'equipped' : ''}
+						on:click={() => onToggleEquipClass(targetClass)}
 					/>
 				</div>
 			{/each}
@@ -92,22 +100,22 @@
 	<div class="category">
 		<div class="label">Intermediate</div>
 		<div class="classes-container">
-			{#each Array.from(INTERMEDIATE_CLASSES) as intermediateClass}
+			{#each Array.from(INTERMEDIATE_CLASSES) as targetClass}
 				<div class="class-container">
 					<button
-						class={classSet?.has(intermediateClass) ? 'active' : 'not-active'}
-						on:click={() => onToggleClassActive(intermediateClass)}
+						class={classBuilder({
+							mastered: masteredClasses.includes(targetClass),
+							active: classSet?.has(targetClass),
+							'not-active': classSet?.has(targetClass)
+						})}
+						on:click={() => onToggleClassActive(targetClass)}
 					/>
-					<div
-						class={`${
-							masteredClasses.indexOf(intermediateClass) !== -1 ? 'mastered' : ''
-						} class-label`}
-					>
-						{CLASS_TO_LABEL[intermediateClass]}
+					<div class={`class-label`}>
+						{CLASS_TO_LABEL[targetClass]}
 					</div>
 					<button
-						class={equippedClass === intermediateClass ? 'equipped' : ''}
-						on:click={() => onToggleEquipClass(intermediateClass)}
+						class={equippedClass === targetClass ? 'equipped' : ''}
+						on:click={() => onToggleEquipClass(targetClass)}
 					/>
 				</div>
 			{/each}
@@ -141,6 +149,7 @@
 	.class-container {
 		display: flex;
 		align-items: center;
+		column-gap: 5px;
 		> button {
 			height: 20px;
 		}
@@ -155,8 +164,7 @@
 	.equipped {
 		background-color: green;
 	}
-
 	.mastered {
-		color: red;
+		background-color: lightskyblue;
 	}
 </style>
