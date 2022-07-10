@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SvelteTip from 'src/common/SvelteTip.svelte';
-	import { CONTEXTS, MAX_COMBAT_ARTS } from 'src/constants';
+	import { CONTEXTS, MAX_COMBAT_ARTS, MAX_WEAPONS_EQUIPPED } from 'src/constants';
+	import { TooltipStyle } from 'src/constants/enums';
 	import { WEAPONS_TO_FEATURES } from 'src/constants/weapons';
 	import { getContext } from 'svelte';
 
@@ -24,7 +25,20 @@
 
 <div class="container">
 	<div class="header">
-		<u>Combat Arts ({equippedCombatArts.length}/{MAX_COMBAT_ARTS})</u>
+		<u>
+			Combat Arts
+			<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
+				<span
+					on:click={() =>
+						equippedCombatArts.forEach((w) => {
+							onToggleCombatArts(w);
+						})}
+				>
+					({equippedCombatArts.length}/{MAX_COMBAT_ARTS})
+				</span>
+				<div slot="t">Click to Clear All</div>
+			</SvelteTip></u
+		>
 		<!-- <button on:click={openAddPrompt}> + </button> -->
 	</div>
 	{#each allCombatArts.fullArray as art}
@@ -57,5 +71,6 @@
 	.header {
 		display: flex;
 		justify-content: space-between;
+		z-index: 1;
 	}
 </style>
