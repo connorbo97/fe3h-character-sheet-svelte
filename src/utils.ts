@@ -139,8 +139,9 @@ export const rollVisualDice = (
 		disableResultBox?: boolean;
 		onRollResult?: Function;
 		clearTimeout?: number;
+		customResultBoxLabel?: Function;
 	} = {}
-) => {
+): Promise<{ value: number; resultArray: Array<any> }> => {
 	return new Promise((resolve) => {
 		let waitFlag = true;
 		let clearTimer: any = null;
@@ -180,7 +181,9 @@ export const rollVisualDice = (
 			const resultBox = getDiceBoxResult();
 			if (resultBox && !options.disableResultBox) {
 				resultBox.style.opacity = '1';
-				resultBox.innerHTML = `${printCalc(finalCalc)} = ${finalCalcResult}`;
+				resultBox.innerHTML = options?.customResultBoxLabel
+					? options?.customResultBoxLabel(finalCalc, finalCalcResult)
+					: `${printCalc(finalCalc)} = ${finalCalcResult}`;
 			}
 
 			const returnValue = {
@@ -201,6 +204,18 @@ export const rollVisualDice = (
 	});
 };
 
-export const addNumberPrefix = (num) => `${num > 0 ? '+' : ''}${num}`;
+export const addNumberPrefix = (num, addSpace = false) =>
+	`${num > 0 ? '+' : '-'}${addSpace ? ' ' : ''}${Math.abs(num)}`;
 export const getCrestStrengthText = (bool: any) => (bool ? 'Major' : 'Minor');
 export const getCrestStrength = (bool: any) => (bool ? CrestType.MAJOR : CrestType.MINOR);
+
+export const classBuilder = (...args) => {
+	const newArgs = args.map((a) => {
+		if (typeof a === 'object') {
+			return Object.keys(a).filter((key) => a[key]);
+		}
+		return a;
+	});
+
+	return newArgs.join(' ');
+};

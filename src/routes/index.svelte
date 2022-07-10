@@ -277,6 +277,8 @@
 							{customCombatArts}
 							{customCombatSkills}
 							{customWeapons}
+							{playerSkillProficiency}
+							{playerSkillBonus}
 							{playerStats}
 							{onUpdatePlayerStats}
 							{onUpdateCustomCombatArts}
@@ -374,5 +376,6 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		flex-direction: column;
 	}
 </style>
