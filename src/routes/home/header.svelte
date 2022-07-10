@@ -33,6 +33,12 @@
 	>
 		Dice Editor
 	</button>
+	<button
+		class={currentPage === 'OTHER_SHEETS' ? 'active' : ''}
+		on:click={() => onChangePage('OTHER_SHEETS')}
+	>
+		Other Sheets
+	</button>
 	<button on:click={() => onExportSheet(fullSheet)}>Export Sheet</button>
 </div>
 
