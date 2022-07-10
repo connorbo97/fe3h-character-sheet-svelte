@@ -9,6 +9,7 @@
 	export let showing = false;
 	export let disabled = false;
 	export let hiddenFirst = false;
+	export let tooltipPositionerStyle = '';
 
 	const prevDisabled: any = { current: disabled };
 
@@ -82,7 +83,7 @@
 
 {#if hiddenFirst}
 	<div class="hidden" bind:this={helper}>
-		<div class={`TOOLTIP_tooltip-positioner ${tooltipStyle}`}>
+		<div class={`TOOLTIP_tooltip-positioner ${tooltipStyle}`} style={tooltipPositionerStyle}>
 			<div class={`${tooltipClass} ${contentClass} TOOLTIP_tooltip_container ${tooltipStyle}`}>
 				<slot name="t">tooltip</slot>
 			</div>
@@ -92,7 +93,7 @@
 <slot />
 {#if !hiddenFirst}
 	<div class="hidden" bind:this={helper}>
-		<div class={`TOOLTIP_tooltip-positioner ${tooltipStyle}`}>
+		<div class={`TOOLTIP_tooltip-positioner ${tooltipStyle}`} style={tooltipPositionerStyle}>
 			<div class={`${tooltipClass} ${contentClass} TOOLTIP_tooltip_container ${tooltipStyle}`}>
 				<slot name="t">tooltip</slot>
 			</div>
@@ -130,6 +131,12 @@
 		&.LEFT_END {
 			right: 10px;
 		}
+
+		&.BOTTOM_CENTER {
+			left: 50%;
+			transform: translateX(-50%);
+			top: calc(100% + 5px);
+		}
 	}
 	.TOOLTIP_tooltip_container {
 		position: absolute;
@@ -151,8 +158,12 @@
 			transform: translate(-50%, -100%);
 		}
 		&.LEFT_END {
-			left: inherit;
 			right: 0;
+		}
+
+		&.BOTTOM_CENTER {
+			left: 50%;
+			transform: translateX(-50%);
 		}
 	}
 	.hidden {
