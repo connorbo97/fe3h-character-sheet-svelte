@@ -6,7 +6,14 @@
 	import { Dice } from 'src/constants/dice';
 	import { TooltipStyle } from 'src/constants/enums';
 	import { HEALING_MAGIC, MAGIC_WEAPONS } from 'src/constants/weapons';
-	import { copyToClipboard, printCalc, rollCalc, rollDice, rollVisualDice } from 'src/utils';
+	import {
+		classBuilder,
+		copyToClipboard,
+		printCalc,
+		rollCalc,
+		rollDice,
+		rollVisualDice
+	} from 'src/utils';
 
 	export let playerName: any;
 
@@ -289,16 +296,6 @@
 	<div class="actions">
 		<span> {headerLabel} </span>
 		<button
-			on:click={() => onRollAll().then(() => copyToClipboard(getRoll20ResultText()))}
-			disabled={rollDisabled}
-		>
-			{rollDisabled
-				? curWeaponUses <= 0
-					? 'Out of weapon uses'
-					: 'Out of Superiority Dies'
-				: 'Roll Attack'}
-		</button>
-		<button
 			disabled={attackRoll === ''}
 			on:click={() => {
 				copyToClipboard(getRoll20ResultText());
@@ -321,6 +318,17 @@
 		<button style:flex="1" on:click={onCloseModal}>Back</button>
 		<!-- </div> -->
 	</div>
+	<button
+		on:click={() => onRollAll().then(() => copyToClipboard(getRoll20ResultText()))}
+		disabled={rollDisabled}
+		class={classBuilder('attack-button', { disabled: rollDisabled })}
+	>
+		{rollDisabled
+			? curWeaponUses <= 0
+				? 'Out of weapon uses'
+				: 'Out of Superiority Dies'
+			: 'Roll Attack'}
+	</button>
 	<div class="rolls">
 		{#if !isHealWeapon}
 			<div class="attack">
@@ -538,5 +546,16 @@
 
 	.cf {
 		color: maroon;
+	}
+
+	.attack-button {
+		padding: 5px;
+		margin-bottom: 5px;
+		font-size: 20px;
+	}
+
+	.disabled {
+		background-color: rgba(255, 0, 0, 0.69);
+		cursor: not-allowed;
 	}
 </style>
