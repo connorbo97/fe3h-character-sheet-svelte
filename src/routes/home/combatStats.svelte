@@ -187,10 +187,10 @@
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
 		<div slot="t" class="skinny-tooltip">
-			{`Speed = ${DEFAULT_MOVEMENT_SPEED} + ${equippedClassMovementBonus} (from class) + ${skillMovementBonus} (from combat skills)`}
+			{`Move Speed = ${DEFAULT_MOVEMENT_SPEED} + ${equippedClassMovementBonus} (from class) + ${skillMovementBonus} (from combat skills)`}
 		</div>
 		<div class="big-text skinny">
-			Speed: {ms}
+			MS: {ms}
 		</div>
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
@@ -203,10 +203,10 @@
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
 		<div slot="t">
-			{`Follow Up = ${dexMod} (dex modifier) + ${selectedWeaponFollupMod} (selected weapon)`}
+			{`Attack Speed = ${dexMod} (dex modifier) + ${selectedWeaponFollupMod} (selected weapon)`}
 		</div>
 		<div class="big-text">
-			Follow Up: {followUp}
+			AS: {followUp}
 		</div>
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
@@ -214,7 +214,7 @@
 			{`Protection = ${DEFAULT_PROTECTION} + ${unlockedClassProtectionBonus} (from unlocked classes) + ${intermediateClassProtectionBonus} (from unlocking an intermediate martial class) + ${equippedClassProtectionBonus} (from equipped class) + ${skillProtectionBonus} (from skills)`}
 		</div>
 		<div class="big-text">
-			Protection: {protections}
+			Prt: {protections}
 		</div>
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END} hiddenFirst>
@@ -222,7 +222,7 @@
 			{`Resilience = ${DEFAULT_RESILIENCE} + ${unlockedClassResilienceBonus} (from unlocked classes) + ${intermediateClassResilienceBonus} (from unlocking an intermediate magic class) + ${equippedClassResilienceBonus} (from equipped class) + ${skillResilienceBonus} (from skills)`}
 		</div>
 		<div class="big-text">
-			Resilience: {resilience}
+			Res: {resilience}
 		</div>
 	</SvelteTip>
 </div>
