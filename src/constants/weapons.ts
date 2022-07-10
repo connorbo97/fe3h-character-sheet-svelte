@@ -1,3 +1,4 @@
+import { addNumberPrefix } from 'src/textUtils';
 import { Dice } from './dice';
 import { PLAYER_STAT } from './stats';
 import { MAGIC_WEAPON_TYPES, WEAPON_TYPE } from './weaponType';
@@ -521,14 +522,15 @@ const [MAGIC_WEAPONS, MARTIAL_WEAPONS] = Object.keys(WEAPONS_TO_FEATURES).reduce
 export { MAGIC_WEAPONS, MARTIAL_WEAPONS };
 
 export const getWeaponDescription = (feature: WeaponFeatures) => {
-	const { damage, attackBonus, range, critBonus, description } = feature;
+	const { damage, attackBonus, range, critBonus, description, followUpBonus } = feature;
 	return [
 		attackBonus ? `${attackBonus} to attack` : '',
 		`Damage: ${damage.reduce((acc, cur, i) => {
-			return acc + cur + (i === damage.length - 1 ? '' : parseInt(cur + '') < 0 ? '-' : '+');
+			return acc + (i === 0 ? cur : addNumberPrefix(cur));
 		}, '')}`,
 		`Range: ${Array.isArray(range) ? range?.join('-') : range}`,
 		critBonus ? `Crit Bonus: ${critBonus}` : '',
+		followUpBonus ? `Attack Speed Bonus: ${addNumberPrefix(followUpBonus)}` : '',
 		description
 	]
 		.filter((a) => a)
