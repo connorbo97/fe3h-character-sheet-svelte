@@ -62,6 +62,13 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 		damageBonus: [1],
 		attackBonus: [2]
 	},
+	[COMBAT_ARTS.GROUNDER]: {
+		label: 'Grounder',
+		description: '2x damage against flying units',
+		compatibleWeapons: [WEAPON_TYPE.SWORD],
+		damageBonus: [1],
+		attackBonus: [4]
+	},
 	[COMBAT_ARTS.TEMPEST_LANCE]: {
 		label: 'Tempest Lance',
 		description: '',
