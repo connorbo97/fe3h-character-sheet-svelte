@@ -8,5 +8,6 @@ export enum PickOnePromptType {
 export enum TooltipStyle {
 	LEFT_END = 'LEFT_END',
 	CENTER = 'CENTER',
-	RIGHT_START = 'RIGHT_START'
+	RIGHT_START = 'RIGHT_START',
+	BOTTOM_CENTER = 'BOTTOM_CENTER'
 }
