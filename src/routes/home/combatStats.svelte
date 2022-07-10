@@ -74,7 +74,7 @@
 	$: skillHPBonus = equippedCombatSkills.reduce((acc, cur) => {
 		return acc + (COMBAT_SKILLS_TO_FEATURES[cur].hpBonus || 0);
 	}, 0);
-	$: conMod = getModifierByPlayerStat(stats[PLAYER_STAT.CON]);
+	$: conMod = getModifierByPlayerStat(stats[PLAYER_STAT.CON]) * 2;
 	$: hpMax =
 		DEFAULT_MAX_HP + unlockedClassHpBonus + intermediateClassHpBonus + skillHPBonus + conMod;
 
@@ -170,7 +170,7 @@
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
 		<div slot="t" class="skinny-tooltip">
-			{`HP Max = ${DEFAULT_MAX_HP} + ${unlockedClassHpBonus} (from unlocked classes) + ${intermediateClassHpBonus} (from unlocking an intermediate class) + ${skillHPBonus} (from combat skills) + ${conMod} (CON modifier)`}
+			{`HP Max = ${DEFAULT_MAX_HP} + ${unlockedClassHpBonus} (from unlocked classes) + ${intermediateClassHpBonus} (from unlocking an intermediate class) + ${skillHPBonus} (from combat skills) + ${conMod} (CON modifier * 2)`}
 		</div>
 		<div class="big-text skinny" style:flex="0">
 			HP Max: {hpMax}
