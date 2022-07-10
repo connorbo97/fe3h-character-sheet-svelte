@@ -12,7 +12,10 @@
 		INTERMEDIATE_MARTIAL_HP_BONUS,
 		INTERMEDIATE_MARTIAL_PROTECTION_BONUS,
 		INTERMEDIATE_MAGIC_RESILIENCE_BONUS,
-		PLAYER_STAT
+		PLAYER_STAT,
+		MAX_WEAPONS_EQUIPPED,
+		MAX_COMBAT_SKILLS,
+		MAX_COMBAT_ARTS
 	} from 'src/constants';
 	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
 	import { TooltipStyle } from 'src/constants/enums';
@@ -20,6 +23,8 @@
 	import { getModifierByPlayerStat } from 'src/utils';
 
 	export let stats: any;
+	export let equippedWeapons: any;
+	export let equippedCombatArts: any;
 	export let unlockedClasses: Array<string>;
 	export let equippedClass: string;
 	export let equippedCombatSkills: Array<string>;
@@ -74,7 +79,7 @@
 	$: skillHPBonus = equippedCombatSkills.reduce((acc, cur) => {
 		return acc + (COMBAT_SKILLS_TO_FEATURES[cur].hpBonus || 0);
 	}, 0);
-	$: conMod = getModifierByPlayerStat(stats[PLAYER_STAT.CON]);
+	$: conMod = getModifierByPlayerStat(stats[PLAYER_STAT.CON]) * 2;
 	$: hpMax =
 		DEFAULT_MAX_HP + unlockedClassHpBonus + intermediateClassHpBonus + skillHPBonus + conMod;
 
@@ -141,6 +146,26 @@
 </script>
 
 <div class="container">
+	{#if !equippedClass || equippedWeapons?.length !== MAX_WEAPONS_EQUIPPED || equippedCombatSkills?.length !== MAX_COMBAT_SKILLS || equippedCombatArts?.length !== MAX_COMBAT_ARTS}
+		<SvelteTip tooltipStyle={TooltipStyle.CENTER} hiddenFirst>
+			<div slot="t" class="warning-tooltip">
+				{#if !equippedClass}
+					<u>No Equipped Class</u>
+				{/if}
+				{#if equippedWeapons?.length !== MAX_WEAPONS_EQUIPPED}
+					<u>Max Weapons not Equipped</u>
+				{/if}
+				{#if equippedCombatSkills?.length !== MAX_COMBAT_SKILLS}
+					<u>Max Combat Skills not Equipped</u>
+				{/if}
+				{#if equippedCombatArts?.length !== MAX_COMBAT_ARTS}
+					<u>Max Combat Arts not Equipped</u>
+				{/if}
+			</div>
+			<div class="warning-container"><span class="warning">!</span></div>
+		</SvelteTip>
+	{/if}
+
 	<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
 		<div slot="t">
 			{`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${acSkillBonus} (combat skill bonus) + ${selectedWeaponAcBonus} (selected weapon) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
@@ -170,7 +195,7 @@
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
 		<div slot="t" class="skinny-tooltip">
-			{`HP Max = ${DEFAULT_MAX_HP} + ${unlockedClassHpBonus} (from unlocked classes) + ${intermediateClassHpBonus} (from unlocking an intermediate class) + ${skillHPBonus} (from combat skills) + ${conMod} (CON modifier)`}
+			{`HP Max = ${DEFAULT_MAX_HP} + ${unlockedClassHpBonus} (from unlocked classes) + ${intermediateClassHpBonus} (from unlocking an intermediate class) + ${skillHPBonus} (from combat skills) + ${conMod} (CON modifier * 2)`}
 		</div>
 		<div class="big-text skinny" style:flex="0">
 			HP Max: {hpMax}
@@ -245,5 +270,22 @@
 	}
 	.skinny-tooltip {
 		white-space: normal;
+	}
+
+	.warning-container {
+		flex: 0;
+		.warning {
+			font-weight: bold;
+			font-size: 30px;
+			background-color: red;
+			border-radius: 100%;
+			padding: 5px 18px;
+			flex: 0;
+		}
+	}
+
+	.warning-tooltip {
+		display: flex;
+		flex-direction: column;
 	}
 </style>

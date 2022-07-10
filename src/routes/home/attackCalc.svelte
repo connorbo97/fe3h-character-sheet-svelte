@@ -99,7 +99,7 @@
 	$: crestTrigger = new Set(CRESTS_TO_FEATURES[playerCrest.type]?.triggersOn);
 	$: calcShouldRollCrest = () => {
 		if (selectedCombatArt) {
-			return crestTrigger.has(CrestTrigger.COMBAT_ART);
+			return crestTrigger.has(CrestTrigger.COMBAT_ART) || crestTrigger.has(CrestTrigger.ATTACK);
 		} else if (
 			selectedWeaponType === WEAPON_TYPE.REASON ||
 			selectedWeaponType === WEAPON_TYPE.FAITH
