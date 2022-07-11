@@ -248,6 +248,15 @@
 	};
 </script>
 
+<svelte:head>
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+
+	<link rel="preconnect" href="https://fonts.gstatic.com" />
+	<link
+		href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Ibarra+Real+Nova:wght@400;500;700&display=swap"
+		rel="stylesheet"
+	/>
+</svelte:head>
 <div class={`${ready ? '' : 'no-clicks'} container`}>
 	{#if ready}
 		<Modal show={$modal}>
@@ -346,6 +355,22 @@
 			width: calc(100vw - 20px);
 			height: calc(100vh - 20px);
 		}
+
+		body {
+			font-family: 'Ibarra Real Nova', serif;
+			button {
+				border-radius: 5px;
+				border: 1px solid transparent;
+				// border: 2px solid rgb(119, 116, 120);
+				// border-left: 0;
+				// border-top: 0;
+				box-shadow: 1px 3px rgba(gray, 0.6);
+				padding: 5px;
+			}
+		}
+
+		// button {
+		// }
 	}
 	.container {
 		display: grid;
