@@ -115,7 +115,13 @@
 			{customCombatArts}
 			{onUpdateCustomCombatArts}
 		/>
-		<CombatSkills {allCombatSkills} {equippedCombatSkills} {onToggleCombatSkill} />
+		<CombatSkills
+			{allCombatSkills}
+			{equippedCombatSkills}
+			{onToggleCombatSkill}
+			{customCombatSkills}
+			{onUpdateCustomCombatSkills}
+		/>
 	</div>
 	<div class="rest">
 		<div class="weapons">
