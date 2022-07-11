@@ -29,9 +29,8 @@
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
 	let prevMaxUses: any = { current: null };
 	$: maxUses =
-		(allWeapons.fullFeatures[weapon]?.uses || Infinity) *
-		(hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
-	$: curUses = weaponUses[weapon];
+		(allWeapons.fullFeatures[weapon]?.uses || 0) * (hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
+	$: curUses = weaponUses[weapon] === undefined ? maxUses : curUses;
 	$: updateCurWeaponUses = (newTotal: any) => {
 		if (newTotal <= maxUses && newTotal >= 0) {
 			onUpdateWeaponUses(weapon, newTotal);
@@ -91,22 +90,24 @@
 	{/if}
 	{#if isMagic}
 		<div class="equip-button">
-			<input
-				class={'count ' +
-					(curUses === 0 ? 'bad' : curUses <= Math.ceil(maxUses / 3) ? 'danger' : '')}
-				type="number"
-				on:change={(e) => {
-					const value = parseInt(e.currentTarget.value);
+			{#key maxUses}
+				<input
+					class={'count ' +
+						(curUses === 0 ? 'bad' : curUses <= Math.ceil(maxUses / 3) ? 'danger' : '')}
+					type="number"
+					on:change={(e) => {
+						const value = parseInt(e.currentTarget.value);
 
-					if (value >= 0 && value <= maxUses) {
-						updateCurWeaponUses(value);
-						e.currentTarget.value = value + '';
-					} else {
-						e.currentTarget.value = maxUses + '';
-					}
-				}}
-				value={curUses}
-			/>
+						if (value >= 0 && value <= maxUses) {
+							updateCurWeaponUses(value);
+							e.currentTarget.value = value + '';
+						} else {
+							e.currentTarget.value = maxUses + '';
+						}
+					}}
+					value={curUses}
+				/>
+			{/key}
 			/<span style:width={'15px'}>{maxUses}</span>
 		</div>
 	{/if}
