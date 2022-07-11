@@ -623,7 +623,11 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 		},
 		[WEAPON_LEVEL.E_PLUS]: {
 			unlocks: {
-				combatSkills: { [COMBAT_SKILLS.REASON_PROWESS_1]: 1 },
+				combatSkills: { [COMBAT_SKILLS.REASON_PROWESS_1]: 1 }
+			}
+		},
+		[WEAPON_LEVEL.D]: {
+			unlocks: {
 				pickOne: [
 					{
 						type: PickOnePromptType.Weapon,
@@ -631,9 +635,6 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 					}
 				]
 			}
-		},
-		[WEAPON_LEVEL.D]: {
-			unlocks: {}
 		},
 		[WEAPON_LEVEL.D_PLUS]: {
 			unlocks: {
