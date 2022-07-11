@@ -97,7 +97,6 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 		description: 'Add +6 to AC against retaliatory attack.',
 		compatibleWeapons: [WEAPON_TYPE.SWORD],
 		damageBonus: [Dice.d2, -1],
-		critBonus: [2],
 		dieCost: HALF_THE_TIME_PLUS_1
 	},
 	[COMBAT_ARTS.SUNDER]: {
@@ -106,7 +105,7 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 		compatibleWeapons: [WEAPON_TYPE.SWORD],
 		damageBonus: [1],
 		critBonus: [3],
-		dieCost: HALF_THE_TIME_PLUS_1
+		dieCost: HALF_THE_TIME_MINUS_1
 	},
 	// LANCES
 	[COMBAT_ARTS.TEMPEST_LANCE]: {
@@ -331,8 +330,16 @@ export const getCombatArtsDescription = (
 	options: { disableDescription?: boolean } = {}
 ) => {
 	const { disableDescription } = options;
-	const { damageBonus, attackBonus, rangeBonus, range, dieCost, compatibleWeapons, description } =
-		feature;
+	const {
+		damageBonus,
+		attackBonus,
+		critBonus,
+		rangeBonus,
+		range,
+		dieCost,
+		compatibleWeapons,
+		description
+	} = feature;
 	const { roll, target, mod = 0 } = dieCost || {};
 	let dieCostText = '1';
 
@@ -354,6 +361,7 @@ export const getCombatArtsDescription = (
 	const res = [
 		attackBonus ? `Attack: ${attackBonusText}` : '',
 		damageBonus ? `Damage: ${printCalc(damageBonus)}` : '',
+		critBonus ? `Crit Bonus: ${printCalc(critBonus)}` : '',
 		rangeBonus ? `Extra Range: ${rangeBonus}` : '',
 		range ? `Range: ${range[0]}${range[1] ? '-' + range[1] : ''}` : '',
 		compatibleWeapons ? `Cost: ${dieCostText}` : ''
@@ -361,5 +369,5 @@ export const getCombatArtsDescription = (
 		.filter((a) => a)
 		.join(', ');
 
-	return res + (description && !disableDescription ? `. Extra features: ${description}` : '');
+	return res + (description && !disableDescription ? `. ${description}` : '');
 };
