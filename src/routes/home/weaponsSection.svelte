@@ -29,7 +29,8 @@
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
 	let prevMaxUses: any = { current: null };
 	$: maxUses =
-		(allWeapons.fullFeatures[weapon]?.uses || 0) * (hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
+		(allWeapons.fullFeatures[weapon]?.uses || Infinity) *
+		(hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
 	$: curUses = weaponUses[weapon] === undefined ? maxUses : curUses;
 	$: updateCurWeaponUses = (newTotal: any) => {
 		if (newTotal <= maxUses && newTotal >= 0) {

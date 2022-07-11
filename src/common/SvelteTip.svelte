@@ -28,7 +28,7 @@
 				timer.current = setTimeout(() => {
 					hovered = true;
 					if (content?.style) {
-						content.style.zIndex = content?.style?.zIndex || 1;
+						content.style.zIndex = 1;
 					}
 					timer.current = null;
 				}, timeout);
@@ -39,7 +39,7 @@
 				}
 				hovered = false;
 				if (content?.style) {
-					content.style.zIndex = content?.style?.zIndex === '1' ? 0 : content?.style?.zIndex;
+					content.style.zIndex = 0;
 				}
 			};
 			const prevContentEl: any = prevContent.current;

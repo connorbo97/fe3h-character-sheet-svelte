@@ -83,7 +83,7 @@
 					<div>
 						<u
 							>Crest of {playerCrestFeatures?.label} ({getCrestStrengthText(playerCrest?.isMajor)},
-							DC {playerCrestFeatures.activationDC[getCrestStrength(playerCrest.type)]})</u
+							DC {playerCrestFeatures.activationDC[getCrestStrength(playerCrest?.isMajor)]})</u
 						>
 					</div>
 					{`${playerCrestFeatures?.description}`}
