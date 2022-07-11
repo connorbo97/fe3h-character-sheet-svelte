@@ -307,8 +307,7 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		background-color: darksalmon;
-		border-radius: 5px;
+		background-color: powderblue;
 		padding: 10px;
 		position: relative;
 

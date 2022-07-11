@@ -70,9 +70,11 @@
 		border-radius: 5px;
 		background-color: lightgray;
 		display: flex;
-		font-size: 12px;
+		font-size: 15px;
+		border: 1px solid gray;
 
 		flex-direction: column;
+		font-family: sans-serif;
 	}
 
 	.equipped {
@@ -86,7 +88,9 @@
 		margin-bottom: 1px;
 		border: 1px solid black;
 		border-radius: 100%;
-		height: 20px;
+		height: 15px;
+
+		font-size: 12px;
 	}
 
 	.flip {

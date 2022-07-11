@@ -434,7 +434,6 @@
 <style lang="scss">
 	.container {
 		background-color: lightgray;
-		border-radius: 5px;
 		padding: 5px;
 
 		display: grid;

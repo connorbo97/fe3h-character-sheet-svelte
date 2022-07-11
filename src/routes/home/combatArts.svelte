@@ -74,13 +74,12 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		background-color: #7dbff0;
+		background-color: powderblue;
+		border-bottom: 1px solid gray;
 		flex: 1;
 
-		border-radius: 5px;
 		padding: 5px;
-
-		row-gap: 5px;
+		row-gap: 2px;
 
 		overflow-y: auto;
 		height: calc(50% - 10px);
@@ -90,5 +89,12 @@
 		display: flex;
 		justify-content: space-between;
 		z-index: 1;
+		margin-bottom: 5px;
+		> button {
+			height: 20px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 	}
 </style>

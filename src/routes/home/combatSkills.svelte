@@ -72,8 +72,7 @@
 		display: flex;
 		flex-direction: column;
 
-		border-radius: 5px;
-		background-color: rgb(166, 157, 227);
+		background-color: powderblue;
 
 		flex: 1;
 		padding: 5px;
@@ -85,5 +84,12 @@
 	.header {
 		display: flex;
 		justify-content: space-between;
+		margin-bottom: 5px;
+		> button {
+			height: 20px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 	}
 </style>

@@ -182,9 +182,7 @@
 		grid-template-columns: min-content 205px 160px 180px 1fr;
 		grid-template-rows: 100%;
 
-		padding: 5px;
-
-		height: 100%;
+		height: calc(100%);
 	}
 	.stats {
 		grid-area: stats;
@@ -201,7 +199,6 @@
 		grid-area: classes;
 		display: flex;
 		flex-direction: column;
-		row-gap: 5px;
 
 		overflow: hidden;
 	}
@@ -214,8 +211,6 @@
 			'other other';
 		grid-template-rows: max-content 1fr;
 		grid-template-columns: 185px 1fr;
-		row-gap: 5px;
-		column-gap: 5px;
 	}
 	.other {
 		grid-area: other;
@@ -223,7 +218,10 @@
 		display: grid;
 		grid-area: 'cStats' 'attack';
 		grid-template-rows: min-content 1fr;
-		gap: 5px;
+
+		border: 3px solid black;
+		border-radius: 5px;
+		border-bottom: 0;
 	}
 
 	.weapons {
@@ -234,9 +232,8 @@
 		grid-area: arts;
 		display: flex;
 		flex-direction: column;
+		border-right: 1px solid gray;
 
 		height: 100%;
-
-		row-gap: 5px;
 	}
 </style>
