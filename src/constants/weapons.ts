@@ -47,9 +47,7 @@ export const WEAPONS = {
 	RECOVER: 'RECOVER',
 	PHYSIC: 'PHYSIC',
 	RESTORE: 'RESTORE',
-	WARD: 'WARD',
-
-	IRON_SHIELD: 'IRON_SHIELD'
+	WARD: 'WARD'
 };
 
 export const TRAINING_WEAPONS_SET = new Set([
