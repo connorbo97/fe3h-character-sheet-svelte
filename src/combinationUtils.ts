@@ -191,6 +191,7 @@ export const calculateAllCombatArts = (
 		fullSheet.unlockedClasses,
 		fullSheet.customCombatArts,
 		fullSheet.classXP,
+		fullSheet.weaponXP,
 		equippedClass,
 		allCombatSkillsSet
 	);
@@ -198,15 +199,16 @@ const calculateAllCombatArtsMemoized = (
 	unlockedClasses: Array<string>,
 	customCombatArts: object,
 	classXP: XPMap,
+	weaponXP: XPMap,
 	equippedClass: string,
 	allCombatSkillsSet: Set<string>
 ): AllCombatArts => {
 	const baseCombatArts = [
-		COMBAT_ARTS.TEMPEST_LANCE,
-		COMBAT_ARTS.WRATH_STRIKE,
-		COMBAT_ARTS.SMASH,
-		COMBAT_ARTS.CURVED_SHOT,
-		COMBAT_ARTS.FADING_BLOW
+		// COMBAT_ARTS.TEMPEST_LANCE,
+		// COMBAT_ARTS.WRATH_STRIKE,
+		// COMBAT_ARTS.SMASH,
+		// COMBAT_ARTS.CURVED_SHOT,
+		// COMBAT_ARTS.FADING_BLOW
 	];
 	const customSet: Set<string> = new Set(Object.keys(customCombatArts));
 	const equippedClassSet: Set<string> = new Set(
@@ -226,11 +228,45 @@ const calculateAllCombatArtsMemoized = (
 		}
 	});
 
+	// combat arts from weapon XP
+	const weaponXPLevelCombatArtsSet = Object.keys(weaponXP).reduce(
+		(acc: Set<string>, weaponType: string) => {
+			const { level: originalLevel } = weaponXP[weaponType] || {};
+			const levelFeatures = WEAPON_TYPES_TO_LEVEL_FEATURES[weaponType];
+			const level = originalLevel || WEAPON_LEVEL.E;
+
+			if (!level) {
+				return acc;
+			}
+
+			let end = Infinity;
+			const levelsToCheck = LEVEL_UP_ORDER.filter((curLvl, index) => {
+				if (level === curLvl) {
+					end = index;
+				}
+
+				return index <= end;
+			});
+
+			levelsToCheck.forEach((curLvl) => {
+				const curFeatures = levelFeatures[curLvl];
+
+				if (curFeatures.unlocks?.combatArts) {
+					Object.keys(curFeatures.unlocks.combatArts).forEach((skill) => acc.add(skill));
+				}
+			});
+
+			return acc;
+		},
+		new Set()
+	);
+
 	const fullSet = new Set([
 		...baseCombatArts,
 		...customSet,
 		...equippedClassSet,
 		...classUnlockSet,
+		...weaponXPLevelCombatArtsSet,
 		// if grappler, add the corresponding combat arts
 		...(allCombatSkillsSet.has(COMBAT_SKILLS.GRAPPLER)
 			? [COMBAT_ARTS.REPOSITION, COMBAT_ARTS.SWAP, COMBAT_ARTS.PULL_BACK, COMBAT_ARTS.SHOVE]

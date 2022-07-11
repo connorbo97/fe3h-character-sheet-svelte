@@ -4,6 +4,7 @@ import { MARTIAL_WEAPON_TYPES, WEAPON_TYPE } from './weaponType';
 
 // Combat Skills
 export const COMBAT_SKILLS = {
+	// Mastery Skills
 	MYRMIDON_MASTER: 'MYRMIDON_MASTER',
 	SOLDIER_MASTER: 'SOLDIER_MASTER',
 	FIGHTER_MASTER: 'FIGHTER_MASTER',
@@ -21,6 +22,7 @@ export const COMBAT_SKILLS = {
 	FIENDISH_BLOW: 'FIENDISH_BLOW',
 	HEAL_PLUS: 'HEAL_PLUS',
 
+	// XP Skills
 	SWORD_PROWESS_1: 'SWORD_PROWESS_1',
 	SWORD_PROWESS_2: 'SWORD_PROWESS_2',
 	SWORD_PROWESS_3: 'SWORD_PROWESS_3',
@@ -40,6 +42,7 @@ export const COMBAT_SKILLS = {
 	LANCE_PROWESS_5: 'LANCE_PROWESS_5',
 
 	BOW_PROWESS_1: 'BOW_PROWESS_1',
+	CLOSE_COUNTER: 'CLOSE_COUNTER',
 	BOW_PROWESS_2: 'BOW_PROWESS_2',
 	BOW_PROWESS_3: 'BOW_PROWESS_3',
 	BOW_PROWESS_4: 'BOW_PROWESS_4',
@@ -362,6 +365,10 @@ export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 		},
 		acBonus: 1,
 		acBonusCompatibility: [WEAPON_TYPE.BOW]
+	},
+	[COMBAT_SKILLS.CLOSE_COUNTER]: {
+		label: 'Close Counter',
+		description: 'Enables unit to retaliate against adjacent attackers'
 	},
 	[COMBAT_SKILLS.BOW_PROWESS_2]: {
 		label: 'Bow Prowess 2',

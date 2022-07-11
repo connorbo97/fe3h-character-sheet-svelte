@@ -2,6 +2,7 @@ import { COMBAT_SKILLS } from './combatSkills';
 import { WEAPONS } from './weapons';
 import { PickOnePromptType } from './enums';
 import { WEAPON_TYPE } from './weaponType';
+import { COMBAT_ARTS } from './combatArts';
 
 export const WEAPON_LEVEL: { [s: string]: string } = {
 	E: 'E',
@@ -287,7 +288,9 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.D]: {
-			unlocks: {}
+			unlocks: {
+				combatArts: { [COMBAT_ARTS.CURVED_SHOT]: 1 }
+			}
 		},
 		[WEAPON_LEVEL.D_PLUS]: {
 			unlocks: {
@@ -302,13 +305,28 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.C]: {
-			unlocks: {}
+			unlocks: {
+				combatSkills: {
+					[COMBAT_SKILLS.CLOSE_COUNTER]: 1
+				}
+			}
 		},
 		[WEAPON_LEVEL.C_PLUS]: {
 			unlocks: {
 				combatSkills: {
 					[COMBAT_SKILLS.BOW_PROWESS_3]: 1
-				}
+				},
+				pickOne: [
+					{
+						type: PickOnePromptType.CombatArt,
+						options: [
+							COMBAT_ARTS.DEADEYE,
+							COMBAT_ARTS.HEAVY_DRAW,
+							COMBAT_ARTS.WANING_SHOT,
+							COMBAT_ARTS.BREAK_SHOT
+						]
+					}
+				]
 			},
 			removes: {
 				combatSkills: {
