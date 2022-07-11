@@ -25,6 +25,7 @@ export const COMBAT_ARTS = {
 
 	CURVED_SHOT: 'CURVED_SHOT',
 	DEADEYE: 'DEADEYE',
+	HEAVY_DRAW: 'HEAVY_DRAW',
 	WANING_SHOT: 'WANING_SHOT',
 	BREAK_SHOT: 'BREAK_SHOT',
 	SCHISM_SHOT: 'SCHISM_SHOT',
@@ -223,6 +224,15 @@ export const COMBAT_ARTS_TO_FEATURES: { [s: string]: ArtFeatures } = {
 		compatibleWeapons: [WEAPON_TYPE.BOW],
 		damageBonus: [Dice.d2],
 		range: [3, 5],
+		dieCost: HALF_THE_TIME_PLUS_1
+	},
+	[COMBAT_ARTS.HEAVY_DRAW]: {
+		label: 'Heavy Draw',
+		description: '',
+		compatibleWeapons: [WEAPON_TYPE.BOW],
+		attackBonus: [Dice.d2],
+		damageBonus: [2],
+		range: [2],
 		dieCost: HALF_THE_TIME_PLUS_1
 	},
 	[COMBAT_ARTS.WANING_SHOT]: {
