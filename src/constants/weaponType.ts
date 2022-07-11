@@ -3,11 +3,11 @@
 import { PLAYER_SKILL } from './playerSkills';
 import { PLAYER_STAT } from './stats';
 
-import SwordImg from '../images/weapons/sword.png';
-import LanceImg from '../images/weapons/lance.png';
-import AxeImg from '../images/weapons/axe.png';
-import BowImg from '../images/weapons/bow.png';
-import FistsImg from '../images/weapons/fists.png';
+import SwordImg from '../images/weapons/sword-removebg-preview.png';
+import LanceImg from '../images/weapons/lance-removebg-preview.png';
+import AxeImg from '../images/weapons/axe-removebg-preview.png';
+import BowImg from '../images/weapons/bow-removebg-preview.png';
+import FistsImg from '../images/weapons/fists-removebg-preview.png';
 
 export const WEAPON_TYPE = {
 	SWORD: 'SWORD',

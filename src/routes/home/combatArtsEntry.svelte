@@ -127,7 +127,7 @@
 	}
 
 	.equipped {
-		background-color: green;
+		background-color: #51bf51;
 	}
 	.selected {
 		background-color: blue;
@@ -146,5 +146,6 @@
 	}
 	.not-equipped {
 		filter: opacity(0.2);
+		background-color: white;
 	}
 </style>

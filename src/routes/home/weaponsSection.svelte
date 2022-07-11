@@ -160,7 +160,7 @@
 	}
 
 	.equipped {
-		background-color: green;
+		background-color: #51bf51;
 	}
 	.count {
 		width: 30px;
