@@ -78,7 +78,7 @@
 		flex: 1;
 		padding: 5px;
 
-		overflow-y: scroll;
+		overflow-y: auto;
 		height: calc(50% - 10px);
 	}
 

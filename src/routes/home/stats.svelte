@@ -67,7 +67,7 @@
 			<button class="label" on:click={() => onPlayerStatRoll(stat)}>
 				{PLAYER_STAT_TO_LABEL[stat]}
 			</button>
-			<div>{getModifierByPlayerStat(stats[stat])}</div>
+			<div class="mod">{getModifierByPlayerStat(stats[stat])}</div>
 			<input
 				class="value"
 				value={typeof stats[stat] === 'number' ? stats[stat] : 0}
@@ -157,6 +157,7 @@
 			border: 0;
 			padding: 0;
 			background-color: transparent;
+			box-shadow: none;
 			&:hover {
 				color: red;
 			}
@@ -166,6 +167,9 @@
 			text-align: center;
 			max-width: 50px;
 		}
+	}
+	.mod {
+		font-family: sans-serif;
 	}
 
 	.crest {
