@@ -52,6 +52,7 @@
 	let attackMod: any = '';
 
 	let damageRoll: any = '';
+	let damageRollText: any = '';
 	let crestDamageRoll: any = '';
 
 	let critRoll: any = '';
@@ -90,12 +91,16 @@
 	};
 	const onDamageRoll = async () => {
 		damageRoll = '';
+		damageRollText = '';
 		if (checkCalcRequiresRoll(damageCalc)) {
 			const mod = damageCalc.filter((d) => !isDice(d));
 			const dice = damageCalc.filter(isDice);
-			damageRoll = await rollVisualDice(dice, { modifier: mod }).then((res) => res.value);
+			const { value, resultText } = await rollVisualDice(dice, { modifier: mod });
+			damageRoll = value;
+			damageRollText = resultText;
 		} else {
 			damageRoll = rollCalc(damageCalc);
+			damageRollText = damageRoll;
 		}
 	};
 	const onCritRoll = async () => {
@@ -121,6 +126,7 @@
 			disableResultBox: true
 		}).then((res: any) => res.value);
 
+		console.log(crestDamage.length || crestCombatArtDamageModifier);
 		if (crestRoll >= crestDC) {
 			if (crestDamage.length) {
 				crestDamageRoll = rollCalc(crestDamage);
@@ -142,8 +148,8 @@
 	$: didCrit = critRoll >= 20 - critModifier;
 	$: critMultiplier = didCrit ? (critRoll === 20 ? 3 : 2) : 1;
 	$: baseDamageRoll = parseInt(damageRoll) + parseInt(crestDamageRoll || 0);
-	$: baseDamageRollText = `${didCrit ? '(' : ''}${damageRoll}${
-		crestDamageRoll ? ` + ${crestDamageRoll} (crest)` : ''
+	$: baseDamageRollText = `${didCrit ? '(' : ''}${damageRollText}${
+		crestDamageRoll ? ` + ${crestDamageRoll}(crest)` : ''
 	}${didCrit ? `) * ${critMultiplier} (crit)` : ''}`;
 	$: finalDamageRoll = critMultiplier * baseDamageRoll;
 	$: critRangeText = critModifier === 0 ? 20 : `${20 - critModifier} - 20`;
@@ -258,6 +264,7 @@
 
 		attackRoll = '';
 		damageRoll = '';
+		damageRollText = '';
 		critRoll = '';
 		crestRoll = '';
 
