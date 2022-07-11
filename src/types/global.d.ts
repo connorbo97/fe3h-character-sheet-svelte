@@ -143,6 +143,7 @@ declare global {
 		bonusRange?: { [s: string]: number };
 		damageBonus?: { [s: string]: Array<CalcEntry> };
 		attackBonus?: { [s: string]: Array<CalcEntry> };
+		followUpBonus?: number;
 		protectionBonus?: number;
 		resilienceBonus?: number;
 		bonusCharges?: { [s: string]: number };
