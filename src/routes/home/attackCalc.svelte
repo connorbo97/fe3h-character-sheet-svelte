@@ -232,7 +232,7 @@
 			  [...(weaponsToFeatures[selectedWeapon]?.range || [1])];
 
 		if (selectedWeapon === WEAPONS.RESTORE) {
-			baseWeaponRange = [1, 2 + 2 * getModifierByPlayerStat(playerStats[PLAYER_STAT.INT])];
+			baseWeaponRange = [1, 2 + getModifierByPlayerStat(playerStats[PLAYER_STAT.INT])];
 		} else if (selectedWeapon === WEAPONS.PHYSIC) {
 			baseWeaponRange = [1, 2 + 2 * getModifierByPlayerStat(playerStats[PLAYER_STAT.INT])];
 		}
