@@ -366,6 +366,9 @@
 				// border-top: 0;
 				box-shadow: 1px 3px rgba(gray, 0.6);
 				padding: 5px;
+				&:disabled {
+					background-color: #a3a3a3;
+				}
 			}
 		}
 
