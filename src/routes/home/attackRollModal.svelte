@@ -309,7 +309,7 @@
 
 <div class="container">
 	<div class="actions">
-		<span> {headerLabel} </span>
+		<b> <u>{headerLabel}</u> </b>
 		<button
 			disabled={attackRoll === ''}
 			on:click={() => {
@@ -486,7 +486,7 @@
 		display: flex;
 		column-gap: 10px;
 		align-items: center;
-		padding: 5px;
+		margin-bottom: 10px;
 	}
 	.rolls {
 		display: flex;

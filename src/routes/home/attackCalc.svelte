@@ -256,20 +256,20 @@
 	$: isHealWeapon = HEALING_MAGIC.has(selectedWeapon);
 </script>
 
-{#if !showModal}
-	<div class="container">
-		<AttackCalcHeader
-			{damageTypeSelection}
-			{weaponsToFeatures}
-			{allCombatArts}
-			{allWeapons}
-			{equippedCombatArts}
-			{equippedWeapons}
-			{selectedWeapon}
-			{setSelectedWeapon}
-			{selectedCombatArt}
-			{setSelectedCombatArt}
-		/>
+<div class="container">
+	<AttackCalcHeader
+		{damageTypeSelection}
+		{weaponsToFeatures}
+		{allCombatArts}
+		{allWeapons}
+		{equippedCombatArts}
+		{equippedWeapons}
+		{selectedWeapon}
+		{setSelectedWeapon}
+		{selectedCombatArt}
+		{setSelectedCombatArt}
+	/>
+	{#if !showModal}
 		<div class="calcs">
 			<div class="attack-container">
 				<h2 class="content">
@@ -403,33 +403,33 @@
 			>
 			<EntryPicker {queries} {selections} {onUpdateQuerySelection} />
 		</div>
-	</div>
-{/if}
-{#if showModal}
-	<div class="attack-roll-container">
-		<AttackRollModal
-			{playerName}
-			{critModifier}
-			{crestCombatArtDamageModifier}
-			{selectedWeapon}
-			{weaponUses}
-			{onUpdateWeaponUses}
-			{crestConservesResource}
-			{selectedCombatArt}
-			{allWeapons}
-			{allCombatArts}
-			{curSuperiorityDies}
-			{setCurSuperiorityDie}
-			onCloseModal={() => (showModal = false)}
-			attackCalc={simplifiedAttackModifier}
-			damageCalc={simplifiedDamageCalc}
-			crestDC={shouldRollCrest ? crestDC : Infinity}
-			crestDamage={crestDamageBonus}
-			crestType={shouldRollCrest ? crestType : ''}
-			combatArtDamageBonus={weaponArtDamageModifier}
-		/>
-	</div>
-{/if}
+	{/if}
+	{#if showModal}
+		<div class="attack-roll-container">
+			<AttackRollModal
+				{playerName}
+				{critModifier}
+				{crestCombatArtDamageModifier}
+				{selectedWeapon}
+				{weaponUses}
+				{onUpdateWeaponUses}
+				{crestConservesResource}
+				{selectedCombatArt}
+				{allWeapons}
+				{allCombatArts}
+				{curSuperiorityDies}
+				{setCurSuperiorityDie}
+				onCloseModal={() => (showModal = false)}
+				attackCalc={simplifiedAttackModifier}
+				damageCalc={simplifiedDamageCalc}
+				crestDC={shouldRollCrest ? crestDC : Infinity}
+				crestDamage={crestDamageBonus}
+				crestType={shouldRollCrest ? crestType : ''}
+				combatArtDamageBonus={weaponArtDamageModifier}
+			/>
+		</div>
+	{/if}
+</div>
 
 <style lang="scss">
 	.container {
@@ -445,7 +445,6 @@
 		grid-template-rows: min-content min-content 1fr;
 		grid-template-columns: 1fr min-content;
 
-		row-gap: 5px;
 		button {
 			width: 100px;
 			height: 25px;
