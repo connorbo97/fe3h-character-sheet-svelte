@@ -326,9 +326,12 @@ export const getCombatArtsDescription = (
 	let dieCostText = '1';
 
 	if (roll == Dice.d20) {
-		dieCostText = '1' + (mod > 0 ? '+' : '') + mod + '(DC ' + target + ')';
+		dieCostText = `1 (${((target || 0) / 20) * 100}% of the time cost ${Math.abs(mod)} ${
+			mod > 0 ? 'more' : 'less'
+		})`;
+		// dieCostText = `1 (cost ${1 + mod} ${((target || 0) / 20) * 100}% of the time)`;
 	} else if (target === 1) {
-		dieCostText = '' + 1 + mod;
+		dieCostText = 1 + mod + '';
 	}
 
 	let attackBonusText = printCalc(attackBonus || []);
