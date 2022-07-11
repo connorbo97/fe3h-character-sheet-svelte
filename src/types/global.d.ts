@@ -166,6 +166,7 @@ declare global {
 		label: string;
 		description: string;
 		type: string;
+		isHealing?: boolean;
 		damage: Array<number | Dice>;
 		damageType?: Array<string>;
 		range: Array<number | string>;
