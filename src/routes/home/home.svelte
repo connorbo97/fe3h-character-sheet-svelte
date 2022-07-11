@@ -150,6 +150,7 @@
 				{selectedWeapon}
 				{equippedWeapons}
 				{equippedCombatArts}
+				{allCombatSkills}
 			/>
 			<AttackCalc
 				{playerName}
