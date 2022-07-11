@@ -381,13 +381,13 @@
 		grid-template-columns: 1fr;
 
 		height: 100vh;
+		overflow: hidden;
 	}
 	.header {
 		grid-area: header;
 	}
 	.content {
 		grid-area: content;
-		padding: 5px;
 		> div {
 			height: 100%;
 		}

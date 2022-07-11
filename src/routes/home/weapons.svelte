@@ -309,10 +309,11 @@
 		flex-direction: column;
 		background-color: darksalmon;
 		border-radius: 5px;
-		padding: 5px;
+		padding: 10px;
+		position: relative;
 
 		column-gap: 5px;
-		height: calc(100% - 10px);
+		height: calc(100% - 20px);
 	}
 	.actions {
 		display: flex;

@@ -14,6 +14,7 @@
 </script>
 
 <div class="container">
+	<u>Skills</u>
 	<div class="skills">
 		{#each Object.values(PLAYER_SKILL) as skill}
 			<SkillEntry {skill} {stats} {skillBonus} {skillProficiency} {onToggleSkillProficiency} />
@@ -27,8 +28,10 @@
 		flex-direction: column;
 		background-color: #f89090;
 		padding: 5px;
-		border-radius: 5px;
-		row-gap: 10px;
+		row-gap: 5px;
+		overflow: auto;
+
+		height: 100%;
 
 		flex: 1;
 	}
@@ -36,6 +39,6 @@
 	.skills {
 		display: flex;
 		flex-direction: column;
-		row-gap: 10px;
+		row-gap: 8px;
 	}
 </style>

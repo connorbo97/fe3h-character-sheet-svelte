@@ -135,8 +135,8 @@
 		align-items: stretch;
 
 		row-gap: 17px;
-		border-radius: 5px;
-		background-color: rgb(71, 140, 201);
+		background-color: #f89090;
+		border-right: 1px solid rgba(gray, 0.6);
 
 		padding: 10px;
 		height: calc(100% - 20px);
