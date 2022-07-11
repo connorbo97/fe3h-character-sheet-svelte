@@ -44,5 +44,3 @@ export const onExportSheet = (fullSheet: CharacterSheet, prefix = '') => {
 export const copyToClipboard = (text: any) => {
 	navigator.clipboard.writeText(text);
 };
-
-export const isDice = (d) => Object.values(Dice).includes(d);

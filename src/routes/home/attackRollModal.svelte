@@ -107,12 +107,13 @@
 				damageRoll = res.value;
 				damageRollText = res.resultText;
 			} else {
-				damageRoll = rollCalc(damageCalc);
-				damageRollText = damageRoll + '';
+				const { value, resultText } = rollCalc(damageCalc, { returnAsString: true });
+				damageRoll = value;
+				damageRollText = resultText;
 			}
 		} else {
 			damageRoll = rollCalc(damageCalc);
-			damageRollText = damageRoll;
+			damageRollText = damageRoll + '';
 		}
 	};
 	const onCritRoll = async () => {
@@ -146,7 +147,6 @@
 			crestRoll = rollDice(20);
 		}
 
-		console.log(crestDamage.length || crestCombatArtDamageModifier);
 		if (crestRoll >= crestDC) {
 			if (crestDamage.length) {
 				crestDamageRoll = rollCalc(crestDamage);
