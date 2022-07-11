@@ -720,12 +720,19 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.D]: {
-			unlocks: {}
+			unlocks: {
+				weapons: {
+					[WEAPONS.HEAL]: 1
+				}
+			}
 		},
 		[WEAPON_LEVEL.D_PLUS]: {
 			unlocks: {
 				combatSkills: {
 					[COMBAT_SKILLS.FAITH_PROWESS_2]: 1
+				},
+				weapons: {
+					[WEAPONS.HEAL]: 1
 				}
 			},
 			removes: {
@@ -735,7 +742,14 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.C]: {
-			unlocks: {}
+			unlocks: {
+				pickOne: [
+					{
+						type: PickOnePromptType.Weapon,
+						options: [WEAPONS.PHYSIC, WEAPONS.RECOVER, WEAPONS.RESTORE, WEAPONS.WARD]
+					}
+				]
+			}
 		},
 		[WEAPON_LEVEL.C_PLUS]: {
 			unlocks: {
