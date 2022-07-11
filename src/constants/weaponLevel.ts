@@ -648,7 +648,20 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.C]: {
-			unlocks: {}
+			unlocks: {
+				pickOne: [
+					{
+						type: PickOnePromptType.Weapon,
+						options: [
+							WEAPONS.BOLGANONE,
+							WEAPONS.CUTTING_GALE,
+							WEAPONS.THORON,
+							WEAPONS.SAGITTAE,
+							WEAPONS.HAILSTORM
+						]
+					}
+				]
+			}
 		},
 		[WEAPON_LEVEL.C_PLUS]: {
 			unlocks: {
