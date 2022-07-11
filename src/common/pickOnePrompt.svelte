@@ -29,6 +29,9 @@
 	const getOptionLabel = (type: PickOnePromptType, option: PickOnePromptOption) => {
 		switch (type) {
 			case PickOnePromptType.Weapon:
+				if (option.toString() === 'DOUBLE_BASE_USES') {
+					return 'Double the uses of the spell you chose at Reason Level D';
+				}
 				return (
 					WEAPONS_TO_FEATURES[option.toString()].label +
 					': ' +
@@ -58,7 +61,18 @@
 			case PickOnePromptType.Weapon:
 				const newCustomWeapons = newValues.reduce(
 					(acc: any, weapon: any) => {
-						acc[weapon] = { ...acc[weapon], reason };
+						if (weapon === 'DOUBLE_BASE_USES') {
+							const baseWeapon = Object.keys(customWeapons).find(
+								(w: any) => customWeapons[w]?.reason === 'Unlocked Reason level D'
+							);
+
+							if (baseWeapon) {
+								const totalUses = acc[baseWeapon]?.uses || WEAPONS_TO_FEATURES[baseWeapon]?.uses;
+								acc[baseWeapon] = { ...acc[baseWeapon], uses: totalUses * 2 };
+							}
+						} else {
+							acc[weapon] = { ...acc[weapon], reason };
+						}
 
 						return acc;
 					},

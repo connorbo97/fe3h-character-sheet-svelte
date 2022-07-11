@@ -444,7 +444,19 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.INT]: 14
-			}
+			},
+			pickOne: [
+				{
+					type: PickOnePromptType.Weapon,
+					options: [
+						'DOUBLE_BASE_USES',
+						WEAPONS.FIRE,
+						WEAPONS.WIND,
+						WEAPONS.THUNDER,
+						WEAPONS.BLIZZARD
+					]
+				}
+			]
 		},
 		whenEquipped: {
 			xpMods: {
