@@ -107,7 +107,14 @@
 		/>
 	</div>
 	<div class="arts">
-		<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} {equippedWeapons} />
+		<CombatArts
+			{allCombatArts}
+			{equippedCombatArts}
+			{onToggleCombatArts}
+			{equippedWeapons}
+			{customCombatArts}
+			{onUpdateCustomCombatArts}
+		/>
 		<CombatSkills {allCombatSkills} {equippedCombatSkills} {onToggleCombatSkill} />
 	</div>
 	<div class="rest">
