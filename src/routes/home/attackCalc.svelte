@@ -10,6 +10,7 @@
 
 	import { HEALING_MAGIC, WEAPONS, WEAPON_TO_TYPE } from 'src/constants/weapons';
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
+	import { getCritRangeText } from 'src/textUtils';
 	import {
 		checkHealPlus,
 		getModifierByPlayerStat,
@@ -254,24 +255,29 @@
 	$: onOpenAttackModal = () => (showModal = true);
 
 	$: isHealWeapon = HEALING_MAGIC.has(selectedWeapon);
+
+	let shouldDoVisualRolls = true;
+	$: toggleVisualRolls = () => {
+		shouldDoVisualRolls = !shouldDoVisualRolls;
+	};
 </script>
 
-{#if !showModal}
-	<div class="container">
-		<AttackCalcHeader
-			{damageTypeSelection}
-			{weaponsToFeatures}
-			{allCombatArts}
-			{allWeapons}
-			{equippedCombatArts}
-			{equippedWeapons}
-			{selectedWeapon}
-			{setSelectedWeapon}
-			{selectedCombatArt}
-			{setSelectedCombatArt}
-		/>
+<div class="container">
+	<AttackCalcHeader
+		{damageTypeSelection}
+		{weaponsToFeatures}
+		{allCombatArts}
+		{allWeapons}
+		{equippedCombatArts}
+		{equippedWeapons}
+		{selectedWeapon}
+		{setSelectedWeapon}
+		{selectedCombatArt}
+		{setSelectedCombatArt}
+	/>
+	{#if !showModal}
 		<div class="calcs">
-			<div class="attack-container">
+			<div class="calc attack-container">
 				<h2 class="content">
 					Attack: 1d20
 					<span class="modifiers">
@@ -298,12 +304,12 @@
 							</span>
 						{/if}
 					</span>
-					<span>
-						= 1d20 <span class="modifiers">+ {printCalc(simplifiedAttackModifier)}</span>
-					</span>
 				</h2>
 			</div>
-			<div class="damage-container">
+			<h2 class="result attack-condensed">
+				= 1d20 <span class="modifiers">+ {printCalc(simplifiedAttackModifier)}</span>
+			</h2>
+			<div class="calc damage-container">
 				<h2 class="content">
 					{isHealWeapon ? 'HP Restored' : 'Damage'}: {#if selectedWeapon}
 						{damageBase}{#if damageTypeSelection && (weaponDamageType || []).length <= 1}
@@ -341,11 +347,13 @@
 								>
 							{/if}
 						</span>
-						= <span>{printCalc(simplifiedDamageCalc)}</span>
 					{/if}
 				</h2>
 			</div>
-			<div class="crit-container">
+			<h2 class="result damage-condensed">
+				= <span>{printCalc(simplifiedDamageCalc)}</span>
+			</h2>
+			<div class="calc crit-container">
 				<h2 class="content">
 					Crit Modifier: {dexMod + critDexModifier}<span class="source"
 						>(Dex{critDexModifier > 0 ? '+' + critDexModifier : critDexModifier})</span
@@ -367,12 +375,13 @@
 							<span>+ {optionsCritModifier}<span class="source">(options)</span></span>
 						{/if}
 					</span>
-					{#if critModifier >= 0}= {20 - critModifier} to 20{/if}
-					{#if critModifier < 0}= Can't Crit{/if}
-					<span />
 				</h2>
 			</div>
-			<div class="range-container">
+			<h2 class="result crit-condensed">
+				{#if critModifier >= 0}= {getCritRangeText(critModifier)}{/if}
+				{#if critModifier < 0}= Can't Crit{/if}
+			</h2>
+			<div class="calc range-container">
 				<h2 class="content">
 					Range: {#if selectedWeapon}
 						{weaponRangeMin}
@@ -380,6 +389,7 @@
 					{/if}
 				</h2>
 			</div>
+			<div class="empty range-condensed" />
 			{#if shouldRollCrest}
 				<div class="crest-container">
 					<h2 class="content">
@@ -403,38 +413,39 @@
 			>
 			<EntryPicker {queries} {selections} {onUpdateQuerySelection} />
 		</div>
-	</div>
-{/if}
-{#if showModal}
-	<div class="attack-roll-container">
-		<AttackRollModal
-			{playerName}
-			{critModifier}
-			{crestCombatArtDamageModifier}
-			{selectedWeapon}
-			{weaponUses}
-			{onUpdateWeaponUses}
-			{crestConservesResource}
-			{selectedCombatArt}
-			{allWeapons}
-			{allCombatArts}
-			{curSuperiorityDies}
-			{setCurSuperiorityDie}
-			onCloseModal={() => (showModal = false)}
-			attackCalc={simplifiedAttackModifier}
-			damageCalc={simplifiedDamageCalc}
-			crestDC={shouldRollCrest ? crestDC : Infinity}
-			crestDamage={crestDamageBonus}
-			crestType={shouldRollCrest ? crestType : ''}
-			combatArtDamageBonus={weaponArtDamageModifier}
-		/>
-	</div>
-{/if}
+	{/if}
+	{#if showModal}
+		<div class="attack-roll-container">
+			<AttackRollModal
+				{playerName}
+				{critModifier}
+				{crestCombatArtDamageModifier}
+				{selectedWeapon}
+				{weaponUses}
+				{onUpdateWeaponUses}
+				{crestConservesResource}
+				{selectedCombatArt}
+				{allWeapons}
+				{allCombatArts}
+				{curSuperiorityDies}
+				{setCurSuperiorityDie}
+				onCloseModal={() => (showModal = false)}
+				attackCalc={simplifiedAttackModifier}
+				damageCalc={simplifiedDamageCalc}
+				crestDC={shouldRollCrest ? crestDC : Infinity}
+				crestDamage={crestDamageBonus}
+				crestType={shouldRollCrest ? crestType : ''}
+				combatArtDamageBonus={weaponArtDamageModifier}
+				{shouldDoVisualRolls}
+				{toggleVisualRolls}
+			/>
+		</div>
+	{/if}
+</div>
 
 <style lang="scss">
 	.container {
 		background-color: lightgray;
-		border-radius: 5px;
 		padding: 5px;
 
 		display: grid;
@@ -446,7 +457,6 @@
 		grid-template-rows: min-content min-content 1fr;
 		grid-template-columns: 1fr min-content;
 
-		row-gap: 5px;
 		button {
 			width: 100px;
 			height: 25px;
@@ -458,8 +468,24 @@
 		padding: 5px;
 	}
 
+	.calcs {
+		display: grid;
+		grid-template-columns: 1fr min-content;
+	}
+
+	.result {
+		white-space: nowrap;
+		margin: 0;
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+
 	.content {
 		margin: 0;
+	}
+
+	.calc {
+		border-right: 1px solid gray;
 	}
 	.attack-container {
 		display: flex;

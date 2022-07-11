@@ -1,5 +1,6 @@
 import { Dice } from './constants/dice';
 import { addNumberPrefix } from './textUtils';
+export const isDice = (d) => Object.values(Dice).includes(d);
 
 export const getDiceFaces = (d: Dice) => parseInt(d.split('d')[1]);
 export const rollDice = (n: number) => Math.floor(Math.random() * n + 1);
@@ -33,7 +34,7 @@ export const printCalc = (calc: Array<CalcEntry>, addPlusSign?: boolean): string
 export const checkCalcRequiresRoll = (calc: Array<CalcEntry>) =>
 	calc.some((calc: any) => Object.values(Dice).includes(calc));
 
-export const rollCalc = (calc: Dice | Array<CalcEntry>) => {
+export const rollCalc = (calc: Dice | Array<CalcEntry>, { returnAsString = false } = {}) => {
 	if (!Array.isArray(calc)) {
 		return calcDice(calc);
 	}
@@ -47,7 +48,7 @@ export const rollCalc = (calc: Dice | Array<CalcEntry>) => {
 	});
 
 	let multiplier = 1;
-	return res.reduce((acc: number, entry: number | string) => {
+	const normalResult = res.reduce((acc: any, entry: number | string, index) => {
 		let curMultiplier = multiplier;
 
 		if (entry === '-') {
@@ -57,8 +58,30 @@ export const rollCalc = (calc: Dice | Array<CalcEntry>) => {
 			multiplier = 1;
 		}
 		const parsed = parseInt(entry + '');
+
 		return acc + parsed * curMultiplier;
 	}, 0);
+
+	if (returnAsString) {
+		return {
+			value: normalResult,
+			resultText: res.reduce((acc: any, entry: number | string, index) => {
+				let curMultiplier = multiplier;
+
+				if (entry === '-') {
+					multiplier = -1;
+					return acc;
+				} else {
+					multiplier = 1;
+				}
+				const parsed = parseInt(entry + '') * curMultiplier;
+
+				const suffix = isDice(calc[index]) ? `(${calc[index]})` : '';
+				return acc + '' + (index > 0 ? ' ' + addNumberPrefix(parsed, true) : parsed) + suffix;
+			}, '')
+		};
+	}
+	return normalResult;
 };
 
 export const simplifyCalc = (calc: Array<CalcEntry>) => {
@@ -105,7 +128,7 @@ export const rollVisualDice = (
 		clearTimeout?: number;
 		customResultBoxLabel?: Function;
 	} = {}
-): Promise<{ value: number; resultArray: Array<any> }> => {
+): Promise<{ value: number; resultArray: Array<any>; resultText: string }> => {
 	return new Promise((resolve) => {
 		let waitFlag = true;
 		let clearTimer: any = null;
@@ -140,14 +163,18 @@ export const rollVisualDice = (
 				submitReturn();
 			} else if (!rollHasFinished && !options?.disableRollOnCancel) {
 				const resultArray = dice.map((die: any) => rollCalc([die]));
+				const finalCalc = [...resultArray, ...(options?.modifier || [])];
+				const finalCalcResult = rollCalc([...resultArray, ...(options?.modifier || [])]);
+
 				resolve({
-					value: resultArray.reduce((acc: number, r: number) => acc + r) + (options.modifier || 0),
+					value: finalCalcResult,
+					resultText: getDefaultLabel(finalCalc, finalCalcResult, { hideResult: true }),
 					resultArray
 				});
 			}
 		};
 
-		const getDefaultLabel = (finalCalc, finalCalcResult) => {
+		const getDefaultLabel = (finalCalc, finalCalcResult, { hideResult = false } = {}) => {
 			let defaultFront;
 
 			defaultFront = finalCalc.reduce((acc, cur, i) => {
@@ -161,6 +188,10 @@ export const rollVisualDice = (
 				// }
 				return acc + prefix + `${val}${i >= dice.length ? '' : `(${dice[i]})`}`;
 			}, '');
+
+			if (hideResult) {
+				return defaultFront;
+			}
 
 			return `${defaultFront} = ${finalCalcResult}`;
 		};
@@ -201,6 +232,7 @@ export const rollVisualDice = (
 
 			const returnValue = {
 				resultArray: finalCalc,
+				resultText: getDefaultLabel(finalCalc, finalCalcResult, { hideResult: true }),
 				value: finalCalcResult
 			};
 

@@ -69,6 +69,7 @@
 </script>
 
 <div class="container">
+	<u>Classes</u>
 	<div class="category">
 		<div class="label">Beginner</div>
 		<div class="classes-container">
@@ -129,12 +130,13 @@
 		flex-direction: column;
 
 		background-color: powderblue;
-		padding: 10px;
-		border-radius: 5px;
+		padding: 5px;
 
 		row-gap: 10px;
 		height: 100%;
-		overflow-y: scroll;
+		overflow-y: auto;
+
+		border-right: 1px solid gray;
 	}
 
 	.label {

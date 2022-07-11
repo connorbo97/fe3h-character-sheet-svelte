@@ -528,7 +528,7 @@ export { MAGIC_WEAPONS, MARTIAL_WEAPONS };
 export const getWeaponDescription = (feature: WeaponFeatures) => {
 	const { damage, attackBonus, range, critBonus, description, followUpBonus, isHealing } = feature;
 	return [
-		attackBonus ? `${attackBonus} to attack` : '',
+		attackBonus ? `Attack: +${attackBonus}` : '',
 		`${isHealing ? 'HP Restored' : 'Damage'}: ${damage.reduce((acc, cur, i) => {
 			return acc + (i === 0 ? cur : addNumberPrefix(cur));
 		}, '')}`,

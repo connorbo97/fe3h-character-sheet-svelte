@@ -88,7 +88,8 @@
 		margin-bottom: 1px;
 		border: 1px solid black;
 		border-radius: 100%;
-		height: 20px;
+
+		font-size: 12px;
 	}
 
 	.flip {
@@ -102,11 +103,18 @@
 	.content {
 		display: flex;
 		column-gap: 5px;
+		align-items: center;
+		> button {
+			height: 15px;
+		}
 	}
 	.description {
 		background-color: lightgray;
 		padding: 5px;
 		border-radius: 5px;
+		font-size: 15px;
+		border: 1px solid gray;
+		font-family: sans-serif;
 
 		display: flex;
 		flex-direction: column;

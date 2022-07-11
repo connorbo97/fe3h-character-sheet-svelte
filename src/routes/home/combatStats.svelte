@@ -235,7 +235,6 @@
 	.container {
 		flex: 1;
 		background-color: rgb(157, 178, 116);
-		border-radius: 5px;
 		padding: 10px;
 
 		display: flex;

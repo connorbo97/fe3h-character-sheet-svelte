@@ -89,12 +89,12 @@
 						commitDiceBoxChange().then(() => {
 							rollVisualDice([Dice.d20]);
 						});
-					}}>Test roll</button
+					}}>Test Settings</button
 				>
 				<button
 					on:click={() => {
 						commitDiceBoxChange(true);
-					}}>Commit Changes to Local Storage</button
+					}}>Save Changes</button
 				>
 			</div>
 			<div class="">
@@ -105,7 +105,7 @@
 						});
 					}}
 				>
-					Reset Dice to Local Storage State
+					Reset to Current Settings
 				</button>
 				<button
 					on:click={() => {
@@ -113,13 +113,13 @@
 						resetCounter += 1;
 					}}
 				>
-					Reset Form to Local Storage State
+					Reset Form to Current Settings
 				</button>
 				<button
 					on:click={() => {
 						changedOptions = { ...DEFAULT_DICE_OPTIONS };
 						resetCounter += 1;
-					}}>Reset Form to Default</button
+					}}>Reset Form to Default Settings</button
 				>
 			</div>
 		</div>

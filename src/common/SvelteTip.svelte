@@ -117,6 +117,7 @@
 			position: relative;
 			cursor: help;
 			z-index: 999;
+			font-family: sans-serif;
 		}
 	}
 	.TOOLTIP_tooltip-positioner {

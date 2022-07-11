@@ -272,7 +272,9 @@
 	</div>
 	<span style:display="flex">
 		<u style:flex="1">Magic Weapons</u>
-		<button on:click={promptNewMartialWeapon}>Add new martial weapon</button>
+		<button on:click={promptNewMartialWeapon} style:margin-right="5px"
+			>Add new martial weapon</button
+		>
 		<button on:click={promptNewMagicWeapon}>Add new magic weapon</button>
 	</span>
 	<div class="magic-weapons">
@@ -305,12 +307,12 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		background-color: darksalmon;
-		border-radius: 5px;
-		padding: 5px;
+		background-color: powderblue;
+		padding: 10px;
+		position: relative;
 
 		column-gap: 5px;
-		height: calc(100% - 10px);
+		height: calc(100% - 20px);
 	}
 	.actions {
 		display: flex;
@@ -321,6 +323,7 @@
 	.superiority-die {
 		display: flex;
 		justify-content: flex-end;
+		align-items: center;
 		column-gap: 5px;
 		flex: 1;
 	}

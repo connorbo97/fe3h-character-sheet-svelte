@@ -179,8 +179,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 			'When attacking with a weapon, you may attack the target again . (this follow up attack can also trigger the effect)',
 		image: indechImage,
 		activationDC: ActivationRates.omega,
-		triggersOn: [CrestTrigger.ATTACK],
-		damageBonus: [2]
+		triggersOn: [CrestTrigger.ATTACK]
 	},
 	[CRESTS.LAMINE]: {
 		label: 'Lamine',
