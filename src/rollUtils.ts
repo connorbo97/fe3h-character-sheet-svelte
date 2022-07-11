@@ -105,7 +105,7 @@ export const rollVisualDice = (
 		clearTimeout?: number;
 		customResultBoxLabel?: Function;
 	} = {}
-): Promise<{ value: number; resultArray: Array<any> }> => {
+): Promise<{ value: number; resultArray: Array<any>; resultText: string }> => {
 	return new Promise((resolve) => {
 		let waitFlag = true;
 		let clearTimer: any = null;
@@ -140,14 +140,18 @@ export const rollVisualDice = (
 				submitReturn();
 			} else if (!rollHasFinished && !options?.disableRollOnCancel) {
 				const resultArray = dice.map((die: any) => rollCalc([die]));
+				const finalCalc = [...resultArray, ...(options?.modifier || [])];
+				const finalCalcResult = rollCalc([...resultArray, ...(options?.modifier || [])]);
+
 				resolve({
-					value: resultArray.reduce((acc: number, r: number) => acc + r) + (options.modifier || 0),
+					value: finalCalcResult,
+					resultText: getDefaultLabel(finalCalc, finalCalcResult, { hideResult: true }),
 					resultArray
 				});
 			}
 		};
 
-		const getDefaultLabel = (finalCalc, finalCalcResult) => {
+		const getDefaultLabel = (finalCalc, finalCalcResult, { hideResult = false } = {}) => {
 			let defaultFront;
 
 			defaultFront = finalCalc.reduce((acc, cur, i) => {
@@ -161,6 +165,10 @@ export const rollVisualDice = (
 				// }
 				return acc + prefix + `${val}${i >= dice.length ? '' : `(${dice[i]})`}`;
 			}, '');
+
+			if (hideResult) {
+				return defaultFront;
+			}
 
 			return `${defaultFront} = ${finalCalcResult}`;
 		};
@@ -201,6 +209,7 @@ export const rollVisualDice = (
 
 			const returnValue = {
 				resultArray: finalCalc,
+				resultText: getDefaultLabel(finalCalc, finalCalcResult, { hideResult: true }),
 				value: finalCalcResult
 			};
 
