@@ -248,13 +248,13 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 				[WEAPON_TYPE.SWORD]: 1.6,
 				[WEAPON_TYPE.BOW]: 1.3
 			},
-			toolProficiencies: {
+			skillProficiencies: {
 				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			msBonus: 1
 		},
 		whenMastered: {
-			toolProficiencies: {
+			skillProficiencies: {
 				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			playerSkills: {
@@ -286,13 +286,13 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			xpMods: {
 				[WEAPON_TYPE.LANCE]: 1.6
 			},
-			toolProficiencies: {
+			skillProficiencies: {
 				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			msBonus: 3
 		},
 		whenMastered: {
-			toolProficiencies: {
+			skillProficiencies: {
 				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			combatSkills: {
