@@ -102,7 +102,6 @@ export const FAITH_MAGIC = [
 	WEAPONS.RESTORE,
 	WEAPONS.WARD
 ];
-export const HEALING_MAGIC = new Set([WEAPONS.HEAL, WEAPONS.PHYSIC]);
 
 export const WEAPON_TO_TYPE = {
 	[WEAPONS.TRAINING_SWORD]: WEAPON_TYPE.SWORD,
@@ -440,6 +439,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	[WEAPONS.HEAL]: {
 		label: 'Heal',
 		description: '',
+		isHealing: true,
 		type: WEAPON_TYPE.FAITH,
 		damage: [2],
 		damageType: [PLAYER_STAT.INT],
@@ -471,15 +471,17 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		label: 'Recover',
 		description: '',
 		type: WEAPON_TYPE.FAITH,
+		isHealing: true,
 		damage: [8],
 		damageType: [PLAYER_STAT.INT],
-		range: [1, 2],
+		range: [1],
 		uses: 5
 	},
 	[WEAPONS.PHYSIC]: {
 		label: 'Physic',
 		description: '',
 		type: WEAPON_TYPE.FAITH,
+		isHealing: true,
 		damage: [2],
 		damageType: [PLAYER_STAT.INT],
 		range: ['1', '2 + 2 * INT'],
@@ -487,7 +489,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	},
 	[WEAPONS.RESTORE]: {
 		label: 'Restore',
-		description: '',
+		description: 'Removes all status effects from targeted player',
 		type: WEAPON_TYPE.FAITH,
 		damage: [0],
 		damageType: [PLAYER_STAT.INT],
@@ -496,7 +498,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	},
 	[WEAPONS.WARD]: {
 		label: 'Ward',
-		description: '',
+		description: 'Give targeted player +3 resistance. Reduces by 1 each round (cannot be stacked)',
 		type: WEAPON_TYPE.FAITH,
 		damageType: [PLAYER_STAT.INT],
 		damage: [0],
@@ -504,6 +506,10 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		uses: 5
 	}
 };
+
+export const HEALING_MAGIC = new Set(
+	Object.keys(WEAPONS_TO_FEATURES).filter((k) => WEAPONS_TO_FEATURES[k].isHealing)
+);
 
 const [MAGIC_WEAPONS, MARTIAL_WEAPONS] = Object.keys(WEAPONS_TO_FEATURES).reduce(
 	(acc: any, w: any) => {
@@ -520,10 +526,10 @@ const [MAGIC_WEAPONS, MARTIAL_WEAPONS] = Object.keys(WEAPONS_TO_FEATURES).reduce
 export { MAGIC_WEAPONS, MARTIAL_WEAPONS };
 
 export const getWeaponDescription = (feature: WeaponFeatures) => {
-	const { damage, attackBonus, range, critBonus, description, followUpBonus } = feature;
+	const { damage, attackBonus, range, critBonus, description, followUpBonus, isHealing } = feature;
 	return [
 		attackBonus ? `${attackBonus} to attack` : '',
-		`Damage: ${damage.reduce((acc, cur, i) => {
+		`${isHealing ? 'HP Restored' : 'Damage'}: ${damage.reduce((acc, cur, i) => {
 			return acc + (i === 0 ? cur : addNumberPrefix(cur));
 		}, '')}`,
 		`Range: ${Array.isArray(range) ? range?.join('-') : range}`,
