@@ -585,7 +585,11 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.C]: {
-			unlocks: {}
+			unlocks: {
+				combatSkills: {
+					[COMBAT_SKILLS.AGILE_RIDER]: 1
+				}
+			}
 		},
 		[WEAPON_LEVEL.C_PLUS]: {
 			unlocks: {

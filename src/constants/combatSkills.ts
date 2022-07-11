@@ -1,5 +1,5 @@
 import { Dice } from './dice';
-import { SWORD_WEAPONS, WEAPONS } from './weapons';
+import { WEAPONS } from './weapons';
 import { MARTIAL_WEAPON_TYPES, WEAPON_TYPE } from './weaponType';
 
 // Combat Skills
@@ -72,7 +72,9 @@ export const COMBAT_SKILLS = {
 	LEADERSHIP_PROWESS_4: 'LEADERSHIP_PROWESS_4',
 	LEADERSHIP_PROWESS_5: 'LEADERSHIP_PROWESS_5',
 
-	WEIGHT_MINUS_3: 'WEIGHT_MINUS_3'
+	WEIGHT_MINUS_3: 'WEIGHT_MINUS_3',
+
+	AGILE_RIDER: 'AGILE_RIDER'
 };
 export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 	MYRMIDON_MASTER: {
@@ -594,5 +596,13 @@ export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 		label: 'Heavy Lifter',
 		description: '+2 attack speed',
 		followUpBonus: 2
+	},
+	[COMBAT_SKILLS.AGILE_RIDER]: {
+		label: 'Agile Rider',
+		description: '+1 to attack, +1 AC while mounted',
+		acBonus: 1,
+		attackBonus: {
+			ANY: [1]
+		}
 	}
 };
