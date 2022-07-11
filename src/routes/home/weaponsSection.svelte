@@ -31,7 +31,13 @@
 	$: maxUses =
 		(allWeapons.fullFeatures[weapon]?.uses || Infinity) *
 		(hasHealPlus && weapon === WEAPONS.HEAL ? 2 : 1);
-	$: curUses = weaponUses[weapon] === undefined ? maxUses : curUses;
+	$: curUses = weaponUses[weapon];
+
+	$: {
+		if (curUses === undefined && maxUses !== undefined) {
+			curUses = maxUses;
+		}
+	}
 	$: updateCurWeaponUses = (newTotal: any) => {
 		if (newTotal <= maxUses && newTotal >= 0) {
 			onUpdateWeaponUses(weapon, newTotal);
