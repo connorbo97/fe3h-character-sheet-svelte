@@ -241,7 +241,11 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.D]: {
-			unlocks: {}
+			unlocks: {
+				combatArts: {
+					[COMBAT_ARTS.SMASH]: 1
+				}
+			}
 		},
 		[WEAPON_LEVEL.D_PLUS]: {
 			unlocks: {
@@ -256,13 +260,28 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.C]: {
-			unlocks: {}
+			unlocks: {
+				combatArts: {
+					[COMBAT_ARTS.HELM_SPLITTER]: 1
+				}
+			}
 		},
 		[WEAPON_LEVEL.C_PLUS]: {
 			unlocks: {
 				combatSkills: {
 					[COMBAT_SKILLS.AXE_PROWESS_3]: 1
-				}
+				},
+				pickOne: [
+					{
+						type: PickOnePromptType.CombatArt,
+						options: [
+							COMBAT_ARTS.FOCUSED_STRIKE,
+							COMBAT_ARTS.SPIKE,
+							COMBAT_ARTS.WILD_ABANDON,
+							COMBAT_ARTS.DIAMOND_AXE
+						]
+					}
+				]
 			},
 			removes: {
 				combatSkills: {
