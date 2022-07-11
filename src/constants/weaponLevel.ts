@@ -732,7 +732,7 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 					[COMBAT_SKILLS.FAITH_PROWESS_2]: 1
 				},
 				weapons: {
-					[WEAPONS.HEAL]: 1
+					[WEAPONS.NOSFERATU]: 1
 				}
 			},
 			removes: {
