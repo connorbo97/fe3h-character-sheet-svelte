@@ -255,6 +255,11 @@
 	$: onOpenAttackModal = () => (showModal = true);
 
 	$: isHealWeapon = HEALING_MAGIC.has(selectedWeapon);
+
+	let shouldDoVisualRolls = true;
+	$: toggleVisualRolls = () => {
+		shouldDoVisualRolls = !shouldDoVisualRolls;
+	};
 </script>
 
 <div class="container">
@@ -431,6 +436,8 @@
 				crestDamage={crestDamageBonus}
 				crestType={shouldRollCrest ? crestType : ''}
 				combatArtDamageBonus={weaponArtDamageModifier}
+				{shouldDoVisualRolls}
+				{toggleVisualRolls}
 			/>
 		</div>
 	{/if}

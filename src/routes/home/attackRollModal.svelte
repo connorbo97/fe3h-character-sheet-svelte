@@ -46,6 +46,9 @@
 	export let curSuperiorityDies: any;
 	export let setCurSuperiorityDie: any;
 
+	export let shouldDoVisualRolls: any;
+	export let toggleVisualRolls: any;
+
 	let crestSuccess: boolean = false;
 
 	let attackRoll: any = '';
@@ -81,12 +84,16 @@
 	$: crestActivated = crestRoll >= crestDC;
 	$: prefixedAttackCalc = printCalc(attackCalc, true);
 
-	const onAttackRoll = async () => {
+	$: onAttackRoll = async () => {
 		attackRoll = '';
-		attackRoll = await rollVisualDice([Dice.d20], {
-			clearTimeout: 250,
-			disableResultBox: true
-		}).then((res: any) => res.value);
+		if (shouldDoVisualRolls) {
+			attackRoll = await rollVisualDice([Dice.d20], {
+				clearTimeout: 250,
+				disableResultBox: true
+			}).then((res: any) => res.value);
+		} else {
+			attackRoll = rollDice(20);
+		}
 		attackMod = rollCalc(attackCalc);
 	};
 	const onDamageRoll = async () => {
@@ -95,9 +102,14 @@
 		if (checkCalcRequiresRoll(damageCalc)) {
 			const mod = damageCalc.filter((d) => !isDice(d));
 			const dice = damageCalc.filter(isDice);
-			const { value, resultText } = await rollVisualDice(dice, { modifier: mod });
-			damageRoll = value;
-			damageRollText = resultText;
+			if (shouldDoVisualRolls) {
+				const res = await rollVisualDice(dice, { modifier: mod });
+				damageRoll = res.value;
+				damageRollText = res.resultText;
+			} else {
+				damageRoll = rollCalc(damageCalc);
+				damageRollText = damageRoll + '';
+			}
 		} else {
 			damageRoll = rollCalc(damageCalc);
 			damageRollText = damageRoll;
@@ -105,10 +117,14 @@
 	};
 	const onCritRoll = async () => {
 		critRoll = '';
-		critRoll = await rollVisualDice([Dice.d20], {
-			clearTimeout: 250,
-			disableResultBox: true
-		}).then((res: any) => res.value);
+		if (shouldDoVisualRolls) {
+			critRoll = await rollVisualDice([Dice.d20], {
+				clearTimeout: 250,
+				disableResultBox: true
+			}).then((res: any) => res.value);
+		} else {
+			critRoll = rollDice(20);
+		}
 	};
 	$: getCrestDamageRollText = () => {
 		if (crestDamage.length) {
@@ -121,10 +137,14 @@
 	};
 	$: onCrestRoll = async () => {
 		crestRoll = '';
-		crestRoll = await rollVisualDice([Dice.d20], {
-			clearTimeout: 250,
-			disableResultBox: true
-		}).then((res: any) => res.value);
+		if (shouldDoVisualRolls) {
+			crestRoll = await rollVisualDice([Dice.d20], {
+				clearTimeout: 250,
+				disableResultBox: true
+			}).then((res: any) => res.value);
+		} else {
+			crestRoll = rollDice(20);
+		}
 
 		console.log(crestDamage.length || crestCombatArtDamageModifier);
 		if (crestRoll >= crestDC) {
@@ -333,17 +353,23 @@
 		<button style:flex="1" on:click={onCloseModal}>Back</button>
 		<!-- </div> -->
 	</div>
-	<button
-		on:click={() => onRollAll().then(() => copyToClipboard(getRoll20ResultText()))}
-		disabled={rollDisabled}
-		class={classBuilder('attack-button', { disabled: rollDisabled })}
-	>
-		{rollDisabled
-			? curWeaponUses <= 0
-				? 'Out of weapon uses'
-				: 'Out of Superiority Dies'
-			: 'Roll Attack'}
-	</button>
+	<div class="attack-button-container">
+		<span>
+			<span>Roll visual dice?</span>
+			<input type="checkbox" checked={shouldDoVisualRolls} on:click={() => toggleVisualRolls()} />
+		</span>
+		<button
+			on:click={() => onRollAll().then(() => copyToClipboard(getRoll20ResultText()))}
+			disabled={rollDisabled}
+			class={classBuilder('attack-button', { disabled: rollDisabled })}
+		>
+			{rollDisabled
+				? curWeaponUses <= 0
+					? 'Out of weapon uses'
+					: 'Out of Superiority Dies'
+				: 'Roll Attack'}
+		</button>
+	</div>
 	<div class="rolls">
 		{#if !isHealWeapon}
 			<div class="attack">
@@ -567,10 +593,16 @@
 		color: maroon;
 	}
 
+	.attack-button-container {
+		display: flex;
+		column-gap: 5px;
+	}
+
 	.attack-button {
 		padding: 5px;
 		margin-bottom: 5px;
 		font-size: 20px;
+		flex: 1;
 	}
 
 	.disabled {
