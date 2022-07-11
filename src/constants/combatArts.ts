@@ -321,7 +321,8 @@ export const getCombatArtsDescription = (
 	options: { disableDescription?: boolean } = {}
 ) => {
 	const { disableDescription } = options;
-	const { damageBonus, attackBonus, rangeBonus, dieCost, compatibleWeapons, description } = feature;
+	const { damageBonus, attackBonus, rangeBonus, range, dieCost, compatibleWeapons, description } =
+		feature;
 	const { roll, target, mod = 0 } = dieCost || {};
 	let dieCostText = '1';
 
@@ -344,6 +345,7 @@ export const getCombatArtsDescription = (
 		attackBonus ? `Attack: ${attackBonusText}` : '',
 		damageBonus ? `Damage: ${printCalc(damageBonus)}` : '',
 		rangeBonus ? `Extra Range: ${rangeBonus}` : '',
+		range ? `Range: ${range[0]}${range[1] ? '-' + range[1] : ''}` : '',
 		compatibleWeapons ? `Cost: ${dieCostText}` : ''
 	]
 		.filter((a) => a)
