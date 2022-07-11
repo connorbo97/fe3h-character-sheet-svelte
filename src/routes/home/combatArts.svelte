@@ -33,7 +33,7 @@
 					options: availableCombatArts
 				}
 			],
-			reason: `Manually added in combat arts section`,
+			reason: `Manually adding in combat arts section`,
 			customCombatArts,
 			onUpdateCustomCombatArts: (newVals) =>
 				onUpdateCustomCombatArts({ ...customCombatArts, ...newVals })
