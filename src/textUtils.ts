@@ -15,3 +15,6 @@ export const classBuilder = (...args) => {
 
 	return newArgs.join(' ');
 };
+
+export const getCritRangeText = (critModifier) =>
+	critModifier < 0 ? "Cant' Crit" : critModifier === 0 ? '20' : `${20 - critModifier} to 20`;
