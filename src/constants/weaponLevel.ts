@@ -65,7 +65,8 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 		},
 		[WEAPON_LEVEL.E_PLUS]: {
 			unlocks: {
-				combatSkills: { [COMBAT_SKILLS.SWORD_PROWESS_1]: 1 }
+				combatSkills: { [COMBAT_SKILLS.SWORD_PROWESS_1]: 1 },
+				combatArts: { [COMBAT_ARTS.WRATH_STRIKE]: 1 }
 			}
 		},
 		[WEAPON_LEVEL.D]: {
@@ -84,13 +85,23 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.C]: {
-			unlocks: {}
+			unlocks: {
+				combatArts: {
+					[COMBAT_ARTS.GROUNDER]: 1
+				}
+			}
 		},
 		[WEAPON_LEVEL.C_PLUS]: {
 			unlocks: {
 				combatSkills: {
 					[COMBAT_SKILLS.SWORD_PROWESS_3]: 1
-				}
+				},
+				pickOne: [
+					{
+						type: PickOnePromptType.CombatArt,
+						options: [COMBAT_ARTS.SUNDER, COMBAT_ARTS.HAZE_SLICE]
+					}
+				]
 			},
 			removes: {
 				combatSkills: {
