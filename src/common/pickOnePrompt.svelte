@@ -10,19 +10,19 @@
 
 	const { close } = getContext(CONTEXTS.MODAL);
 
-	export let pickOne: Array<PickOnePrompt>;
-	export let onSubmit: any;
+	export let pickOne: Array<PickOnePrompt> = [];
+	export let onSubmit: any = () => {};
 	export let reason: any;
 
-	export let customCombatArts: any;
-	export let customCombatSkills: any;
-	export let customWeapons: any;
-	export let playerStats: any;
+	export let customCombatArts: any = {};
+	export let customCombatSkills: any = {};
+	export let customWeapons: any = {};
+	export let playerStats: any = {};
 
-	export let onUpdatePlayerStats: any;
-	export let onUpdateCustomCombatArts: any;
-	export let onUpdateCustomCombatSkills: any;
-	export let onUpdateCustomWeapons: any;
+	export let onUpdatePlayerStats: any = () => {};
+	export let onUpdateCustomCombatArts: any = () => {};
+	export let onUpdateCustomCombatSkills: any = () => {};
+	export let onUpdateCustomWeapons: any = () => {};
 
 	let selections: Array<any> = pickOne.map(() => null);
 
@@ -35,8 +35,11 @@
 					getWeaponDescription(WEAPONS_TO_FEATURES[option.toString()])
 				);
 			case PickOnePromptType.CombatArt:
-				return COMBAT_ARTS_TO_FEATURES[option.toString()].label;
-				': ' + getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[option.toString()]);
+				return (
+					COMBAT_ARTS_TO_FEATURES[option.toString()].label +
+					': ' +
+					getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[option.toString()])
+				);
 			case PickOnePromptType.CombatSkill:
 				return (
 					COMBAT_SKILLS_TO_FEATURES[option.toString()].label +
