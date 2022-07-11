@@ -177,7 +177,7 @@ const calculateAllCombatSkillsMemoized = (
 		classUnlockSet,
 		weaponXPLevelSkillSet,
 		fullSet,
-		fullArray: Array.from(fullSet),
+		fullArray: Array.from(fullSet).sort(),
 		fullFeatures: { ...COMBAT_SKILLS_TO_FEATURES, ...customCombatSkillFeatures }
 	};
 };
@@ -246,11 +246,11 @@ const calculateAllCombatArtsMemoized = (
 
 	const fullFeatures = { ...COMBAT_ARTS_TO_FEATURES, ...customCombatArtFeatures };
 
-	const weaponOrder = Object.keys(WEAPON_TYPE);
+	const combatArtOrder = Object.keys(COMBAT_ARTS);
 	const fullArray = Array.from(fullSet).sort((a, b) => {
-		const aI = weaponOrder.indexOf(fullFeatures[a].type);
-		const bI = weaponOrder.indexOf(fullFeatures[b].type);
-		return aI <= bI ? 1 : -1;
+		const aI = combatArtOrder.indexOf(a);
+		const bI = combatArtOrder.indexOf(b);
+		return aI <= bI ? -1 : 1;
 	});
 
 	return {
