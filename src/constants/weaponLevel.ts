@@ -423,7 +423,11 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.D]: {
-			unlocks: {}
+			unlocks: {
+				combatArts: {
+					[COMBAT_ARTS.FADING_BLOW]: 1
+				}
+			}
 		},
 		[WEAPON_LEVEL.D_PLUS]: {
 			unlocks: {
@@ -438,13 +442,28 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.C]: {
-			unlocks: {}
+			unlocks: {
+				combatArts: {
+					[COMBAT_ARTS.RUSHING_BLOW]: 1
+				}
+			}
 		},
 		[WEAPON_LEVEL.C_PLUS]: {
 			unlocks: {
 				combatSkills: {
 					[COMBAT_SKILLS.FISTS_PROWESS_3]: 1
-				}
+				},
+				pickOne: [
+					{
+						type: PickOnePromptType.CombatArt,
+						options: [
+							COMBAT_ARTS.DRAINING_BLOW,
+							COMBAT_ARTS.NIMBLE_COMBO,
+							COMBAT_ARTS.BOMBARD,
+							COMBAT_ARTS.ONE_TWO_PUNCH
+						]
+					}
+				]
 			},
 			removes: {
 				combatSkills: {
