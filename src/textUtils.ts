@@ -1,5 +1,5 @@
 export const addNumberPrefix = (num, addSpace = false) =>
-	`${num > 0 ? '+' : '-'}${addSpace ? ' ' : ''}${Math.abs(num)}`;
+	`${num >= 0 ? '+' : '-'}${addSpace ? ' ' : ''}${Math.abs(num)}`;
 
 export const getCrestStrengthText = (bool: any) => (bool ? 'Major' : 'Minor');
 
