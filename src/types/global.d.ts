@@ -157,6 +157,7 @@ declare global {
 		attackNote?: string;
 		attackBonus?: Array<CalcEntry>;
 		rangeBonus?: number;
+		range?: Array<number, number>;
 		critBonus?: Array<CalcEntry>;
 		dieCost?: { roll: number | Dice; target: number; mod?: number };
 		reason?: string;
