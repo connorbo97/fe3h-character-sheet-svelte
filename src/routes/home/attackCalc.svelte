@@ -216,6 +216,7 @@
 		CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.bonusRange?.[
 			weaponsToFeatures[selectedWeapon]?.type
 		] || 0;
+	$: combatArtRange = allCombatArts.fullFeatures[selectedCombatArt]?.range;
 	$: combatSkillsRangeModifier = equippedCombatSkills.reduce(
 		(acc, skill) =>
 			acc +
@@ -225,10 +226,13 @@
 	);
 	$: optionsRangeModifier = 0;
 	$: calcWeaponRange = () => {
-		let baseWeaponRange = [...(weaponsToFeatures[selectedWeapon]?.range || [1])];
+		let baseWeaponRange = combatArtRange
+			? [...combatArtRange]
+			: // copying b/c of mutation lower down
+			  [...(weaponsToFeatures[selectedWeapon]?.range || [1])];
 
 		if (selectedWeapon === WEAPONS.RESTORE) {
-			baseWeaponRange = [1, 2 + 2 * getModifierByPlayerStat(playerStats[PLAYER_STAT.INT])];
+			baseWeaponRange = [1, 2 + getModifierByPlayerStat(playerStats[PLAYER_STAT.INT])];
 		} else if (selectedWeapon === WEAPONS.PHYSIC) {
 			baseWeaponRange = [1, 2 + 2 * getModifierByPlayerStat(playerStats[PLAYER_STAT.INT])];
 		}

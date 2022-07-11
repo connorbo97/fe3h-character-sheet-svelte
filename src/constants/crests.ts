@@ -87,7 +87,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	[CRESTS.BLAIDDYD]: {
 		label: 'Blaiddyd',
 		description:
-			'When using a combat art, conserves superiority die and doubles any extra damage done by the combat art if activated',
+			'When using a combat art, conserves superiority die and adds another instance of combat art damage (if the combat art adds damage)',
 		image: blaiddydImage,
 		activationDC: ActivationRates.omega,
 		triggersOn: [CrestTrigger.COMBAT_ART],
@@ -96,7 +96,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	},
 	[CRESTS.CETHLEANN]: {
 		label: 'Cethleann',
-		description: 'When using recovery magic, heal the target for +2 HP if activated.',
+		description: 'When using recovery magic, heal the target for +2 HP .',
 		image: cethleannImage,
 		activationDC: ActivationRates.beta,
 		triggersOn: [CrestTrigger.HEAL],
@@ -111,8 +111,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	},
 	[CRESTS.CHARON]: {
 		label: 'Charon',
-		description:
-			'When using a combat art, doubles any extra damage done by the combat art if activated',
+		description: 'When using a combat art, doubles any extra damage done by the combat art ',
 		image: charonImage,
 		activationDC: ActivationRates.alpha,
 		triggersOn: [CrestTrigger.COMBAT_ART],
@@ -120,8 +119,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	},
 	[CRESTS.DAPHNEL]: {
 		label: 'Daphnel',
-		description:
-			'When using a combat art, adds +2 damage if the combat art does damage if activated',
+		description: 'When using a combat art, adds +2 damage if the combat art does damage ',
 		image: daphnelImage,
 		activationDC: ActivationRates.alpha,
 		triggersOn: [CrestTrigger.COMBAT_ART],
@@ -129,7 +127,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	},
 	[CRESTS.DOMINIC]: {
 		label: 'Dominic',
-		description: 'When attacking with a spell, conserves spell slot if activated',
+		description: 'When attacking with a spell, conserves spell slot ',
 		image: dominicImage,
 		activationDC: ActivationRates.omega,
 		triggersOn: [CrestTrigger.MAGIC_ATTACK],
@@ -146,7 +144,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	},
 	[CRESTS.FRALDARIUS]: {
 		label: 'Fraldarius',
-		description: 'When attacking with a weapon, adds +2 damage to the attack if activated',
+		description: 'When attacking with a weapon, adds +2 damage to the attack ',
 		image: fraldariusImage,
 		activationDC: ActivationRates.gamma,
 		triggersOn: [CrestTrigger.ATTACK],
@@ -154,8 +152,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	},
 	[CRESTS.GAUTIER]: {
 		label: 'Gautier',
-		description:
-			'When using a combat art, adds +2 damage if the combat art deals damage if activated',
+		description: 'When using a combat art, adds +2 damage if the combat art deals damage ',
 		image: gautierImage,
 		activationDC: ActivationRates.alpha,
 		triggersOn: [CrestTrigger.COMBAT_ART],
@@ -163,7 +160,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	},
 	[CRESTS.GLOUCESTER]: {
 		label: 'Gloucester',
-		description: 'When attacking with a spell, adds +2 damage to the attack if activated',
+		description: 'When attacking with a spell, adds +2 damage to the attack ',
 		image: gloucesterImage,
 		activationDC: ActivationRates.omega,
 		triggersOn: [CrestTrigger.MAGIC_ATTACK],
@@ -179,7 +176,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	[CRESTS.INDECH]: {
 		label: 'Indech',
 		description:
-			'When attacking with a weapon, you may attack the target again if activated. (this follow up attack can also trigger the effect)',
+			'When attacking with a weapon, you may attack the target again . (this follow up attack can also trigger the effect)',
 		image: indechImage,
 		activationDC: ActivationRates.omega,
 		triggersOn: [CrestTrigger.ATTACK],
@@ -187,7 +184,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	},
 	[CRESTS.LAMINE]: {
 		label: 'Lamine',
-		description: 'When using recovery magic, conserve the spell slot if activated',
+		description: 'When using recovery magic, conserve the spell slot ',
 		image: lamineImage,
 		activationDC: ActivationRates.omega,
 		triggersOn: [CrestTrigger.HEAL],
@@ -195,7 +192,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	},
 	[CRESTS.MACUIL]: {
 		label: 'Macuil',
-		description: 'When attacking with a spell, add +2 damage to the attack if activated.',
+		description: 'When attacking with a spell, add +2 damage to the attack .',
 		image: macuilImage,
 		activationDC: ActivationRates.omega,
 		triggersOn: [CrestTrigger.MAGIC_ATTACK],
@@ -204,7 +201,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	[CRESTS.RIEGAN]: {
 		label: 'Riegan',
 		description:
-			'When using a combat art, heal for 30% of the damage dealt if the combat art deals damage if activated',
+			'When using a combat art, heal for 30% of the damage dealt if the combat art deals damage ',
 		image: rieganImage,
 		activationDC: ActivationRates.beta,
 		triggersOn: [CrestTrigger.COMBAT_ART],
@@ -213,7 +210,7 @@ export const CRESTS_TO_FEATURES: { [s: string]: CrestFeatures } = {
 	[CRESTS.SEIROS]: {
 		label: 'Seiros',
 		description:
-			'When using a combat art, heal for 30% of the damage dealt if the combat art deals damage if activated',
+			'When using a combat art, heal for 30% of the damage dealt if the combat art deals damage ',
 		image: seirosImage,
 		activationDC: ActivationRates.alpha,
 		triggersOn: [CrestTrigger.COMBAT_ART],

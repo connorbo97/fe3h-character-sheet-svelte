@@ -10,33 +10,39 @@
 
 	const { close } = getContext(CONTEXTS.MODAL);
 
-	export let pickOne: Array<PickOnePrompt>;
-	export let onSubmit: any;
+	export let pickOne: Array<PickOnePrompt> = [];
+	export let onSubmit: any = () => {};
 	export let reason: any;
 
-	export let customCombatArts: any;
-	export let customCombatSkills: any;
-	export let customWeapons: any;
-	export let playerStats: any;
+	export let customCombatArts: any = {};
+	export let customCombatSkills: any = {};
+	export let customWeapons: any = {};
+	export let playerStats: any = {};
 
-	export let onUpdatePlayerStats: any;
-	export let onUpdateCustomCombatArts: any;
-	export let onUpdateCustomCombatSkills: any;
-	export let onUpdateCustomWeapons: any;
+	export let onUpdatePlayerStats: any = () => {};
+	export let onUpdateCustomCombatArts: any = () => {};
+	export let onUpdateCustomCombatSkills: any = () => {};
+	export let onUpdateCustomWeapons: any = () => {};
 
 	let selections: Array<any> = pickOne.map(() => null);
 
 	const getOptionLabel = (type: PickOnePromptType, option: PickOnePromptOption) => {
 		switch (type) {
 			case PickOnePromptType.Weapon:
+				if (option.toString() === 'DOUBLE_BASE_USES') {
+					return 'Double the uses of the spell you chose at Reason Level D';
+				}
 				return (
 					WEAPONS_TO_FEATURES[option.toString()].label +
 					': ' +
 					getWeaponDescription(WEAPONS_TO_FEATURES[option.toString()])
 				);
 			case PickOnePromptType.CombatArt:
-				return COMBAT_ARTS_TO_FEATURES[option.toString()].label;
-				': ' + getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[option.toString()]);
+				return (
+					COMBAT_ARTS_TO_FEATURES[option.toString()].label +
+					': ' +
+					getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[option.toString()])
+				);
 			case PickOnePromptType.CombatSkill:
 				return (
 					COMBAT_SKILLS_TO_FEATURES[option.toString()].label +
@@ -55,7 +61,18 @@
 			case PickOnePromptType.Weapon:
 				const newCustomWeapons = newValues.reduce(
 					(acc: any, weapon: any) => {
-						acc[weapon] = { ...acc[weapon], reason };
+						if (weapon === 'DOUBLE_BASE_USES') {
+							const baseWeapon = Object.keys(customWeapons).find(
+								(w: any) => customWeapons[w]?.reason === 'Unlocked Reason level D'
+							);
+
+							if (baseWeapon) {
+								const totalUses = acc[baseWeapon]?.uses || WEAPONS_TO_FEATURES[baseWeapon]?.uses;
+								acc[baseWeapon] = { ...acc[baseWeapon], uses: totalUses * 2 };
+							}
+						} else {
+							acc[weapon] = { ...acc[weapon], reason };
+						}
 
 						return acc;
 					},
@@ -119,11 +136,27 @@
 		onSubmit();
 		close();
 	};
+	$: randomDisabled = pickOne.some((p) => p.disableRandom);
 </script>
 
 <div class="container">
 	<h1>Making choice(s) because: <span class="reason">{reason}</span></h1>
 	<div class="content">
+		{#if !randomDisabled}
+			<button
+				style:align-self="center"
+				on:click={() => {
+					selections = pickOne.map((entry) => {
+						// random number between 0 * length -1
+						const rng = Math.floor(Math.random() * entry.options.length);
+
+						return entry.options[rng];
+					});
+				}}
+			>
+				Randomize Choices
+			</button>
+		{/if}
 		{#each pickOne as entry, index}
 			<h2>Pick a {entry.type}</h2>
 			{#if entry.description}
@@ -147,16 +180,6 @@
 			<!-- {/key} -->
 		{/each}
 	</div>
-	<button
-		on:click={() => {
-			selections = pickOne.map((entry) => {
-				// random number between 0 * length -1
-				const rng = Math.floor(Math.random() * entry.options.length);
-
-				return entry.options[rng];
-			});
-		}}>Randomize</button
-	>
 	<button
 		class="submit"
 		disabled={!selections.every((s) => s !== null)}

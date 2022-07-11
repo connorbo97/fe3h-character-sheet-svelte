@@ -93,7 +93,9 @@
 			</div>
 			<div class="description">
 				{COMBAT_ARTS_TO_FEATURES[selectedCombatArt]
-					? getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt])
+					? getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt], {
+							disableDescription: true
+					  })
 					: ''}
 			</div>
 		{/if}

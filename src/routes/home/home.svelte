@@ -107,8 +107,21 @@
 		/>
 	</div>
 	<div class="arts">
-		<CombatArts {allCombatArts} {equippedCombatArts} {onToggleCombatArts} {equippedWeapons} />
-		<CombatSkills {allCombatSkills} {equippedCombatSkills} {onToggleCombatSkill} />
+		<CombatArts
+			{allCombatArts}
+			{equippedCombatArts}
+			{onToggleCombatArts}
+			{equippedWeapons}
+			{customCombatArts}
+			{onUpdateCustomCombatArts}
+		/>
+		<CombatSkills
+			{allCombatSkills}
+			{equippedCombatSkills}
+			{onToggleCombatSkill}
+			{customCombatSkills}
+			{onUpdateCustomCombatSkills}
+		/>
 	</div>
 	<div class="rest">
 		<div class="weapons">
@@ -137,6 +150,7 @@
 				{selectedWeapon}
 				{equippedWeapons}
 				{equippedCombatArts}
+				{allCombatSkills}
 			/>
 			<AttackCalc
 				{playerName}
@@ -165,7 +179,7 @@
 	.container {
 		display: grid;
 		grid-template-areas: 'stats skills classes arts rest';
-		grid-template-columns: min-content 200px 160px 180px 1fr;
+		grid-template-columns: min-content 205px 160px 180px 1fr;
 		grid-template-rows: 1fr;
 		column-gap: 5px;
 

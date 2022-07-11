@@ -9,6 +9,7 @@
 	} from 'src/constants';
 	import { MAGIC_WEAPONS, MARTIAL_WEAPONS, TRAINING_WEAPONS_SET } from 'src/constants/weapons';
 	import { MAGIC_WEAPON_TYPES, WEAPON_TYPE } from 'src/constants/weaponType';
+	import { classBuilder } from 'src/textUtils';
 	import { getContext } from 'svelte';
 	import CustomWeaponPrompt from './customWeaponPrompt.svelte';
 	import WeaponsSection from './weaponsSection.svelte';
@@ -88,6 +89,12 @@
 	$: unlockedAxes = AXE_WEAPONS.filter((w) => allWeaponsSet.has(w) && !trainingWeaponsSet.has(w));
 	$: unlockedBows = BOW_WEAPONS.filter((w) => allWeaponsSet.has(w) && !trainingWeaponsSet.has(w));
 	$: unlockedFists = FIST_WEAPONS.filter((w) => allWeaponsSet.has(w) && !trainingWeaponsSet.has(w));
+	$: onlyTrainingWeapons =
+		!unlockedAxes?.length &&
+		!unlockedSwords?.length &&
+		!unlockedBows?.length &&
+		!unlockedFists?.length &&
+		!unlockedLances?.length;
 </script>
 
 <div class="container">
@@ -236,7 +243,11 @@
 			</div>
 		{/if}
 		{#if trainingWeaponsSet.size > 0}
-			<div class="category">
+			<div
+				class={classBuilder('category', {
+					'min-width': onlyTrainingWeapons
+				})}
+			>
 				<div class="label">Training Weapons</div>
 				<div class="category-container">
 					{#each Array.from(trainingWeaponsSet) as weapon}
@@ -367,5 +378,9 @@
 	}
 	.bad {
 		background-color: red;
+	}
+	.min-width {
+		min-width: 33%;
+		flex: 0;
 	}
 </style>

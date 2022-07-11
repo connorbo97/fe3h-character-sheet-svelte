@@ -1,7 +1,7 @@
 export enum PickOnePromptType {
 	Weapon = 'Weapon',
-	CombatSkill = 'Combat Art',
-	CombatArt = 'Combat Skill',
+	CombatSkill = 'Combat Skill',
+	CombatArt = 'Combat Art',
 	PlayerStat = 'Player Stat'
 }
 

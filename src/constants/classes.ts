@@ -248,13 +248,13 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 				[WEAPON_TYPE.SWORD]: 1.6,
 				[WEAPON_TYPE.BOW]: 1.3
 			},
-			toolProficiencies: {
+			skillProficiencies: {
 				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			msBonus: 1
 		},
 		whenMastered: {
-			toolProficiencies: {
+			skillProficiencies: {
 				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			playerSkills: {
@@ -286,13 +286,13 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			xpMods: {
 				[WEAPON_TYPE.LANCE]: 1.6
 			},
-			toolProficiencies: {
+			skillProficiencies: {
 				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			msBonus: 3
 		},
 		whenMastered: {
-			toolProficiencies: {
+			skillProficiencies: {
 				[PLAYER_SKILL.LOCKPICKING]: 1
 			},
 			combatSkills: {
@@ -391,6 +391,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 					type: PickOnePromptType.PlayerStat,
 					description:
 						'Pick different stats per dropdown (e.g. if you pick 14 DEX in this dropdown, pick 12 STR in the other)',
+					disableRandom: true,
 					options: [
 						{
 							stat: PLAYER_STAT.DEX,
@@ -443,7 +444,19 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.INT]: 14
-			}
+			},
+			pickOne: [
+				{
+					type: PickOnePromptType.Weapon,
+					options: [
+						'DOUBLE_BASE_USES',
+						WEAPONS.FIRE,
+						WEAPONS.WIND,
+						WEAPONS.THUNDER,
+						WEAPONS.BLIZZARD
+					]
+				}
+			]
 		},
 		whenEquipped: {
 			xpMods: {
@@ -482,9 +495,9 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 };
 
 export const SUPERIORITY_DIE_TO_CLASSES: { [n: number]: Set<string> } = {
-	1: new Set(Object.values(CLASS)),
-	3: new Set(BEGINNER_CLASSES),
-	5: new Set(INTERMEDIATE_CLASSES)
+	2: new Set(Object.values(CLASS)),
+	4: new Set(BEGINNER_CLASSES),
+	6: new Set(INTERMEDIATE_CLASSES)
 };
 export const getSuperiorityDieFromClasses = (unlockedClasses: Array<any>) => {
 	return Object.keys(SUPERIORITY_DIE_TO_CLASSES).reduce((acc: number, die: any) => {
@@ -492,5 +505,5 @@ export const getSuperiorityDieFromClasses = (unlockedClasses: Array<any>) => {
 			return Math.max(parseInt(die), acc);
 		}
 		return acc;
-	}, 0);
+	}, 2);
 };

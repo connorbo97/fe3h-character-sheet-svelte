@@ -29,6 +29,7 @@
 	export let equippedClass: string;
 	export let equippedCombatSkills: Array<string>;
 	export let allWeapons: AllWeapons;
+	export let allCombatSkills: AllCombatSkills;
 
 	export let selectedWeapon: string;
 
@@ -132,7 +133,10 @@
 		skillResilienceBonus;
 
 	$: selectedWeaponFollupMod = allWeapons.fullFeatures[selectedWeapon]?.followUpBonus || 0;
-	$: followUp = dexMod + selectedWeaponFollupMod;
+	$: skillsFollowupMod = allCombatSkills.fullArray.reduce((acc, cur) => {
+		return acc + (allCombatSkills.fullFeatures[cur].followUpBonus || 0);
+	}, 0);
+	$: followUp = dexMod + selectedWeaponFollupMod + skillsFollowupMod;
 
 	const onTerrainModChange = (e: any) => {
 		const input = parseInt(e.currentTarget.value);
@@ -203,7 +207,7 @@
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
 		<div slot="t">
-			{`Attack Speed = ${dexMod} (dex modifier) + ${selectedWeaponFollupMod} (selected weapon)`}
+			{`Attack Speed = ${dexMod} (dex modifier) + ${selectedWeaponFollupMod} (selected weapon) + ${skillsFollowupMod} (skills)`}
 		</div>
 		<div class="big-text">
 			AS: {followUp}

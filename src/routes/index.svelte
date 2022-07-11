@@ -28,6 +28,7 @@
 	import { SkillProficiency } from 'src/constants/playerSkills';
 	import { CLASS } from 'src/constants/classes';
 	import DiceEditor from './dice-editor/diceEditor.svelte';
+	import SheetManager from './sheet-manager/sheetManager.svelte';
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -52,10 +53,12 @@
 
 	let selectedCombatArt: string;
 	let selectedWeapon: string;
+	let weaponUses: { [s: string]: number } = {};
 
 	let currentPage = 'HOME';
 
-	let weaponUses: { [s: string]: number } = {};
+	let curSheet = 'sheet';
+	let otherSheetNames: Array<string> = [];
 
 	$: playerStats = fullSheet.playerStats;
 	$: playerSkillProficiency = fullSheet.playerSkills;
@@ -74,8 +77,25 @@
 	$: allCombatArts = calculateAllCombatArts(fullSheet, equippedClass, allCombatSkills.fullSet);
 	$: masteredClasses = unlockedClasses.filter((c: any) => classXP[c]?.mastered);
 
-	onMount(() => {
-		const lsSheet = localStorage.getItem('sheet');
+	$: resetEquipped = () => {
+		equippedClass = '';
+		equippedWeapons = [];
+		equippedCombatSkills = [];
+		equippedCombatArts = [];
+
+		selectedCombatArt = '';
+		selectedWeapon = '';
+		weaponUses = {};
+	};
+
+	const loadSheet = (sheetName) => {
+		try {
+			otherSheetNames = JSON.parse(localStorage.getItem('otherSheetNames') || '[]');
+		} catch (err) {
+			console.log(err);
+		}
+
+		const lsSheet = localStorage.getItem(sheetName);
 
 		if (lsSheet) {
 			try {
@@ -84,6 +104,24 @@
 				console.error(err);
 			}
 		}
+
+		if (lsSheet) {
+			try {
+				fullSheet = { ...defaultSheet, ...JSON.parse(lsSheet) };
+			} catch (err) {
+				console.error(err);
+			}
+		}
+	};
+
+	const onChangeCurSheet = (sheetName) => {
+		curSheet = sheetName;
+		resetEquipped();
+		loadSheet(sheetName);
+	};
+
+	onMount(() => {
+		loadSheet(curSheet);
 
 		ready = true;
 
@@ -106,14 +144,14 @@
 			// ...
 		});
 	});
-
 	$: onChangeSheet = (newSheet: any) => {
+		resetEquipped();
 		fullSheet = newSheet;
-		localStorage.setItem('sheet', JSON.stringify(newSheet));
+		localStorage.setItem(curSheet, JSON.stringify(newSheet));
 	};
 	$: onUpdateSheet = (property: string, value: any) => {
 		fullSheet = { ...fullSheet, [property]: value };
-		localStorage.setItem('sheet', JSON.stringify(fullSheet));
+		localStorage.setItem(curSheet, JSON.stringify(fullSheet));
 	};
 	$: onUpdatePlayerStats = (newStats: any) => {
 		onUpdateSheet('playerStats', newStats);
@@ -204,6 +242,10 @@
 	$: onUpdateCustomCombatSkills = (newCustom: any) => {
 		onUpdateSheet('customCombatSkills', newCustom);
 	};
+	$: onAddSheet = (name) => {
+		otherSheetNames = [...otherSheetNames, name];
+		localStorage.setItem('otherSheetNames', JSON.stringify(otherSheetNames));
+	};
 </script>
 
 <div class={`${ready ? '' : 'no-clicks'} container`}>
@@ -283,6 +325,11 @@
 				<div class={currentPage === 'DICE_EDITOR' ? '' : 'invisible'}>
 					{#if currentPage === 'DICE_EDITOR'}
 						<DiceEditor />
+					{/if}
+				</div>
+				<div class={currentPage === 'OTHER_SHEETS' ? '' : 'invisible'}>
+					{#if currentPage === 'OTHER_SHEETS'}
+						<SheetManager {onAddSheet} {otherSheetNames} {curSheet} {onChangeCurSheet} />
 					{/if}
 				</div>
 			</div>

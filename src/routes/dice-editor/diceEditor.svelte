@@ -82,42 +82,46 @@
 	<h1>Update how your dice rolls look</h1>
 
 	{#key resetCounter}
-		<div class="">
-			<button
-				on:click={() => {
-					commitDiceBoxChange(false, true).then(() => {
-						rollVisualDice([Dice.d20]);
-					});
-				}}
-			>
-				Reset Dice to Local Storage State
-			</button>
-			<button
-				on:click={() => {
-					changedOptions = {};
-					resetCounter += 1;
-				}}
-			>
-				Reset Form to Local Storage State
-			</button>
-			<button
-				on:click={() => {
-					changedOptions = { ...DEFAULT_DICE_OPTIONS };
-					resetCounter += 1;
-				}}>Reset Form to Default</button
-			>
-			<button
-				on:click={() => {
-					commitDiceBoxChange().then(() => {
-						rollVisualDice([Dice.d20]);
-					});
-				}}>Test roll</button
-			>
-			<button
-				on:click={() => {
-					commitDiceBoxChange(true);
-				}}>Commit Changes to Local Storage</button
-			>
+		<div class="button-container">
+			<div class="">
+				<button
+					on:click={() => {
+						commitDiceBoxChange().then(() => {
+							rollVisualDice([Dice.d20]);
+						});
+					}}>Test roll</button
+				>
+				<button
+					on:click={() => {
+						commitDiceBoxChange(true);
+					}}>Commit Changes to Local Storage</button
+				>
+			</div>
+			<div class="">
+				<button
+					on:click={() => {
+						commitDiceBoxChange(false, true).then(() => {
+							rollVisualDice([Dice.d20]);
+						});
+					}}
+				>
+					Reset Dice to Local Storage State
+				</button>
+				<button
+					on:click={() => {
+						changedOptions = {};
+						resetCounter += 1;
+					}}
+				>
+					Reset Form to Local Storage State
+				</button>
+				<button
+					on:click={() => {
+						changedOptions = { ...DEFAULT_DICE_OPTIONS };
+						resetCounter += 1;
+					}}>Reset Form to Default</button
+				>
+			</div>
 		</div>
 
 		<div class="field">
@@ -159,6 +163,20 @@
 				on:input={(e) => (changedOptions.mass = parseInt(e.currentTarget.value))}
 			/>
 			<span>{getValue('mass')}</span>
+		</div>
+
+		<div class="field">
+			<span>Scale</span>
+			<input
+				type="range"
+				min="1"
+				max="10"
+				class="slider"
+				value={getValue('scale')}
+				id="myRange"
+				on:input={(e) => (changedOptions.scale = parseInt(e.currentTarget.value))}
+			/>
+			<span>{getValue('scale')}</span>
 		</div>
 
 		<div class="field">
@@ -206,4 +224,8 @@
 </div>
 
 <style lang="scss">
+	.button-container {
+		display: flex;
+		justify-content: space-between;
+	}
 </style>

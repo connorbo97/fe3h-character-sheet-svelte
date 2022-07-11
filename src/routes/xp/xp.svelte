@@ -199,7 +199,10 @@
 			>
 			<span />
 			<u style:text-align="center" style:white-space="nowrap" style:width="0">Lvl</u>
-			<u style:text-align="center" style:white-space="nowrap" style:width="0">Stat Modifier</u>
+			<SvelteTip>
+				<u style:text-align="center" style:white-space="nowrap" style:width="0">Stat Modifier</u>
+				<div slot="t">The stat that will be added when doing XP rolls.</div>
+			</SvelteTip>
 			<span />
 			{#each Object.keys(WEAPON_TYPE) as type}
 				{@const curXP = weaponXP[type]?.total || 0}

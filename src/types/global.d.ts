@@ -98,7 +98,7 @@ declare global {
 	declare type StatBlock = {
 		playerStats?: BasicStat;
 		playerSkills?: BasicStat;
-		toolProficiencies?: BasicStat;
+		skillProficiencies?: BasicStat;
 		combatArts?: BasicStat;
 		weapons?: BasicStat;
 
@@ -143,6 +143,7 @@ declare global {
 		bonusRange?: { [s: string]: number };
 		damageBonus?: { [s: string]: Array<CalcEntry> };
 		attackBonus?: { [s: string]: Array<CalcEntry> };
+		followUpBonus?: number;
 		protectionBonus?: number;
 		resilienceBonus?: number;
 		bonusCharges?: { [s: string]: number };
@@ -157,6 +158,7 @@ declare global {
 		attackNote?: string;
 		attackBonus?: Array<CalcEntry>;
 		rangeBonus?: number;
+		range?: Array<number, number>;
 		critBonus?: Array<CalcEntry>;
 		dieCost?: { roll: number | Dice; target: number; mod?: number };
 		reason?: string;
@@ -165,6 +167,7 @@ declare global {
 		label: string;
 		description: string;
 		type: string;
+		isHealing?: boolean;
 		damage: Array<number | Dice>;
 		damageType?: Array<string>;
 		range: Array<number | string>;
@@ -180,6 +183,7 @@ declare global {
 	type PickOnePrompt = {
 		type: PickOnePromptType;
 		description?: string;
+		disableRandom?: boolean;
 		options: Array<PickOnePromptOption>;
 	};
 }
