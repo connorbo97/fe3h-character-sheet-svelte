@@ -395,9 +395,9 @@
 						? `${attackRoll} + ${attackMod} = ${attackRoll + attackMod}`
 						: '...'}
 				</div>
-				{#if attackRoll !== '' && allCombatArts.fullFeatures[selectedCombatArt]?.attackNote}
+				{#if attackRoll !== '' && allCombatArts.fullFeatures[selectedCombatArt]?.description}
 					<div class="combat-art-note">
-						{allCombatArts.fullFeatures[selectedCombatArt]?.attackNote}
+						{allCombatArts.fullFeatures[selectedCombatArt]?.description}
 					</div>
 				{/if}
 				{#if superiorityDieCost > 1}
