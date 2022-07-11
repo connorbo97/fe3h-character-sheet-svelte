@@ -140,7 +140,10 @@ export const rollVisualDice = (
 				submitReturn();
 			} else if (!rollHasFinished && !options?.disableRollOnCancel) {
 				const resultArray = dice.map((die: any) => rollCalc([die]));
-				resolve({ value: resultArray.reduce((acc: number, r: number) => acc + r), resultArray });
+				resolve({
+					value: resultArray.reduce((acc: number, r: number) => acc + r) + (options.modifier || 0),
+					resultArray
+				});
 			}
 		};
 
