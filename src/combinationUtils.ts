@@ -18,6 +18,7 @@ export const calculateAllWeapons = (fullSheet: CharacterSheet, equippedClass: st
 		fullSheet.unlockedClasses,
 		fullSheet.customWeapons,
 		fullSheet.classXP,
+		fullSheet.weaponXP,
 		equippedClass
 	);
 const calculateAllWeaponsMemoized = memoize(
@@ -25,6 +26,7 @@ const calculateAllWeaponsMemoized = memoize(
 		unlockedClasses: Array<string>,
 		customWeapons: object,
 		classXP: XPMap,
+		weaponXP: XPMap,
 		equippedClass: string
 	): AllWeapons => {
 		const baseSet = Array.from(TRAINING_WEAPONS_SET);
@@ -51,7 +53,50 @@ const calculateAllWeaponsMemoized = memoize(
 		equippedClassSet.delete('pickOne');
 		classUnlockSet.delete('pickOne');
 
-		const fullSet = new Set([...baseSet, ...customSet, ...equippedClassSet, ...classUnlockSet]);
+		// skills from weapon XP
+		const weaponXPLevelWeaponSet = Object.keys(weaponXP).reduce(
+			(acc: Set<string>, weaponType: string) => {
+				const { level: originalLevel } = weaponXP[weaponType] || {};
+				const levelFeatures = WEAPON_TYPES_TO_LEVEL_FEATURES[weaponType];
+				const level = originalLevel || WEAPON_LEVEL.E;
+
+				if (!level) {
+					return acc;
+				}
+
+				let end = Infinity;
+				const levelsToCheck = LEVEL_UP_ORDER.filter((curLvl, index) => {
+					if (level === curLvl) {
+						end = index;
+					}
+
+					return index <= end;
+				});
+
+				levelsToCheck.forEach((curLvl) => {
+					const curFeatures = levelFeatures[curLvl];
+
+					if (curFeatures.removes?.weapons) {
+						Object.keys(curFeatures.removes.weapons).forEach((skill) => acc.delete(skill));
+					}
+
+					if (curFeatures.unlocks?.weapons) {
+						Object.keys(curFeatures.unlocks.weapons).forEach((skill) => acc.add(skill));
+					}
+				});
+
+				return acc;
+			},
+			new Set()
+		);
+
+		const fullSet = new Set([
+			...baseSet,
+			...customSet,
+			...equippedClassSet,
+			...classUnlockSet,
+			...weaponXPLevelWeaponSet
+		]);
 		const customWeaponFeatures = Object.keys(customWeapons).reduce(
 			(acc: any, cur: any) => {
 				acc[cur] = { ...WEAPONS_TO_FEATURES[cur], ...acc[cur] };
