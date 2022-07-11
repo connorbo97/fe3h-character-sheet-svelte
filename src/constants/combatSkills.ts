@@ -70,7 +70,9 @@ export const COMBAT_SKILLS = {
 	LEADERSHIP_PROWESS_2: 'LEADERSHIP_PROWESS_2',
 	LEADERSHIP_PROWESS_3: 'LEADERSHIP_PROWESS_3',
 	LEADERSHIP_PROWESS_4: 'LEADERSHIP_PROWESS_4',
-	LEADERSHIP_PROWESS_5: 'LEADERSHIP_PROWESS_5'
+	LEADERSHIP_PROWESS_5: 'LEADERSHIP_PROWESS_5',
+
+	WEIGHT_MINUS_3: 'WEIGHT_MINUS_3'
 };
 export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 	MYRMIDON_MASTER: {
@@ -587,5 +589,10 @@ export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 		damageBonus: {
 			[WEAPON_TYPE.LEADERSHIP]: [2]
 		}
+	},
+	[COMBAT_SKILLS.WEIGHT_MINUS_3]: {
+		label: 'Heavy Lifter',
+		description: '+2 attack speed',
+		followUpBonus: 2
 	}
 };

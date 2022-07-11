@@ -135,7 +135,7 @@
 	$: selectedWeaponFollupMod = allWeapons.fullFeatures[selectedWeapon]?.followUpBonus || 0;
 	$: skillsFollowupMod = allCombatSkills.fullArray.reduce((acc, cur) => {
 		return acc + (allCombatSkills.fullFeatures[cur].followUpBonus || 0);
-	});
+	}, 0);
 	$: followUp = dexMod + selectedWeaponFollupMod + skillsFollowupMod;
 
 	const onTerrainModChange = (e: any) => {
