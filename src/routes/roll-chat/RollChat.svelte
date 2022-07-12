@@ -1,19 +1,5 @@
 <script lang="ts">
-	import {
-		collection,
-		onSnapshot,
-		query,
-		where,
-		addDoc,
-		orderBy,
-		Timestamp
-	} from 'firebase/firestore';
-	import { CONTEXTS } from 'src/constants';
-	import { addEntryToChat } from 'src/rollUtils';
-	import { getContext, onDestroy } from 'svelte';
 	import AttackEntry from './attackEntry.svelte';
-
-	const db: any = getContext(CONTEXTS.DB);
 
 	export let chatEntries: any;
 
@@ -38,7 +24,6 @@
 			}
 		}
 	}
-	$: console.log(chatEntries);
 </script>
 
 <div class="container">
@@ -69,9 +54,12 @@
 		row-gap: 5px;
 		flex-direction: column;
 		align-items: flex-end;
-		height: 100%;
+		height: calc(100% - 10px);
+		padding: 5px;
 	}
 	.scroll-container {
+		padding: 5px;
+		background-color: powderblue;
 		overflow: scroll;
 		border-radius: 5px;
 		border: 1px solid black;

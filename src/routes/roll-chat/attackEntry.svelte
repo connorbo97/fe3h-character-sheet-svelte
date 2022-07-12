@@ -39,7 +39,7 @@
 </script>
 
 <div class="container">
-	<u class="player">{playerName} ({attackName})</u>
+	<b class="player">{playerName} - {attackName}</b>
 	<div class="rolls">
 		{#if attackRoll !== undefined}
 			<div class="attack">Attack</div>
@@ -90,9 +90,12 @@
 	.container {
 		display: flex;
 		flex-direction: column;
+		background-color: bisque;
+		border-radius: 5px;
 	}
 	.player {
 		padding: 5px;
+		// border-bottom: 1px solid black;
 	}
 
 	.rolls {
