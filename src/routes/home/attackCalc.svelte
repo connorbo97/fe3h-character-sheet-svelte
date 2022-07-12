@@ -10,7 +10,7 @@
 
 	import { HEALING_MAGIC, WEAPONS, WEAPON_TO_TYPE } from 'src/constants/weapons';
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
-	import { getCritRangeText } from 'src/textUtils';
+	import { addNumberPrefix, getCritRangeText } from 'src/textUtils';
 	import {
 		checkHealPlus,
 		getModifierByPlayerStat,
@@ -285,7 +285,9 @@
 							<span>+ {attackDexModifier}<span class="source">(dex)</span></span>
 						{/if}
 						{#if weaponAttackModifier}
-							<span>+ {weaponAttackModifier}<span class="source">(weapon)</span></span>{/if}
+							<span>
+								{addNumberPrefix(weaponAttackModifier, true)}<span class="source">(weapon)</span>
+							</span>{/if}
 						{#if weaponArtAttackModifier.length}
 							<span>
 								+ {printCalc(weaponArtAttackModifier)}<span class="source">(combat art)</span>
