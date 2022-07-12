@@ -21,6 +21,9 @@
 	<button class={currentPage === 'HOME' ? 'active' : ''} on:click={() => onChangePage('HOME')}>
 		Home
 	</button>
+	<button class={currentPage === 'ROLLS' ? 'active' : ''} on:click={() => onChangePage('ROLLS')}>
+		Chat
+	</button>
 	<button class={currentPage === 'XP' ? 'active' : ''} on:click={() => onChangePage('XP')}
 		>Weapon XP</button
 	>

@@ -186,4 +186,16 @@ declare global {
 		disableRandom?: boolean;
 		options: Array<PickOnePromptOption>;
 	};
+
+	// Chat Stuff
+	type AttackEntry = {
+		playerName: string;
+		attackName: string;
+		attackRoll?: string;
+		critRoll?: string;
+		crestRoll?: string;
+		crestName?: string;
+		damageRoll?: string;
+		isHealWeapon?: boolean;
+	};
 }

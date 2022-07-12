@@ -29,6 +29,7 @@ export const WEAPONS = {
 	STEEL_GAUNTLETS: 'STEEL_GAUNTLETS',
 	CLOTH_GAUNTLETS: 'CLOTH_GAUNTLETS',
 
+	MIASMA: 'MIASMA',
 	FIRE: 'FIRE',
 	THUNDER: 'THUNDER',
 	WIND: 'WIND',
@@ -84,6 +85,7 @@ export const FIST_WEAPONS = [
 	WEAPONS.CLOTH_GAUNTLETS
 ];
 export const REASON_MAGIC = [
+	WEAPONS.MIASMA,
 	WEAPONS.FIRE,
 	WEAPONS.THUNDER,
 	WEAPONS.BLIZZARD,
@@ -336,6 +338,17 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		dieCost: { roll: 1, target: 0, mult: 0 }
 	},
 
+	[WEAPONS.MIASMA]: {
+		label: 'Miasma',
+		description: '',
+		type: WEAPON_TYPE.REASON,
+		damage: [Dice.d2, 1],
+		damageType: [PLAYER_STAT.INT],
+		attackBonus: -1,
+		followUpBonus: -1,
+		range: [1, 2],
+		uses: 10
+	},
 	[WEAPONS.FIRE]: {
 		label: 'Fire',
 		description: '',

@@ -3,9 +3,10 @@
 </svelte:head> -->
 <script lang="ts">
 	var exports = {};
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount, setContext } from 'svelte';
 
 	import {
+		CONTEXTS,
 		DEFAULT_DICE_OPTIONS,
 		DEFAULT_PLAYER_SKILL_BONUSES,
 		DEFAULT_PLAYER_SKILL_PROFICIENCY,
@@ -29,6 +30,43 @@
 	import { CLASS } from 'src/constants/classes';
 	import DiceEditor from './dice-editor/diceEditor.svelte';
 	import SheetManager from './sheet-manager/sheetManager.svelte';
+
+	import { initializeApp } from 'firebase/app';
+	import {
+		getFirestore,
+		collection,
+		onSnapshot,
+		query,
+		where,
+		Timestamp,
+		orderBy,
+		doc,
+		getDoc,
+		getDocs
+	} from 'firebase/firestore';
+	import RollChat from './roll-chat/RollChat.svelte';
+
+	// TODO: Replace the following with your app's Firebase project configuration
+	// See: https://firebase.google.com/docs/web/learn-more#config-object
+	const firebaseConfig = {
+		apiKey: 'AIzaSyBds7SmknRyVNwc5XTC6TvFzQoR_ACsLTo',
+		authDomain: 'fe3h-sheet.firebaseapp.com',
+		projectId: 'fe3h-sheet',
+		storageBucket: 'fe3h-sheet.appspot.com',
+		messagingSenderId: '149307616871',
+		appId: '1:149307616871:web:1038f39d161deeb9372ec2'
+	};
+	// Initialize Firebase
+	const app = initializeApp(firebaseConfig);
+	const ONE_MINUTE = 1000 * 60;
+	const FIVE_MINUTES = ONE_MINUTE * 5;
+	const ONE_DAY = ONE_MINUTE * 60 * 24;
+	const now = new Date(Date.now() - ONE_DAY);
+
+	// Initialize Cloud Firestore and get a reference to the service
+	const db = getFirestore(app);
+
+	setContext(CONTEXTS.DB, db);
 
 	const defaultSheet: CharacterSheet = {
 		playerStats: DEFAULT_PLAYER_STAT,
@@ -59,6 +97,33 @@
 
 	let curSheet = 'sheet';
 	let otherSheetNames: Array<string> = [];
+	const baseTime = Date.now();
+	let chatEntries: any = [];
+
+	const q = query(
+		collection(db, 'lobby', 'taboola', 'rolls'),
+		where('date', '>', Timestamp.fromDate(now)),
+		orderBy('date')
+	);
+
+	const unsubscribe = onSnapshot(q, (querySnapshot) => {
+		const res: Array<any> = [];
+
+		querySnapshot.forEach((doc) => {
+			res.push(doc.data());
+		});
+
+		chatEntries = res;
+		// if (!scrolledToBottom.current) {
+		// 	scrolledToBottom.current = true;
+		// 	// window.requestAnimationFrame(() => {
+		// 	// 	chat.scrollTop = chat.scrollHeight;
+		// 	// });
+		// }
+	});
+	onDestroy(() => {
+		unsubscribe();
+	});
 
 	$: playerStats = fullSheet.playerStats;
 	$: playerSkillProficiency = fullSheet.playerSkills;
@@ -163,6 +228,8 @@
 		} else if (curVal === SkillProficiency.PROFICIENT) {
 			newVal = SkillProficiency.EXPERT;
 		} else if (curVal === SkillProficiency.EXPERT) {
+			newVal = SkillProficiency.AWFUL;
+		} else if (curVal === SkillProficiency.AWFUL) {
 			newVal = SkillProficiency.NONE;
 		}
 
@@ -251,6 +318,9 @@
 		href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Ibarra+Real+Nova:wght@400;500;700&display=swap"
 		rel="stylesheet"
 	/>
+	<link rel="icon" type="image/x-icon" href="/favicon.jpg" />
+
+	<title>{name}</title>
 </svelte:head>
 <div class={`${ready ? '' : 'no-clicks'} container`}>
 	{#if ready}
@@ -336,6 +406,11 @@
 						<SheetManager {onAddSheet} {otherSheetNames} {curSheet} {onChangeCurSheet} />
 					{/if}
 				</div>
+				<div class={currentPage === 'ROLLS' ? '' : 'invisible'}>
+					{#if currentPage === 'ROLLS'}
+						<RollChat {chatEntries} />
+					{/if}
+				</div>
 			</div>
 		</Modal>
 	{/if}
@@ -365,6 +440,12 @@
 					background-color: #a3a3a3;
 				}
 			}
+
+			select {
+				border-radius: 10px;
+				// &:focus-visible {
+				// }
+			}
 		}
 
 		// button {
@@ -379,7 +460,6 @@
 		grid-template-columns: 1fr;
 
 		height: 100vh;
-		overflow: hidden;
 	}
 	.header {
 		grid-area: header;

@@ -87,7 +87,8 @@ export const PLAYER_SKILL_TO_LABEL = {
 export enum SkillProficiency {
 	NONE = 0,
 	PROFICIENT = 1,
-	EXPERT = 2
+	EXPERT = 2,
+	AWFUL = -2
 }
 export const getTextFromSkillProficiency = (curVal) => {
 	if (curVal === undefined || curVal === SkillProficiency.NONE) {
@@ -96,5 +97,7 @@ export const getTextFromSkillProficiency = (curVal) => {
 		return 'proficient';
 	} else if (curVal === SkillProficiency.EXPERT) {
 		return 'expert';
+	} else {
+		return 'awful';
 	}
 };

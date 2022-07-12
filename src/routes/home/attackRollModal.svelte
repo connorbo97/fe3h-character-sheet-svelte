@@ -1,12 +1,13 @@
 <script lang="ts">
 	import SvelteTip from 'src/common/SvelteTip.svelte';
+	import { CONTEXTS } from 'src/constants';
 	import { COMBAT_ARTS_TO_FEATURES } from 'src/constants/combatArts';
 
 	import { CRESTS_TO_FEATURES, CRESTS_TO_LABELS } from 'src/constants/crests';
 	import { Dice } from 'src/constants/dice';
 	import { TooltipStyle } from 'src/constants/enums';
 	import { HEALING_MAGIC, MAGIC_WEAPONS } from 'src/constants/weapons';
-	import { checkCalcRequiresRoll } from 'src/rollUtils';
+	import { addEntryToChat, checkCalcRequiresRoll } from 'src/rollUtils';
 	import {
 		classBuilder,
 		copyToClipboard,
@@ -16,6 +17,9 @@
 		rollDice,
 		rollVisualDice
 	} from 'src/utils';
+	import { getContext } from 'svelte';
+
+	const db = getContext(CONTEXTS.DB);
 
 	export let playerName: any;
 
@@ -59,6 +63,7 @@
 	let crestDamageRoll: any = '';
 
 	let critRoll: any = '';
+	let critMultiplier = 1;
 
 	let crestRoll: any = '';
 
@@ -126,6 +131,7 @@
 		} else {
 			critRoll = rollDice(20);
 		}
+		critMultiplier = critRoll >= 20 - critModifier ? (critRoll === 20 ? 3 : 2) : 1;
 	};
 	$: getCrestDamageRollText = () => {
 		if (crestDamage.length) {
@@ -166,7 +172,6 @@
 	$: weaponLabel = allWeapons.fullFeatures[selectedWeapon]?.label;
 	$: headerLabel = `${weaponLabel}` + combatArtLabel;
 	$: didCrit = critRoll >= 20 - critModifier;
-	$: critMultiplier = didCrit ? (critRoll === 20 ? 3 : 2) : 1;
 	$: baseDamageRoll = parseInt(damageRoll) + parseInt(crestDamageRoll || 0);
 	$: baseDamageRollText = `${didCrit ? '(' : ''}${damageRollText}${
 		crestDamageRoll ? ` + ${crestDamageRoll}(crest)` : ''
@@ -314,8 +319,37 @@
 			}
 			await onDamageRoll();
 		} catch (err) {
+			console.error(err);
 			alert('wait until all rolls have finished');
 		}
+
+		const entry: any = {
+			playerName,
+			attackName: headerLabel
+		};
+
+		if (attackRoll !== '') {
+			entry.attackRoll = attackRoll + attackMod;
+		}
+
+		if (critRoll !== '') {
+			entry.critRoll =
+				critRoll >= 20 - critModifier ? `CRIT${critRoll === 20 ? '(20)' : ''}` : '--';
+		}
+
+		if (crestRoll !== '') {
+			entry.crestName = CRESTS_TO_LABELS[crestType] || '';
+			entry.crestRoll = crestRoll >= crestDC ? `ACTIVATED` : '--';
+		}
+
+		if (damageRoll !== '') {
+			entry.damageRoll = (parseInt(damageRoll) + parseInt(crestDamageRoll || 0)) * critMultiplier;
+			if (isHealWeapon) {
+				entry.isHealWeapon = true;
+			}
+		}
+
+		addEntryToChat(db, entry);
 
 		if (weaponCostModifier !== 0) {
 			onUpdateWeaponUses(selectedWeapon, -1 * weaponCostModifier);
@@ -581,9 +615,8 @@
 		}
 	}
 
-	.damage {
-		flex: 2;
-	}
+	// .damage {
+	// }
 
 	.cs {
 		color: green;
