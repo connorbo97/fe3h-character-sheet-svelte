@@ -21,6 +21,8 @@
 
 	let lastResolvedScroll = -1;
 
+	let spoilersOn = false;
+
 	$: {
 		chatEntries;
 		if (chat && lastResolvedScroll !== chatEntries?.length) {
@@ -44,18 +46,10 @@
 		<h1>Roll Chat (total entries: {chatEntries?.length || '-'})</h1>
 	</div>
 
-	<button
-		on:click={() => {
-			addEntryToChat(db, {
-				attackRoll: '123',
-				damageRoll: '456',
-				crestRoll: '789',
-				critRoll: '098'
-			});
-		}}
-	>
-		click to add
-	</button>
+	<div>
+		<span>Hide Damage Initially?</span>
+		<input type="checkbox" bind:checked={spoilersOn} />
+	</div>
 
 	<div class="scroll-container" bind:this={chat} id="test">
 		{#if !chatEntries}
@@ -63,7 +57,7 @@
 		{/if}
 		{#if chatEntries}
 			{#each chatEntries as entry, i}
-				<AttackEntry {entry} />
+				<AttackEntry {entry} {spoilersOn} />
 			{/each}
 		{/if}
 	</div>

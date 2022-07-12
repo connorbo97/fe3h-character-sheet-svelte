@@ -1,5 +1,8 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	export let entry: AttackEntry;
+	export let spoilersOn: boolean;
 	const {
 		playerName = 'No Name',
 		attackRoll,
@@ -10,12 +13,35 @@
 		isHealWeapon,
 		attackName
 	} = entry;
+
+	let spoilerOn;
+
+	$: getSpoilerLeft = () => {
+		const attackRollMissing = attackRoll === undefined;
+		const numToHide = (critRoll ? 1 : 0) + (crestRoll ? 1 : 0) + (damageRoll !== undefined ? 1 : 0);
+		if (attackRollMissing) {
+			return '0';
+		}
+
+		if (numToHide === 1) {
+			return '50%';
+		} else if (numToHide === 2) {
+			return '33%';
+		} else {
+			return '25%';
+		}
+	};
+
+	onMount(() => {
+		spoilerOn = spoilersOn;
+	});
+	$: spoilerLeftPos = spoilersOn ? getSpoilerLeft() : 0;
 </script>
 
 <div class="container">
 	<u class="player">{playerName} ({attackName})</u>
 	<div class="rolls">
-		{#if attackRoll}
+		{#if attackRoll !== undefined}
 			<div class="attack">Attack</div>
 		{/if}
 		{#if critRoll}
@@ -24,22 +50,38 @@
 		{#if crestRoll}
 			<div class="Crest">Crest of {crestName || ''}</div>
 		{/if}
-		{#if damageRoll}
+		{#if damageRoll !== undefined}
 			<div class="Damage">{isHealWeapon ? 'HP Restored' : 'Damage'}</div>
 		{/if}
 	</div>
 	<div class="result">
-		{#if attackRoll}
+		{#if attackRoll !== undefined}
 			<div class="attack">{attackRoll}</div>
 		{/if}
-		{#if critRoll}
-			<div class="Crit">{critRoll}</div>
+		{#if spoilerOn}
+			{#if critRoll}
+				<div />
+			{/if}
+			{#if crestRoll}
+				<div />
+			{/if}
+			{#if damageRoll !== undefined}
+				<div />
+			{/if}
+			<div class="spoiler" style:left={spoilerLeftPos} on:click={() => (spoilerOn = false)}>
+				Click to reveal
+			</div>
 		{/if}
-		{#if crestRoll}
-			<div class="Crest">{crestRoll}</div>
-		{/if}
-		{#if damageRoll}
-			<div class="Damage">{damageRoll}</div>
+		{#if !spoilerOn}
+			{#if critRoll}
+				<div class="Crit">{critRoll}</div>
+			{/if}
+			{#if crestRoll}
+				<div class="Crest">{crestRoll}</div>
+			{/if}
+			{#if damageRoll !== undefined}
+				<div class="Damage">{damageRoll}</div>
+			{/if}
 		{/if}
 	</div>
 </div>
@@ -82,6 +124,7 @@
 		background-color: lightyellow;
 		border-radius: 5px;
 		text-align: center;
+		position: relative;
 		> * {
 			display: flex;
 			justify-content: center;
@@ -117,5 +160,18 @@
 		// 	// .combat-art-note {
 		// 	// 	color: #7dbff0;
 		// 	// }
+	}
+
+	.spoiler {
+		color: white;
+		background-color: black;
+		position: absolute;
+		inset: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		// .text {
+		// }
 	}
 </style>
