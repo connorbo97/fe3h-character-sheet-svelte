@@ -188,6 +188,11 @@
 
 		rollsRemaining = newRolls;
 	};
+
+	let focusedRow = { i: -1, weaponSide: true };
+	const focusGenerator = (i, weaponSide) => () => {
+		focusedRow = { i, weaponSide };
+	};
 </script>
 
 <div class="container">
@@ -204,11 +209,15 @@
 				<div slot="t">The stat that will be added when doing XP rolls.</div>
 			</SvelteTip>
 			<span />
-			{#each Object.keys(WEAPON_TYPE) as type}
+			{#each Object.keys(WEAPON_TYPE) as type, i}
 				{@const curXP = weaponXP[type]?.total || 0}
 				{@const curLevel = weaponXP[type]?.level || WEAPON_LEVEL.E}
 				{@const maxXP = WEAPON_LEVEL_TO_MAX_XP[curLevel]}
-				<div class="label">{WEAPON_TYPE_TO_LABEL[type]}</div>
+				<div
+					class={classBuilder('label', { focused: focusedRow.i === i && focusedRow.weaponSide })}
+				>
+					{WEAPON_TYPE_TO_LABEL[type]}
+				</div>
 				<div class="xp-bar">
 					<div class="fill" style:right={`${((maxXP - curXP) / maxXP) * 100.0}%`}>
 						<span>{`${curXP} / ${maxXP}`}</span>
@@ -218,11 +227,20 @@
 					<div class="prompt">XP to Add</div>
 					<input
 						type="number"
+						on:mouseover={focusGenerator(i, true)}
+						on:mouseleave={focusGenerator(-1, true)}
+						on:focus={focusGenerator(i, true)}
 						on:change={(e) => onWeaponXPChangeFromInput(e, { curLevel, curXP, maxXP, type })}
 					/>
 				</div>
 				{#key resetInputs}
-					<select name="weapon_level" on:change={(e) => onWeaponChangeLevel(e, { type, curLevel })}>
+					<select
+						name="weapon_level"
+						on:change={(e) => onWeaponChangeLevel(e, { type, curLevel })}
+						on:mouseover={focusGenerator(i, true)}
+						on:mouseleave={focusGenerator(-1, true)}
+						on:focus={focusGenerator(i, true)}
+					>
 						{#each Object.keys(WEAPON_LEVEL) as level}
 							<option value={WEAPON_LEVEL[level]} selected={curLevel === level}>
 								{WEAPON_LEVEL_TO_LABEL[level]}</option
@@ -235,6 +253,9 @@
 						on:change={(e) => {
 							statPerWeaponType = { ...statPerWeaponType, [type]: e.currentTarget.value };
 						}}
+						on:mouseover={focusGenerator(i, true)}
+						on:mouseleave={focusGenerator(-1, true)}
+						on:focus={focusGenerator(i, true)}
 					>
 						{#each WEAPON_TYPE_TO_STAT[type] as stat}
 							<option value={stat} selected={statPerWeaponType[type] === stat}
@@ -251,7 +272,12 @@
 				<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER} tooltipPositionerStyle="z-index: 100">
 					<button
 						disabled={rollsRemaining <= 0}
-						on:click={() => rollXP({ curLevel, curXP, maxXP, type })}>Roll</button
+						on:click={() => rollXP({ curLevel, curXP, maxXP, type })}
+						on:mouseover={focusGenerator(i, true)}
+						on:mouseleave={focusGenerator(-1, true)}
+						on:focus={focusGenerator(i, true)}
+					>
+						Roll</button
 					>
 					<div slot="t">
 						<div>Roll for your lecture:</div>
@@ -320,7 +346,7 @@
 		<span />
 		<span />
 		<span />
-		{#each unlockedClasses as curClass}
+		{#each unlockedClasses as curClass, i}
 			{@const curXP = classXP[curClass]?.total || 0}
 			{@const maxXP = BEGINNER_CLASSES.has(curClass)
 				? BEGINNER_MASTERY_REQ
@@ -328,7 +354,9 @@
 				? INTERMEDIATE_MASTERY_REQ
 				: 10000}
 			{@const mastered = classXP[curClass]?.mastered}
-			<div class="label">{CLASS_TO_LABEL[curClass]}</div>
+			<div class={classBuilder('label', { focused: focusedRow.i === i && !focusedRow.weaponSide })}>
+				{CLASS_TO_LABEL[curClass]}
+			</div>
 			<div class="xp-bar">
 				<div
 					class={`fill ${mastered ? 'mastered' : ''}`}
@@ -341,6 +369,9 @@
 				<div class="prompt">XP to Add</div>
 				<input
 					type="number"
+					on:mouseover={focusGenerator(i, false)}
+					on:mouseleave={focusGenerator(-1, false)}
+					on:focus={focusGenerator(i, false)}
 					on:change={(e) => {
 						let parsedValue = parseInt(e.currentTarget.value);
 
@@ -439,5 +470,9 @@
 
 	.great-already {
 		color: orange;
+	}
+
+	.focused {
+		color: red;
 	}
 </style>
