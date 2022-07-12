@@ -11,6 +11,7 @@
 	import { CONTEXTS } from 'src/constants';
 	import { addEntryToChat } from 'src/rollUtils';
 	import { getContext, onDestroy } from 'svelte';
+	import AttackEntry from './attackEntry.svelte';
 
 	const db: any = getContext(CONTEXTS.DB);
 
@@ -62,13 +63,7 @@
 		{/if}
 		{#if chatEntries}
 			{#each chatEntries as entry, i}
-				<div>
-					<span>Attack: {entry.attackRoll}</span>
-					<span>Crest: {entry.crestRoll}</span>
-					<span>Crit: {entry.critRoll}</span>
-					<span>Damage: {entry.damageRoll}</span>
-					<span>Date: {new Date(entry.date?.seconds * 1000)}</span>
-				</div>
+				<AttackEntry {entry} />
 			{/each}
 		{/if}
 	</div>
@@ -84,9 +79,15 @@
 	}
 	.scroll-container {
 		overflow: scroll;
-		background-color: lightskyblue;
 		border-radius: 5px;
+		border: 1px solid black;
 		width: 50%;
 		flex: 1;
+
+		display: flex;
+		flex-direction: column;
+		row-gap: 15px;
+
+		margin-bottom: 30px;
 	}
 </style>
