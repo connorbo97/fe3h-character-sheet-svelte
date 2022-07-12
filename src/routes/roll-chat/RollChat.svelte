@@ -12,53 +12,36 @@
 	import { addEntryToChat } from 'src/rollUtils';
 	import { getContext, onDestroy } from 'svelte';
 
-	const ONE_MINUTE = 1000 * 60;
-	const FIVE_MINUTES = ONE_MINUTE * 5;
-	const ONE_DAY = ONE_MINUTE * 60 * 24;
-
 	const db: any = getContext(CONTEXTS.DB);
 
-	const now = new Date(Date.now() - ONE_DAY);
-	let rolls;
+	export let chatEntries: any;
+
 	let chat;
-	let chatEntries: any = [];
 
-	let scrolledToBottom = { current: false };
-
-	const q = query(
-		collection(db, 'lobby', 'taboola', 'rolls'),
-		where('date', '>', Timestamp.fromDate(now)),
-		orderBy('date')
-	);
-
-	const unsubscribe = onSnapshot(q, (querySnapshot) => {
-		const newRolls: Array<any> = [];
-
-		querySnapshot.forEach((doc) => {
-			newRolls.push(doc.data());
-		});
-
-		rolls = newRolls;
-		if (!scrolledToBottom.current) {
-			scrolledToBottom.current = true;
-			window.requestAnimationFrame(() => {
-				chat.scrollTop = chat.scrollHeight;
-			});
-		}
-	});
-	onDestroy(() => {
-		unsubscribe();
-	});
+	let lastResolvedScroll = -1;
 
 	$: {
-		if (chat) {
-			chat.scrollTop = chat.scrollHeight;
+		chatEntries;
+		if (chat && lastResolvedScroll !== chatEntries?.length) {
+			const scrolledToBottom =
+				Math.abs(chat?.scrollHeight - chat?.scrollTop - chat?.clientHeight) < 1;
+			if (scrolledToBottom || lastResolvedScroll === -1) {
+				window.requestAnimationFrame(() => {
+					chat.scrollTop = chat.scrollHeight;
+					lastResolvedScroll = chatEntries.length;
+				});
+			} else {
+				lastResolvedScroll = chatEntries.length;
+			}
 		}
 	}
+	$: console.log(chatEntries);
 </script>
 
 <div class="container">
-	<h1>Roll Chat (total entries: {rolls?.length || '-'})</h1>
+	<div style:width="100%">
+		<h1>Roll Chat (total entries: {chatEntries?.length || '-'})</h1>
+	</div>
 
 	<button
 		on:click={() => {
@@ -74,17 +57,17 @@
 	</button>
 
 	<div class="scroll-container" bind:this={chat} id="test">
-		{#if !rolls}
+		{#if !chatEntries}
 			<div>Loading</div>
 		{/if}
-		{#if rolls}
-			{#each rolls as roll, i}
-				<div bind:this={chatEntries[i]}>
-					<span>Attack: {roll.attackRoll}</span>
-					<span>Crest: {roll.crestRoll}</span>
-					<span>Crit: {roll.critRoll}</span>
-					<span>Damage: {roll.damageRoll}</span>
-					<span>Date: {new Date(roll.date.seconds * 1000)}</span>
+		{#if chatEntries}
+			{#each chatEntries as entry, i}
+				<div>
+					<span>Attack: {entry.attackRoll}</span>
+					<span>Crest: {entry.crestRoll}</span>
+					<span>Crit: {entry.critRoll}</span>
+					<span>Damage: {entry.damageRoll}</span>
+					<span>Date: {new Date(entry.date?.seconds * 1000)}</span>
 				</div>
 			{/each}
 		{/if}
@@ -92,11 +75,18 @@
 </div>
 
 <style lang="scss">
+	.container {
+		display: flex;
+		row-gap: 5px;
+		flex-direction: column;
+		align-items: flex-end;
+		height: 100%;
+	}
 	.scroll-container {
-		height: 100px;
 		overflow: scroll;
 		background-color: lightskyblue;
 		border-radius: 5px;
-		width: 33%;
+		width: 50%;
+		flex: 1;
 	}
 </style>

@@ -3,7 +3,7 @@
 </svelte:head> -->
 <script lang="ts">
 	var exports = {};
-	import { onMount, setContext } from 'svelte';
+	import { onDestroy, onMount, setContext } from 'svelte';
 
 	import {
 		CONTEXTS,
@@ -38,6 +38,8 @@
 		onSnapshot,
 		query,
 		where,
+		Timestamp,
+		orderBy,
 		doc,
 		getDoc,
 		getDocs
@@ -56,6 +58,10 @@
 	};
 	// Initialize Firebase
 	const app = initializeApp(firebaseConfig);
+	const ONE_MINUTE = 1000 * 60;
+	const FIVE_MINUTES = ONE_MINUTE * 5;
+	const ONE_DAY = ONE_MINUTE * 60 * 24;
+	const now = new Date(Date.now() - ONE_DAY);
 
 	// Initialize Cloud Firestore and get a reference to the service
 	const db = getFirestore(app);
@@ -92,24 +98,31 @@
 	let curSheet = 'sheet';
 	let otherSheetNames: Array<string> = [];
 	const baseTime = Date.now();
-	const q = query(collection(db, 'lobby'));
+	let chatEntries: any = [];
 
-	let rolls: any = [];
+	const q = query(
+		collection(db, 'lobby', 'taboola', 'rolls'),
+		where('date', '>', Timestamp.fromDate(now)),
+		orderBy('date')
+	);
 
-	// const docRef = query(collection(db, 'lobby'), where('label', '==', 'howdy'));
-	// getDocs(docRef).then((docs) => {
-	// 	docs.forEach((d) => {
-	// 		console.log(d.data());
-	// 	});
-	// });
-	onSnapshot(q, (querySnapshot) => {
-		// const newRolls: Array<any> = [];
+	const unsubscribe = onSnapshot(q, (querySnapshot) => {
+		const res: Array<any> = [];
+
 		querySnapshot.forEach((doc) => {
-			// newRolls.push(doc.data());
-			console.log(doc.id);
+			res.push(doc.data());
 		});
-		// console.log(rolls);
-		// rolls = [...rolls, ...rolls];
+
+		chatEntries = res;
+		// if (!scrolledToBottom.current) {
+		// 	scrolledToBottom.current = true;
+		// 	// window.requestAnimationFrame(() => {
+		// 	// 	chat.scrollTop = chat.scrollHeight;
+		// 	// });
+		// }
+	});
+	onDestroy(() => {
+		unsubscribe();
 	});
 
 	$: playerStats = fullSheet.playerStats;
@@ -393,7 +406,7 @@
 				</div>
 				<div class={currentPage === 'ROLLS' ? '' : 'invisible'}>
 					{#if currentPage === 'ROLLS'}
-						<RollChat />
+						<RollChat {chatEntries} />
 					{/if}
 				</div>
 			</div>
