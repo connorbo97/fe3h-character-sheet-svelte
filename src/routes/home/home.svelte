@@ -199,8 +199,6 @@
 		grid-area: classes;
 		display: flex;
 		flex-direction: column;
-
-		overflow: hidden;
 	}
 
 	.rest {

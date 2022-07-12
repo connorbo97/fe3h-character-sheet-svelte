@@ -438,6 +438,12 @@
 					background-color: #a3a3a3;
 				}
 			}
+
+			select {
+				border-radius: 10px;
+				// &:focus-visible {
+				// }
+			}
 		}
 
 		// button {
@@ -452,7 +458,6 @@
 		grid-template-columns: 1fr;
 
 		height: 100vh;
-		overflow: hidden;
 	}
 	.header {
 		grid-area: header;
