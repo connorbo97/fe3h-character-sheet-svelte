@@ -615,9 +615,8 @@
 		}
 	}
 
-	.damage {
-		flex: 2;
-	}
+	// .damage {
+	// }
 
 	.cs {
 		color: green;
