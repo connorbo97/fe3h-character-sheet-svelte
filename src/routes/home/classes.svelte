@@ -103,14 +103,17 @@
 		<div class="classes-container">
 			{#each Array.from(INTERMEDIATE_CLASSES) as targetClass}
 				<div class="class-container">
-					<button
-						class={classBuilder({
-							mastered: masteredClasses.includes(targetClass),
-							active: classSet?.has(targetClass),
-							'not-active': classSet?.has(targetClass)
-						})}
-						on:click={() => onToggleClassActive(targetClass)}
-					/>
+					<SvelteTip disabled={!masteredClasses.includes(targetClass)}>
+						<button
+							class={classBuilder({
+								mastered: masteredClasses.includes(targetClass),
+								active: classSet?.has(targetClass),
+								'not-active': classSet?.has(targetClass)
+							})}
+							on:click={() => onToggleClassActive(targetClass)}
+						/>
+						<div slot="t">Mastered</div>
+					</SvelteTip>
 					<div class={`class-label`}>
 						{CLASS_TO_LABEL[targetClass]}
 					</div>
@@ -167,6 +170,6 @@
 		background-color: #51bf51;
 	}
 	.mastered {
-		background-color: lightskyblue;
+		background-color: rgb(197, 64, 197);
 	}
 </style>

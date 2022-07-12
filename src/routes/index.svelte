@@ -103,14 +103,8 @@
 			} catch (err) {
 				console.error(err);
 			}
-		}
-
-		if (lsSheet) {
-			try {
-				fullSheet = { ...defaultSheet, ...JSON.parse(lsSheet) };
-			} catch (err) {
-				console.error(err);
-			}
+		} else {
+			fullSheet = { ...defaultSheet, playerName: sheetName };
 		}
 	};
 
@@ -118,6 +112,7 @@
 		curSheet = sheetName;
 		resetEquipped();
 		loadSheet(sheetName);
+		localStorage.setItem(curSheet, JSON.stringify(fullSheet));
 	};
 
 	onMount(() => {
