@@ -45,7 +45,8 @@ export const DEFAULT_PROTECTION = 0;
 export const DEFAULT_RESILIENCE = 0;
 
 export const CONTEXTS = {
-	MODAL: 'simple-modal'
+	MODAL: 'simple-modal',
+	DB: 'db'
 };
 
 export const DEFAULT_DICE_OPTIONS = {

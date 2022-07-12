@@ -1,5 +1,7 @@
 import { Dice } from './constants/dice';
 import { addNumberPrefix } from './textUtils';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
+
 export const isDice = (d) => Object.values(Dice).includes(d);
 
 export const getDiceFaces = (d: Dice) => parseInt(d.split('d')[1]);
@@ -246,5 +248,12 @@ export const rollVisualDice = (
 
 		window.diceBoxContainer.style.pointerEvents = 'auto';
 		window.diceBoxContainer.addEventListener('click', onClearDiceRoll, { once: true });
+	});
+};
+
+export const addEntryToChat = (db, chatObj) => {
+	return addDoc(collection(db, 'lobby', 'taboola', 'rolls'), {
+		...chatObj,
+		date: Timestamp.now()
 	});
 };
