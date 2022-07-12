@@ -22,7 +22,7 @@
 		Home
 	</button>
 	<button class={currentPage === 'ROLLS' ? 'active' : ''} on:click={() => onChangePage('ROLLS')}>
-		Roller
+		Chat
 	</button>
 	<button class={currentPage === 'XP' ? 'active' : ''} on:click={() => onChangePage('XP')}
 		>Weapon XP</button
