@@ -19,7 +19,7 @@
 
 	$: skillBonusMod = skillBonus[skill] || 0;
 	$: skillProficiencyMod =
-		skillProficiency[skill] > SkillProficiency.NONE
+		skillProficiency[skill] !== SkillProficiency.NONE && skillProficiency[skill] !== undefined
 			? PROFICIENCY_BONUS * (skillProficiency[skill] || 1)
 			: 0;
 	$: skillStat = PLAYER_SKILL_TO_STAT[skill];
@@ -85,6 +85,9 @@
 
 	.expert {
 		background-color: #51bf51;
+	}
+	.awful {
+		background-color: red;
 	}
 	.proficient {
 		background-color: blue;

@@ -228,6 +228,8 @@
 		} else if (curVal === SkillProficiency.PROFICIENT) {
 			newVal = SkillProficiency.EXPERT;
 		} else if (curVal === SkillProficiency.EXPERT) {
+			newVal = SkillProficiency.AWFUL;
+		} else if (curVal === SkillProficiency.AWFUL) {
 			newVal = SkillProficiency.NONE;
 		}
 
