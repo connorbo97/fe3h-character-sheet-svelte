@@ -179,7 +179,7 @@
 		{/if}
 	</div>
 	<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
-		<div slot="t">
+		<div slot="t" class="tooltip">
 			{`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${acSkillBonus} (combat skill bonus) + ${selectedWeaponAcBonus} (selected weapon) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
 		</div>
 		<div class="ac-value">
@@ -308,5 +308,9 @@
 		justify-content: center;
 		align-items: center;
 		white-space: nowrap;
+	}
+
+	.tooltip {
+		white-space: break-spaces;
 	}
 </style>
