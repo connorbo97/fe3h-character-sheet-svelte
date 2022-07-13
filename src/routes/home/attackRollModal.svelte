@@ -679,6 +679,7 @@
 		font-size: 20px;
 		flex: 1;
 		background-color: rgb(114, 203, 114);
+		align-self: stretch;
 	}
 
 	.disabled {
