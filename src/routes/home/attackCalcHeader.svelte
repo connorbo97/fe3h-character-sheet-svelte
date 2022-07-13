@@ -64,11 +64,11 @@
 				</select>
 			{/key}
 		</div>
-		<div class="description">
+		<!-- <div class="description">
 			{weaponsToFeatures[selectedWeapon]
 				? getWeaponDescription(weaponsToFeatures[selectedWeapon])
 				: ''}
-		</div>
+		</div> -->
 	</div>
 	<div class="entry">
 		{#if combatArtsOptions.length > 0}
@@ -91,22 +91,22 @@
 					</select>
 				{/key}
 			</div>
-			<div class="description">
+			<!-- <div class="description">
 				{COMBAT_ARTS_TO_FEATURES[selectedCombatArt]
 					? getCombatArtsDescription(COMBAT_ARTS_TO_FEATURES[selectedCombatArt], {
 							disableDescription: true
 					  })
 					: ''}
-			</div>
+			</div> -->
 		{/if}
 	</div>
 </div>
 
 <style lang="scss">
 	.container {
-		border: 1px solid black;
-		border-radius: 5px;
+		border-radius: 1px;
 		padding: 5px;
+		background-color: #dfd6c2;
 
 		display: flex;
 		justify-content: space-between;
@@ -122,6 +122,7 @@
 	}
 	.selection {
 		display: flex;
+		align-items: center;
 		column-gap: 5px;
 		select {
 			flex: 1;
