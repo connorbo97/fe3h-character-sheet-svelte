@@ -43,25 +43,23 @@
 </script>
 
 <div class="container">
-	<div class="header">
-		<CategoryHeader>
-			<div slot="content" class="header">
-				<span>Combat Arts</span>
-				<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
-					<span
-						on:click={() =>
-							equippedCombatArts.forEach((w) => {
-								onToggleCombatArts(w);
-							})}
-					>
-						({equippedCombatArts.length}/{MAX_COMBAT_ARTS})
-					</span>
-					<div slot="t">Click to Clear All</div>
-				</SvelteTip>
-				<button on:click={openAddPrompt}> + </button>
-			</div>
-		</CategoryHeader>
-	</div>
+	<CategoryHeader>
+		<div slot="content" class="header">
+			<span>Combat Arts</span>
+			<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
+				<span
+					on:click={() =>
+						equippedCombatArts.forEach((w) => {
+							onToggleCombatArts(w);
+						})}
+				>
+					({equippedCombatArts.length}/{MAX_COMBAT_ARTS})
+				</span>
+				<div slot="t">Click to Clear All</div>
+			</SvelteTip>
+			<button on:click={openAddPrompt}> + </button>
+		</div>
+	</CategoryHeader>
 	<div class="divider" />
 	{#each allCombatArts.fullArray as art}
 		<CombatArtsEntry
