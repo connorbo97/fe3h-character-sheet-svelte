@@ -101,6 +101,6 @@
 		}
 	}
 	.divider {
-		height: 13px;
+		height: 11px;
 	}
 </style>
