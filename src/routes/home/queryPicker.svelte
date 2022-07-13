@@ -11,7 +11,7 @@
 			<div class="prompt">{query.prompt}</div>
 			<div class="selection">
 				<select
-					class={selectedOption !== query.options[0] ? 'selected' : ''}
+					class={selections && selectedOption !== query.options[0] ? 'selected' : ''}
 					name={query.prompt}
 					on:change={(e) => {
 						onUpdateQuerySelection(query.key, query.options[parseInt(e?.currentTarget?.value)]);
@@ -46,13 +46,13 @@
 		flex-direction: column;
 		align-items: center;
 		background-color: #dfd6c2;
-		padding: 3px;
 	}
 	.prompt {
 		background-color: #59506b;
 		color: white;
 		padding-left: 2px;
 		padding-right: 2px;
+		align-self: stretch;
 	}
 	.selected {
 		background-color: lightpink;
@@ -64,5 +64,6 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		padding: 3px;
 	}
 </style>
