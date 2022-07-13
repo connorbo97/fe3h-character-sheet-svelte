@@ -263,7 +263,7 @@
 </script>
 
 <div class="outer">
-	<div class={classBuilder('container', { 'no-queries': !queries?.length })}>
+	<div class={classBuilder('container', { 'no-queries': !queries?.length || showModal })}>
 		<AttackCalcHeader
 			{damageTypeSelection}
 			{weaponsToFeatures}
@@ -416,7 +416,7 @@
 					<button
 						class="reset"
 						on:click={() => {
-							selections = {};
+							selections = undefined;
 						}}>Reset Queries</button
 					>
 				</div>
@@ -472,7 +472,7 @@
 			grid-template-rows: min-content 1fr;
 		}
 
-		grid-template-rows: min-content min-content 1fr;
+		grid-template-rows: min-content 1fr 1fr;
 		grid-template-columns: 1fr min-content;
 		row-gap: 5px;
 		height: calc(100% - 20px);

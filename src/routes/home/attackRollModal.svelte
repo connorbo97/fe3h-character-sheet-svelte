@@ -301,7 +301,7 @@
 				roll = 0,
 				target = 1,
 				mult = 1
-			} = allWeapons.fullFeatures[selectedWeapon].dieCost || {};
+			} = allWeapons.fullFeatures[selectedWeapon]?.dieCost || {};
 			superiorityDieCost = calcBaseDieCost() * (rollCalc([roll]) >= target ? mult : 1);
 
 			if (!isHealWeapon && critModifier >= 0) {
