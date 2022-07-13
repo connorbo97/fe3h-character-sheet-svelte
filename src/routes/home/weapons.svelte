@@ -1,4 +1,5 @@
 <script lang="ts">
+	import CategoryHeader from 'src/common/categoryHeader.svelte';
 	import {
 		AXE_WEAPONS,
 		BOW_WEAPONS,
@@ -98,18 +99,21 @@
 </script>
 
 <div class="container">
+	<CategoryHeader label="Weapons" />
 	<div class="actions" style:white-space="nowrap">
-		<u>Martial Weapons</u>
+		<span>Martial Weapons</span>
 		<div class="superiority-die">
 			<span>Superiority Dies:</span>
 			<input
-				style:width="50px"
+				style:width="25px"
 				type="number"
-				class={curSuperiorityDies <= 0
-					? 'bad'
-					: curSuperiorityDies <= Math.ceil(maxSuperiorityDie / 3)
-					? 'danger'
-					: ''}
+				class={`die-input ${
+					curSuperiorityDies <= 0
+						? 'bad'
+						: curSuperiorityDies <= Math.ceil(maxSuperiorityDie / 3)
+						? 'danger'
+						: ''
+				}`}
 				value={curSuperiorityDies}
 				on:change={(e) => {
 					const newValue = parseInt(e.currentTarget.value);
@@ -121,11 +125,14 @@
 					}
 				}}
 			/>
+			<span>/ {maxSuperiorityDie}</span>
 		</div>
 		<button on:click={() => setCurSuperiorityDie(maxSuperiorityDie)}>Reset Superiority Dice</button>
 		<button on:click={() => (spellUseFlag += 1)}>Reset Spell Uses</button>
 		<button on:click={resetEquippedWeapons}>Unequip all weapons</button>
 	</div>
+	<div class="divider" style:height="2px" />
+	<div class="divider" />
 	<div class="martial-weapons">
 		{#if unlockedSwords.length}
 			<div class="category">
@@ -270,13 +277,15 @@
 			</div>
 		{/if}
 	</div>
-	<span style:display="flex">
-		<u style:flex="1">Magic Weapons</u>
+	<div class="actions" style:white-space="nowrap">
+		<span style:flex="1">Magic Weapons</span>
 		<button on:click={promptNewMartialWeapon} style:margin-right="5px"
 			>Add new martial weapon</button
 		>
 		<button on:click={promptNewMagicWeapon}>Add new magic weapon</button>
-	</span>
+	</div>
+	<div class="divider" style:height="2px" />
+	<div class="divider" />
 	<div class="magic-weapons">
 		{#if reasonEntries.length || faithEntries.length}
 			<div class="magic-category">
@@ -307,17 +316,30 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		background-color: powderblue;
-		padding: 10px;
 		position: relative;
+		background-color: #dfd6c2;
 
 		column-gap: 5px;
-		height: calc(100% - 20px);
+		height: 100%;
 	}
 	.actions {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 		column-gap: 5px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+
+		font-size: 15px;
+
+		> button {
+			padding: 2px;
+		}
+	}
+	.divider {
+		height: 1px;
+		background-color: #7c7562;
+		margin-bottom: 2px;
 	}
 
 	.superiority-die {
@@ -331,7 +353,6 @@
 		display: flex;
 		justify-content: space-between;
 
-		border-bottom: 1px solid black;
 		flex: 1;
 		height: 100%;
 	}
@@ -353,11 +374,10 @@
 		.category {
 			display: grid;
 			flex-direction: column;
-			grid-template-columns: repeat(4, 1fr);
+			grid-template-columns: repeat(5, 1fr);
 			grid-auto-rows: max-content;
 
 			column-gap: 5px;
-			row-gap: 5px;
 		}
 	}
 
@@ -365,15 +385,11 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-		&:not(:last-child) {
-			border-right: 1px solid black;
-		}
 		padding: 5px;
 	}
 	.category-container {
 		display: flex;
 		flex-direction: column;
-		row-gap: 5px;
 	}
 
 	.danger {
@@ -385,5 +401,10 @@
 	.min-width {
 		min-width: 33%;
 		flex: 0;
+	}
+
+	.die-input {
+		background-color: transparent;
+		border: 1px solid gray;
 	}
 </style>

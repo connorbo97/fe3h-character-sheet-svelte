@@ -216,10 +216,6 @@
 		display: grid;
 		grid-area: 'cStats' 'attack';
 		grid-template-rows: min-content 1fr;
-
-		border: 3px solid black;
-		border-radius: 5px;
-		border-bottom: 0;
 	}
 
 	.weapons {

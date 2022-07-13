@@ -150,41 +150,44 @@
 </script>
 
 <div class="container">
-	{#if !equippedClass || equippedWeapons?.length !== MAX_WEAPONS_EQUIPPED || equippedCombatSkills?.length !== MAX_COMBAT_SKILLS || equippedCombatArts?.length !== MAX_COMBAT_ARTS}
-		<SvelteTip tooltipStyle={TooltipStyle.CENTER} hiddenFirst>
-			<div slot="t" class="warning-tooltip">
-				{#if !equippedClass}
-					<u>No Equipped Class</u>
-				{/if}
-				{#if equippedWeapons?.length !== MAX_WEAPONS_EQUIPPED}
-					<u>Max Weapons not Equipped</u>
-				{/if}
-				{#if equippedCombatSkills?.length !== MAX_COMBAT_SKILLS}
-					<u>Max Combat Skills not Equipped</u>
-				{/if}
-				{#if equippedCombatArts?.length !== MAX_COMBAT_ARTS}
-					<u>Max Combat Arts not Equipped</u>
-				{/if}
-			</div>
-			<div class="warning-container"><span class="warning">!</span></div>
-		</SvelteTip>
-	{/if}
-
+	<span class="label" style:border-left-width="0" />
+	<span class="label">AC</span>
+	<span class="label">MS</span>
+	<span class="label">HP Max</span>
+	<span class="label">AS</span>
+	<span class="label">Prt</span>
+	<span class="label" style:border-right-width="0">Res</span>
+	<div style:border-left-width="0">
+		{#if !equippedClass || equippedWeapons?.length !== MAX_WEAPONS_EQUIPPED || equippedCombatSkills?.length !== MAX_COMBAT_SKILLS || equippedCombatArts?.length !== MAX_COMBAT_ARTS}
+			<SvelteTip tooltipStyle={TooltipStyle.CENTER} hiddenFirst>
+				<div slot="t" class="warning-tooltip">
+					{#if !equippedClass}
+						<u>No Equipped Class</u>
+					{/if}
+					{#if equippedWeapons?.length !== MAX_WEAPONS_EQUIPPED}
+						<u>Max Weapons not Equipped</u>
+					{/if}
+					{#if equippedCombatSkills?.length !== MAX_COMBAT_SKILLS}
+						<u>Max Combat Skills not Equipped</u>
+					{/if}
+					{#if equippedCombatArts?.length !== MAX_COMBAT_ARTS}
+						<u>Max Combat Arts not Equipped</u>
+					{/if}
+				</div>
+				<div class="warning-container"><span class="warning">!</span></div>
+			</SvelteTip>
+		{/if}
+	</div>
 	<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
 		<div slot="t">
 			{`AC = ${DEFAULT_ARMOR_CLASS} + ${dexMod} (dex modifier) + ${dodgeRate} (class bonus) + ${acSkillBonus} (combat skill bonus) + ${selectedWeaponAcBonus} (selected weapon) + ${weaponBonus} (weapon bonus) + ${terrainMod}(terrain mod)`}
 		</div>
-		<div
-			style:flex="0"
-			style:display="flex"
-			style:flex-direction="column"
-			style:justify-content="center"
-		>
-			<div class="big-text">
-				AC: {ac}
-			</div>
+		<div class="ac-value">
+			<span class="big-text">
+				{ac} +
+			</span>
 			<div class="terrain-container">
-				<div>Terrain:</div>
+				<div>Terrain</div>
 				<input type="number" value={terrainMod} on:input={onTerrainModChange} />
 			</div>
 		</div>
@@ -194,7 +197,7 @@
 			{`Move Speed = ${DEFAULT_MOVEMENT_SPEED} + ${equippedClassMovementBonus} (from class) + ${skillMovementBonus} (from combat skills)`}
 		</div>
 		<div class="big-text skinny">
-			MS: {ms}
+			{ms}
 		</div>
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
@@ -202,7 +205,7 @@
 			{`HP Max = ${DEFAULT_MAX_HP} + ${unlockedClassHpBonus} (from unlocked classes) + ${intermediateClassHpBonus} (from unlocking an intermediate class) + ${skillHPBonus} (from combat skills) + ${conMod} (CON modifier * 2)`}
 		</div>
 		<div class="big-text skinny" style:flex="0">
-			HP Max: {hpMax}
+			{hpMax}
 		</div>
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
@@ -210,7 +213,7 @@
 			{`Attack Speed = ${dexMod} (dex modifier) + ${selectedWeaponFollupMod} (selected weapon) + ${skillsFollowupMod} (skills)`}
 		</div>
 		<div class="big-text">
-			AS: {followUp}
+			{followUp}
 		</div>
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
@@ -218,7 +221,7 @@
 			{`Protection = ${DEFAULT_PROTECTION} + ${unlockedClassProtectionBonus} (from unlocked classes) + ${intermediateClassProtectionBonus} (from unlocking an intermediate martial class) + ${equippedClassProtectionBonus} (from equipped class) + ${skillProtectionBonus} (from skills)`}
 		</div>
 		<div class="big-text">
-			Prt: {protections}
+			{protections}
 		</div>
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END} hiddenFirst>
@@ -226,43 +229,46 @@
 			{`Resilience = ${DEFAULT_RESILIENCE} + ${unlockedClassResilienceBonus} (from unlocked classes) + ${intermediateClassResilienceBonus} (from unlocking an intermediate magic class) + ${equippedClassResilienceBonus} (from equipped class) + ${skillResilienceBonus} (from skills)`}
 		</div>
 		<div class="big-text">
-			Res: {resilience}
+			{resilience}
 		</div>
 	</SvelteTip>
 </div>
 
 <style lang="scss">
 	.container {
-		flex: 1;
-		background-color: rgb(157, 178, 116);
-		padding: 10px;
-
-		display: flex;
-		flex-direction: row;
-		align-items: center;
+		display: grid;
+		grid-template-columns: min-content repeat(6, 1fr);
+		grid-template-rows: min-content min-content;
+		background-color: #dfd6c2;
 
 		> * {
-			width: 100%;
-			padding: 10px;
-			text-align: center;
-			height: 40px;
-			display: flex;
-			justify-content: center;
-			align-items: center;
+			border: 2px solid black;
+			border-right: 0;
+			border-bottom-width: 0;
+			padding-bottom: 0;
 		}
-		> *:not(:last-child) {
-			border-right: 1px solid black;
-		}
+	}
+	.label {
+		background-color: #574d65;
+		text-align: center;
+		color: white;
 	}
 
 	.big-text {
 		font-size: 25px;
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.terrain-container {
 		display: flex;
-		flex: 1;
+		flex-direction: column;
 		justify-content: center;
+		align-items: center;
+		margin-left: 5px;
+		margin-bottom: 3px;
 		input {
 			width: 30px;
 		}
@@ -276,19 +282,31 @@
 	}
 
 	.warning-container {
-		flex: 0;
+		width: 30px;
+		background-color: red;
+		height: 30px;
+		border-radius: 100%;
+		text-align: center;
+		padding: 5px;
+		margin: 5px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		.warning {
 			font-weight: bold;
 			font-size: 30px;
-			background-color: red;
-			border-radius: 100%;
-			padding: 5px 18px;
-			flex: 0;
 		}
 	}
 
 	.warning-tooltip {
 		display: flex;
 		flex-direction: column;
+	}
+
+	.ac-value {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		white-space: nowrap;
 	}
 </style>
