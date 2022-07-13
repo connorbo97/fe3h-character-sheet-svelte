@@ -19,13 +19,13 @@
 	.label {
 		color: white;
 		text-shadow: 1px 1px black;
-		background-image: linear-gradient(to right, #868182, 75%, transparent);
+		background-image: linear-gradient(to right, #6f567d, 90%, transparent);
 		padding: 2px;
 	}
 	.divider {
 		margin-top: 1px;
 		height: 1px;
-		background-image: linear-gradient(to right, #bbb9ad, 75%, transparent);
+		background-image: linear-gradient(to right, #bbb9ad, 85%, transparent);
 		border-radius: 1px;
 	}
 </style>
