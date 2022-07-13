@@ -482,17 +482,11 @@
 			border-radius: 0 1px 1px 0;
 		}
 	}
-	.attack-roll-container {
-		background-color: lightgray;
-		border-radius: 5px;
-		padding: 5px;
-	}
 
 	.calcs {
 		display: grid;
 		grid-template-columns: 1fr min-content;
 		background-color: #dfd6c2;
-		border-radius: 1px 0 0 1px;
 		padding: 5px;
 		> h2 {
 			font-size: 20px;
