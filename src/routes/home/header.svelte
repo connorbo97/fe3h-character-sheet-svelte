@@ -47,17 +47,35 @@
 
 <style lang="scss">
 	.container {
-		height: 50px;
-
 		display: flex;
 		justify-content: space-between;
+		align-items: stretch;
+		background-color: #dfd6c2;
+		height: 100%;
 
 		column-gap: 10px;
+
+		> button {
+			background-color: rgb(65, 17, 99);
+			border: 3px solid transparent;
+			color: white;
+			box-shadow: none;
+			display: flex;
+			align-items: center;
+			&:hover {
+				border-color: rgb(129, 82, 158);
+			}
+		}
 	}
 
 	.name {
 		flex: 1;
 		font-size: 20px;
+		text-align: left;
+		line-height: 43px;
+		background-color: rgb(235, 234, 229);
+		font-family: cursive;
+		font-size: 33px;
 	}
 
 	.active {

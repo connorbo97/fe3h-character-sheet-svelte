@@ -251,8 +251,9 @@ export const rollVisualDice = (
 	});
 };
 
+export const getChatMonth = () => new Date().toISOString().slice(0, 8).replace(/-/g, '');
 export const addEntryToChat = (db, chatObj) => {
-	return addDoc(collection(db, 'lobby', 'taboola', 'rolls'), {
+	return addDoc(collection(db, 'lobby', 'taboola', getChatMonth()), {
 		...chatObj,
 		date: Timestamp.now()
 	});

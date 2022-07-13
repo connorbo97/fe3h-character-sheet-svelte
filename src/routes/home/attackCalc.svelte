@@ -263,7 +263,7 @@
 </script>
 
 <div class="outer">
-	<div class={classBuilder('container', { 'no-queries': !queries?.length || showModal })}>
+	<div class={classBuilder('container')}>
 		<AttackCalcHeader
 			{damageTypeSelection}
 			{weaponsToFeatures}
@@ -405,22 +405,6 @@
 					</div>
 				{/if}
 			</div>
-			<div class="rolls">
-				<button style:height={'100%'} on:click={onOpenAttackModal} disabled={!selectedWeapon}
-					>ATTACK</button
-				>
-			</div>
-			{#if queries.length > 0}
-				<div class="options">
-					<EntryPicker {queries} {selections} {onUpdateQuerySelection} />
-					<button
-						class="reset"
-						on:click={() => {
-							selections = undefined;
-						}}>Reset Queries</button
-					>
-				</div>
-			{/if}
 		{/if}
 		{#if showModal}
 			<div class="attack-roll-container">
@@ -449,6 +433,24 @@
 				/>
 			</div>
 		{/if}
+		{#if !showModal}
+			<div class="rolls">
+				<button style:height={'100%'} on:click={onOpenAttackModal} disabled={!selectedWeapon}
+					>ATTACK</button
+				>
+			</div>
+		{/if}
+		{#if queries.length > 0}
+			<div class="options">
+				<EntryPicker {queries} {selections} {onUpdateQuerySelection} />
+				<button
+					class="reset"
+					on:click={() => {
+						selections = undefined;
+					}}>Reset Queries</button
+				>
+			</div>
+		{/if}
 	</div>
 </div>
 
@@ -465,14 +467,14 @@
 			'rolls buttons'
 			'picks picks';
 
-		&.no-queries {
-			grid-template-areas:
-				'header header'
-				'rolls buttons';
-			grid-template-rows: min-content 1fr;
-		}
+		// &.no-queries {
+		// 	grid-template-areas:
+		// 		'header header'
+		// 		'rolls buttons';
+		// 	grid-template-rows: min-content 1fr;
+		// }
 
-		grid-template-rows: min-content 1fr 1fr;
+		grid-template-rows: min-content 1fr min-content;
 		grid-template-columns: 1fr min-content;
 		row-gap: 5px;
 		height: calc(100% - 20px);

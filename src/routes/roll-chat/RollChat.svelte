@@ -1,13 +1,22 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
+	import Index from '../index.svelte';
 	import AttackEntry from './attackEntry.svelte';
 
 	export let chatEntries: any;
+	export let spoilersOn: any;
+	export let toggleSpoilersOn: any;
+	export let alreadyRevealed: any;
+	export let setAlreadyRevealed: any;
 
 	let chat;
 
 	let lastResolvedScroll = -1;
+	let mounted = false;
 
-	let spoilersOn = false;
+	let firstBeep;
+	let beepAudio = new Audio('beep.ogg');
 
 	$: {
 		chatEntries;
@@ -24,6 +33,18 @@
 			}
 		}
 	}
+
+	onMount(() => {
+		mounted = true;
+		firstBeep = chatEntries.length;
+	});
+	$: {
+		if (mounted) {
+			if (firstBeep !== chatEntries.length) {
+				beepAudio.play();
+			}
+		}
+	}
 </script>
 
 <div class="container">
@@ -33,7 +54,7 @@
 
 	<div>
 		<span>Hide Damage Initially?</span>
-		<input type="checkbox" bind:checked={spoilersOn} />
+		<input type="checkbox" checked={spoilersOn !== Infinity} on:click={toggleSpoilersOn} />
 	</div>
 
 	<div class="scroll-container" bind:this={chat} id="test">
@@ -42,7 +63,12 @@
 		{/if}
 		{#if chatEntries}
 			{#each chatEntries as entry, i}
-				<AttackEntry {entry} {spoilersOn} />
+				<AttackEntry
+					{entry}
+					spoilersOn={spoilersOn !== Infinity && i >= spoilersOn && alreadyRevealed[i] !== true}
+					index={i}
+					{setAlreadyRevealed}
+				/>
 			{/each}
 		{/if}
 	</div>
@@ -59,7 +85,7 @@
 	}
 	.scroll-container {
 		padding: 5px;
-		background-color: powderblue;
+		background-color: #eae8da;
 		overflow: scroll;
 		border-radius: 5px;
 		border: 1px solid black;

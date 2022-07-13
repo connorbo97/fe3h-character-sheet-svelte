@@ -3,6 +3,8 @@
 
 	export let entry: AttackEntry;
 	export let spoilersOn: boolean;
+	export let setAlreadyRevealed;
+	export let index;
 	const {
 		playerName = 'No Name',
 		attackRoll,
@@ -68,7 +70,14 @@
 			{#if damageRoll !== undefined}
 				<div />
 			{/if}
-			<div class="spoiler" style:left={spoilerLeftPos} on:click={() => (spoilerOn = false)}>
+			<div
+				class="spoiler"
+				style:left={spoilerLeftPos}
+				on:click={() => {
+					spoilerOn = false;
+					setAlreadyRevealed(index);
+				}}
+			>
 				Click to reveal
 			</div>
 		{/if}
@@ -87,11 +96,28 @@
 </div>
 
 <style lang="scss">
+	@keyframes fadein {
+		0% {
+			opacity: 0;
+			width: 0;
+		}
+
+		50% {
+			width: 100%;
+		}
+
+		100% {
+			opacity: 1;
+		}
+	}
 	.container {
 		display: flex;
 		flex-direction: column;
-		background-color: bisque;
-		border-radius: 5px;
+		background-color: #362c49;
+		border: 1px solid black;
+		color: white;
+		border-radius: 5px 5px 0 0;
+		animation: fadein 2s forwards alternate;
 	}
 	.player {
 		padding: 5px;
@@ -102,7 +128,8 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		background-color: bisque;
+		background-color: #362c49;
+		color: white;
 		border-radius: 5px 5px 0 0;
 		text-align: center;
 		> * {
@@ -114,10 +141,6 @@
 			&:not(:last-child) {
 				border-right: 1px solid black;
 			}
-
-			// > * {
-			// 	flex: 1;
-			// }
 		}
 	}
 	.result {
@@ -125,7 +148,7 @@
 		flex-direction: row;
 		justify-content: space-between;
 		background-color: lightyellow;
-		border-radius: 5px;
+		color: black;
 		text-align: center;
 		position: relative;
 		> * {
@@ -140,29 +163,6 @@
 
 			min-height: 50px;
 		}
-		// 	.attack {
-		// 	// .crit {
-		// 	// 	display: flex;
-		// 	// 	flex-direction: column;
-		// 	// 	row-gap: 5px;
-		// 	// }
-
-		// 	// .crest {
-		// 	// 	display: flex;
-		// 	// 	flex-direction: column;
-		// 	// 	justify-content: center;
-		// 	// 	align-items: center;
-
-		// 	// 	row-gap: 5px;
-
-		// 	// 	text-align: center;
-		// 	// 	.description {
-		// 	// 		font-size: 12px;
-		// 	// 	}
-		// 	// }
-		// 	// .combat-art-note {
-		// 	// 	color: #7dbff0;
-		// 	// }
 	}
 
 	.spoiler {

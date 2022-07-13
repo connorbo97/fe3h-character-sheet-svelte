@@ -45,6 +45,7 @@
 		getDocs
 	} from 'firebase/firestore';
 	import RollChat from './roll-chat/RollChat.svelte';
+	import { getChatMonth } from 'src/rollUtils';
 
 	// TODO: Replace the following with your app's Firebase project configuration
 	// See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -101,7 +102,7 @@
 	let chatEntries: any = [];
 
 	const q = query(
-		collection(db, 'lobby', 'taboola', 'rolls'),
+		collection(db, 'lobby', 'taboola', getChatMonth()),
 		where('date', '>', Timestamp.fromDate(now)),
 		orderBy('date')
 	);
@@ -308,6 +309,18 @@
 		otherSheetNames = [...otherSheetNames, name];
 		localStorage.setItem('otherSheetNames', JSON.stringify(otherSheetNames));
 	};
+	let spoilersOn = Infinity;
+	$: toggleSpoilersOn = () => {
+		if (spoilersOn === Infinity) {
+			spoilersOn = chatEntries.length;
+		} else {
+			spoilersOn = Infinity;
+		}
+	};
+	let alreadyRevealed = {};
+	const setAlreadyRevealed = (i) => {
+		alreadyRevealed[i] = true;
+	};
 </script>
 
 <svelte:head>
@@ -408,7 +421,13 @@
 				</div>
 				<div class={currentPage === 'ROLLS' ? '' : 'invisible'}>
 					{#if currentPage === 'ROLLS'}
-						<RollChat {chatEntries} />
+						<RollChat
+							{chatEntries}
+							{spoilersOn}
+							{toggleSpoilersOn}
+							{alreadyRevealed}
+							{setAlreadyRevealed}
+						/>
 					{/if}
 				</div>
 			</div>
@@ -458,6 +477,7 @@
 			'content';
 		grid-template-rows: 50px calc(100vh - 50px);
 		grid-template-columns: 1fr;
+		background-color: #dfd6c2;
 
 		height: 100vh;
 	}
