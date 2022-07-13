@@ -45,6 +45,7 @@
 		getDocs
 	} from 'firebase/firestore';
 	import RollChat from './roll-chat/RollChat.svelte';
+	import { getChatMonth } from 'src/rollUtils';
 
 	// TODO: Replace the following with your app's Firebase project configuration
 	// See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -101,7 +102,7 @@
 	let chatEntries: any = [];
 
 	const q = query(
-		collection(db, 'lobby', 'taboola', 'rolls'),
+		collection(db, 'lobby', 'taboola', getChatMonth()),
 		where('date', '>', Timestamp.fromDate(now)),
 		orderBy('date')
 	);
