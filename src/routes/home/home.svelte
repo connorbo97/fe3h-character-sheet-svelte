@@ -179,7 +179,7 @@
 	.container {
 		display: grid;
 		grid-template-areas: 'stats skills classes arts rest';
-		grid-template-columns: min-content 205px 160px 180px 1fr;
+		grid-template-columns: min-content 195px 160px 180px 1fr;
 		grid-template-rows: 100%;
 
 		height: calc(100%);

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import CategoryHeader from 'src/common/categoryHeader.svelte';
 	import PickOnePrompt from 'src/common/pickOnePrompt.svelte';
 	import SvelteTip from 'src/common/SvelteTip.svelte';
 
@@ -6,6 +7,7 @@
 	import { CLASS_TO_FEATURES } from 'src/constants/classes';
 	import { classBuilder } from 'src/textUtils';
 	import { getContext } from 'svelte';
+	import ClassesEntry from './classesEntry.svelte';
 
 	const { open } = getContext(CONTEXTS.MODAL);
 
@@ -69,32 +71,21 @@
 </script>
 
 <div class="container">
-	<u>Classes</u>
+	<CategoryHeader label="Classes" />
 	<div class="category">
 		<div class="label">Beginner</div>
 		<div class="classes-container">
 			{#each Array.from(BEGINNER_CLASSES) as targetClass}
-				<div class="class-container">
-					<SvelteTip disabled={!masteredClasses.includes(targetClass)}>
-						<button
-							class={classBuilder({
-								mastered: masteredClasses.includes(targetClass),
-								active: classSet?.has(targetClass),
-								'not-active': classSet?.has(targetClass)
-							})}
-							on:click={() => onToggleClassActive(targetClass)}
-						/>
-
-						<div slot="t">Mastered</div>
-					</SvelteTip>
-					<div class={`class-label`}>
-						{CLASS_TO_LABEL[targetClass]}
-					</div>
-					<button
-						class={equippedClass === targetClass ? 'equipped' : ''}
-						on:click={() => onToggleEquipClass(targetClass)}
-					/>
-				</div>
+				{@const isMastered = masteredClasses.includes(targetClass)}
+				{@const isUnlocked = classSet?.has(targetClass)}
+				<ClassesEntry
+					{isMastered}
+					{isUnlocked}
+					{onToggleClassActive}
+					{onToggleEquipClass}
+					{targetClass}
+					{equippedClass}
+				/>
 			{/each}
 		</div>
 	</div>
@@ -102,26 +93,16 @@
 		<div class="label">Intermediate</div>
 		<div class="classes-container">
 			{#each Array.from(INTERMEDIATE_CLASSES) as targetClass}
-				<div class="class-container">
-					<SvelteTip disabled={!masteredClasses.includes(targetClass)}>
-						<button
-							class={classBuilder({
-								mastered: masteredClasses.includes(targetClass),
-								active: classSet?.has(targetClass),
-								'not-active': classSet?.has(targetClass)
-							})}
-							on:click={() => onToggleClassActive(targetClass)}
-						/>
-						<div slot="t">Mastered</div>
-					</SvelteTip>
-					<div class={`class-label`}>
-						{CLASS_TO_LABEL[targetClass]}
-					</div>
-					<button
-						class={equippedClass === targetClass ? 'equipped' : ''}
-						on:click={() => onToggleEquipClass(targetClass)}
-					/>
-				</div>
+				{@const isMastered = masteredClasses.includes(targetClass)}
+				{@const isUnlocked = classSet?.has(targetClass)}
+				<ClassesEntry
+					{isMastered}
+					{isUnlocked}
+					{onToggleClassActive}
+					{onToggleEquipClass}
+					{targetClass}
+					{equippedClass}
+				/>
 			{/each}
 		</div>
 	</div>
@@ -132,8 +113,8 @@
 		display: flex;
 		flex-direction: column;
 
-		background-color: powderblue;
-		padding: 5px;
+		background-color: #dfd6c2;
+		border-left: 1px solid grey;
 
 		row-gap: 10px;
 		height: 100%;
@@ -142,34 +123,9 @@
 		border-right: 1px solid gray;
 	}
 
-	.label {
-		font-weight: bold;
-	}
-
 	.classes-container {
 		display: flex;
 		flex-direction: column;
-		row-gap: 5px;
-	}
-	.class-container {
-		display: flex;
-		align-items: center;
-		column-gap: 5px;
-		> button {
-			height: 20px;
-		}
-	}
-	.class-label {
-		flex: 1;
-	}
-
-	.active {
-		background-color: blue;
-	}
-	.equipped {
-		background-color: #51bf51;
-	}
-	.mastered {
-		background-color: rgb(197, 64, 197);
+		row-gap: 2px;
 	}
 </style>

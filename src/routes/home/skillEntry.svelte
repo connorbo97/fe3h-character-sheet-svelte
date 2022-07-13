@@ -72,6 +72,9 @@
 	.container {
 		display: flex;
 		column-gap: 3px;
+		background-color: #eae8da;
+		border: 1px solid #c9c6bb;
+		padding: 4px;
 		> button {
 			cursor: pointer;
 		}
