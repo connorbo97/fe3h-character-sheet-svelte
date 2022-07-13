@@ -67,6 +67,20 @@
 
 	let crestRoll: any = '';
 
+	$: {
+		selectedWeapon;
+
+		attackRoll = '';
+		attackMod = '';
+		damageRoll = '';
+		damageRollText = '';
+		crestDamageRoll = '';
+		crestDamageRoll = '';
+		critRoll = '';
+		critMultiplier = 1;
+		crestRoll = '';
+	}
+
 	$: isHealWeapon = HEALING_MAGIC.has(selectedWeapon);
 	$: calcBaseDieCost = () => {
 		const combatArtDieCost = COMBAT_ARTS_TO_FEATURES[selectedCombatArt]?.dieCost;
@@ -363,7 +377,6 @@
 
 <div class="container">
 	<div class="actions">
-		<b> {headerLabel} </b>
 		<button
 			disabled={attackRoll === ''}
 			on:click={() => {
@@ -384,10 +397,9 @@
 		>
 		<button on:click={() => copyToClipboard(getRoll20Text())}>Copy Attack Command</button>
 		<!-- <div style:display="flex" style:flex="1" style:justify-content="flex-end"> -->
-		<button style:flex="1" on:click={onCloseModal}>Back</button>
+		<button style:flex="1" on:click={onCloseModal}>Back to Breakdown</button>
 		<!-- </div> -->
 	</div>
-	<div class="divider" />
 	<div class="content">
 		<div class="rolls-container">
 			<div class="rolls">
@@ -506,10 +518,10 @@
 				<div class="damage" style:flex-direction="column">
 					{#if damageRoll}
 						<div class="damage-text">
-							<span class={classBuilder({ mini: baseDamageRollText !== damageRoll })}>
+							<span class={classBuilder({ mini: parseInt(baseDamageRollText) !== damageRoll })}>
 								{baseDamageRollText}
 							</span>
-							{#if baseDamageRollText !== damageRoll}
+							{#if parseInt(baseDamageRollText) !== damageRoll}
 								<span class="final-damage">= {finalDamageRoll}</span>
 							{/if}
 						</div>
@@ -524,14 +536,16 @@
 		<div class="attack-button-container">
 			<button
 				on:click={() => onRollAll().then(() => copyToClipboard(getRoll20ResultText()))}
-				disabled={rollDisabled}
-				class={classBuilder('attack-button', { disabled: rollDisabled })}
+				disabled={rollDisabled || !selectedWeapon}
+				class={classBuilder('attack-button', { disabled: rollDisabled || !selectedWeapon })}
 			>
 				{rollDisabled
 					? curWeaponUses <= 0
 						? 'Out of weapon uses'
 						: 'Out of Superiority Dies'
-					: 'Roll Attack'}
+					: selectedWeapon
+					? 'Roll Attack'
+					: 'Select a weapon'}
 			</button>
 			<span>
 				<span>Roll visual dice?</span>
@@ -555,17 +569,24 @@
 
 	.content {
 		display: flex;
-		align-items: flex-start;
 		flex: 1;
 	}
 	.rolls-container {
 		flex: 1;
+		display: flex;
+		flex-direction: column;
 	}
 	.actions {
 		display: flex;
 		column-gap: 10px;
 		align-items: center;
 		padding: 5px;
+
+		font-size: 15px;
+
+		> button {
+			font-size: 12px;
+		}
 	}
 	.rolls {
 		display: flex;
@@ -580,7 +601,7 @@
 			align-items: center;
 			row-gap: 5px;
 			flex: 1;
-			padding: 10px;
+			padding: 2px;
 			&:not(:last-child) {
 				border-right: 1px solid black;
 			}
@@ -596,17 +617,17 @@
 		justify-content: space-between;
 		background-color: lightyellow;
 		text-align: center;
+		flex: 1;
 		> * {
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			flex: 1;
 			padding: 10px;
+			font-size: 20px;
 			&:not(:last-child) {
 				border-right: 1px solid black;
 			}
-
-			min-height: 50px;
 		}
 		.attack,
 		.crit {
@@ -649,6 +670,7 @@
 		flex-direction: column;
 		row-gap: 5px;
 		align-self: stretch;
+		align-items: center;
 	}
 
 	.attack-button {
