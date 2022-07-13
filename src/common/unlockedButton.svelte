@@ -30,6 +30,10 @@
 		box-sizing: content-box;
 		border: 1px solid transparent;
 
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
 		cursor: pointer;
 	}
 
