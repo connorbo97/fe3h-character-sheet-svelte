@@ -19,6 +19,7 @@
 	import { getContext } from 'svelte';
 	import SvelteTip from 'src/common/SvelteTip.svelte';
 	import { ActivationRates } from 'src/constants/crests';
+	import CategoryHeader from 'src/common/categoryHeader.svelte';
 
 	const { open } = getContext(CONTEXTS.MODAL);
 
@@ -62,6 +63,7 @@
 </script>
 
 <div class="container">
+	<CategoryHeader label={'Stats'} />
 	{#each Object.keys(stats) as stat}
 		<div class="stat-container">
 			<button class="label" on:click={() => onPlayerStatRoll(stat)}>
@@ -138,8 +140,7 @@
 		background-color: #dfd6c2;
 		border-right: 1px solid rgba(gray, 0.6);
 
-		padding: 5px;
-		padding-top: 15px;
+		// padding-top: 35px;
 		height: calc(100% - 20px);
 	}
 	.stat-container {
@@ -149,6 +150,7 @@
 		row-gap: 5px;
 		background-color: #eae8da;
 		border: 1px solid #786c54;
+		margin: 5px;
 
 		text-align: center;
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import UnlockedButton from 'src/common/unlockedButton.svelte';
 	import { PROFICIENCY_BONUS } from 'src/constants';
 	import { Dice } from 'src/constants/dice';
 
@@ -33,9 +34,14 @@
 </script>
 
 <div class="container">
-	<button
-		class={getTextFromSkillProficiency(skillProficiency[skill])}
-		on:click={() => onToggleSkillProficiency(skill)}
+	<UnlockedButton
+		isUnlocked={skillProficiency[skill] === SkillProficiency.PROFICIENT ||
+			skillProficiency[skill] === SkillProficiency.AWFUL}
+		isMastered={skillProficiency[skill] === SkillProficiency.EXPERT}
+		onClick={() => onToggleSkillProficiency(skill)}
+		unlockedFilter={skillProficiency[skill] === SkillProficiency.PROFICIENT
+			? 'sepia(100%) saturate(1000%) brightness(45%) hue-rotate(174deg)'
+			: 'sepia(100%) saturate(1000%) brightness(45%) hue-rotate(287deg)'}
 	/>
 	<div class="label">
 		<span
@@ -75,24 +81,11 @@
 		background-color: #eae8da;
 		border: 1px solid #c9c6bb;
 		padding: 4px;
-		> button {
-			cursor: pointer;
-		}
 	}
 	.label-text {
 		cursor: pointer;
 		&:hover {
 			color: royalblue;
 		}
-	}
-
-	.expert {
-		background-color: #51bf51;
-	}
-	.awful {
-		background-color: red;
-	}
-	.proficient {
-		background-color: blue;
 	}
 </style>

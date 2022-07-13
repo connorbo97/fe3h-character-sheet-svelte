@@ -33,6 +33,7 @@
 		border: 0;
 		background-color: transparent;
 		box-shadow: none;
+		cursor: pointer;
 	}
 
 	.not-equipped {
