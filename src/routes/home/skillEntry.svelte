@@ -80,6 +80,8 @@
 		column-gap: 3px;
 		background-color: #eae8da;
 		border: 1px solid #c9c6bb;
+		border-right-width: 0;
+		border-left-width: 0;
 		padding: 4px;
 	}
 	.label-text {

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import CategoryHeader from 'src/common/categoryHeader.svelte';
 	import PickOnePrompt from 'src/common/pickOnePrompt.svelte';
 
 	import SvelteTip from 'src/common/SvelteTip.svelte';
@@ -43,22 +44,25 @@
 
 <div class="container">
 	<div class="header">
-		<u>
-			Combat Arts
-			<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
-				<span
-					on:click={() =>
-						equippedCombatArts.forEach((w) => {
-							onToggleCombatArts(w);
-						})}
-				>
-					({equippedCombatArts.length}/{MAX_COMBAT_ARTS})
-				</span>
-				<div slot="t">Click to Clear All</div>
-			</SvelteTip>
-		</u>
-		<button on:click={openAddPrompt}> + </button>
+		<CategoryHeader>
+			<div slot="content" class="header">
+				<span>Combat Arts</span>
+				<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
+					<span
+						on:click={() =>
+							equippedCombatArts.forEach((w) => {
+								onToggleCombatArts(w);
+							})}
+					>
+						({equippedCombatArts.length}/{MAX_COMBAT_ARTS})
+					</span>
+					<div slot="t">Click to Clear All</div>
+				</SvelteTip>
+				<button on:click={openAddPrompt}> + </button>
+			</div>
+		</CategoryHeader>
 	</div>
+	<div class="divider" />
 	{#each allCombatArts.fullArray as art}
 		<CombatArtsEntry
 			{art}
@@ -74,11 +78,10 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		background-color: powderblue;
+		background-color: #dfd6c2;
 		border-bottom: 1px solid gray;
 		flex: 1;
 
-		padding: 5px;
 		row-gap: 2px;
 
 		overflow-y: auto;
@@ -89,12 +92,15 @@
 		display: flex;
 		justify-content: space-between;
 		z-index: 1;
-		margin-bottom: 5px;
 		> button {
 			height: 20px;
+			width: 20px;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 		}
+	}
+	.divider {
+		height: 13px;
 	}
 </style>

@@ -16,6 +16,7 @@
 
 <div class="container">
 	<CategoryHeader label={'Skills'} />
+	<div class="divider" />
 	<div class="skills">
 		{#each Object.values(PLAYER_SKILL) as skill}
 			<SkillEntry {skill} {stats} {skillBonus} {skillProficiency} {onToggleSkillProficiency} />
@@ -39,5 +40,11 @@
 		display: flex;
 		flex-direction: column;
 		overflow: auto;
+	}
+	.divider {
+		margin-top: 1px;
+		height: 1px;
+		background-image: linear-gradient(to right, #bbb9ad, 75%, transparent);
+		border-radius: 1px;
 	}
 </style>

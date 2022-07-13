@@ -126,6 +126,5 @@
 	.classes-container {
 		display: flex;
 		flex-direction: column;
-		row-gap: 2px;
 	}
 </style>
