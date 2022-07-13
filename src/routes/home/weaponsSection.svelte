@@ -8,7 +8,6 @@
 	import { getWeaponDescription, WEAPONS } from 'src/constants/weapons';
 	import { classBuilder } from 'src/textUtils';
 	import { checkHealPlus } from 'src/utils';
-	import { getContext } from 'svelte';
 
 	export let weapon: any;
 	export let equippedClass: any;
@@ -22,7 +21,6 @@
 
 	export let weaponUses: { [s: string]: number };
 	export let onUpdateWeaponUses: any;
-	const { open } = getContext(CONTEXTS.MODAL);
 
 	let prevSpellUseFlag = { current: spellUseFlag };
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
