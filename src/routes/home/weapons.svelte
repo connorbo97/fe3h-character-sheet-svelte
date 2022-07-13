@@ -150,8 +150,6 @@
 							{equippedClass}
 							{weaponUses}
 							{onUpdateWeaponUses}
-							{customWeapons}
-							{onUpdateCustomWeapons}
 						/>
 					{/each}
 				</div>
@@ -173,8 +171,6 @@
 							{equippedClass}
 							{weaponUses}
 							{onUpdateWeaponUses}
-							{customWeapons}
-							{onUpdateCustomWeapons}
 						/>
 					{/each}
 				</div>
@@ -196,8 +192,6 @@
 							{equippedClass}
 							{weaponUses}
 							{onUpdateWeaponUses}
-							{customWeapons}
-							{onUpdateCustomWeapons}
 						/>
 					{/each}
 				</div>
@@ -219,8 +213,6 @@
 							{equippedClass}
 							{weaponUses}
 							{onUpdateWeaponUses}
-							{customWeapons}
-							{onUpdateCustomWeapons}
 						/>
 					{/each}
 				</div>
@@ -242,8 +234,6 @@
 							{equippedClass}
 							{weaponUses}
 							{onUpdateWeaponUses}
-							{customWeapons}
-							{onUpdateCustomWeapons}
 						/>
 					{/each}
 				</div>
@@ -269,8 +259,6 @@
 							{equippedClass}
 							{weaponUses}
 							{onUpdateWeaponUses}
-							{customWeapons}
-							{onUpdateCustomWeapons}
 						/>
 					{/each}
 				</div>
@@ -302,8 +290,6 @@
 							{equippedClass}
 							{weaponUses}
 							{onUpdateWeaponUses}
-							{customWeapons}
-							{onUpdateCustomWeapons}
 						/>
 					{/each}
 				</div>

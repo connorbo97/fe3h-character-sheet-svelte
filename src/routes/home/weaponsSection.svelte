@@ -1,15 +1,13 @@
 <script lang="ts">
 	import EquippedButton from 'src/common/equippedButton.svelte';
 	import SvelteTip from 'src/common/SvelteTip.svelte';
-	import UnlockedButton from 'src/common/unlockedButton.svelte';
 
 	import { CONTEXTS, MAX_WEAPONS_EQUIPPED } from 'src/constants';
 	import { TooltipStyle } from 'src/constants/enums';
 
 	import { getWeaponDescription, WEAPONS } from 'src/constants/weapons';
+	import { classBuilder } from 'src/textUtils';
 	import { checkHealPlus } from 'src/utils';
-	import { getContext } from 'svelte';
-	import CustomWeaponPrompt from './customWeaponPrompt.svelte';
 
 	export let weapon: any;
 	export let equippedClass: any;
@@ -18,14 +16,11 @@
 	export let onToggleEquip: any;
 	export let allWeapons: AllWeapons;
 	export let spellUseFlag: any;
-	export let customWeapons: any;
-	export let onUpdateCustomWeapons: any;
 
 	export let isMagic: any;
 
 	export let weaponUses: { [s: string]: number };
 	export let onUpdateWeaponUses: any;
-	const { open } = getContext(CONTEXTS.MODAL);
 
 	let prevSpellUseFlag = { current: spellUseFlag };
 	$: hasHealPlus = checkHealPlus(equippedClass, equippedCombatSkills);
@@ -66,7 +61,7 @@
 </script>
 
 <div class="container">
-	<SvelteTip disabled={!tooltipText}>
+	<!-- <SvelteTip disabled={!tooltipText}>
 		<UnlockedButton
 			isUnlocked={allWeapons.fullSet.has(weapon)}
 			isCustom={isCustomUnlock}
@@ -81,10 +76,17 @@
 			}}
 		/>
 		<div slot="t">{weaponsToFeatures[weapon].reason}</div>
-	</SvelteTip>
+	</SvelteTip> -->
 	<SvelteTip tooltipStyle={TooltipStyle.CENTER} timeout={300}>
-		<div slot="t">{getWeaponDescription(allWeapons.fullFeatures[weapon])}</div>
-		<div class={`label ${isMagic ? 'magic' : ''}`}>{allWeapons.weaponsToLabel[weapon]}</div>
+		<div slot="t">
+			{getWeaponDescription(allWeapons.fullFeatures[weapon])}
+			<span style:color="#9c8e8e">
+				{weaponsToFeatures[weapon].reason ? `(${weaponsToFeatures[weapon].reason})` : ''}
+			</span>
+		</div>
+		<div class={classBuilder('label', { magic: isMagic, custom: isCustomUnlock })}>
+			{allWeapons.weaponsToLabel[weapon]}
+		</div>
 	</SvelteTip>
 	{#if !isMagic}
 		<div class="equip-button">

@@ -363,7 +363,7 @@
 
 <div class="container">
 	<div class="actions">
-		<b> <u>{headerLabel}</u> </b>
+		<b> {headerLabel} </b>
 		<button
 			disabled={attackRoll === ''}
 			on:click={() => {
@@ -387,147 +387,156 @@
 		<button style:flex="1" on:click={onCloseModal}>Back</button>
 		<!-- </div> -->
 	</div>
-	<div class="attack-button-container">
-		<span>
-			<span>Roll visual dice?</span>
-			<input type="checkbox" checked={shouldDoVisualRolls} on:click={() => toggleVisualRolls()} />
-		</span>
-		<button
-			on:click={() => onRollAll().then(() => copyToClipboard(getRoll20ResultText()))}
-			disabled={rollDisabled}
-			class={classBuilder('attack-button', { disabled: rollDisabled })}
-		>
-			{rollDisabled
-				? curWeaponUses <= 0
-					? 'Out of weapon uses'
-					: 'Out of Superiority Dies'
-				: 'Roll Attack'}
-		</button>
-	</div>
-	<div class="rolls">
-		{#if !isHealWeapon}
-			<div class="attack">
-				<h3>Attack</h3>
-				<div class="content">{prefixedAttackCalc}</div>
-				{#if attackRoll}
-					<SvelteTip>
-						<button on:click={onAttackRoll}>Re-roll</button>
-						<div slot="t">
-							Only meant to be used for advantage/disadvantage. Will not automatically decrement
-							your superiority die or weapon uses
-						</div>
-					</SvelteTip>
-				{/if}
-			</div>
-		{/if}
-		{#if !isHealWeapon && critModifier >= 0}
-			<div class="crit">
-				<h3>Crit Range</h3>
-				<div class="content">
-					<span>{critRangeText}</span>
-				</div>
-				<!-- <button on:click={onCritRoll}>Roll</button> -->
-			</div>
-		{/if}
-		{#if crestType}
-			<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
-				<div class="crest">
-					<h3>Crest of {CRESTS_TO_LABELS[crestType]}</h3>
-					<div class="content">
-						{#if crestDC && crestDC <= 20}
-							<span>DC {crestDC}</span>
+	<div class="divider" />
+	<div class="content">
+		<div class="rolls-container">
+			<div class="rolls">
+				{#if !isHealWeapon}
+					<div class="attack">
+						<h3>Attack</h3>
+						<div class="content">{prefixedAttackCalc}</div>
+						{#if attackRoll}
+							<SvelteTip>
+								<button class="re-roller" on:click={onAttackRoll}>Re-roll</button>
+								<div slot="t">
+									Only meant to be used for advantage/disadvantage. Will not automatically decrement
+									your superiority die or weapon uses
+								</div>
+							</SvelteTip>
 						{/if}
 					</div>
-				</div>
-				<div slot="t">{CRESTS_TO_FEATURES[crestType].description}</div>
-			</SvelteTip>
-			<!-- <button on:click={onCrestRoll}>Roll</button> -->
-		{/if}
-		<div class="damage">
-			<h3>{isHealWeapon ? 'HP Restored' : 'Damage'}</h3>
-			<div class="content">
-				{printCalc(damageCalc)}
-				{#if crestSuccess && crestDamage}
-					<span>+ crestDamage</span>
 				{/if}
-			</div>
-			<!-- <button on:click={onDamageRoll}>Roll</button> -->
-		</div>
-	</div>
-	<div class="result">
-		{#if !isHealWeapon}
-			<div class="attack">
-				<div>
-					{attackRoll !== '' && attackMod !== ''
-						? `${attackRoll} + ${attackMod} = ${attackRoll + attackMod}`
-						: '...'}
-				</div>
-				{#if attackRoll !== '' && allCombatArts.fullFeatures[selectedCombatArt]?.description}
-					<div class="combat-art-note">
-						{allCombatArts.fullFeatures[selectedCombatArt]?.description}
+				{#if !isHealWeapon && critModifier >= 0}
+					<div class="crit">
+						<h3>Crit Range</h3>
+						<div class="content">
+							<span>{critRangeText}</span>
+						</div>
+						<!-- <button on:click={onCritRoll}>Roll</button> -->
 					</div>
 				{/if}
-				{#if superiorityDieCost > 1}
-					<div class="cf">Cost {superiorityDieCost - 1} extra superiority die</div>
+				{#if crestType}
+					<SvelteTip tooltipStyle={TooltipStyle.CENTER}>
+						<div class="crest">
+							<h3>Crest of {CRESTS_TO_LABELS[crestType]}</h3>
+							<div class="content">
+								{#if crestDC && crestDC <= 20}
+									<span>DC {crestDC}</span>
+								{/if}
+							</div>
+						</div>
+						<div slot="t">{CRESTS_TO_FEATURES[crestType].description}</div>
+					</SvelteTip>
+					<!-- <button on:click={onCrestRoll}>Roll</button> -->
 				{/if}
-				{#if superiorityDieCost < 1}
-					<div class="cs">Cost 0 superiority die</div>
-				{/if}
-			</div>
-		{/if}
-		{#if !isHealWeapon && critModifier >= 0}
-			<div class="crit">
-				{#if critRoll !== ''}
-					<div class="">
-						<span class={critRoll >= 20 - critModifier ? 'cs' : ''}>
-							{critRoll >= 20 - critModifier ? 'CRIT' : 'Normal'}
-						</span>
-						<span class={critRoll === 20 ? 'cs' : ''}>({critRoll})</span>
+				<div class="damage">
+					<h3>{isHealWeapon ? 'HP Restored' : 'Damage'}</h3>
+					<div class="content">
+						{printCalc(damageCalc)}
+						{#if crestSuccess && crestDamage}
+							<span>+ crestDamage</span>
+						{/if}
 					</div>
-					{#if critRoll >= 20 - critModifier}
-						<div>
-							{critRoll === 20 ? '3' : '2'}x Damage
-						</div>
-					{/if}
-				{/if}
-				{#if critRoll === ''}
-					...
-				{/if}
+					<!-- <button on:click={onDamageRoll}>Roll</button> -->
+				</div>
 			</div>
-		{/if}
-		{#if crestType}
-			<div class="crest">
-				{#if crestRoll !== ''}
-					{#if crestActivated}
+			<div class="result">
+				{#if !isHealWeapon}
+					<div class="attack">
 						<div>
-							<span class="cs">ACTIVATED</span><span>({crestRoll})</span>
+							{attackRoll !== '' && attackMod !== ''
+								? `${attackRoll} + ${attackMod} = ${attackRoll + attackMod}`
+								: '...'}
 						</div>
-						{#if crestType}
-							<div class="description">
-								{CRESTS_TO_FEATURES[crestType]?.description}
+						{#if attackRoll !== '' && allCombatArts.fullFeatures[selectedCombatArt]?.description}
+							<div class="combat-art-note">
+								{allCombatArts.fullFeatures[selectedCombatArt]?.description}
 							</div>
 						{/if}
-					{/if}
-					{#if !crestActivated}
-						<span>Normal</span><span>({crestRoll})</span>
-					{/if}
+						{#if superiorityDieCost > 1}
+							<div class="cf">Cost {superiorityDieCost - 1} extra superiority die</div>
+						{/if}
+						{#if superiorityDieCost < 1}
+							<div class="cs">Cost 0 superiority die</div>
+						{/if}
+					</div>
 				{/if}
-				{#if crestRoll === ''}
-					...
+				{#if !isHealWeapon && critModifier >= 0}
+					<div class="crit">
+						{#if critRoll !== ''}
+							<div class="">
+								<span class={critRoll >= 20 - critModifier ? 'cs' : ''}>
+									{critRoll >= 20 - critModifier ? 'CRIT' : 'Normal'}
+								</span>
+								<span class={critRoll === 20 ? 'cs' : ''}>({critRoll})</span>
+							</div>
+							{#if critRoll >= 20 - critModifier}
+								<div>
+									{critRoll === 20 ? '3' : '2'}x Damage
+								</div>
+							{/if}
+						{/if}
+						{#if critRoll === ''}
+							...
+						{/if}
+					</div>
 				{/if}
-			</div>
-		{/if}
-		<div class="damage" style:flex-direction="column">
-			{#if damageRoll}
-				<div>
-					{baseDamageRollText}{baseDamageRollText !== damageRoll + ''
-						? ` = ${finalDamageRoll}`
-						: ''}
+				{#if crestType}
+					<div class="crest">
+						{#if crestRoll !== ''}
+							{#if crestActivated}
+								<div>
+									<span class="cs">ACTIVATED</span><span>({crestRoll})</span>
+								</div>
+								{#if crestType}
+									<div class="description">
+										{CRESTS_TO_FEATURES[crestType]?.description}
+									</div>
+								{/if}
+							{/if}
+							{#if !crestActivated}
+								<span>Normal</span><span>({crestRoll})</span>
+							{/if}
+						{/if}
+						{#if crestRoll === ''}
+							...
+						{/if}
+					</div>
+				{/if}
+				<div class="damage" style:flex-direction="column">
+					{#if damageRoll}
+						<div class="damage-text">
+							<span class={classBuilder({ mini: baseDamageRollText !== damageRoll })}>
+								{baseDamageRollText}
+							</span>
+							{#if baseDamageRollText !== damageRoll}
+								<span class="final-damage">= {finalDamageRoll}</span>
+							{/if}
+						</div>
+					{/if}
+					{#if !damageRoll}
+						...
+					{/if}
 				</div>
-			{/if}
-			{#if !damageRoll}
-				...
-			{/if}
+			</div>
+		</div>
+
+		<div class="attack-button-container">
+			<button
+				on:click={() => onRollAll().then(() => copyToClipboard(getRoll20ResultText()))}
+				disabled={rollDisabled}
+				class={classBuilder('attack-button', { disabled: rollDisabled })}
+			>
+				{rollDisabled
+					? curWeaponUses <= 0
+						? 'Out of weapon uses'
+						: 'Out of Superiority Dies'
+					: 'Roll Attack'}
+			</button>
+			<span>
+				<span>Roll visual dice?</span>
+				<input type="checkbox" checked={shouldDoVisualRolls} on:click={() => toggleVisualRolls()} />
+			</span>
 		</div>
 	</div>
 </div>
@@ -536,24 +545,34 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		padding: 5px;
+		background-color: #dfd6c2;
 		h3 {
 			margin: 0;
 		}
+
+		height: 100%;
 	}
 
+	.content {
+		display: flex;
+		align-items: flex-start;
+		flex: 1;
+	}
+	.rolls-container {
+		flex: 1;
+	}
 	.actions {
 		display: flex;
 		column-gap: 10px;
 		align-items: center;
-		margin-bottom: 10px;
+		padding: 5px;
 	}
 	.rolls {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
-		background-color: bisque;
-		border-radius: 5px;
+		background-color: #362c49;
+		color: white;
 		text-align: center;
 		> * {
 			display: flex;
@@ -576,7 +595,6 @@
 		flex-direction: row;
 		justify-content: space-between;
 		background-color: lightyellow;
-		border-radius: 5px;
 		text-align: center;
 		> * {
 			display: flex;
@@ -628,7 +646,9 @@
 
 	.attack-button-container {
 		display: flex;
-		column-gap: 5px;
+		flex-direction: column;
+		row-gap: 5px;
+		align-self: stretch;
 	}
 
 	.attack-button {
@@ -636,10 +656,37 @@
 		margin-bottom: 5px;
 		font-size: 20px;
 		flex: 1;
+		background-color: rgb(114, 203, 114);
 	}
 
 	.disabled {
 		background-color: rgba(255, 0, 0, 0.69);
 		cursor: not-allowed;
+	}
+
+	.divider {
+		background-color: black;
+		margin-bottom: 10px;
+		height: 2px;
+	}
+
+	.re-roller {
+		height: 15px;
+		margin: 0;
+		padding: 0;
+		font-size: 12px;
+	}
+
+	.mini {
+		font-size: 12px;
+	}
+
+	.damage-text {
+		display: flex;
+		align-items: center;
+		column-gap: 5px;
+	}
+	.final-damage {
+		white-space: nowrap;
 	}
 </style>
