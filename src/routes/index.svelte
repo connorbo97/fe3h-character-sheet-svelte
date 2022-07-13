@@ -458,6 +458,7 @@
 			'content';
 		grid-template-rows: 50px calc(100vh - 50px);
 		grid-template-columns: 1fr;
+		background-color: #dfd6c2;
 
 		height: 100vh;
 	}
