@@ -308,6 +308,18 @@
 		otherSheetNames = [...otherSheetNames, name];
 		localStorage.setItem('otherSheetNames', JSON.stringify(otherSheetNames));
 	};
+	let spoilersOn = Infinity;
+	$: toggleSpoilersOn = () => {
+		if (spoilersOn === Infinity) {
+			spoilersOn = chatEntries.length;
+		} else {
+			spoilersOn = Infinity;
+		}
+	};
+	let alreadyRevealed = {};
+	const setAlreadyRevealed = (i) => {
+		alreadyRevealed[i] = true;
+	};
 </script>
 
 <svelte:head>
@@ -408,7 +420,13 @@
 				</div>
 				<div class={currentPage === 'ROLLS' ? '' : 'invisible'}>
 					{#if currentPage === 'ROLLS'}
-						<RollChat {chatEntries} />
+						<RollChat
+							{chatEntries}
+							{spoilersOn}
+							{toggleSpoilersOn}
+							{alreadyRevealed}
+							{setAlreadyRevealed}
+						/>
 					{/if}
 				</div>
 			</div>
