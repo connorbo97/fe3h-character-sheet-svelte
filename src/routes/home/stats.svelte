@@ -19,6 +19,7 @@
 	import { getContext } from 'svelte';
 	import SvelteTip from 'src/common/SvelteTip.svelte';
 	import { ActivationRates } from 'src/constants/crests';
+	import CategoryHeader from 'src/common/categoryHeader.svelte';
 
 	const { open } = getContext(CONTEXTS.MODAL);
 
@@ -62,6 +63,7 @@
 </script>
 
 <div class="container">
+	<CategoryHeader label={'Stats'} />
 	{#each Object.keys(stats) as stat}
 		<div class="stat-container">
 			<button class="label" on:click={() => onPlayerStatRoll(stat)}>
@@ -131,41 +133,48 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		justify-content: flex-start;
+		justify-content: flex- start;
 		align-items: stretch;
 
-		row-gap: 17px;
-		background-color: #f89090;
+		row-gap: 10px;
+		background-color: #dfd6c2;
 		border-right: 1px solid rgba(gray, 0.6);
 
-		padding: 10px;
-		height: calc(100% - 20px);
+		// padding-top: 35px;
+		height: 100%;
 	}
 	.stat-container {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		row-gap: 5px;
-		background-color: white;
+		background-color: #eae8da;
+		border: 1px solid #786c54;
+		margin: 5px;
 
 		text-align: center;
 
-		padding: 5px;
 		border-radius: 5px;
 
 		button {
 			border: 0;
+			border-radius: 0;
 			padding: 0;
-			background-color: transparent;
+			background-color: #58506b;
+			width: 100%;
 			box-shadow: none;
+			color: white;
+			text-shadow: 1px 1px black;
+
 			&:hover {
-				color: red;
+				color: #6a88a8;
 			}
 		}
 		input {
 			display: inline-block;
 			text-align: center;
 			max-width: 50px;
+			margin-left: 12px;
 		}
 	}
 	.mod {
@@ -177,6 +186,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
+		padding: 5px;
 	}
 	.crest-image {
 		box-sizing: border-box;

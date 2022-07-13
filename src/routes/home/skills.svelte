@@ -1,4 +1,5 @@
 <script lang="ts">
+	import CategoryHeader from 'src/common/categoryHeader.svelte';
 	import {
 		DEFAULT_PLAYER_SKILL_BONUSES,
 		DEFAULT_PLAYER_SKILL_PROFICIENCY,
@@ -14,7 +15,8 @@
 </script>
 
 <div class="container">
-	<u>Skills</u>
+	<CategoryHeader label={'Skills'} />
+	<div class="divider" />
 	<div class="skills">
 		{#each Object.values(PLAYER_SKILL) as skill}
 			<SkillEntry {skill} {stats} {skillBonus} {skillProficiency} {onToggleSkillProficiency} />
@@ -26,10 +28,8 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		background-color: #f89090;
-		padding: 5px;
+		background-color: #dfd6c2;
 		row-gap: 5px;
-		overflow: auto;
 
 		height: 100%;
 
@@ -39,6 +39,12 @@
 	.skills {
 		display: flex;
 		flex-direction: column;
-		row-gap: 8px;
+		overflow: auto;
+	}
+	.divider {
+		margin-top: 1px;
+		height: 1px;
+		background-image: linear-gradient(to right, #bbb9ad, 75%, transparent);
+		border-radius: 1px;
 	}
 </style>

@@ -1,5 +1,7 @@
 <script lang="ts">
+	import EquippedButton from 'src/common/equippedButton.svelte';
 	import SvelteTip from 'src/common/SvelteTip.svelte';
+	import UnlockedButton from 'src/common/unlockedButton.svelte';
 
 	import { CONTEXTS, MAX_WEAPONS_EQUIPPED } from 'src/constants';
 	import { TooltipStyle } from 'src/constants/enums';
@@ -65,11 +67,10 @@
 
 <div class="container">
 	<SvelteTip disabled={!tooltipText}>
-		<button
-			class={`available-button ${isCustomUnlock ? 'custom-unlock' : ''} ${
-				allWeapons.fullSet.has(weapon) ? 'unlocked' : ''
-			}`}
-			on:click={() => {
+		<UnlockedButton
+			isUnlocked={allWeapons.fullSet.has(weapon)}
+			isCustom={isCustomUnlock}
+			onClick={() => {
 				open(CustomWeaponPrompt, {
 					weapon,
 					customWeapons,
@@ -87,11 +88,11 @@
 	</SvelteTip>
 	{#if !isMagic}
 		<div class="equip-button">
-			<button
-				class={`${equippedWeapons.includes(weapon) ? 'equipped' : ''}`}
-				on:click={() => onToggleEquip(weapon, isUnlocked)}
-				disabled={equippedWeapons.length >= MAX_WEAPONS_EQUIPPED &&
-					!equippedWeapons.includes(weapon)}
+			<EquippedButton
+				isEquipped={equippedWeapons.includes(weapon)}
+				onClick={() => onToggleEquip(weapon, isUnlocked)}
+				isVisible={equippedWeapons.length < MAX_WEAPONS_EQUIPPED ||
+					equippedWeapons.includes(weapon)}
 			/>
 		</div>
 	{/if}
@@ -130,14 +131,16 @@
 		justify-content: space-between;
 		align-items: center;
 		column-gap: 5px;
+		background-color: #eae8da;
+		border: 1px solid #c9c6bb;
+		padding: 1px;
+		font-size: 15px;
+
 		.label {
 			line-height: 15px;
 			&.magic {
 				font-size: 15px;
 			}
-		}
-		button {
-			height: 15px;
 		}
 
 		.equip-button {
@@ -164,7 +167,10 @@
 	}
 	.count {
 		width: 30px;
-		border: 1px solid black;
+		border: 1px solid transparent;
+		background-color: transparent;
+		margin-top: -1.5px;
+		margin-right: -9px;
 	}
 
 	.danger {

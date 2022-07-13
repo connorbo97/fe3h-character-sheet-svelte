@@ -1,4 +1,6 @@
 <script lang="ts">
+	import CategoryHeader from 'src/common/categoryHeader.svelte';
+
 	import PickOnePrompt from 'src/common/pickOnePrompt.svelte';
 
 	import SvelteTip from 'src/common/SvelteTip.svelte';
@@ -39,43 +41,46 @@
 </script>
 
 <div class="container">
-	<div class="header">
-		<u>
-			Combat Skills
-			<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
-				<span
-					on:click={() =>
-						equippedCombatSkills.forEach((s) => {
-							onToggleCombatSkill(s);
-						})}
-				>
-					({equippedCombatSkills.length}/{MAX_COMBAT_SKILLS})
-				</span>
-				<div slot="t">Click to Clear All</div>
-			</SvelteTip>
-		</u>
-		<button on:click={openAddPrompt}> + </button>
+	<CategoryHeader>
+		<div slot="content" class="header">
+			<div>
+				<span>Combat Skills</span>
+				<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
+					<span
+						on:click={() =>
+							equippedCombatSkills.forEach((s) => {
+								onToggleCombatSkill(s);
+							})}
+					>
+						({equippedCombatSkills.length}/{MAX_COMBAT_SKILLS})
+					</span>
+					<div slot="t">Click to Clear All</div>
+				</SvelteTip>
+			</div>
+			<button on:click={openAddPrompt}> + </button>
+		</div>
+	</CategoryHeader>
+	<div style:height="11px" />
+	<div class="content">
+		{#each allCombatSkillsArr as skill}
+			<CombatSkillEntry
+				{skill}
+				feature={allCombatSkillFeatures[skill]}
+				isEquipped={equippedCombatSkills.indexOf(skill) !== -1}
+				{onToggleCombatSkill}
+				numEquipped={equippedCombatSkills.length}
+			/>
+		{/each}
 	</div>
-	{#each allCombatSkillsArr as skill}
-		<CombatSkillEntry
-			{skill}
-			feature={allCombatSkillFeatures[skill]}
-			isEquipped={equippedCombatSkills.indexOf(skill) !== -1}
-			{onToggleCombatSkill}
-			numEquipped={equippedCombatSkills.length}
-		/>
-	{/each}
 </div>
 
 <style lang="scss">
 	.container {
 		display: flex;
 		flex-direction: column;
-
-		background-color: powderblue;
+		background-color: #dfd6c2;
 
 		flex: 1;
-		padding: 5px;
 
 		overflow-y: auto;
 		height: calc(50% - 10px);
@@ -84,12 +89,16 @@
 	.header {
 		display: flex;
 		justify-content: space-between;
-		margin-bottom: 5px;
 		> button {
 			height: 20px;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 		}
+	}
+	.content {
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
 	}
 </style>
