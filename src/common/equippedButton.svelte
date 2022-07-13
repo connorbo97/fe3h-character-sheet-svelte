@@ -19,7 +19,7 @@
 		src="equipped.png"
 		width={size}
 		height={size}
-		class={classBuilder('img', { 'not-equipped': isEquipped })}
+		class={classBuilder('img', { 'not-equipped': !isEquipped })}
 		on:click={onClick}
 		alt="equipped"
 	/>

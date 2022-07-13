@@ -1,7 +1,9 @@
 <script lang="ts">
+	import EquippedButton from 'src/common/equippedButton.svelte';
 	import { COMBAT_ARTS_TO_FEATURES, MAX_COMBAT_ARTS } from 'src/constants';
 	import { getCombatArtsDescription } from 'src/constants/combatArts';
 	import { WEAPON_TYPE_TO_IMAGE } from 'src/constants/weaponType';
+	import Editor from '../editor/editor.svelte';
 
 	export let art: any;
 
@@ -47,11 +49,10 @@
 		>
 			v
 		</div>
-		<button
-			class={equippedCombatArts.indexOf(art) !== -1 ? 'equipped' : ''}
-			on:click={() => onToggleCombatArts(art)}
-			disabled={equippedCombatArts.length >= MAX_COMBAT_ARTS &&
-				equippedCombatArts.indexOf(art) === -1}
+		<EquippedButton
+			isEquipped={equippedCombatArts.includes(art)}
+			onClick={() => onToggleCombatArts(art)}
+			isVisible={equippedCombatArts.length < MAX_COMBAT_ARTS || equippedCombatArts.includes(art)}
 		/>
 	</div>
 	{#if hideDescription}
@@ -79,6 +80,10 @@
 		flex-direction: column;
 		row-gap: 5px;
 		margin-right: 5px;
+		background-color: #eae8da;
+		border: 1px solid #c9c6bb;
+		padding: 5px;
+		font-size: 13px;
 	}
 
 	.caret {
@@ -104,9 +109,6 @@
 		display: flex;
 		column-gap: 5px;
 		align-items: center;
-		> button {
-			height: 15px;
-		}
 	}
 	.description {
 		background-color: lightgray;
@@ -129,11 +131,9 @@
 	.equipped {
 		background-color: #51bf51;
 	}
-	.selected {
-		background-color: blue;
-	}
 	.reason {
 		color: brown;
+		font-size: 12px;
 	}
 	.description-extra {
 		color: #9a1aa0;
@@ -141,7 +141,7 @@
 
 	.icon {
 		height: 15px;
-		border-radius: 5px;
+		border-radius: 100%;
 		margin-left: 5px;
 	}
 	.not-equipped {

@@ -4,7 +4,6 @@
 	import SvelteTip from 'src/common/SvelteTip.svelte';
 	import UnlockedButton from 'src/common/unlockedButton.svelte';
 	import { CLASS_TO_LABEL } from 'src/constants/classes';
-	import { classBuilder } from 'src/textUtils';
 
 	export let isMastered: any;
 	export let isUnlocked: any;
@@ -25,7 +24,7 @@
 		{CLASS_TO_LABEL[targetClass]}
 	</div>
 	<EquippedButton
-		isEquipped={equippedClass !== targetClass}
+		isEquipped={equippedClass === targetClass}
 		onClick={() => onToggleEquipClass(targetClass)}
 		isVisible={isUnlocked}
 	/>

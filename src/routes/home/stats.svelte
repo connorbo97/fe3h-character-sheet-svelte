@@ -136,12 +136,12 @@
 		justify-content: flex- start;
 		align-items: stretch;
 
-		row-gap: 17px;
+		row-gap: 10px;
 		background-color: #dfd6c2;
 		border-right: 1px solid rgba(gray, 0.6);
 
 		// padding-top: 35px;
-		height: calc(100% - 20px);
+		height: 100%;
 	}
 	.stat-container {
 		display: flex;
@@ -186,6 +186,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
+		padding: 5px;
 	}
 	.crest-image {
 		box-sizing: border-box;

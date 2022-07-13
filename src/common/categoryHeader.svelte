@@ -21,7 +21,6 @@
 		text-shadow: 1px 1px black;
 		background-image: linear-gradient(to right, #868182, 75%, transparent);
 		padding: 2px;
-		width: 100%;
 	}
 	.divider {
 		margin-top: 1px;

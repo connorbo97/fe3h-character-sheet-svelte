@@ -45,31 +45,35 @@
 <div class="container">
 	<CategoryHeader>
 		<div slot="content" class="header">
-			<span>Combat Arts</span>
-			<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
-				<span
-					on:click={() =>
-						equippedCombatArts.forEach((w) => {
-							onToggleCombatArts(w);
-						})}
-				>
-					({equippedCombatArts.length}/{MAX_COMBAT_ARTS})
-				</span>
-				<div slot="t">Click to Clear All</div>
-			</SvelteTip>
+			<div>
+				<span>Combat Arts</span>
+				<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
+					<span
+						on:click={() =>
+							equippedCombatArts.forEach((w) => {
+								onToggleCombatArts(w);
+							})}
+					>
+						({equippedCombatArts.length}/{MAX_COMBAT_ARTS})
+					</span>
+					<div slot="t">Click to Clear All</div>
+				</SvelteTip>
+			</div>
 			<button on:click={openAddPrompt}> + </button>
 		</div>
 	</CategoryHeader>
-	<div class="divider" />
-	{#each allCombatArts.fullArray as art}
-		<CombatArtsEntry
-			{art}
-			{allCombatArts}
-			{equippedCombatArts}
-			{onToggleCombatArts}
-			{equippedWeaponTypes}
-		/>
-	{/each}
+	<div style:height="11px" />
+	<div class="content">
+		{#each allCombatArts.fullArray as art}
+			<CombatArtsEntry
+				{art}
+				{allCombatArts}
+				{equippedCombatArts}
+				{onToggleCombatArts}
+				{equippedWeaponTypes}
+			/>
+		{/each}
+	</div>
 </div>
 
 <style lang="scss">
@@ -80,10 +84,7 @@
 		border-bottom: 1px solid gray;
 		flex: 1;
 
-		row-gap: 2px;
-
-		overflow-y: auto;
-		height: calc(50% - 10px);
+		height: 50%;
 	}
 
 	.header {
@@ -98,7 +99,10 @@
 			align-items: center;
 		}
 	}
-	.divider {
-		height: 11px;
+	.content {
+		display: flex;
+		flex-direction: column;
+		row-gap: 2px;
+		overflow-y: auto;
 	}
 </style>

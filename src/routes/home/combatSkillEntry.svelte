@@ -1,4 +1,5 @@
 <script lang="ts">
+	import EquippedButton from 'src/common/equippedButton.svelte';
 	import { MAX_COMBAT_SKILLS } from 'src/constants';
 
 	export let skill: any;
@@ -19,10 +20,10 @@
 		>
 			v
 		</div>
-		<button
-			class={isEquipped ? 'equipped' : ''}
-			on:click={() => onToggleCombatSkill(skill)}
-			disabled={numEquipped >= MAX_COMBAT_SKILLS && !isEquipped}
+		<EquippedButton
+			{isEquipped}
+			onClick={() => onToggleCombatSkill(skill)}
+			isVisible={numEquipped < MAX_COMBAT_SKILLS || isEquipped}
 		/>
 	</div>
 	{#if !hideDescription}
@@ -42,17 +43,12 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		margin-right: 5px;
 		row-gap: 5px;
+		background-color: #eae8da;
+		border: 1px solid #c9c6bb;
+		padding: 5px;
 
-		button {
-			height: 20px;
-			cursor: pointer;
-			&:disabled {
-				color: gray;
-				cursor: default;
-			}
-		}
+		font-size: 15px;
 	}
 	.skill-container {
 		display: flex;
