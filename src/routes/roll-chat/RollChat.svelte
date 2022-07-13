@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+
 	import Index from '../index.svelte';
 	import AttackEntry from './attackEntry.svelte';
 
@@ -11,6 +13,10 @@
 	let chat;
 
 	let lastResolvedScroll = -1;
+	let mounted = false;
+
+	let firstBeep;
+	let beepAudio = new Audio('beep.ogg');
 
 	$: {
 		chatEntries;
@@ -24,6 +30,18 @@
 				});
 			} else {
 				lastResolvedScroll = chatEntries.length;
+			}
+		}
+	}
+
+	onMount(() => {
+		mounted = true;
+		firstBeep = chatEntries.length;
+	});
+	$: {
+		if (mounted) {
+			if (firstBeep !== chatEntries.length) {
+				beepAudio.play();
 			}
 		}
 	}
