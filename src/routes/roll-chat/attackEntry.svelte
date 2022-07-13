@@ -96,6 +96,20 @@
 </div>
 
 <style lang="scss">
+	@keyframes fadein {
+		0% {
+			opacity: 0;
+			width: 0;
+		}
+
+		50% {
+			width: 100%;
+		}
+
+		100% {
+			opacity: 1;
+		}
+	}
 	.container {
 		display: flex;
 		flex-direction: column;
@@ -103,6 +117,7 @@
 		border: 1px solid black;
 		color: white;
 		border-radius: 5px 5px 0 0;
+		animation: fadein 2s forwards alternate;
 	}
 	.player {
 		padding: 5px;
