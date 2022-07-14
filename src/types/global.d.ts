@@ -87,6 +87,7 @@ declare global {
 		[s: string]: XPLevelFeatures;
 	};
 	declare type ClassFeatures = {
+		label: string;
 		canUseMagic?: boolean;
 		unlocks: StatBlock;
 		whenEquipped: StatBlock;
@@ -98,7 +99,6 @@ declare global {
 	declare type StatBlock = {
 		playerStats?: BasicStat;
 		playerSkills?: BasicStat;
-		skillProficiencies?: BasicStat;
 		combatArts?: BasicStat;
 		weapons?: BasicStat;
 
