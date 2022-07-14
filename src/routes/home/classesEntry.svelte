@@ -51,7 +51,7 @@
 					{getStatBlockDescription(classFeatures.unlocks)}
 				</div>
 			{/if}
-			{#if Object.keys(classFeatures?.unlocks).length}
+			{#if Object.keys(classFeatures?.whenEquipped).length}
 				<div>
 					<div>
 						<u>When Equipped</u>
