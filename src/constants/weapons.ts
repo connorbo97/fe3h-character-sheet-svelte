@@ -307,7 +307,7 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		type: WEAPON_TYPE.FISTS,
 		acBonus: 1,
 		attackBonus: 1,
-		damage: [0],
+		damage: [Dice.d2, -1],
 		range: [1]
 	},
 	[WEAPONS.IRON_GAUNTLETS]: {
@@ -541,13 +541,13 @@ export { MAGIC_WEAPONS, MARTIAL_WEAPONS };
 export const getWeaponDescription = (feature: WeaponFeatures) => {
 	const { damage, attackBonus, range, critBonus, description, followUpBonus, isHealing } = feature;
 	return [
-		attackBonus ? `Attack: +${attackBonus}` : '',
+		attackBonus ? `Attack: ${addNumberPrefix(attackBonus)}` : '',
 		`${isHealing ? 'HP Restored' : 'Damage'}: ${damage.reduce((acc, cur, i) => {
 			return acc + (i === 0 ? cur : addNumberPrefix(cur));
 		}, '')}`,
 		`Range: ${Array.isArray(range) ? range?.join('-') : range}`,
 		critBonus ? `Crit Bonus: ${critBonus}` : '',
-		followUpBonus ? `Attack Speed Bonus: ${addNumberPrefix(followUpBonus)}` : '',
+		followUpBonus ? `AS Bonus: ${addNumberPrefix(followUpBonus)}` : '',
 		description
 	]
 		.filter((a) => a)
