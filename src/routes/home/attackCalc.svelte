@@ -284,6 +284,7 @@
 			{setSelectedCombatArt}
 			{distanceToTarget}
 			{setDistanceToTarget}
+			{equippedClass}
 		/>
 		{#if !showModal}
 			<div class="calcs">

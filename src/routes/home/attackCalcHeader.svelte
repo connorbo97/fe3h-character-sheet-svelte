@@ -1,5 +1,9 @@
 <script lang="ts">
+	import { CLASS_TO_FEATURES } from 'src/constants/classes';
+
 	import { MAGIC_WEAPON_TYPES } from 'src/constants/weaponType';
+
+	export let equippedClass: any;
 
 	export let allWeapons: AllWeapons;
 	export let equippedWeapons: any;
@@ -14,9 +18,11 @@
 	$: selectedWeaponType = weaponsToFeatures[selectedWeapon]?.type;
 	$: weaponsOptions = [
 		...equippedWeapons,
-		...allWeapons.fullArray.filter((weapon) =>
-			MAGIC_WEAPON_TYPES.includes(weaponsToFeatures[weapon].type)
-		)
+		...(!equippedClass || CLASS_TO_FEATURES[equippedClass].canUseMagic === true
+			? allWeapons.fullArray.filter((weapon) =>
+					MAGIC_WEAPON_TYPES.includes(weaponsToFeatures[weapon].type)
+			  )
+			: [])
 	];
 
 	$: {
