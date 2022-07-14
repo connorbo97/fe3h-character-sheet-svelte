@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { COMBAT_ARTS_TO_FEATURES, getCombatArtsDescription } from 'src/constants/combatArts';
-	import { getWeaponDescription, WEAPON_TO_TYPE } from 'src/constants/weapons';
 	import { MAGIC_WEAPON_TYPES } from 'src/constants/weaponType';
 
 	export let allWeapons: AllWeapons;
@@ -9,6 +7,9 @@
 	export let setSelectedWeapon: any;
 	export let damageTypeSelection: any;
 	export let weaponsToFeatures: { [s: string]: WeaponFeatures };
+
+	export let distanceToTarget: any;
+	export let setDistanceToTarget: any;
 
 	$: selectedWeaponType = weaponsToFeatures[selectedWeapon]?.type;
 	$: weaponsOptions = [
@@ -100,6 +101,15 @@
 			</div> -->
 		{/if}
 	</div>
+	<div class="range-finder">
+		<span>Range</span>
+		<input
+			type="number"
+			value={distanceToTarget}
+			on:change={(e) => setDistanceToTarget(parseInt(e.currentTarget.value))}
+			min="0"
+		/>
+	</div>
 </div>
 
 <style lang="scss">
@@ -126,6 +136,12 @@
 		column-gap: 5px;
 		select {
 			flex: 1;
+		}
+	}
+
+	.range-finder {
+		input {
+			width: 50px;
 		}
 	}
 </style>

@@ -8,7 +8,7 @@
 	import { CRESTS_TO_FEATURES, CrestTrigger, CrestType } from 'src/constants/crests';
 	import { PLAYER_STAT, PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
 
-	import { HEALING_MAGIC, WEAPONS, WEAPON_TO_TYPE } from 'src/constants/weapons';
+	import { BOW_WEAPONS, HEALING_MAGIC, WEAPONS, WEAPON_TO_TYPE } from 'src/constants/weapons';
 	import { WEAPON_TYPE } from 'src/constants/weaponType';
 	import { addNumberPrefix, classBuilder, getCritRangeText } from 'src/textUtils';
 	import {
@@ -47,6 +47,9 @@
 
 	export let curSuperiorityDies: any;
 	export let setCurSuperiorityDie: any;
+
+	let distanceToTarget: number = 1;
+	const setDistanceToTarget = (newDistance) => (distanceToTarget = newDistance);
 
 	let showModal;
 	$: weaponsToFeatures = allWeapons.fullFeatures;
@@ -151,10 +154,14 @@
 		},
 		[]
 	);
+	$: attackDistanceModifier = BOW_WEAPONS.includes(selectedWeapon)
+		? Math.max(distanceToTarget - 2, 0) * -2
+		: 0;
 	$: attackModifier = [
 		...skillAttackModifier,
 		...weaponArtAttackModifier,
 		weaponAttackModifier,
+		attackDistanceModifier,
 		attackDexModifier,
 		...optionalAttackModifier
 	].filter((a) => a !== 0);
@@ -275,6 +282,8 @@
 			{setSelectedWeapon}
 			{selectedCombatArt}
 			{setSelectedCombatArt}
+			{distanceToTarget}
+			{setDistanceToTarget}
 		/>
 		{#if !showModal}
 			<div class="calcs">
@@ -292,6 +301,13 @@
 							{#if weaponArtAttackModifier.length}
 								<span>
 									+ {printCalc(weaponArtAttackModifier)}<span class="source">(combat art)</span>
+								</span>
+							{/if}
+							{#if attackDistanceModifier}
+								<span>
+									{addNumberPrefix(attackDistanceModifier, true)}<span class="source"
+										>(distance)</span
+									>
 								</span>
 							{/if}
 							{#if skillAttackModifier.length}
