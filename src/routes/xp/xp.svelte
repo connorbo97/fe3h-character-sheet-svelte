@@ -68,8 +68,6 @@
 		return acc;
 	}, {});
 
-	let ref;
-
 	$: promptWeaponLevelUp = (type: any, level, onSuccess = () => {}) => {
 		const pickOne = WEAPON_TYPES_TO_LEVEL_FEATURES[type][level]?.unlocks?.pickOne;
 		if (!pickOne) {
@@ -218,17 +216,17 @@
 <div class="container">
 	<div class="weapon-xp-container">
 		<div class="category">
-			<u>Type</u>
-			<u style:text-align="center" style:white-space="nowrap" style:width="0"
+			<u class="header" style:justify-content="flex-start">Type</u>
+			<u class="header" style:text-align="center" style:white-space="nowrap"
 				>XP (Current XP / XP Required to Level Up)</u
 			>
-			<span />
-			<u style:text-align="center" style:white-space="nowrap" style:width="0">Lvl</u>
+			<span class="header" />
+			<u class="header" style:text-align="center" style:white-space="nowrap">Lvl</u>
 			<SvelteTip>
-				<u style:text-align="center" style:white-space="nowrap" style:width="0">Stat Modifier</u>
+				<u class="header" style:text-align="center" style:white-space="nowrap">Stat Modifier</u>
 				<div slot="t">The stat that will be added when doing XP rolls.</div>
 			</SvelteTip>
-			<span />
+			<span class="header" />
 			{#each Object.keys(WEAPON_TYPE) as type, i}
 				{@const curXP = weaponXP[type]?.total || 0}
 				{@const curLevel = weaponXP[type]?.level || WEAPON_LEVEL.E}
@@ -239,16 +237,18 @@
 				)}
 				{@const maxXP = WEAPON_LEVEL_TO_MAX_XP[curLevel]}
 				<div
-					class={classBuilder('label', { focused: focusedRow.i === i && focusedRow.weaponSide })}
+					class={classBuilder('label content', {
+						focused: focusedRow.i === i && focusedRow.weaponSide
+					})}
 				>
 					{WEAPON_TYPE_TO_LABEL[type]}
 				</div>
-				<div class="xp-bar">
+				<div class="xp-bar content">
 					<div class="fill" style:right={`${((maxXP - curXP) / maxXP) * 100.0}%`}>
 						<span>{`${curXP} / ${maxXP}`}</span>
 					</div>
 				</div>
-				<div class="form">
+				<div class="form content">
 					<div class="prompt">XP to Add</div>
 					<input
 						type="number"
@@ -275,7 +275,7 @@
 								{nextLevelDescription || 'Nothing'}
 							</div>
 						</div>
-						<div>
+						<div class="content">
 							<select
 								name="weapon_level"
 								on:change={(e) => onWeaponChangeLevel(e, { type, curLevel })}
@@ -294,6 +294,7 @@
 				{/key}
 				{#if WEAPON_TYPE_TO_STAT[type].length > 1}
 					<select
+						class="content"
 						on:change={(e) => {
 							statPerWeaponType = { ...statPerWeaponType, [type]: e.currentTarget.value };
 						}}
@@ -309,7 +310,7 @@
 					</select>
 				{/if}
 				{#if WEAPON_TYPE_TO_STAT[type].length <= 1}
-					<span style:text-align="center" style:cursor="default"
+					<span style:text-align="center" style:cursor="default" class="content"
 						>{PLAYER_STAT_TO_SHORT_LABEL[WEAPON_TYPE_TO_STAT[type][0]]}</span
 					>
 				{/if}
@@ -381,15 +382,20 @@
 			>
 		</div>
 	</div>
-	<div class="category" style:background-color={'#d277ed'}>
-		<u>Class</u>
-		<u style:text-align="center" style:white-space="nowrap" style:width="0"
-			>Class XP (Current Battles / Battles Required to Master)</u
+	<div class="category class-xp-container">
+		<u class="header" style:justify-content="flex-start">Class</u>
+		<u
+			class="header"
+			style:text-align="center"
+			style:white-space="nowrap"
+			style:justify-content="flex-start"
 		>
-		<span />
-		<span />
-		<span />
-		<span />
+			Class XP (Current Battles / Battles Required to Master)</u
+		>
+		<span class="header" />
+		<span class="header" style:padding="0" />
+		<span class="header" style:padding="0" />
+		<span class="header" style:padding="0" />
 		{#each unlockedClasses as curClass, i}
 			{@const curXP = classXP[curClass]?.total || 0}
 			{@const maxXP = BEGINNER_CLASSES.has(curClass)
@@ -398,10 +404,14 @@
 				? INTERMEDIATE_MASTERY_REQ
 				: 10000}
 			{@const mastered = classXP[curClass]?.mastered}
-			<div class={classBuilder('label', { focused: focusedRow.i === i && !focusedRow.weaponSide })}>
+			<div
+				class={classBuilder('label content', {
+					focused: focusedRow.i === i && !focusedRow.weaponSide
+				})}
+			>
 				{CLASS_TO_LABEL[curClass]}
 			</div>
-			<div class="xp-bar">
+			<div class="xp-bar content">
 				<div
 					class={`fill ${mastered ? 'mastered' : ''}`}
 					style:right={`${((maxXP - curXP) / maxXP) * 100.0}%`}
@@ -445,23 +455,29 @@
 			flex: 1;
 		}
 		column-gap: 5px;
+		padding: 5px;
 	}
 	.weapon-xp-container {
 		display: flex;
 		flex-direction: column;
-		background-color: thistle;
 		border-radius: 5px;
+		background-color: #eae8da;
+		border: 3px solid #c9c6bb;
+		padding-bottom: 10px;
+	}
+	.class-xp-container {
+		background-color: #eae8da;
+		border: 3px solid #c9c6bb;
 	}
 	.category {
-		background-color: thistle;
-		padding: 5px;
+		padding: 10px;
 		border-radius: 5px;
 
 		display: grid;
 		grid-template-columns: max-content 1fr max-content min-content min-content max-content;
 		grid-auto-rows: min-content;
 		align-items: center;
-		gap: 5px;
+		row-gap: 5px;
 	}
 	.xp-bar {
 		height: 100%;
@@ -532,5 +548,19 @@
 	}
 	.level-up-text {
 		color: red;
+	}
+
+	.header {
+		background-color: #574d65;
+		color: white;
+		padding: 3px;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.content {
+		margin-left: 5px;
+		margin-right: 5px;
 	}
 </style>
