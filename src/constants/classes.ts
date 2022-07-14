@@ -361,7 +361,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			}
 		},
 		whenEquipped: {
-			followUpBonus: -1,
+			followUpBonus: -2,
 			protectionBonus: 2,
 			xpMods: {
 				[WEAPON_TYPE.AXE]: 1.6,

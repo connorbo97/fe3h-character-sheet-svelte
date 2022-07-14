@@ -19,7 +19,7 @@
 	} from 'src/constants';
 	import { COMBAT_SKILLS_TO_FEATURES } from 'src/constants/combatSkills';
 	import { TooltipStyle } from 'src/constants/enums';
-	import { WEAPONS_TO_FEATURES } from 'src/constants/weapons';
+	import { addNumberPrefix } from 'src/textUtils';
 	import { getModifierByPlayerStat } from 'src/utils';
 
 	export let stats: any;
@@ -62,7 +62,7 @@
 	$: ms = DEFAULT_MOVEMENT_SPEED + equippedClassMovementBonus + skillMovementBonus;
 
 	$: unlockedClassHpBonus = unlockedClasses.reduce(
-		(acc: any, c: string) => acc + CLASS_TO_FEATURES?.[c]?.unlocks?.hpBonus || 0,
+		(acc: number, c: string) => acc + (CLASS_TO_FEATURES?.[c]?.unlocks?.hpBonus || 0),
 		0
 	);
 	$: intermediateClassHpBonus = unlockedClasses.reduce((acc: any, c: string) => {
@@ -132,11 +132,12 @@
 		equippedClassResilienceBonus +
 		skillResilienceBonus;
 
+	$: classFollowUpMod = CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.followUpBonus || 0;
 	$: selectedWeaponFollupMod = allWeapons.fullFeatures[selectedWeapon]?.followUpBonus || 0;
 	$: skillsFollowupMod = allCombatSkills.fullArray.reduce((acc, cur) => {
 		return acc + (allCombatSkills.fullFeatures[cur].followUpBonus || 0);
 	}, 0);
-	$: followUp = dexMod + selectedWeaponFollupMod + skillsFollowupMod;
+	$: followUp = dexMod + selectedWeaponFollupMod + skillsFollowupMod + classFollowUpMod;
 
 	const onTerrainModChange = (e: any) => {
 		const input = parseInt(e.currentTarget.value);
@@ -210,7 +211,7 @@
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END}>
 		<div slot="t">
-			{`Attack Speed = ${dexMod} (dex modifier) + ${selectedWeaponFollupMod} (selected weapon) + ${skillsFollowupMod} (skills)`}
+			{`Attack Speed = ${dexMod} (dex modifier) + ${selectedWeaponFollupMod} (selected weapon) + ${skillsFollowupMod} (skills) + ${classFollowUpMod} (equipped class)`}
 		</div>
 		<div class="big-text">
 			{followUp}
@@ -226,7 +227,9 @@
 	</SvelteTip>
 	<SvelteTip tooltipStyle={TooltipStyle.LEFT_END} hiddenFirst>
 		<div slot="t">
-			{`Resilience = ${DEFAULT_RESILIENCE} + ${unlockedClassResilienceBonus} (from unlocked classes) + ${intermediateClassResilienceBonus} (from unlocking an intermediate magic class) + ${equippedClassResilienceBonus} (from equipped class) + ${skillResilienceBonus} (from skills)`}
+			{`Resilience = ${DEFAULT_RESILIENCE} + ${unlockedClassResilienceBonus} (from unlocked classes) + ${intermediateClassResilienceBonus} (from unlocking an intermediate magic class) ${addNumberPrefix(
+				equippedClassResilienceBonus
+			)} (from equipped class) + ${skillResilienceBonus} (from skills)`}
 		</div>
 		<div class="big-text">
 			{resilience}
