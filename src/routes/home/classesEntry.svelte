@@ -59,6 +59,14 @@
 					{getStatBlockDescription(classFeatures.whenEquipped)}
 				</div>
 			{/if}
+			{#if isMastered && Object.keys(classFeatures?.whenMastered).length}
+				<div>
+					<div>
+						<u>When Mastered</u>
+					</div>
+					{getStatBlockDescription(classFeatures.whenMastered)}
+				</div>
+			{/if}
 		</div>
 	{/if}
 </div>
