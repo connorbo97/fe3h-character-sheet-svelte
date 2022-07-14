@@ -308,6 +308,7 @@
 	$: onAddSheet = (name) => {
 		otherSheetNames = [...otherSheetNames, name];
 		localStorage.setItem('otherSheetNames', JSON.stringify(otherSheetNames));
+		onChangeCurSheet(name);
 	};
 	let spoilersOn = Infinity;
 	$: toggleSpoilersOn = () => {
