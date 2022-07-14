@@ -107,7 +107,7 @@ declare global {
 		combatSkills?: BasicStat;
 
 		// comes from unlock classes
-		pickOne?: any;
+		pickOne?: Array<PickOnePrompt>;
 
 		hpBonus?: number;
 		msBonus?: number;

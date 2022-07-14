@@ -4,7 +4,8 @@ import {
 	COMBAT_SKILLS_TO_FEATURES,
 	COMBAT_ARTS_TO_FEATURES,
 	WEAPON_TYPE_TO_LABEL,
-	WEAPONS_TO_FEATURES
+	WEAPONS_TO_FEATURES,
+	PickOnePromptType
 } from './constants';
 
 export const getStatBlockDescription = (unlocks: StatBlock = {}) => {
@@ -20,6 +21,7 @@ export const getStatBlockDescription = (unlocks: StatBlock = {}) => {
 		msBonus,
 		bonusRange,
 		followUpBonus,
+		pickOne,
 		resilienceBonus
 	} = unlocks;
 
@@ -114,6 +116,35 @@ export const getStatBlockDescription = (unlocks: StatBlock = {}) => {
 	}
 	if (msBonus) {
 		finalStringArr.push('MS Bonus (' + msBonus + ')');
+	}
+
+	if (pickOne) {
+		finalStringArr.push(
+			'Choose one per category: ' +
+				pickOne
+					.map(({ type, options }) => {
+						const label = type;
+						const optionsText = options
+							.map((option: any) => {
+								if (type === PickOnePromptType.PlayerStat) {
+									return 'Min ' + PLAYER_STAT_TO_SHORT_LABEL[option.stat] + ' ' + option.value;
+								} else if (type === PickOnePromptType.CombatArt) {
+									return COMBAT_ARTS_TO_FEATURES[option].label;
+								} else if (type === PickOnePromptType.Weapon) {
+									return WEAPONS_TO_FEATURES[option].label;
+								} else if (type === PickOnePromptType.CombatSkill) {
+									return COMBAT_SKILLS_TO_FEATURES[option].label;
+								}
+
+								return 'unmapped';
+							})
+							.join(', ');
+
+						return '([' + label + ']: ' + optionsText + ')';
+					})
+					.join(', ') +
+				')'
+		);
 	}
 
 	return finalStringArr.join(', ');
