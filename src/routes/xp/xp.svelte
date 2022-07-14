@@ -1,4 +1,6 @@
 <script lang="ts">
+	import NoticePrompt from 'src/common/noticePrompt.svelte';
+
 	import PickOnePrompt from 'src/common/pickOnePrompt.svelte';
 	import SvelteTip from 'src/common/SvelteTip.svelte';
 
@@ -23,6 +25,7 @@
 	import { PLAYER_STAT, PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
 	import { WEAPON_TYPES_TO_LEVEL_FEATURES } from 'src/constants/weaponLevel';
 	import { WEAPON_TYPE_TO_STAT } from 'src/constants/weaponType';
+	import { getLevelUpDescription } from 'src/descriptionUtils';
 	import {
 		addNumberPrefix,
 		classBuilder,
@@ -30,6 +33,7 @@
 		rollVisualDice
 	} from 'src/utils';
 	import { getContext } from 'svelte';
+	import LevelUpDescription from './levelUpDescription.svelte';
 	const { open } = getContext(CONTEXTS.MODAL);
 
 	export let unlockedClasses: any;
@@ -64,9 +68,19 @@
 		return acc;
 	}, {});
 
-	$: promptWeaponLevelUp = (type: any, level, onSuccess) => {
+	let ref;
+
+	$: promptWeaponLevelUp = (type: any, level, onSuccess = () => {}) => {
 		const pickOne = WEAPON_TYPES_TO_LEVEL_FEATURES[type][level]?.unlocks?.pickOne;
 		if (!pickOne) {
+			open(NoticePrompt, {
+				header: `Unlocked ${WEAPON_TYPE_TO_LABEL[type]} level ${WEAPON_LEVEL_TO_LABEL[level]}`,
+				childElement: LevelUpDescription,
+				childElementProps: {
+					type,
+					level
+				}
+			});
 			return onSuccess();
 		}
 
@@ -82,7 +96,13 @@
 			onUpdateClassXP,
 			onUpdateCustomCombatArts,
 			onUpdateCustomCombatSkills,
-			onUpdateCustomWeapons
+			onUpdateCustomWeapons,
+			descriptionElement: LevelUpDescription,
+			descriptionElementProps: {
+				type,
+				level,
+				disablePickOne: true
+			}
 		});
 	};
 	$: onWeaponXpChange = (value: any, { curLevel, curXP, maxXP, type, onSuccess }: any) => {
@@ -212,6 +232,11 @@
 			{#each Object.keys(WEAPON_TYPE) as type, i}
 				{@const curXP = weaponXP[type]?.total || 0}
 				{@const curLevel = weaponXP[type]?.level || WEAPON_LEVEL.E}
+				{@const nextLevel =
+					LEVEL_UP_ORDER[LEVEL_UP_ORDER.findIndex((a) => a === weaponXP[type]?.level) + 1]}
+				{@const nextLevelDescription = getLevelUpDescription(
+					WEAPON_TYPES_TO_LEVEL_FEATURES[type]?.[nextLevel]
+				)}
 				{@const maxXP = WEAPON_LEVEL_TO_MAX_XP[curLevel]}
 				<div
 					class={classBuilder('label', { focused: focusedRow.i === i && focusedRow.weaponSide })}
@@ -234,19 +259,38 @@
 					/>
 				</div>
 				{#key resetInputs}
-					<select
-						name="weapon_level"
-						on:change={(e) => onWeaponChangeLevel(e, { type, curLevel })}
-						on:mouseover={focusGenerator(i, true)}
-						on:mouseleave={focusGenerator(-1, true)}
-						on:focus={focusGenerator(i, true)}
-					>
-						{#each Object.keys(WEAPON_LEVEL) as level}
-							<option value={WEAPON_LEVEL[level]} selected={curLevel === level}>
-								{WEAPON_LEVEL_TO_LABEL[level]}</option
+					<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
+						<div slot="t">
+							<div>
+								<u> Current Level: </u>
+							</div>
+							<div>
+								{getLevelUpDescription(WEAPON_TYPES_TO_LEVEL_FEATURES[type]?.[curLevel]) ||
+									'Nothing'}
+							</div>
+							<div>
+								<u> On Level Up: </u>
+							</div>
+							<div>
+								{nextLevelDescription || 'Nothing'}
+							</div>
+						</div>
+						<div>
+							<select
+								name="weapon_level"
+								on:change={(e) => onWeaponChangeLevel(e, { type, curLevel })}
+								on:mouseover={focusGenerator(i, true)}
+								on:mouseleave={focusGenerator(-1, true)}
+								on:focus={focusGenerator(i, true)}
 							>
-						{/each}
-					</select>
+								{#each Object.keys(WEAPON_LEVEL) as level}
+									<option value={WEAPON_LEVEL[level]} selected={curLevel === level}>
+										{WEAPON_LEVEL_TO_LABEL[level]}</option
+									>
+								{/each}
+							</select>
+						</div>
+					</SvelteTip>
 				{/key}
 				{#if WEAPON_TYPE_TO_STAT[type].length > 1}
 					<select
@@ -265,7 +309,7 @@
 					</select>
 				{/if}
 				{#if WEAPON_TYPE_TO_STAT[type].length <= 1}
-					<span style:text-align="center"
+					<span style:text-align="center" style:cursor="default"
 						>{PLAYER_STAT_TO_SHORT_LABEL[WEAPON_TYPE_TO_STAT[type][0]]}</span
 					>
 				{/if}
@@ -416,23 +460,28 @@
 		display: grid;
 		grid-template-columns: max-content 1fr max-content min-content min-content max-content;
 		grid-auto-rows: min-content;
+		align-items: center;
 		gap: 5px;
 	}
 	.xp-bar {
+		height: 100%;
 		flex: 1;
 		position: relative;
-		z-index: 1;
 		background-color: white;
 		outline: 1px solid black;
 		border-radius: 5px;
 
 		.fill {
 			position: absolute;
+			display: flex;
+			align-items: center;
 			inset: 2px;
 			border-radius: 5px;
 			background-color: #5ecd5f;
-			z-index: -1;
 			white-space: nowrap;
+			> span {
+				margin-left: 2px;
+			}
 		}
 	}
 	.form {
@@ -473,6 +522,15 @@
 	}
 
 	.focused {
+		color: red;
+	}
+
+	.hidden-container {
+		position: absolute;
+		opacity: 0;
+		z-index: -999;
+	}
+	.level-up-text {
 		color: red;
 	}
 </style>

@@ -8,7 +8,10 @@ import {
 	PickOnePromptType
 } from './constants';
 
-export const getStatBlockDescription = (unlocks: StatBlock = {}) => {
+export const getStatBlockDescription = (
+	unlocks: StatBlock = {},
+	{ disablePickOne }: { disablePickOne?: boolean } = {}
+) => {
 	const {
 		playerStats,
 		combatSkills,
@@ -118,7 +121,7 @@ export const getStatBlockDescription = (unlocks: StatBlock = {}) => {
 		finalStringArr.push('MS Bonus (' + msBonus + ')');
 	}
 
-	if (pickOne) {
+	if (!disablePickOne && pickOne) {
 		finalStringArr.push(
 			'Choose one per category: ' +
 				pickOne
@@ -160,4 +163,10 @@ export const getClassDescription = (features: ClassFeatures) => {
 
 	const whenEquippedString = '';
 	return [unlocksString, whenEquippedString].filter((a) => a).join(', ');
+};
+
+export const getLevelUpDescription = (features: XPLevelFeatures = {}, disablePickOne = false) => {
+	const { unlocks } = features;
+
+	return getStatBlockDescription(unlocks, { disablePickOne });
 };
