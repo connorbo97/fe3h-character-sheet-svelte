@@ -74,7 +74,36 @@ export const COMBAT_SKILLS = {
 
 	WEIGHT_MINUS_3: 'WEIGHT_MINUS_3',
 
-	AGILE_RIDER: 'AGILE_RIDER'
+	AGILE_RIDER: 'AGILE_RIDER',
+
+	// Starter Skills
+	OFFICERS_DUTY: 'OFFICERS_DUTY',
+	SONGSTRESS: 'SONGSTRESS',
+	CONFIDENCE: 'CONFIDENCE',
+	PERSECUTION_COMPLEX: 'PERSECUTION_COMPLEX',
+	BORN_FIGHTER: 'BORN_FIGHTER',
+	CATNAP: 'CATNAP',
+	HUNTERS_BOON: 'HUNTERS_BOON',
+	LIVE_TO_SERVE: 'LIVE_TO_SERVE',
+	STAUNCH_SHIELD: 'STAUNCH_SHIELD',
+	LONE_WOLF: 'LONE_WOLF',
+	PERSEVERANCE: 'PERSEVERANCE',
+	PHILANDER: 'PHILANDER',
+	LADY_KNIGHT: 'LADY_KNIGHT',
+	DISTINGUISHED_HOUSE: 'DISTINGUISHED_HOUSE',
+	ADVOCATE: 'ADVOCATE',
+	GOODY_BASKET: 'GOODY_BASKET',
+	WATCHFUL_EYE: 'WATCHFUL_EYE',
+	ANIMAL_FRIEND: 'ANIMAL_FRIEND',
+	RIVALRY: 'RIVALRY',
+	INFIRMARY_MASTER: 'INFIRMARY_MASTER',
+	CREST_SCHOLAR: 'CREST_SCHOLAR',
+	FIGHTING_SPIRIT: 'FIGHTING_SPIRIT',
+	COMPASSION: 'COMPASSION',
+	GUARDIAN: 'GUARDIAN',
+	LILYS_POISE: 'LILYS_POISE',
+	VETERAN_KNIGHT: 'VETERAN_KNIGHT',
+	SURVIVAL_INSTINCT: 'SURVIVAL_INSTINCT'
 };
 export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 	MYRMIDON_MASTER: {
@@ -604,5 +633,141 @@ export const COMBAT_SKILLS_TO_FEATURES: { [s: string]: SkillFeatures } = {
 		attackBonus: {
 			ANY: [1]
 		}
+	},
+	// BORN_FIGHTER: 'BORN_FIGHTER',
+	// CATNAP: 'CATNAP',
+	// HUNTERS_BOON: 'HUNTERS_BOON',
+	// LIVE_TO_SERVE: 'LIVE_TO_SERVE',
+	// STAUNCH_SHIELD: 'STAUNCH_SHIELD',
+	// LONE_WOLF: 'LONE_WOLF',
+	// PERSEVERANCE: 'PERSEVERANCE',
+	// PHILANDER: 'PHILANDER',
+	// LADY_KNIGHT: 'LADY_KNIGHT',
+	// DISTINGUISHED_HOUSE: 'DISTINGUISHED_HOUSE',
+	// ADVOCATE: 'ADVOCATE',
+	// GOODY_BASKET: 'GOODY_BASKET',
+	// WATCHFUL_EYE: 'WATCHFUL_EYE',
+	// ANIMAL_FRIEND: 'ANIMAL_FRIEND',
+	// RIVALRY: 'RIVALRY',
+	// INFIRMARY_MASTER: 'INFIRMARY_MASTER',
+	// CREST_SCHOLAR: 'CREST_SCHOLAR',
+	// FIGHTING_SPIRIT: 'FIGHTING_SPIRIT',
+	// COMPASSION: 'COMPASSION',
+	// GUARDIAN: 'GUARDIAN',
+	// LILYS_POISE: 'LILYS_POISE',
+	// VETERAN_KNIGHT: 'VETERAN_KNIGHT',
+	// SURVIVAL_INSTINCT: 'SURVIVAL_INSTINCT'
+	[COMBAT_SKILLS.OFFICERS_DUTY]: {
+		label: "Officer's Duty",
+		description: '+1d2 damage on Gambits'
+	},
+	[COMBAT_SKILLS.SONGSTRESS]: {
+		label: 'Songstress',
+		description: 'Adjacent allies recover up to 10% of max HP at the start of each turn.'
+	},
+	[COMBAT_SKILLS.CONFIDENCE]: {
+		label: 'Confidence',
+		description: 'Grants +3 to Hit and +3 AC when unit is at full HP.'
+	},
+	[COMBAT_SKILLS.PERSECUTION_COMPLEX]: {
+		label: 'Persecution Complex',
+		description: 'Grants +1d2 damage when unit is not at full HP.'
+	},
+	[COMBAT_SKILLS.BORN_FIGHTER]: {
+		label: 'Born Fighter',
+		description: 'Adjacent foes suffer -2 AC during combat.'
+	},
+	[COMBAT_SKILLS.CATNAP]: {
+		label: 'Catnap',
+		description: 'If unit takes no action except Wait, recovers up to 10% of max HP.'
+	},
+	[COMBAT_SKILLS.HUNTERS_BOON]: {
+		label: "Hunter's Boon",
+		description: "Grants Crit +4 when foe's HP is ≤ 50%."
+	},
+	[COMBAT_SKILLS.LIVE_TO_SERVE]: {
+		label: 'Live to Serve',
+		description: 'When healing an ally with white magic, unit recovers the same amount of HP.'
+	},
+	[COMBAT_SKILLS.STAUNCH_SHIELD]: {
+		label: 'Staunch Shield',
+		description: 'If unit takes no action except Wait, grants Protection +1 until your next turn.'
+	},
+	[COMBAT_SKILLS.LONE_WOLF]: {
+		label: 'Lone Wolf',
+		description:
+			'Unit deals 1d2 extra damage when no battalion is assigned or when battalion endurance is 0.'
+	},
+	[COMBAT_SKILLS.PERSEVERANCE]: {
+		label: 'Perseverance',
+		description: 'Use Rally to grant +1 damage to an ally until your next turn.'
+	},
+	[COMBAT_SKILLS.PHILANDER]: {
+		label: 'Philander',
+		description: 'If a female ally is adjacent, unit deals 1 extra damage'
+	},
+	[COMBAT_SKILLS.LADY_KNIGHT]: {
+		label: 'Lady Knight',
+		description: 'Grants +1 damage and Hit +5 with gambits.'
+	},
+	[COMBAT_SKILLS.DISTINGUISHED_HOUSE]: {
+		label: 'Distinguished House',
+		description: 'Unit deals 1 extra damage while in formation with a battalion.'
+	},
+	[COMBAT_SKILLS.ADVOCATE]: {
+		label: 'Advocate',
+		description: 'Adjacent male allies deal 1 extra damage during combat.'
+	},
+	[COMBAT_SKILLS.GOODY_BASKET]: {
+		label: 'Goody Basket',
+		description: 'Chance to recover up to 10% of max HP at the start of each turn. DC 18'
+	},
+	[COMBAT_SKILLS.WATCHFUL_EYE]: {
+		label: 'Watchful Eye',
+		description: 'Grants Hit +20.'
+	},
+	[COMBAT_SKILLS.ANIMAL_FRIEND]: {
+		label: 'Animal Friend',
+		description:
+			'	Unit recovers up to 20% of max HP at the start of each turn when adjacent to a cavalry or flying ally.'
+	},
+	[COMBAT_SKILLS.RIVALRY]: {
+		label: 'Rivalry',
+		description: 'If a male ally is adjacent, unit deals 1 extra damage'
+	},
+	[COMBAT_SKILLS.INFIRMARY_MASTER]: {
+		label: 'Infirmary Master',
+		description: 'Adjacent allies gain Crit Avo +10 during combat.'
+	},
+	[COMBAT_SKILLS.CREST_SCHOLAR]: {
+		label: 'Crest Scholar',
+		description:
+			'Use Rally to grant 1d2 damage to an ally until your next turn (only applies to magic attacks)'
+	},
+	[COMBAT_SKILLS.FIGHTING_SPIRIT]: {
+		label: 'Fighting Spirit',
+		description:
+			'Unit gains +1 Protection when no battalion is assigned or when battalion endurance is 0.'
+	},
+	[COMBAT_SKILLS.COMPASSION]: {
+		label: 'Compassion',
+		description: 'Use Rally to grant +1 Crit Range to an ally.'
+	},
+	[COMBAT_SKILLS.GUARDIAN]: {
+		label: 'Guardian',
+		description: 'Adjacent female allies deal 1d2 extra damage during combat'
+	},
+	[COMBAT_SKILLS.LILYS_POISE]: {
+		label: "Lily's Poise",
+		description: 'Adjacent allies gain +1 Protection during combat.'
+	},
+	[COMBAT_SKILLS.VETERAN_KNIGHT]: {
+		label: 'Veteran Knight',
+		description: 'Unit gains +1 Protection while in formation with a battalion.'
+	},
+	[COMBAT_SKILLS.SURVIVAL_INSTINCT]: {
+		label: 'Survival Instinct',
+		description:
+			'If unit initiates combat and defeats foe, grants +1 damage, +1 AC, +1 AS, +5 to hit'
 	}
 };
