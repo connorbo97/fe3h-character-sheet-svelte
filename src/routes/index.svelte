@@ -480,7 +480,7 @@
 		grid-template-columns: 1fr;
 		background-color: #dfd6c2;
 
-		height: 100vh;
+		min-height: 100vh;
 	}
 	.header {
 		grid-area: header;
