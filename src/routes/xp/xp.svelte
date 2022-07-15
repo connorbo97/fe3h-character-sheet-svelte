@@ -518,6 +518,8 @@
 
 						if (newXP >= maxXP) {
 							newXP = maxXP;
+							levelUpAudio.currentTime = 0;
+							levelUpAudio.play();
 						}
 
 						onUpdateClassXP(curClass, newXP, newXP === maxXP);
