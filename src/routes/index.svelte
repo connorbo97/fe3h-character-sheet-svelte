@@ -402,6 +402,7 @@
 							{onUpdateCustomCombatArts}
 							{onUpdateCustomCombatSkills}
 							{onUpdateCustomWeapons}
+							{equippedClass}
 						/>
 					{/if}
 				</div>

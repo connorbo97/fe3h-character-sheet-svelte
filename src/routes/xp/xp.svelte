@@ -19,13 +19,14 @@
 		WEAPON_TYPE,
 		WEAPON_TYPE_TO_LABEL
 	} from 'src/constants';
+	import { CLASS_TO_FEATURES } from 'src/constants/classes';
 	import { Dice } from 'src/constants/dice';
 	import { TooltipStyle } from 'src/constants/enums';
 	import { PLAYER_SKILL } from 'src/constants/playerSkills';
 	import { PLAYER_STAT, PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
 	import { WEAPON_TYPES_TO_LEVEL_FEATURES } from 'src/constants/weaponLevel';
-	import { WEAPON_TYPE_TO_STAT } from 'src/constants/weaponType';
-	import { getLevelUpDescription } from 'src/descriptionUtils';
+	import { COMBAT_XP_OPTIONS, WEAPON_TYPE_TO_STAT } from 'src/constants/weaponType';
+	import { getLevelUpDescription, getXPMoochText } from 'src/descriptionUtils';
 	import {
 		addNumberPrefix,
 		classBuilder,
@@ -33,11 +34,12 @@
 		rollVisualDice
 	} from 'src/utils';
 	import { getContext } from 'svelte';
+	import CombatXpForm from './combatXPForm.svelte';
 	import LevelUpDescription from './levelUpDescription.svelte';
 	const { open } = getContext(CONTEXTS.MODAL);
 
 	export let unlockedClasses: any;
-	export let weaponXP: any;
+	export let weaponXP: XPMap;
 	export let classXP: any;
 
 	export let playerSkillProficiency;
@@ -56,7 +58,11 @@
 	export let onUpdateCustomCombatSkills: any;
 	export let onUpdateCustomWeapons: any;
 
+	export let equippedClass: any;
+
 	let resetInputs = true;
+
+	let weaponsUsedInCombat: { [s: string]: boolean } = {};
 
 	const DEFAULT_ROLLS = 4;
 	let rollsRemaining = DEFAULT_ROLLS;
@@ -68,8 +74,9 @@
 		return acc;
 	}, {});
 
-	$: promptWeaponLevelUp = (type: any, level, onSuccess = () => {}) => {
+	$: promptWeaponLevelUp = (type: any, level, onSuccess = () => {}, onClose = () => {}) => {
 		const pickOne = WEAPON_TYPES_TO_LEVEL_FEATURES[type][level]?.unlocks?.pickOne;
+
 		if (!pickOne) {
 			open(NoticePrompt, {
 				header: `Unlocked ${WEAPON_TYPE_TO_LABEL[type]} level ${WEAPON_LEVEL_TO_LABEL[level]}`,
@@ -77,51 +84,93 @@
 				childElementProps: {
 					type,
 					level
+				},
+				SPECIAL_callOnClose: () => {
+					onSuccess();
+					onClose();
 				}
 			});
-			return onSuccess();
+		} else {
+			open(PickOnePrompt, {
+				SPECIAL_callOnClose: () => {
+					onClose();
+				},
+				pickOne,
+				onSubmit: onSuccess,
+				reason: `Unlocked ${WEAPON_TYPE_TO_LABEL[type]} level ${WEAPON_LEVEL_TO_LABEL[level]}`,
+				customCombatArts,
+				customCombatSkills,
+				customWeapons,
+				playerStats,
+				onUpdatePlayerStats,
+				onUpdateClassXP,
+				onUpdateCustomCombatArts,
+				onUpdateCustomCombatSkills,
+				onUpdateCustomWeapons,
+				descriptionElement: LevelUpDescription,
+				descriptionElementProps: {
+					type,
+					level,
+					disablePickOne: true
+				}
+			});
+			open(PickOnePrompt, {
+				SPECIAL_callOnClose: () => {
+					onClose();
+				},
+				pickOne,
+				onSubmit: onSuccess,
+				reason: `Unlocked ${WEAPON_TYPE_TO_LABEL[type]} level ${WEAPON_LEVEL_TO_LABEL[level]}`,
+				customCombatArts,
+				customCombatSkills,
+				customWeapons,
+				playerStats,
+				onUpdatePlayerStats,
+				onUpdateClassXP,
+				onUpdateCustomCombatArts,
+				onUpdateCustomCombatSkills,
+				onUpdateCustomWeapons,
+				descriptionElement: LevelUpDescription,
+				descriptionElementProps: {
+					type,
+					level,
+					disablePickOne: true
+				}
+			});
 		}
-
-		open(PickOnePrompt, {
-			pickOne,
-			onSubmit: onSuccess,
-			reason: `Unlocked ${WEAPON_TYPE_TO_LABEL[type]} level ${WEAPON_LEVEL_TO_LABEL[level]}`,
-			customCombatArts,
-			customCombatSkills,
-			customWeapons,
-			playerStats,
-			onUpdatePlayerStats,
-			onUpdateClassXP,
-			onUpdateCustomCombatArts,
-			onUpdateCustomCombatSkills,
-			onUpdateCustomWeapons,
-			descriptionElement: LevelUpDescription,
-			descriptionElementProps: {
-				type,
-				level,
-				disablePickOne: true
-			}
-		});
 	};
 	$: onWeaponXpChange = (value: any, { curLevel, curXP, maxXP, type, onSuccess }: any) => {
-		let newLevel = curLevel;
+		return new Promise((res) => {
+			let newLevel = curLevel;
 
-		let newXP = curXP + value;
+			let newXP = curXP + value;
 
-		const onSuccessPrompt = () => {
-			onUpdateWeaponXP(type, newXP, newLevel);
-			resetInputs = !resetInputs;
-			onSuccess && onSuccess();
-		};
+			const didSubmit = { current: false };
 
-		if (newXP >= maxXP) {
-			newLevel = LEVEL_UP_ORDER[LEVEL_UP_ORDER.indexOf(curLevel) + 1] || curLevel;
-			newXP = newXP - maxXP;
+			const onSuccessPrompt = () => {
+				onUpdateWeaponXP(type, newXP, newLevel);
+				resetInputs = !resetInputs;
+				onSuccess && onSuccess();
 
-			promptWeaponLevelUp(type, newLevel, onSuccessPrompt);
-		} else {
-			onSuccessPrompt();
-		}
+				res(true);
+				didSubmit.current = true;
+			};
+			const onClosePrompt = () => {
+				if (!didSubmit.current) {
+					alert('Rolling back this Level Up b/c prompt was not completed');
+					res(false);
+				}
+			};
+
+			if (newXP >= maxXP) {
+				newLevel = LEVEL_UP_ORDER[LEVEL_UP_ORDER.indexOf(curLevel) + 1] || curLevel;
+				newXP = newXP - maxXP;
+
+				promptWeaponLevelUp(type, newLevel, onSuccessPrompt, onClosePrompt);
+			} else {
+				onSuccessPrompt();
+			}
+		});
 	};
 	$: onWeaponXPChangeFromInput = (e, args) => {
 		const target = e.currentTarget;
@@ -357,8 +406,9 @@
 				</SvelteTip>
 			{/each}
 		</div>
+		<CombatXpForm {equippedClass} {weaponXP} {onWeaponXpChange} />
 		<div class="auto-xp" style:flex="1">
-			<span style:flex="1">Automatic Training:</span>
+			<span style:flex="1"><u>Automatic Training</u></span>
 			<SvelteTip>
 				<div slot="t">
 					<span>
@@ -459,6 +509,7 @@
 		}
 		column-gap: 5px;
 		padding: 5px;
+		user-select: none;
 	}
 	.weapon-xp-container {
 		display: flex;
