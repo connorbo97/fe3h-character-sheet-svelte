@@ -24,7 +24,7 @@ export const checkHealPlus = (equippedClass: string, equippedCombatSkills: Array
 
 // download utils
 
-const download = (content: any, fileName: any, contentType: any) => {
+export const download = (content: any, fileName: any, contentType: any) => {
 	var a = document.createElement('a');
 	var file = new Blob([content], { type: contentType });
 	a.href = URL.createObjectURL(file);
