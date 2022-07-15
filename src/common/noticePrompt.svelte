@@ -13,7 +13,6 @@
 
 <div class="container">
 	<h2>{header}</h2>
-	<br />
 	{#if content}
 		<div>{content}</div>
 	{/if}
@@ -21,8 +20,13 @@
 		<svelte:component this={childElement} {...childElementProps} />
 	{/if}
 
-	<button on:click={() => close()}>Close</button>
+	<button on:click={() => close()} style:width="100%">Close</button>
 </div>
 
 <style lang="scss">
+	.container {
+		display: flex;
+		flex-direction: column;
+		row-gap: 5px;
+	}
 </style>

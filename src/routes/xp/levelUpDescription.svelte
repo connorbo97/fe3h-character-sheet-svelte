@@ -5,13 +5,21 @@
 	export let type: any;
 	export let level: any;
 	export let disablePickOne: any = false;
+
+	$: levelUpDescription = getLevelUpDescription(
+		WEAPON_TYPES_TO_LEVEL_FEATURES[type]?.[level],
+		disablePickOne
+	);
 </script>
 
 <div class="container">
 	<div><u>{disablePickOne ? 'Always ' : ''}Unlocks</u></div>
-	<div>
-		{getLevelUpDescription(WEAPON_TYPES_TO_LEVEL_FEATURES[type]?.[level], disablePickOne)}
-	</div>
+	{#if levelUpDescription}
+		<div>{levelUpDescription}</div>
+	{/if}
+	{#if !levelUpDescription}
+		<div>Nothing :)</div>
+	{/if}
 </div>
 
 <style lang="scss">
