@@ -15,13 +15,14 @@
 	let weaponsUsedInCombat: any = {};
 
 	$: equippedXPMooch = CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.xpMooch || {};
+	$: equippedXPMods = CLASS_TO_FEATURES[equippedClass]?.whenEquipped?.xpMods || {};
 	$: hasXPMooch = !!Object.keys(equippedXPMooch).length;
 
 	$: onCombatXPSubmit = async () => {
 		const totalUsedWeapons = Object.keys(weaponsUsedInCombat);
-		const xpPerWeapon = Math.round(totalXPForCombat / totalUsedWeapons.length);
-		const combatWeaponXP = totalUsedWeapons.reduce((acc, w) => {
-			acc[w] = xpPerWeapon;
+		const combatWeaponXP = totalUsedWeapons.reduce((acc: any, w) => {
+			//@ts-ignore
+			acc[w] = Math.round((totalXPForCombat / totalUsedWeapons.length) * (equippedXPMods[w] || 1));
 			return acc;
 		}, {});
 
@@ -103,7 +104,13 @@
 						<label for={type}>{WEAPON_TYPE_TO_LABEL[type]}</label>
 					</div>
 					{#if weaponsUsedInCombat[type]}
-						<div>+{Math.round(totalXPForCombat / Object.keys(weaponsUsedInCombat).length)}</div>
+						<div>
+							+{Math.round(
+								(totalXPForCombat / Object.keys(weaponsUsedInCombat).length) *
+									//@ts-ignore
+									(equippedXPMods[type] || 1)
+							)}
+						</div>
 					{/if}
 				</div>
 			{/each}
