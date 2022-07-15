@@ -62,7 +62,11 @@
 
 	let resetInputs = true;
 
-	let weaponsUsedInCombat: { [s: string]: boolean } = {};
+	let levelUpAudio = new Audio('success-sound.webm');
+
+	$: {
+		levelUpAudio.volume = 0.05;
+	}
 
 	const DEFAULT_ROLLS = 4;
 	let rollsRemaining = DEFAULT_ROLLS;
@@ -75,6 +79,7 @@
 	}, {});
 
 	$: promptWeaponLevelUp = (type: any, level, onSuccess = () => {}, onClose = () => {}) => {
+		levelUpAudio.play();
 		const pickOne = WEAPON_TYPES_TO_LEVEL_FEATURES[type][level]?.unlocks?.pickOne;
 
 		if (!pickOne) {
@@ -165,7 +170,7 @@
 			if (newXP >= maxXP) {
 				newLevel = LEVEL_UP_ORDER[LEVEL_UP_ORDER.indexOf(curLevel) + 1] || curLevel;
 				newXP = newXP - maxXP;
-
+				console.log('should play', levelUpAudio);
 				promptWeaponLevelUp(type, newLevel, onSuccessPrompt, onClosePrompt);
 			} else {
 				onSuccessPrompt();
