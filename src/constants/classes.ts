@@ -273,6 +273,9 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			xpMods: {
 				[WEAPON_TYPE.LANCE]: 1.6
 			},
+			xpMooch: {
+				[WEAPON_TYPE.RIDING]: 1
+			},
 			playerSkills: {
 				[PLAYER_SKILL.LOCKPICKING]: SkillProficiency.PROFICIENT
 			},
