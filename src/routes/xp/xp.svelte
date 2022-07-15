@@ -79,6 +79,7 @@
 	}, {});
 
 	$: promptWeaponLevelUp = (type: any, level, onSuccess = () => {}, onClose = () => {}) => {
+		levelUpAudio.currentTime = 0;
 		levelUpAudio.play();
 		const pickOne = WEAPON_TYPES_TO_LEVEL_FEATURES[type][level]?.unlocks?.pickOne;
 

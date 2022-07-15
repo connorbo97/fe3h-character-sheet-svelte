@@ -65,7 +65,9 @@
 			}
 			onUpdateUnlockedClasses(Array.from(classSet).filter((val) => val !== targetClass));
 		} else {
+			classChangeAudio.currentTime = 0;
 			classChangeAudio.play();
+
 			const onUnlockClass = () => {
 				const playerStatUnlocks = CLASS_TO_FEATURES[targetClass]?.unlocks?.playerStats;
 				if (playerStatUnlocks) {
