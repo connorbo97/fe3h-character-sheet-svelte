@@ -366,6 +366,9 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			xpMods: {
 				[WEAPON_TYPE.AXE]: 1.6,
 				[WEAPON_TYPE.LANCE]: 1.6
+			},
+			xpMooch: {
+				[WEAPON_TYPE.HEAVY_ARMOR]: 1
 			}
 		},
 		whenMastered: {
