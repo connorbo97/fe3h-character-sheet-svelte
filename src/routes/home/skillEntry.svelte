@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SvelteTip from 'src/common/SvelteTip.svelte';
 	import UnlockedButton from 'src/common/unlockedButton.svelte';
 	import { PROFICIENCY_BONUS } from 'src/constants';
 	import { Dice } from 'src/constants/dice';
@@ -14,6 +15,7 @@
 
 	export let stats: any;
 	export let skillProficiency: any;
+	export let classProficiencies: any;
 	export let skillBonus: any;
 	export let onToggleSkillProficiency: Function;
 	export let skill: any;
@@ -34,15 +36,18 @@
 </script>
 
 <div class="container">
-	<UnlockedButton
-		isUnlocked={skillProficiency[skill] === SkillProficiency.PROFICIENT ||
-			skillProficiency[skill] === SkillProficiency.AWFUL}
-		isMastered={skillProficiency[skill] === SkillProficiency.EXPERT}
-		onClick={() => onToggleSkillProficiency(skill)}
-		unlockedFilter={skillProficiency[skill] === SkillProficiency.PROFICIENT
-			? 'sepia(100%) saturate(1000%) brightness(45%) hue-rotate(174deg)'
-			: 'sepia(100%) saturate(1000%) brightness(45%) hue-rotate(287deg)'}
-	/>
+	<SvelteTip disabled={classProficiencies[skill] === undefined}>
+		<div slot="t">From Master/Current Class</div>
+		<UnlockedButton
+			isUnlocked={skillProficiency[skill] === SkillProficiency.PROFICIENT ||
+				skillProficiency[skill] === SkillProficiency.AWFUL}
+			isMastered={skillProficiency[skill] === SkillProficiency.EXPERT}
+			onClick={() => onToggleSkillProficiency(skill)}
+			unlockedFilter={skillProficiency[skill] === SkillProficiency.PROFICIENT
+				? 'sepia(100%) saturate(1000%) brightness(45%) hue-rotate(174deg)'
+				: 'sepia(100%) saturate(1000%) brightness(45%) hue-rotate(287deg)'}
+		/>
+	</SvelteTip>
 	<div class="label">
 		<span
 			class="label-text"

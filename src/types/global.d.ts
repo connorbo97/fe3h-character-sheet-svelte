@@ -98,7 +98,7 @@ declare global {
 
 	declare type StatBlock = {
 		playerStats?: BasicStat;
-		playerSkills?: BasicStat;
+		playerSkills?: { [s: string]: number };
 		combatArts?: BasicStat;
 		weapons?: BasicStat;
 
