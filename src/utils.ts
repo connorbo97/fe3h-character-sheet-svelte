@@ -44,3 +44,9 @@ export const onExportSheet = (fullSheet: CharacterSheet, prefix = '') => {
 export const copyToClipboard = (text: any) => {
 	navigator.clipboard.writeText(text);
 };
+
+export const sleep = (ts = 1000) => {
+	return new Promise((res) => {
+		setTimeout(() => res(true), ts);
+	});
+};
