@@ -8,6 +8,26 @@ import {
 	PickOnePromptType
 } from './constants';
 
+export const getXPMoochText = (xpMooch, options: any = {}) => {
+	const { prefix = 'Extra XP from Combat:' } = options;
+	return (
+		prefix +
+		' (' +
+		Object.keys(xpMooch)
+			.map((k) => {
+				return (
+					(WEAPON_TYPE_TO_LABEL[k] || k) +
+					': +' +
+					// @ts-ignore
+					Math.round(xpMooch[k] * 100) +
+					'% of combat XP'
+				);
+			})
+			.join(', ') +
+		')'
+	);
+};
+
 export const getStatBlockDescription = (
 	unlocks: StatBlock = {},
 	{ disablePickOne }: { disablePickOne?: boolean } = {}
@@ -20,6 +40,7 @@ export const getStatBlockDescription = (
 		weapons,
 		hpBonus,
 		xpMods,
+		xpMooch,
 		protectionBonus,
 		msBonus,
 		bonusRange,
@@ -84,18 +105,6 @@ export const getStatBlockDescription = (
 		finalStringArr.push('HP Bonus (' + hpBonus + ')');
 	}
 
-	if (xpMods) {
-		finalStringArr.push(
-			'XP from Combat: (' +
-				Object.keys(xpMods)
-					.map((k) => {
-						return (WEAPON_TYPE_TO_LABEL[k] || k) + ': x' + xpMods[k];
-					})
-					.join(', ') +
-				')'
-		);
-	}
-
 	if (bonusRange) {
 		finalStringArr.push(
 			'Bonus Range by Weapon Type: (' +
@@ -119,6 +128,22 @@ export const getStatBlockDescription = (
 	}
 	if (msBonus) {
 		finalStringArr.push('MS Bonus (' + msBonus + ')');
+	}
+
+	if (xpMods) {
+		finalStringArr.push(
+			'XP from Combat: (' +
+				Object.keys(xpMods)
+					.map((k) => {
+						return (WEAPON_TYPE_TO_LABEL[k] || k) + ': x' + xpMods[k];
+					})
+					.join(', ') +
+				')'
+		);
+	}
+
+	if (xpMooch) {
+		finalStringArr.push(getXPMoochText(xpMooch));
 	}
 
 	if (!disablePickOne && pickOne) {
