@@ -110,7 +110,7 @@
 
 		const onSuccessPrompt = () => {
 			onUpdateWeaponXP(type, newXP, newLevel);
-			resetInputs != resetInputs;
+			resetInputs = !resetInputs;
 			onSuccess && onSuccess();
 		};
 
@@ -278,7 +278,10 @@
 						<div class="content">
 							<select
 								name="weapon_level"
-								on:change={(e) => onWeaponChangeLevel(e, { type, curLevel })}
+								on:change={(e) => {
+									resetInputs = !resetInputs;
+									onWeaponChangeLevel(e, { type, curLevel });
+								}}
 								on:mouseover={focusGenerator(i, true)}
 								on:mouseleave={focusGenerator(-1, true)}
 								on:focus={focusGenerator(i, true)}
