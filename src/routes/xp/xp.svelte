@@ -63,11 +63,25 @@
 	let resetInputs = true;
 
 	let levelUpAudio = new Audio('success-sound.webm');
+	let failure = new Audio('failure.webm');
+	let bell = new Audio('bell.webm');
+	let itemReceived = new Audio('item-received.webm');
+	let successSound = new Audio('success-sound.webm');
 
 	$: {
 		levelUpAudio.volume = 0.05;
+		failure.volume = 0.05;
+		bell.volume = 0.05;
+		itemReceived.volume = 0.1;
+		successSound.volume = 0.025;
 	}
 
+	const pauseAllAudios = () => {
+		failure.pause();
+		bell.pause();
+		itemReceived.pause();
+		successSound.pause();
+	};
 	const DEFAULT_ROLLS = 4;
 	let rollsRemaining = DEFAULT_ROLLS;
 	let greatAlreadyHappened = false;
@@ -79,6 +93,7 @@
 	}, {});
 
 	$: promptWeaponLevelUp = (type: any, level, onSuccess = () => {}, onClose = () => {}) => {
+		pauseAllAudios();
 		levelUpAudio.currentTime = 0;
 		levelUpAudio.play();
 		const pickOne = WEAPON_TYPES_TO_LEVEL_FEATURES[type][level]?.unlocks?.pickOne;
@@ -242,16 +257,27 @@
 		const finalValue = value + statMod;
 
 		let newRolls = rollsRemaining - 1;
+		pauseAllAudios();
 		if (value === 20) {
+			successSound.currentTime = 0;
+			successSound.play();
 			onWeaponXpChange(16, args);
 			newRolls += 1;
 		} else if (value === 1 || finalValue <= 1) {
+			failure.currentTime = 0;
+			failure.play();
 			//nothing
 		} else if (finalValue <= 5) {
+			failure.currentTime = 0;
+			failure.play();
 			onWeaponXpChange(6, args);
 		} else if (finalValue <= 15) {
+			itemReceived.currentTime = 0;
+			itemReceived.play();
 			onWeaponXpChange(9, args);
 		} else {
+			successSound.currentTime = 0;
+			successSound.play();
 			if (!greatAlreadyHappened) {
 				newRolls += 1;
 			}
