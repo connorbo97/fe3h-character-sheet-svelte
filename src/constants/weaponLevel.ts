@@ -510,20 +510,14 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			unlocks: {}
 		},
 		[WEAPON_LEVEL.E_PLUS]: {
-			unlocks: {
-				combatSkills: {}
-			}
+			unlocks: {}
 		},
 		[WEAPON_LEVEL.D]: {
 			unlocks: {}
 		},
 		[WEAPON_LEVEL.D_PLUS]: {
-			unlocks: {
-				combatSkills: {}
-			},
-			removes: {
-				combatSkills: {}
-			}
+			unlocks: {},
+			removes: {}
 		},
 		[WEAPON_LEVEL.C]: {
 			unlocks: {
@@ -533,34 +527,22 @@ export const WEAPON_TYPES_TO_LEVEL_FEATURES: { [s: string]: { [s: string]: XPLev
 			}
 		},
 		[WEAPON_LEVEL.C_PLUS]: {
-			unlocks: {
-				combatSkills: {}
-			},
-			removes: {
-				combatSkills: {}
-			}
+			unlocks: {},
+			removes: {}
 		},
 		[WEAPON_LEVEL.B]: {
 			unlocks: {}
 		},
 		[WEAPON_LEVEL.B_PLUS]: {
-			unlocks: {
-				combatSkills: {}
-			},
-			removes: {
-				combatSkills: {}
-			}
+			unlocks: {},
+			removes: {}
 		},
 		[WEAPON_LEVEL.A]: {
 			unlocks: {}
 		},
 		[WEAPON_LEVEL.A_PLUS]: {
-			unlocks: {
-				combatSkills: {}
-			},
-			removes: {
-				combatSkills: {}
-			}
+			unlocks: {},
+			removes: {}
 		},
 		[WEAPON_LEVEL.S]: {
 			unlocks: {}
