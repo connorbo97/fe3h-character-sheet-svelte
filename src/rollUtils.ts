@@ -131,6 +131,18 @@ export const rollVisualDice = (
 		customResultBoxLabel?: Function;
 	} = {}
 ): Promise<{ value: number; resultArray: Array<any>; resultText: string }> => {
+	const rollAudios = [
+		new Audio('roll.mp3'),
+		new Audio('roll-2.mp3'),
+		new Audio('roll-3.mp3'),
+		new Audio('roll-4.mp3')
+	];
+	const pauseAndResetAllRollAudios = () => {
+		rollAudios.forEach((a) => {
+			a.pause();
+			a.currentTime = 0;
+		});
+	};
 	return new Promise((resolve) => {
 		let waitFlag = true;
 		let clearTimer: any = null;
@@ -197,6 +209,18 @@ export const rollVisualDice = (
 
 			return `${defaultFront} = ${finalCalcResult}`;
 		};
+
+		pauseAndResetAllRollAudios();
+		const setToRoll = [0, 1, 2, 3];
+		dice.forEach(() => {
+			if (!setToRoll.length) {
+				return;
+			}
+			const random = Math.floor(Math.random() * setToRoll.length);
+			const [indexToPlay] = setToRoll.splice(random, 1);
+
+			rollAudios[indexToPlay].play();
+		});
 
 		window.diceBox.roll(sanitizedDice).then((res: any) => {
 			rollHasFinished = true;

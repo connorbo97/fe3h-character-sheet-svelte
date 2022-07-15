@@ -28,6 +28,11 @@
 	export let playerStats: any;
 	export let onUpdatePlayerStats: any;
 
+	let classChangeAudio = new Audio('class-change.webm');
+	$: {
+		classChangeAudio.volume = 0.05;
+	}
+
 	$: classSet = new Set(unlockedClasses);
 
 	const onToggleEquipClass = (classToSelect: string) => {
@@ -60,7 +65,25 @@
 			}
 			onUpdateUnlockedClasses(Array.from(classSet).filter((val) => val !== targetClass));
 		} else {
-			const onUnlockClass = () => onUpdateUnlockedClasses([...Array.from(classSet), targetClass]);
+			classChangeAudio.currentTime = 0;
+			classChangeAudio.play();
+
+			const onUnlockClass = () => {
+				const playerStatUnlocks = CLASS_TO_FEATURES[targetClass]?.unlocks?.playerStats;
+				if (playerStatUnlocks) {
+					const newStats = Object.keys(playerStatUnlocks).reduce(
+						(acc, s) => {
+							if (playerStatUnlocks?.[s] && acc[s] < (playerStatUnlocks?.[s] || 0)) {
+								acc[s] = playerStatUnlocks[s];
+							}
+							return acc;
+						},
+						{ ...playerStats }
+					);
+					onUpdatePlayerStats(newStats);
+				}
+				onUpdateUnlockedClasses([...Array.from(classSet), targetClass]);
+			};
 			if (CLASS_TO_FEATURES[targetClass].unlocks.pickOne) {
 				promptUserIfRequired(targetClass, onUnlockClass);
 			} else {

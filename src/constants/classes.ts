@@ -1,7 +1,7 @@
 import { COMBAT_ARTS } from './combatArts';
 import { COMBAT_SKILLS } from './combatSkills';
 import { PickOnePromptType } from './enums';
-import { PLAYER_SKILL } from './playerSkills';
+import { PLAYER_SKILL, SkillProficiency } from './playerSkills';
 import { PLAYER_STAT } from './stats';
 import { WEAPONS } from './weapons';
 import { WEAPON_TYPE } from './weaponType';
@@ -43,26 +43,9 @@ export const INTERMEDIATE_CLASSES = new Set([
 	CLASS.PRIEST
 ]);
 
-export const CLASS_TO_LABEL = {
-	[CLASS.MYRMIDON]: 'Myrmidon',
-	[CLASS.SOLDIER]: 'Soldier',
-	[CLASS.FIGHTER]: 'Fighter',
-	[CLASS.RANGER]: 'Ranger',
-	[CLASS.MONK]: 'Monk',
-
-	[CLASS.MERCENARY]: 'Mercenary',
-	[CLASS.THIEF]: 'Thief',
-	[CLASS.CAVALIER]: 'Cavalier',
-	[CLASS.ARCHER]: 'Archer',
-	[CLASS.BRIGAND]: 'Brigand',
-	[CLASS.ARMORED_KNIGHT]: 'Armored Knight',
-	[CLASS.BRAWLER]: 'Brawler',
-	[CLASS.MAGE]: 'Mage',
-	[CLASS.PRIEST]: 'Priest'
-};
-
 export const CLASS_TO_FEATURES: ClassToFeatures = {
 	[CLASS.MYRMIDON]: {
+		label: 'Myrmidon',
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.DEX]: 12
@@ -86,6 +69,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	},
 	[CLASS.SOLDIER]: {
+		label: 'Soldier',
 		unlocks: {
 			pickOne: [
 				{
@@ -121,6 +105,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	},
 	[CLASS.FIGHTER]: {
+		label: 'Fighter',
 		unlocks: {
 			pickOne: [
 				{
@@ -158,6 +143,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	},
 	[CLASS.RANGER]: {
+		label: 'Ranger',
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.DEX]: 12
@@ -181,6 +167,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	},
 	[CLASS.MONK]: {
+		label: 'Monk',
 		canUseMagic: true,
 		unlocks: {
 			playerStats: {
@@ -188,8 +175,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			},
 			combatArts: {
 				[COMBAT_ARTS.PULL_BACK]: 1
-			},
-			weapons: {}
+			}
 		},
 		whenEquipped: {
 			xpMods: {
@@ -205,6 +191,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 	},
 
 	[CLASS.MERCENARY]: {
+		label: 'Mercenary',
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.DEX]: 14
@@ -231,6 +218,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	},
 	[CLASS.THIEF]: {
+		label: 'Thief',
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.DEX]: 14
@@ -248,28 +236,27 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 				[WEAPON_TYPE.SWORD]: 1.6,
 				[WEAPON_TYPE.BOW]: 1.3
 			},
-			skillProficiencies: {
-				[PLAYER_SKILL.LOCKPICKING]: 1
+			playerSkills: {
+				[PLAYER_SKILL.LOCKPICKING]: SkillProficiency.PROFICIENT
 			},
 			msBonus: 1
 		},
 		whenMastered: {
-			skillProficiencies: {
-				[PLAYER_SKILL.LOCKPICKING]: 1
-			},
 			playerSkills: {
-				[PLAYER_SKILL.SLEIGHT_OF_HAND]: 1
+				[PLAYER_SKILL.LOCKPICKING]: SkillProficiency.PROFICIENT,
+				[PLAYER_SKILL.SLEIGHT_OF_HAND]: SkillProficiency.PROFICIENT
 			}
 		}
 	},
 	[CLASS.CAVALIER]: {
+		label: 'Cavalier',
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.DEX]: 12,
 				[PLAYER_STAT.WIS]: 12
 			},
 			playerSkills: {
-				[PLAYER_SKILL.ANIMAL_HANDLING]: 1
+				[PLAYER_SKILL.ANIMAL_HANDLING]: SkillProficiency.PROFICIENT
 			},
 			weapons: {
 				[WEAPONS.STEEL_LANCE]: 1,
@@ -286,14 +273,17 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			xpMods: {
 				[WEAPON_TYPE.LANCE]: 1.6
 			},
-			skillProficiencies: {
-				[PLAYER_SKILL.LOCKPICKING]: 1
+			xpMooch: {
+				[WEAPON_TYPE.RIDING]: 1
+			},
+			playerSkills: {
+				[PLAYER_SKILL.LOCKPICKING]: SkillProficiency.PROFICIENT
 			},
 			msBonus: 3
 		},
 		whenMastered: {
-			skillProficiencies: {
-				[PLAYER_SKILL.LOCKPICKING]: 1
+			playerSkills: {
+				[PLAYER_SKILL.LOCKPICKING]: SkillProficiency.PROFICIENT
 			},
 			combatSkills: {
 				[COMBAT_SKILLS.ANIMAL_WHISPERER]: 1
@@ -301,6 +291,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	},
 	[CLASS.ARCHER]: {
+		label: 'Archer',
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.DEX]: 14
@@ -328,6 +319,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	},
 	[CLASS.BRIGAND]: {
+		label: 'Brigand',
 		unlocks: {
 			hpBonus: 1,
 			playerStats: {
@@ -356,6 +348,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	},
 	[CLASS.ARMORED_KNIGHT]: {
+		label: 'Armored Knight',
 		unlocks: {
 			hpBonus: 1,
 			playerStats: {
@@ -371,11 +364,14 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 			}
 		},
 		whenEquipped: {
-			followUpBonus: -1,
+			followUpBonus: -2,
 			protectionBonus: 2,
 			xpMods: {
 				[WEAPON_TYPE.AXE]: 1.6,
 				[WEAPON_TYPE.LANCE]: 1.6
+			},
+			xpMooch: {
+				[WEAPON_TYPE.HEAVY_ARMOR]: 1
 			}
 		},
 		whenMastered: {
@@ -385,6 +381,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	},
 	[CLASS.BRAWLER]: {
+		label: 'Brawler',
 		unlocks: {
 			pickOne: [
 				{
@@ -440,6 +437,7 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	},
 	[CLASS.MAGE]: {
+		label: 'Mage',
 		canUseMagic: true,
 		unlocks: {
 			playerStats: {
@@ -471,13 +469,14 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	},
 	[CLASS.PRIEST]: {
+		label: 'Priest',
 		canUseMagic: true,
 		unlocks: {
 			playerStats: {
 				[PLAYER_STAT.INT]: 14
 			},
 			playerSkills: {
-				[PLAYER_SKILL.RELIGION]: 1
+				[PLAYER_SKILL.RELIGION]: SkillProficiency.PROFICIENT
 			}
 		},
 		whenEquipped: {
@@ -493,12 +492,18 @@ export const CLASS_TO_FEATURES: ClassToFeatures = {
 		}
 	}
 };
+export const CLASS_TO_LABEL = Object.keys(CLASS_TO_FEATURES).reduce((acc, f) => {
+	acc[f] = CLASS_TO_FEATURES[f].label;
+
+	return acc;
+}, {});
 
 export const SUPERIORITY_DIE_TO_CLASSES: { [n: number]: Set<string> } = {
 	2: new Set(Object.values(CLASS)),
 	4: new Set(BEGINNER_CLASSES),
 	6: new Set(INTERMEDIATE_CLASSES)
 };
+
 export const getSuperiorityDieFromClasses = (unlockedClasses: Array<any>) => {
 	return Object.keys(SUPERIORITY_DIE_TO_CLASSES).reduce((acc: number, die: any) => {
 		if (unlockedClasses.some((c: any) => SUPERIORITY_DIE_TO_CLASSES[die].has(c))) {

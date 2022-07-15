@@ -114,6 +114,7 @@
 						? 'danger'
 						: ''
 				}`}
+				min="0"
 				value={curSuperiorityDies}
 				on:change={(e) => {
 					const newValue = parseInt(e.currentTarget.value);

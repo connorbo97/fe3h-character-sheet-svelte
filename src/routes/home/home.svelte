@@ -87,6 +87,8 @@
 			skillProficiency={playerSkillProficiency}
 			skillBonus={playerSkillBonus}
 			{onToggleSkillProficiency}
+			{equippedClass}
+			{masteredClasses}
 		/>
 	</div>
 	<div class="classes">

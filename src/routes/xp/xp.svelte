@@ -1,4 +1,6 @@
 <script lang="ts">
+	import NoticePrompt from 'src/common/noticePrompt.svelte';
+
 	import PickOnePrompt from 'src/common/pickOnePrompt.svelte';
 	import SvelteTip from 'src/common/SvelteTip.svelte';
 
@@ -17,12 +19,14 @@
 		WEAPON_TYPE,
 		WEAPON_TYPE_TO_LABEL
 	} from 'src/constants';
+	import { CLASS_TO_FEATURES } from 'src/constants/classes';
 	import { Dice } from 'src/constants/dice';
 	import { TooltipStyle } from 'src/constants/enums';
 	import { PLAYER_SKILL } from 'src/constants/playerSkills';
 	import { PLAYER_STAT, PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
 	import { WEAPON_TYPES_TO_LEVEL_FEATURES } from 'src/constants/weaponLevel';
-	import { WEAPON_TYPE_TO_STAT } from 'src/constants/weaponType';
+	import { COMBAT_XP_OPTIONS, WEAPON_TYPE_TO_STAT } from 'src/constants/weaponType';
+	import { getLevelUpDescription, getXPMoochText } from 'src/descriptionUtils';
 	import {
 		addNumberPrefix,
 		classBuilder,
@@ -30,10 +34,12 @@
 		rollVisualDice
 	} from 'src/utils';
 	import { getContext } from 'svelte';
+	import CombatXpForm from './combatXPForm.svelte';
+	import LevelUpDescription from './levelUpDescription.svelte';
 	const { open } = getContext(CONTEXTS.MODAL);
 
 	export let unlockedClasses: any;
-	export let weaponXP: any;
+	export let weaponXP: XPMap;
 	export let classXP: any;
 
 	export let playerSkillProficiency;
@@ -52,8 +58,30 @@
 	export let onUpdateCustomCombatSkills: any;
 	export let onUpdateCustomWeapons: any;
 
+	export let equippedClass: any;
+
 	let resetInputs = true;
 
+	let levelUpAudio = new Audio('success-sound.webm');
+	let failure = new Audio('failure.webm');
+	let bell = new Audio('bell.webm');
+	let itemReceived = new Audio('item-received.webm');
+	let successSound = new Audio('success-sound.webm');
+
+	$: {
+		levelUpAudio.volume = 0.05;
+		failure.volume = 0.05;
+		bell.volume = 0.05;
+		itemReceived.volume = 0.1;
+		successSound.volume = 0.025;
+	}
+
+	const pauseAllAudios = () => {
+		failure.pause();
+		bell.pause();
+		itemReceived.pause();
+		successSound.pause();
+	};
 	const DEFAULT_ROLLS = 4;
 	let rollsRemaining = DEFAULT_ROLLS;
 	let greatAlreadyHappened = false;
@@ -64,46 +92,106 @@
 		return acc;
 	}, {});
 
-	$: promptWeaponLevelUp = (type: any, level, onSuccess) => {
+	$: promptWeaponLevelUp = (type: any, level, onSuccess = () => {}, onClose = () => {}) => {
+		pauseAllAudios();
+		levelUpAudio.currentTime = 0;
+		levelUpAudio.play();
 		const pickOne = WEAPON_TYPES_TO_LEVEL_FEATURES[type][level]?.unlocks?.pickOne;
-		if (!pickOne) {
-			return onSuccess();
-		}
 
-		open(PickOnePrompt, {
-			pickOne,
-			onSubmit: onSuccess,
-			reason: `Unlocked ${WEAPON_TYPE_TO_LABEL[type]} level ${WEAPON_LEVEL_TO_LABEL[level]}`,
-			customCombatArts,
-			customCombatSkills,
-			customWeapons,
-			playerStats,
-			onUpdatePlayerStats,
-			onUpdateClassXP,
-			onUpdateCustomCombatArts,
-			onUpdateCustomCombatSkills,
-			onUpdateCustomWeapons
-		});
+		if (!pickOne) {
+			open(NoticePrompt, {
+				header: `Unlocked ${WEAPON_TYPE_TO_LABEL[type]} level ${WEAPON_LEVEL_TO_LABEL[level]}`,
+				childElement: LevelUpDescription,
+				childElementProps: {
+					type,
+					level
+				},
+				SPECIAL_callOnClose: () => {
+					onSuccess();
+					onClose();
+				}
+			});
+		} else {
+			open(PickOnePrompt, {
+				SPECIAL_callOnClose: () => {
+					onClose();
+				},
+				pickOne,
+				onSubmit: onSuccess,
+				reason: `Unlocked ${WEAPON_TYPE_TO_LABEL[type]} level ${WEAPON_LEVEL_TO_LABEL[level]}`,
+				customCombatArts,
+				customCombatSkills,
+				customWeapons,
+				playerStats,
+				onUpdatePlayerStats,
+				onUpdateClassXP,
+				onUpdateCustomCombatArts,
+				onUpdateCustomCombatSkills,
+				onUpdateCustomWeapons,
+				descriptionElement: LevelUpDescription,
+				descriptionElementProps: {
+					type,
+					level,
+					disablePickOne: true
+				}
+			});
+			open(PickOnePrompt, {
+				SPECIAL_callOnClose: () => {
+					onClose();
+				},
+				pickOne,
+				onSubmit: onSuccess,
+				reason: `Unlocked ${WEAPON_TYPE_TO_LABEL[type]} level ${WEAPON_LEVEL_TO_LABEL[level]}`,
+				customCombatArts,
+				customCombatSkills,
+				customWeapons,
+				playerStats,
+				onUpdatePlayerStats,
+				onUpdateClassXP,
+				onUpdateCustomCombatArts,
+				onUpdateCustomCombatSkills,
+				onUpdateCustomWeapons,
+				descriptionElement: LevelUpDescription,
+				descriptionElementProps: {
+					type,
+					level,
+					disablePickOne: true
+				}
+			});
+		}
 	};
 	$: onWeaponXpChange = (value: any, { curLevel, curXP, maxXP, type, onSuccess }: any) => {
-		let newLevel = curLevel;
+		return new Promise((res) => {
+			let newLevel = curLevel;
 
-		let newXP = curXP + value;
+			let newXP = curXP + value;
 
-		const onSuccessPrompt = () => {
-			onUpdateWeaponXP(type, newXP, newLevel);
-			resetInputs != resetInputs;
-			onSuccess && onSuccess();
-		};
+			const didSubmit = { current: false };
 
-		if (newXP >= maxXP) {
-			newLevel = LEVEL_UP_ORDER[LEVEL_UP_ORDER.indexOf(curLevel) + 1] || curLevel;
-			newXP = newXP - maxXP;
+			const onSuccessPrompt = () => {
+				onUpdateWeaponXP(type, newXP, newLevel);
+				resetInputs = !resetInputs;
+				onSuccess && onSuccess();
 
-			promptWeaponLevelUp(type, newLevel, onSuccessPrompt);
-		} else {
-			onSuccessPrompt();
-		}
+				res(true);
+				didSubmit.current = true;
+			};
+			const onClosePrompt = () => {
+				if (!didSubmit.current) {
+					alert('Rolling back this Level Up b/c prompt was not completed');
+					res(false);
+				}
+			};
+
+			if (newXP >= maxXP) {
+				newLevel = LEVEL_UP_ORDER[LEVEL_UP_ORDER.indexOf(curLevel) + 1] || curLevel;
+				newXP = newXP - maxXP;
+				console.log('should play', levelUpAudio);
+				promptWeaponLevelUp(type, newLevel, onSuccessPrompt, onClosePrompt);
+			} else {
+				onSuccessPrompt();
+			}
+		});
 	};
 	$: onWeaponXPChangeFromInput = (e, args) => {
 		const target = e.currentTarget;
@@ -169,16 +257,27 @@
 		const finalValue = value + statMod;
 
 		let newRolls = rollsRemaining - 1;
+		pauseAllAudios();
 		if (value === 20) {
+			successSound.currentTime = 0;
+			successSound.play();
 			onWeaponXpChange(16, args);
 			newRolls += 1;
 		} else if (value === 1 || finalValue <= 1) {
+			failure.currentTime = 0;
+			failure.play();
 			//nothing
 		} else if (finalValue <= 5) {
+			failure.currentTime = 0;
+			failure.play();
 			onWeaponXpChange(6, args);
 		} else if (finalValue <= 15) {
+			itemReceived.currentTime = 0;
+			itemReceived.play();
 			onWeaponXpChange(9, args);
 		} else {
+			successSound.currentTime = 0;
+			successSound.play();
 			if (!greatAlreadyHappened) {
 				newRolls += 1;
 			}
@@ -198,32 +297,39 @@
 <div class="container">
 	<div class="weapon-xp-container">
 		<div class="category">
-			<u>Type</u>
-			<u style:text-align="center" style:white-space="nowrap" style:width="0"
+			<u class="header" style:justify-content="flex-start">Type</u>
+			<u class="header" style:text-align="center" style:white-space="nowrap"
 				>XP (Current XP / XP Required to Level Up)</u
 			>
-			<span />
-			<u style:text-align="center" style:white-space="nowrap" style:width="0">Lvl</u>
+			<span class="header" />
+			<u class="header" style:text-align="center" style:white-space="nowrap">Lvl</u>
 			<SvelteTip>
-				<u style:text-align="center" style:white-space="nowrap" style:width="0">Stat Modifier</u>
+				<u class="header" style:text-align="center" style:white-space="nowrap">Stat Modifier</u>
 				<div slot="t">The stat that will be added when doing XP rolls.</div>
 			</SvelteTip>
-			<span />
+			<span class="header" />
 			{#each Object.keys(WEAPON_TYPE) as type, i}
 				{@const curXP = weaponXP[type]?.total || 0}
 				{@const curLevel = weaponXP[type]?.level || WEAPON_LEVEL.E}
+				{@const nextLevel =
+					LEVEL_UP_ORDER[LEVEL_UP_ORDER.findIndex((a) => a === weaponXP[type]?.level) + 1]}
+				{@const nextLevelDescription = getLevelUpDescription(
+					WEAPON_TYPES_TO_LEVEL_FEATURES[type]?.[nextLevel]
+				)}
 				{@const maxXP = WEAPON_LEVEL_TO_MAX_XP[curLevel]}
 				<div
-					class={classBuilder('label', { focused: focusedRow.i === i && focusedRow.weaponSide })}
+					class={classBuilder('label content', {
+						focused: focusedRow.i === i && focusedRow.weaponSide
+					})}
 				>
 					{WEAPON_TYPE_TO_LABEL[type]}
 				</div>
-				<div class="xp-bar">
+				<div class="xp-bar content">
 					<div class="fill" style:right={`${((maxXP - curXP) / maxXP) * 100.0}%`}>
 						<span>{`${curXP} / ${maxXP}`}</span>
 					</div>
 				</div>
-				<div class="form">
+				<div class="form content">
 					<div class="prompt">XP to Add</div>
 					<input
 						type="number"
@@ -234,22 +340,45 @@
 					/>
 				</div>
 				{#key resetInputs}
-					<select
-						name="weapon_level"
-						on:change={(e) => onWeaponChangeLevel(e, { type, curLevel })}
-						on:mouseover={focusGenerator(i, true)}
-						on:mouseleave={focusGenerator(-1, true)}
-						on:focus={focusGenerator(i, true)}
-					>
-						{#each Object.keys(WEAPON_LEVEL) as level}
-							<option value={WEAPON_LEVEL[level]} selected={curLevel === level}>
-								{WEAPON_LEVEL_TO_LABEL[level]}</option
+					<SvelteTip tooltipStyle={TooltipStyle.BOTTOM_CENTER}>
+						<div slot="t">
+							<div>
+								<u> Current Level: </u>
+							</div>
+							<div>
+								{getLevelUpDescription(WEAPON_TYPES_TO_LEVEL_FEATURES[type]?.[curLevel]) ||
+									'Nothing'}
+							</div>
+							<div>
+								<u> On Level Up: </u>
+							</div>
+							<div>
+								{nextLevelDescription || 'Nothing'}
+							</div>
+						</div>
+						<div class="content">
+							<select
+								name="weapon_level"
+								on:change={(e) => {
+									resetInputs = !resetInputs;
+									onWeaponChangeLevel(e, { type, curLevel });
+								}}
+								on:mouseover={focusGenerator(i, true)}
+								on:mouseleave={focusGenerator(-1, true)}
+								on:focus={focusGenerator(i, true)}
 							>
-						{/each}
-					</select>
+								{#each Object.keys(WEAPON_LEVEL) as level}
+									<option value={WEAPON_LEVEL[level]} selected={curLevel === level}>
+										{WEAPON_LEVEL_TO_LABEL[level]}</option
+									>
+								{/each}
+							</select>
+						</div>
+					</SvelteTip>
 				{/key}
 				{#if WEAPON_TYPE_TO_STAT[type].length > 1}
 					<select
+						class="content"
 						on:change={(e) => {
 							statPerWeaponType = { ...statPerWeaponType, [type]: e.currentTarget.value };
 						}}
@@ -265,7 +394,7 @@
 					</select>
 				{/if}
 				{#if WEAPON_TYPE_TO_STAT[type].length <= 1}
-					<span style:text-align="center"
+					<span style:text-align="center" style:cursor="default" class="content"
 						>{PLAYER_STAT_TO_SHORT_LABEL[WEAPON_TYPE_TO_STAT[type][0]]}</span
 					>
 				{/if}
@@ -309,8 +438,9 @@
 				</SvelteTip>
 			{/each}
 		</div>
+		<CombatXpForm {equippedClass} {weaponXP} {onWeaponXpChange} />
 		<div class="auto-xp" style:flex="1">
-			<span style:flex="1">Automatic Training:</span>
+			<span style:flex="1"><u>Automatic Training</u></span>
 			<SvelteTip>
 				<div slot="t">
 					<span>
@@ -337,15 +467,20 @@
 			>
 		</div>
 	</div>
-	<div class="category" style:background-color={'#d277ed'}>
-		<u>Class</u>
-		<u style:text-align="center" style:white-space="nowrap" style:width="0"
-			>Class XP (Current Battles / Battles Required to Master)</u
+	<div class="category class-xp-container">
+		<u class="header" style:justify-content="flex-start">Class</u>
+		<u
+			class="header"
+			style:text-align="center"
+			style:white-space="nowrap"
+			style:justify-content="flex-start"
 		>
-		<span />
-		<span />
-		<span />
-		<span />
+			Class XP (Current Battles / Battles Required to Master)</u
+		>
+		<span class="header" />
+		<span class="header" style:padding="0" />
+		<span class="header" style:padding="0" />
+		<span class="header" style:padding="0" />
 		{#each unlockedClasses as curClass, i}
 			{@const curXP = classXP[curClass]?.total || 0}
 			{@const maxXP = BEGINNER_CLASSES.has(curClass)
@@ -354,10 +489,14 @@
 				? INTERMEDIATE_MASTERY_REQ
 				: 10000}
 			{@const mastered = classXP[curClass]?.mastered}
-			<div class={classBuilder('label', { focused: focusedRow.i === i && !focusedRow.weaponSide })}>
+			<div
+				class={classBuilder('label content', {
+					focused: focusedRow.i === i && !focusedRow.weaponSide
+				})}
+			>
 				{CLASS_TO_LABEL[curClass]}
 			</div>
-			<div class="xp-bar">
+			<div class="xp-bar content">
 				<div
 					class={`fill ${mastered ? 'mastered' : ''}`}
 					style:right={`${((maxXP - curXP) / maxXP) * 100.0}%`}
@@ -379,6 +518,8 @@
 
 						if (newXP >= maxXP) {
 							newXP = maxXP;
+							levelUpAudio.currentTime = 0;
+							levelUpAudio.play();
 						}
 
 						onUpdateClassXP(curClass, newXP, newXP === maxXP);
@@ -401,38 +542,50 @@
 			flex: 1;
 		}
 		column-gap: 5px;
+		padding: 5px;
+		user-select: none;
 	}
 	.weapon-xp-container {
 		display: flex;
 		flex-direction: column;
-		background-color: thistle;
 		border-radius: 5px;
+		background-color: #eae8da;
+		border: 3px solid #c9c6bb;
+		padding-bottom: 10px;
+	}
+	.class-xp-container {
+		background-color: #eae8da;
+		border: 3px solid #c9c6bb;
 	}
 	.category {
-		background-color: thistle;
-		padding: 5px;
+		padding: 10px;
 		border-radius: 5px;
 
 		display: grid;
 		grid-template-columns: max-content 1fr max-content min-content min-content max-content;
 		grid-auto-rows: min-content;
-		gap: 5px;
+		align-items: center;
+		row-gap: 5px;
 	}
 	.xp-bar {
+		height: 100%;
 		flex: 1;
 		position: relative;
-		z-index: 1;
 		background-color: white;
 		outline: 1px solid black;
 		border-radius: 5px;
 
 		.fill {
 			position: absolute;
+			display: flex;
+			align-items: center;
 			inset: 2px;
 			border-radius: 5px;
 			background-color: #5ecd5f;
-			z-index: -1;
 			white-space: nowrap;
+			> span {
+				margin-left: 2px;
+			}
 		}
 	}
 	.form {
@@ -474,5 +627,28 @@
 
 	.focused {
 		color: red;
+	}
+
+	.hidden-container {
+		position: absolute;
+		opacity: 0;
+		z-index: -999;
+	}
+	.level-up-text {
+		color: red;
+	}
+
+	.header {
+		background-color: #574d65;
+		color: white;
+		padding: 3px;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.content {
+		margin-left: 5px;
+		margin-right: 5px;
 	}
 </style>

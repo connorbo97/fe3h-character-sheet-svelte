@@ -4,14 +4,38 @@
 		DEFAULT_PLAYER_SKILL_BONUSES,
 		DEFAULT_PLAYER_SKILL_PROFICIENCY,
 		DEFAULT_PLAYER_STAT,
+		CLASS_TO_FEATURES,
 		PLAYER_SKILL
 	} from 'src/constants';
+	import { SkillProficiency } from 'src/constants/playerSkills';
 	import SkillEntry from './skillEntry.svelte';
 
 	export let stats = DEFAULT_PLAYER_STAT;
 	export let skillProficiency = DEFAULT_PLAYER_SKILL_PROFICIENCY;
 	export let skillBonus = DEFAULT_PLAYER_SKILL_BONUSES;
 	export let onToggleSkillProficiency: Function;
+	export let equippedClass: any;
+	export let masteredClasses: any;
+
+	$: classProficiencies = {
+		...(equippedClass ? CLASS_TO_FEATURES[equippedClass].whenEquipped.playerSkills : {}),
+		...masteredClasses.reduce((acc, c) => {
+			acc = { ...acc, ...CLASS_TO_FEATURES[c].whenMastered?.playerSkills };
+			return acc;
+		}, {})
+	};
+
+	$: allProficiencies = Object.keys(classProficiencies).reduce(
+		(acc, key: string) => {
+			if (acc[key] === undefined) {
+				acc[key] = classProficiencies[key];
+			} else {
+				acc[key] = Math.max(acc[key], classProficiencies[key]);
+			}
+			return acc;
+		},
+		{ ...skillProficiency }
+	);
 </script>
 
 <div class="container">
@@ -19,7 +43,14 @@
 	<div class="divider" />
 	<div class="skills">
 		{#each Object.values(PLAYER_SKILL) as skill}
-			<SkillEntry {skill} {stats} {skillBonus} {skillProficiency} {onToggleSkillProficiency} />
+			<SkillEntry
+				{skill}
+				{stats}
+				{skillBonus}
+				{classProficiencies}
+				skillProficiency={allProficiencies}
+				{onToggleSkillProficiency}
+			/>
 		{/each}
 	</div>
 </div>

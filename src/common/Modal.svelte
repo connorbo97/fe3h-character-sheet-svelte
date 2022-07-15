@@ -254,10 +254,18 @@
 	let onOpened = toVoid;
 	let onClosed = toVoid;
 
-	const open = (NewComponent: any, newProps = {}, options = {}, callback: any = {}) => {
+	const open = (NewComponent: any, newProps: any = {}, options = {}, callback: any = {}) => {
 		Component = bind(NewComponent, newProps);
 		state = { ...defaultState, ...options };
 		updateStyleTransition();
+		const contentRef = document.getElementById('SPECIAL_modal-content');
+
+		if (contentRef) {
+			while (contentRef.firstChild) {
+				contentRef.removeChild(contentRef.firstChild);
+			}
+		}
+
 		disableScroll();
 		onOpen = (event: any) => {
 			if (callback.onOpen) callback.onOpen(event);
@@ -275,6 +283,10 @@
 		};
 		onClose = (event: any) => {
 			if (callback.onClose) callback.onClose(event);
+
+			if (newProps.SPECIAL_callOnClose) {
+				newProps.SPECIAL_callOnClose();
+			}
 			/**
 			 * The close event is fired right before the modal closes
 			 * @event {void} close
@@ -435,8 +447,15 @@
 						/>
 					{/if}
 				{/if}
-				<div class={state.classContent} class:content={!unstyled} style={cssContent}>
+				<div
+					id="SPECIAL_modal-content"
+					class={state.classContent}
+					class:content={!unstyled}
+					style={cssContent}
+				>
+					<!-- {#key Component} -->
 					<svelte:component this={Component} />
+					<!-- {/key} -->
 				</div>
 			</div>
 		</div>

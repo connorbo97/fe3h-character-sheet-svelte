@@ -87,6 +87,7 @@ declare global {
 		[s: string]: XPLevelFeatures;
 	};
 	declare type ClassFeatures = {
+		label: string;
 		canUseMagic?: boolean;
 		unlocks: StatBlock;
 		whenEquipped: StatBlock;
@@ -97,17 +98,17 @@ declare global {
 
 	declare type StatBlock = {
 		playerStats?: BasicStat;
-		playerSkills?: BasicStat;
-		skillProficiencies?: BasicStat;
+		playerSkills?: { [s: string]: number };
 		combatArts?: BasicStat;
 		weapons?: BasicStat;
 
 		xpMods?: BasicStat;
+		xpMooch?: { [s: string]: number };
 
 		combatSkills?: BasicStat;
 
 		// comes from unlock classes
-		pickOne?: any;
+		pickOne?: Array<PickOnePrompt>;
 
 		hpBonus?: number;
 		msBonus?: number;

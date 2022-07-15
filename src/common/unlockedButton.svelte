@@ -5,9 +5,15 @@
 	export let isCustom: any = false;
 	export let onClick: any;
 	export let unlockedFilter: any = 'sepia(100%) saturate(1000%) brightness(45%) hue-rotate(174deg)';
+	export let buttonBorder: any = '';
 </script>
 
-<button style:width={size} style:height={size} class={`container ${isCustom ? 'custom' : ''}`}>
+<button
+	style:width={size}
+	style:height={size}
+	class={`container ${isCustom ? 'custom' : ''}`}
+	style:border={buttonBorder}
+>
 	<img
 		src={isMastered ? 'mastered.png' : 'unequipped.png'}
 		width={size}

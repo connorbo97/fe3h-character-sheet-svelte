@@ -10,6 +10,9 @@
 
 	const { close } = getContext(CONTEXTS.MODAL);
 
+	export let descriptionElement: any;
+	export let descriptionElementProps: any;
+
 	export let pickOne: Array<PickOnePrompt> = [];
 	export let onSubmit: any = () => {};
 	export let reason: any;
@@ -141,6 +144,9 @@
 
 <div class="container">
 	<h1>Making choice(s) because: <span class="reason">{reason}</span></h1>
+	{#if descriptionElement}
+		<svelte:component this={descriptionElement} {...descriptionElementProps} />
+	{/if}
 	<div class="content">
 		{#if !randomDisabled}
 			<button

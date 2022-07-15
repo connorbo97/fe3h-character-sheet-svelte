@@ -308,6 +308,7 @@
 	$: onAddSheet = (name) => {
 		otherSheetNames = [...otherSheetNames, name];
 		localStorage.setItem('otherSheetNames', JSON.stringify(otherSheetNames));
+		onChangeCurSheet(name);
 	};
 	let spoilersOn = Infinity;
 	$: toggleSpoilersOn = () => {
@@ -401,6 +402,7 @@
 							{onUpdateCustomCombatArts}
 							{onUpdateCustomCombatSkills}
 							{onUpdateCustomWeapons}
+							{equippedClass}
 						/>
 					{/if}
 				</div>
@@ -479,7 +481,7 @@
 		grid-template-columns: 1fr;
 		background-color: #dfd6c2;
 
-		height: 100vh;
+		min-height: 100vh;
 	}
 	.header {
 		grid-area: header;

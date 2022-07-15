@@ -105,6 +105,7 @@
 					class={'count ' +
 						(curUses === 0 ? 'bad' : curUses <= Math.ceil(maxUses / 3) ? 'danger' : '')}
 					type="number"
+					min="0"
 					on:change={(e) => {
 						const value = parseInt(e.currentTarget.value);
 
@@ -171,8 +172,8 @@
 		width: 30px;
 		border: 1px solid transparent;
 		background-color: transparent;
-		margin-top: -1.5px;
-		margin-right: -9px;
+		margin-top: -0.5px;
+		margin-right: -7px;
 	}
 
 	.danger {
