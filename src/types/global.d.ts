@@ -103,6 +103,7 @@ declare global {
 		weapons?: BasicStat;
 
 		xpMods?: BasicStat;
+		xpMooch?: { [s: string]: number };
 
 		combatSkills?: BasicStat;
 
