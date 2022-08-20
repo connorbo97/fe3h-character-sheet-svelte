@@ -7,6 +7,9 @@
 	export let onUpdatePlayerName: any;
 
 	export let onChangePage: any;
+
+	export let homeMode: number;
+	export let toggleHomeMode: Function;
 </script>
 
 <div class="container">
@@ -21,6 +24,11 @@
 	<button class={currentPage === 'HOME' ? 'active' : ''} on:click={() => onChangePage('HOME')}>
 		Home
 	</button>
+	{#if currentPage === "HOME"}
+		<button class={currentPage === 'HOME' ? 'active' : ''} on:click={() => toggleHomeMode()} >
+			MODE: {homeMode % 3 === 0 ? "All" : (homeMode %3 === 1 ? "RP" : "COMBAT")}
+		</button>
+	{/if}
 	<button class={currentPage === 'ROLLS' ? 'active' : ''} on:click={() => onChangePage('ROLLS')}>
 		Chat
 	</button>
@@ -65,6 +73,10 @@
 			&:hover {
 				border-color: rgb(129, 82, 158);
 			}
+			&:disabled {
+				pointer-events: none;
+				background-color: gray;
+			}
 		}
 	}
 
@@ -74,7 +86,7 @@
 		text-align: left;
 		line-height: 43px;
 		background-color: rgb(235, 234, 229);
-		font-family: cursive;
+		font-family: 'Great Vibes', cursive;
 		font-size: 33px;
 	}
 
