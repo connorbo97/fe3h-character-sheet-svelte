@@ -189,8 +189,17 @@ declare global {
 	};
 
 	// Chat Stuff
-	type AttackEntry = {
+	interface BasicEntry {
 		playerName: string;
+		type?: string;
+		rollName?: string;
+		rollBonus?: number;
+		rawRoll?: number;
+		roll?: string;
+		rollTooltip?: string;
+	}
+
+	interface AttackEntry extends BasicEntry {
 		attackName: string;
 		attackRoll?: string;
 		critRoll?: string;
@@ -199,4 +208,5 @@ declare global {
 		damageRoll?: string;
 		isHealWeapon?: boolean;
 	};
+
 }
