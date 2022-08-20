@@ -104,7 +104,7 @@
 	let homeMode = 0;
 	$: toggleHomeMode = () => {
 		homeMode += 1;
-	}
+	};
 
 	const q = query(
 		collection(db, 'lobby', 'taboola', getChatMonth()),
@@ -348,7 +348,15 @@
 				<span id="dice-box-result" />
 			</div>
 			<div class="header">
-				<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} {currentPage} {homeMode} {toggleHomeMode}/>
+				<Header
+					playerName={name}
+					{onUpdatePlayerName}
+					{fullSheet}
+					{onChangePage}
+					{currentPage}
+					{homeMode}
+					{toggleHomeMode}
+				/>
 			</div>
 			<div class="content">
 				<div class={currentPage === 'HOME' ? '' : 'invisible'}>
@@ -388,7 +396,6 @@
 						{onUpdateCustomWeapons}
 						{customCombatArts}
 						{onUpdateCustomCombatArts}
-
 						{chatEntries}
 						{spoilersOn}
 						{toggleSpoilersOn}
@@ -420,7 +427,8 @@
 				</div>
 				<div class={currentPage === 'EDITOR' ? '' : 'invisible'}>
 					{#if currentPage === 'EDITOR'}
-						<Editor {fullSheet} {onChangeSheet} />
+						<!-- <Editor {fullSheet} {onChangeSheet} /> -->
+						Temp disabled b/c of it blocking release
 					{/if}
 				</div>
 				<div class={currentPage === 'DICE_EDITOR' ? '' : 'invisible'}>

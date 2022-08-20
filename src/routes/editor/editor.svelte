@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onExportSheet } from 'src/utils';
 
-	import { JSONEditor } from 'svelte-jsoneditor';
+	// import { JSONEditor } from 'svelte-jsoneditor';
 	export let fullSheet: CharacterSheet;
 	export let onChangeSheet: any;
 
@@ -50,13 +50,13 @@
 		>
 	</div>
 	{#key fullSheet}
-		<JSONEditor
+		<!-- <JSONEditor
 			{content}
 			mode={'code'}
 			onChange={(newContent) => {
 				content = newContent;
 			}}
-		/>
+		/> -->
 	{/key}
 </div>
 
