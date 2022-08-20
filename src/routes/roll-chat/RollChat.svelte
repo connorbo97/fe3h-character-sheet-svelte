@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
-	import Index from '../index.svelte';
 	import AttackEntry from './attackEntry.svelte';
+	import BasicEntry from './basicEntry.svelte';
 
 	export let chatEntries: any;
 	export let spoilersOn: any;
@@ -49,7 +49,7 @@
 
 <div class="container">
 	<div style:width="100%">
-		<h1>Roll Chat (total entries: {chatEntries?.length || '-'})</h1>
+		<h3>Roll Chat (total entries: {chatEntries?.length || '-'})</h3>
 	</div>
 
 	<div>
@@ -63,12 +63,20 @@
 		{/if}
 		{#if chatEntries}
 			{#each chatEntries as entry, i}
-				<AttackEntry
-					{entry}
-					spoilersOn={spoilersOn !== Infinity && i >= spoilersOn && alreadyRevealed[i] !== true}
-					index={i}
-					{setAlreadyRevealed}
-				/>
+			{@const rollType = entry?.type || "BASIC_ROLL"}
+				{#if rollType === "BASIC_ROLL"}
+					<BasicEntry
+						{entry}
+					/>
+				{/if}
+				{#if rollType !== "BASIC_ROLL"}
+					<AttackEntry
+						{entry}
+						spoilersOn={spoilersOn !== Infinity && i >= spoilersOn && alreadyRevealed[i] !== true}
+						index={i}
+						{setAlreadyRevealed}
+					/>
+				{/if}
 			{/each}
 		{/if}
 	</div>
@@ -90,6 +98,7 @@
 		border-radius: 5px;
 		border: 1px solid black;
 		width: 50%;
+		min-width: 500px;
 		flex: 1;
 
 		display: flex;
