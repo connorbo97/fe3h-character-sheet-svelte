@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SvelteTip from 'src/common/SvelteTip.svelte';
 	import UnlockedButton from 'src/common/unlockedButton.svelte';
-	import { PROFICIENCY_BONUS } from 'src/constants';
+	import { CONTEXTS, PROFICIENCY_BONUS } from 'src/constants';
 	import { Dice } from 'src/constants/dice';
 
 	import {
@@ -11,7 +11,9 @@
 		SkillProficiency
 	} from 'src/constants/playerSkills';
 	import { PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
+import { calcDice, rollCalc } from 'src/rollUtils';
 	import { getModifierByPlayerStat, rollVisualDice } from 'src/utils';
+import { getContext } from 'svelte';
 
 	export let stats: any;
 	export let skillProficiency: any;
@@ -19,6 +21,9 @@
 	export let skillBonus: any;
 	export let onToggleSkillProficiency: Function;
 	export let skill: any;
+	export let playerName: any;
+
+	$: db = getContext(CONTEXTS.DB);
 
 	$: skillBonusMod = skillBonus[skill] || 0;
 	$: skillProficiencyMod =
@@ -53,7 +58,13 @@
 			class="label-text"
 			on:click={() =>
 				rollVisualDice([Dice.d20], {
-					modifier: [skillBonusMod + skillProficiencyMod + skillStatModifier]
+					modifier: [skillBonusMod + skillProficiencyMod + skillStatModifier],
+					chatEntryOnRes: {
+						playerName,
+						rollName: PLAYER_SKILL_TO_LABEL[skill],
+						rollBonus: rollCalc([skillBonusMod + skillProficiencyMod + skillStatModifier]),
+					},
+					db,
 				})}
 		>
 			<span class="total">{skillBonusMod + skillProficiencyMod + skillStatModifier}</span>

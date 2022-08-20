@@ -101,6 +101,11 @@
 	const baseTime = Date.now();
 	let chatEntries: any = [];
 
+	let homeMode = 0;
+	$: toggleHomeMode = () => {
+		homeMode += 1;
+	}
+
 	const q = query(
 		collection(db, 'lobby', 'taboola', getChatMonth()),
 		where('date', '>', Timestamp.fromDate(now)),
@@ -329,7 +334,7 @@
 
 	<link rel="preconnect" href="https://fonts.gstatic.com" />
 	<link
-		href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Ibarra+Real+Nova:wght@400;500;700&display=swap"
+		href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Ibarra+Real+Nova:wght@400;500;700&display=swap&family=Great+Vibes&display=swap"
 		rel="stylesheet"
 	/>
 	<link rel="icon" type="image/x-icon" href="/favicon.jpg" />
@@ -343,12 +348,13 @@
 				<span id="dice-box-result" />
 			</div>
 			<div class="header">
-				<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} {currentPage} />
+				<Header playerName={name} {onUpdatePlayerName} {fullSheet} {onChangePage} {currentPage} {homeMode} {toggleHomeMode}/>
 			</div>
 			<div class="content">
 				<div class={currentPage === 'HOME' ? '' : 'invisible'}>
 					<Home
 						playerName={name}
+						{homeMode}
 						{allWeapons}
 						{allCombatSkills}
 						{allCombatArts}
@@ -382,6 +388,12 @@
 						{onUpdateCustomWeapons}
 						{customCombatArts}
 						{onUpdateCustomCombatArts}
+
+						{chatEntries}
+						{spoilersOn}
+						{toggleSpoilersOn}
+						{alreadyRevealed}
+						{setAlreadyRevealed}
 					/>
 				</div>
 				<div class={currentPage === 'XP' ? '' : 'invisible'}>

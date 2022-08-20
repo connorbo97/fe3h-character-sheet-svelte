@@ -129,6 +129,8 @@ export const rollVisualDice = (
 		onRollResult?: Function;
 		clearTimeout?: number;
 		customResultBoxLabel?: Function;
+		chatEntryOnRes?: BasicEntry;
+		db?: any;
 	} = {}
 ): Promise<{ value: number; resultArray: Array<any>; resultText: string }> => {
 	const rollAudios = [
@@ -143,12 +145,32 @@ export const rollVisualDice = (
 			a.currentTime = 0;
 		});
 	};
+
 	return new Promise((resolve) => {
 		let waitFlag = true;
 		let clearTimer: any = null;
 		let submitReturn: any = null;
 
 		let rollHasFinished = false;
+
+		let finalResolve = resolve;
+
+		if (options?.chatEntryOnRes) {
+			finalResolve = async(result: any, ...args) => {
+				const db = options?.db;
+				const roll = result?.value;
+				const rollTooltip = result?.resultText;
+				console.log(db, roll, rollTooltip);
+
+				addEntryToChat(db, {
+					...options?.chatEntryOnRes,
+					roll,
+					rollTooltip,
+				})
+
+				resolve(result, ...args)
+			}
+		}
 
 		const sanitizedDice = dice.map((d) => {
 			switch (d) {
@@ -180,7 +202,7 @@ export const rollVisualDice = (
 				const finalCalc = [...resultArray, ...(options?.modifier || [])];
 				const finalCalcResult = rollCalc([...resultArray, ...(options?.modifier || [])]);
 
-				resolve({
+				finalResolve({
 					value: finalCalcResult,
 					resultText: getDefaultLabel(finalCalc, finalCalcResult, { hideResult: true }),
 					resultArray
@@ -263,10 +285,10 @@ export const rollVisualDice = (
 			};
 
 			if (options.clearTimeout) {
-				submitReturn = () => resolve(returnValue);
+				submitReturn = () => finalResolve(returnValue);
 				clearTimer = setTimeout(onClearDiceRoll, options.clearTimeout);
 			} else {
-				resolve(returnValue);
+				finalResolve(returnValue);
 			}
 		});
 

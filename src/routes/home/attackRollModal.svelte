@@ -339,6 +339,7 @@
 
 		const entry: any = {
 			playerName,
+			type: "ATTACK_ROLL",
 			attackName: headerLabel
 		};
 

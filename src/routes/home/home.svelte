@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { getSuperiorityDieFromClasses } from 'src/constants/classes';
+	import RollChat from '../roll-chat/RollChat.svelte';
 
 	import AttackCalc from './attackCalc.svelte';
 	import Classes from './classes.svelte';
@@ -11,6 +12,8 @@
 	import Weapons from './weapons.svelte';
 
 	export let playerName: any;
+
+	export let homeMode: any;
 
 	export let allWeapons: any;
 	export let allCombatSkills: any;
@@ -62,6 +65,14 @@
 	export let unlockedClasses: any;
 	export let onUpdateUnlockedClasses: any;
 
+	// chat stuff
+	export let chatEntries: any;
+	export let spoilersOn: any;
+	export let toggleSpoilersOn: any;
+	export let alreadyRevealed: any;
+	export let setAlreadyRevealed: any;
+
+
 	let prevMax = { current: 0 };
 	$: maxSuperiorityDie = getSuperiorityDieFromClasses(unlockedClasses);
 	let curSuperiorityDies = maxSuperiorityDie;
@@ -78,103 +89,121 @@
 </script>
 
 <div class="container">
-	<div class="stats">
-		<Stats stats={playerStats} {onUpdatePlayerStats} {playerCrest} {onUpdateCrest} />
-	</div>
-	<div class="skills">
-		<Skills
-			stats={playerStats}
-			skillProficiency={playerSkillProficiency}
-			skillBonus={playerSkillBonus}
-			{onToggleSkillProficiency}
-			{equippedClass}
-			{masteredClasses}
-		/>
-	</div>
-	<div class="classes">
-		<Classes
-			{equippedClass}
-			{setEquippedClass}
-			{unlockedClasses}
-			{onUpdateUnlockedClasses}
-			{masteredClasses}
-			{customCombatSkills}
-			{onUpdateCustomCombatSkills}
-			{customWeapons}
-			{onUpdateCustomWeapons}
-			{customCombatArts}
-			{onUpdateCustomCombatArts}
-			{playerStats}
-			{onUpdatePlayerStats}
-		/>
-	</div>
-	<div class="arts">
-		<CombatArts
-			{allCombatArts}
-			{equippedCombatArts}
-			{onToggleCombatArts}
-			{equippedWeapons}
-			{customCombatArts}
-			{onUpdateCustomCombatArts}
-		/>
-		<CombatSkills
-			{allCombatSkills}
-			{equippedCombatSkills}
-			{onToggleCombatSkill}
-			{customCombatSkills}
-			{onUpdateCustomCombatSkills}
-		/>
-	</div>
-	<div class="rest">
-		<div class="weapons">
-			<Weapons
-				{allWeapons}
-				{equippedWeapons}
-				{onToggleEquippedWeapons}
-				{equippedCombatSkills}
+	{#if homeMode % 3 !== 2}
+		<div class="stats">
+			<Stats stats={playerStats} {playerName} {onUpdatePlayerStats} {playerCrest} {onUpdateCrest} />
+		</div>
+		<div class="skills">
+			<Skills
+				stats={playerStats}
+				{playerName}
+				skillProficiency={playerSkillProficiency}
+				skillBonus={playerSkillBonus}
+				{onToggleSkillProficiency}
 				{equippedClass}
-				{weaponUses}
-				{onUpdateWeaponUses}
-				{curSuperiorityDies}
-				{maxSuperiorityDie}
-				{setCurSuperiorityDie}
+				{masteredClasses}
+			/>
+		</div>
+	{/if}
+	{#if homeMode % 3 === 0}
+		<div class="classes">
+			<Classes
+				{equippedClass}
+				{setEquippedClass}
+				{unlockedClasses}
+				{onUpdateUnlockedClasses}
+				{masteredClasses}
+				{customCombatSkills}
+				{onUpdateCustomCombatSkills}
 				{customWeapons}
 				{onUpdateCustomWeapons}
-			/>
-		</div>
-		<div class="other">
-			<CombatStats
-				stats={playerStats}
-				{allWeapons}
-				{equippedClass}
-				{unlockedClasses}
-				{equippedCombatSkills}
-				{selectedWeapon}
-				{equippedWeapons}
-				{equippedCombatArts}
-				{allCombatSkills}
-			/>
-			<AttackCalc
-				{playerName}
-				{equippedClass}
-				{equippedWeapons}
-				{equippedCombatArts}
-				{equippedCombatSkills}
-				{weaponUses}
-				{onUpdateWeaponUses}
-				{curSuperiorityDies}
-				{setCurSuperiorityDie}
-				{allWeapons}
-				{allCombatArts}
-				{playerCrest}
+				{customCombatArts}
+				{onUpdateCustomCombatArts}
 				{playerStats}
-				{selectedWeapon}
-				{setSelectedWeapon}
-				{selectedCombatArt}
-				{setSelectedCombatArt}
+				{onUpdatePlayerStats}
 			/>
 		</div>
-	</div>
+		<div class="arts">
+			<CombatArts
+				{allCombatArts}
+				{equippedCombatArts}
+				{onToggleCombatArts}
+				{equippedWeapons}
+				{customCombatArts}
+				{onUpdateCustomCombatArts}
+			/>
+			<CombatSkills
+				{allCombatSkills}
+				{equippedCombatSkills}
+				{onToggleCombatSkill}
+				{customCombatSkills}
+				{onUpdateCustomCombatSkills}
+			/>
+		</div>
+	{/if}
+	{#if homeMode %3 !== 1}
+		<div class="rest">
+			<div class="weapons">
+				<Weapons
+					{allWeapons}
+					{equippedWeapons}
+					{onToggleEquippedWeapons}
+					{equippedCombatSkills}
+					{equippedClass}
+					{weaponUses}
+					{onUpdateWeaponUses}
+					{curSuperiorityDies}
+					{maxSuperiorityDie}
+					{setCurSuperiorityDie}
+					{customWeapons}
+					{onUpdateCustomWeapons}
+				/>
+			</div>
+			<div class="other">
+				<CombatStats
+					stats={playerStats}
+					{allWeapons}
+					{equippedClass}
+					{unlockedClasses}
+					{equippedCombatSkills}
+					{selectedWeapon}
+					{equippedWeapons}
+					{equippedCombatArts}
+					{allCombatSkills}
+				/>
+				<AttackCalc
+					{playerName}
+					{equippedClass}
+					{equippedWeapons}
+					{equippedCombatArts}
+					{equippedCombatSkills}
+					{weaponUses}
+					{onUpdateWeaponUses}
+					{curSuperiorityDies}
+					{setCurSuperiorityDie}
+					{allWeapons}
+					{allCombatArts}
+					{playerCrest}
+					{playerStats}
+					{selectedWeapon}
+					{setSelectedWeapon}
+					{selectedCombatArt}
+					{setSelectedCombatArt}
+				/>
+			</div>
+		</div>
+	{/if}
+	{#if homeMode % 3 !== 0}
+		<div style:grid-area={homeMode % 3 === 1 ? "1 / classes/ 1 / rest" : "1 / stats / 1 / arts"}>
+			<RollChat
+				{chatEntries}
+				{spoilersOn}
+				{toggleSpoilersOn}
+				{alreadyRevealed}
+				{setAlreadyRevealed}
+			/>
+		</div>
+	{/if}
 </div>
 
 <style lang="scss">

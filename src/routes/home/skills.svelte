@@ -16,6 +16,7 @@
 	export let onToggleSkillProficiency: Function;
 	export let equippedClass: any;
 	export let masteredClasses: any;
+	export let playerName: any;
 
 	$: classProficiencies = {
 		...(equippedClass ? CLASS_TO_FEATURES[equippedClass].whenEquipped.playerSkills : {}),
@@ -44,6 +45,7 @@
 	<div class="skills">
 		{#each Object.values(PLAYER_SKILL) as skill}
 			<SkillEntry
+				{playerName}
 				{skill}
 				{stats}
 				{skillBonus}

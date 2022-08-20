@@ -18,8 +18,8 @@
 	} from '../../constants';
 	import { getContext } from 'svelte';
 	import SvelteTip from 'src/common/SvelteTip.svelte';
-	import { ActivationRates } from 'src/constants/crests';
 	import CategoryHeader from 'src/common/categoryHeader.svelte';
+	import { Dice } from 'src/constants/dice';
 
 	const { open } = getContext(CONTEXTS.MODAL);
 
@@ -27,10 +27,13 @@
 	export let stats = DEFAULT_PLAYER_STAT;
 	export let onUpdatePlayerStats: Function;
 
+	export let playerName: any;
 	export let playerCrest: PlayerCrest;
 	export let onUpdateCrest: any;
 
 	let majorMinorDropdown: any = {};
+
+	$: db = getContext(CONTEXTS.DB);
 
 	$: {
 		if (majorMinorDropdown) {
@@ -47,8 +50,15 @@
 		const statBuff = getModifierByPlayerStat(stats[stat]);
 		const rng = rollD20();
 		const result = rng + statBuff;
-		rollVisualDice(['1d20'], { modifier: [statBuff] });
-		// open(Popup, { message: `${result} = ${rng} + ${statBuff}` });
+		rollVisualDice([Dice.d20], {
+			modifier: [statBuff],
+			chatEntryOnRes: {
+				playerName,
+				rollName: PLAYER_STAT_TO_LABEL[stat],
+				rollBonus: statBuff,
+			},
+			db,
+		});
 	};
 
 	const onPlayerStatChange = (stat: string, value: any) => {
