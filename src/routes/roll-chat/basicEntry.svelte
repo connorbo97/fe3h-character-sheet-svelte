@@ -8,11 +8,12 @@
 	export let rollBonus = 0;
 	export let roll = '-';
 	export let rollTooltip = 'n/a';
+	export let date: any;
 </script>
 
 <div class="container">
 	<b class="player">{playerName} - {rollName} ({addNumberPrefix(rollBonus)})</b>
-	<div class="rolls">
+	<div class="rolls" id={`chat-entry-${date}`}>
         <div class="attack">Result</div>
 	</div>
 	<div class="result">
