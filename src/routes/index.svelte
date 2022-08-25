@@ -356,6 +356,9 @@
 					{currentPage}
 					{homeMode}
 					{toggleHomeMode}
+					{otherSheetNames}
+					{curSheet}
+					{onChangeCurSheet}
 				/>
 			</div>
 			<div class="content">
@@ -417,6 +420,7 @@
 							{playerSkillProficiency}
 							{playerSkillBonus}
 							{playerStats}
+							playerName={name}
 							{onUpdatePlayerStats}
 							{onUpdateCustomCombatArts}
 							{onUpdateCustomCombatSkills}

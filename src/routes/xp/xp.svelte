@@ -25,8 +25,10 @@
 	import { PLAYER_SKILL } from 'src/constants/playerSkills';
 	import { PLAYER_STAT, PLAYER_STAT_TO_SHORT_LABEL } from 'src/constants/stats';
 	import { WEAPON_TYPES_TO_LEVEL_FEATURES } from 'src/constants/weaponLevel';
+	import { WEAPONS_TO_FEATURES } from 'src/constants/weapons';
 	import { COMBAT_XP_OPTIONS, WEAPON_TYPE_TO_STAT } from 'src/constants/weaponType';
 	import { getLevelUpDescription, getXPMoochText } from 'src/descriptionUtils';
+	import { addEntryToChat } from 'src/rollUtils';
 	import {
 		addNumberPrefix,
 		classBuilder,
@@ -60,6 +62,8 @@
 
 	export let equippedClass: any;
 
+	export let playerName: any;
+
 	let resetInputs = true;
 
 	let levelUpAudio = new Audio('success-sound.webm');
@@ -91,6 +95,8 @@
 
 		return acc;
 	}, {});
+
+	$: db = getContext(CONTEXTS.DB)
 
 	$: promptWeaponLevelUp = (type: any, level, onSuccess = () => {}, onClose = () => {}) => {
 		pauseAllAudios();
@@ -253,8 +259,17 @@
 				true
 			)}(${statLabel}) = ${moddedValue}</div><div style='text-align:center'>${suffix}</div>`;
 		};
-		const { value } = await rollVisualDice([Dice.d20], { customResultBoxLabel });
+		const { value } = await rollVisualDice([Dice.d20], {
+			customResultBoxLabel,
+		});
 		const finalValue = value + statMod;
+		addEntryToChat(db, {
+			playerName,
+			rollName: "XP Roll (" + WEAPON_TYPE_TO_LABEL[weaponType] + ")",
+			rollBonus: statMod,
+			roll: finalValue + "",
+			rollTooltip: value + addNumberPrefix(statMod),
+		});
 
 		let newRolls = rollsRemaining - 1;
 		pauseAllAudios();
