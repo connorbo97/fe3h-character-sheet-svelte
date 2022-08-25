@@ -63,10 +63,10 @@
 		{/if}
 		{#if chatEntries}
 			{#each chatEntries as entry, i}
-			{@const rollType = entry?.type || "BASIC_ROLL"}
+				{@const rollType = entry?.type || "BASIC_ROLL"}
 				{#if rollType === "BASIC_ROLL"}
 					<BasicEntry
-						{entry}
+						{...entry}
 					/>
 				{/if}
 				{#if rollType !== "BASIC_ROLL"}

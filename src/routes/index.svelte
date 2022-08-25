@@ -417,6 +417,7 @@
 							{playerSkillProficiency}
 							{playerSkillBonus}
 							{playerStats}
+							playerName={name}
 							{onUpdatePlayerStats}
 							{onUpdateCustomCombatArts}
 							{onUpdateCustomCombatSkills}

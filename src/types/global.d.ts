@@ -194,7 +194,6 @@ declare global {
 		type?: string;
 		rollName?: string;
 		rollBonus?: number;
-		rawRoll?: number;
 		roll?: string;
 		rollTooltip?: string;
 	}

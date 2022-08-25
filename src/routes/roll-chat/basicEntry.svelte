@@ -3,14 +3,11 @@
 	import { TooltipStyle } from 'src/constants/enums';
 	import { addNumberPrefix } from 'src/textUtils';
 
-	export let entry: BasicEntry;
-	const {
-		playerName = 'No Name',
-        rollName = 'Basic Roll',
-        rollBonus = 0,
-        roll = '-',
-        rollTooltip = 'n/a',
-	} = entry;
+	export let playerName = 'No Name';
+	export let rollName = 'Basic Roll';
+	export let rollBonus = 0;
+	export let roll = '-';
+	export let rollTooltip = 'n/a';
 </script>
 
 <div class="container">
@@ -54,7 +51,7 @@
 		border: 1px solid black;
 		color: white;
 		border-radius: 5px 5px 0 0;
-		animation: fadein 2s forwards alternate;
+		animation: fadein 1.5s forwards alternate;
 	}
 	.player {
 		padding: 5px;
