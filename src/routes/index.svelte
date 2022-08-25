@@ -356,6 +356,9 @@
 					{currentPage}
 					{homeMode}
 					{toggleHomeMode}
+					{otherSheetNames}
+					{curSheet}
+					{onChangeCurSheet}
 				/>
 			</div>
 			<div class="content">

@@ -10,6 +10,11 @@
 
 	export let homeMode: number;
 	export let toggleHomeMode: Function;
+	export let onChangeCurSheet: Function;
+	export let curSheet: any;
+	export let otherSheetNames;
+
+	$: options = otherSheetNames.sort();
 </script>
 
 <div class="container">
@@ -35,9 +40,12 @@
 	<button class={currentPage === 'XP' ? 'active' : ''} on:click={() => onChangePage('XP')}
 		>Weapon XP</button
 	>
-	<button class={currentPage === 'EDITOR' ? 'active' : ''} on:click={() => onChangePage('EDITOR')}
-		>Sheet Editor</button
-	>
+	<select on:change={(e) => onChangeCurSheet(e.currentTarget.value)}>
+		<option value={'sheet'} selected={curSheet === 'sheet'}>Main Sheet</option>
+		{#each options as name}
+			<option value={name} selected={curSheet === name}>{name}</option>
+		{/each}
+	</select>
 	<button
 		class={currentPage === 'DICE_EDITOR' ? 'active' : ''}
 		on:click={() => onChangePage('DICE_EDITOR')}
