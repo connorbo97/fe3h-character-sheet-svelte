@@ -8,3 +8,4 @@ node_modules
 !.env.example
 fe3h-character-sheet-svelte.code-workspace
 /dice-box
+/.vscode
