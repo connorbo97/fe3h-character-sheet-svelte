@@ -46,6 +46,9 @@
 			<option value={name} selected={curSheet === name}>{name}</option>
 		{/each}
 	</select>
+	<button class={currentPage === 'EDITOR' ? 'active' : ''} on:click={() => onChangePage('EDITOR')}
+		>Sheet Editor</button
+	>
 	<button
 		class={currentPage === 'DICE_EDITOR' ? 'active' : ''}
 		on:click={() => onChangePage('DICE_EDITOR')}

@@ -443,8 +443,7 @@
 				</div>
 				<div class={currentPage === 'EDITOR' ? '' : 'invisible'}>
 					{#if currentPage === 'EDITOR'}
-						<!-- <Editor {fullSheet} {onChangeSheet} /> -->
-						Temp disabled b/c of it blocking release
+						<Editor {fullSheet} {onChangeSheet} />
 					{/if}
 				</div>
 				<div class={currentPage === 'DICE_EDITOR' ? '' : 'invisible'}>
