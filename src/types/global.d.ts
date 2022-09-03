@@ -29,6 +29,11 @@ declare global {
 		classXP: XPMap;
 		weaponXP: XPMap;
 		crest: PlayerCrest;
+
+		equippedClass: string;
+		equippedWeapons: Array<any>;
+		equippedCombatSkills: Array<any>;
+		equippedCombatArts: Array<any>;
 	};
 
 	type AllWeapons = {

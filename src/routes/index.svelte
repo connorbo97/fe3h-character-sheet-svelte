@@ -80,15 +80,16 @@
 		customCombatArts: {},
 		classXP: {},
 		weaponXP: {},
-		crest: { type: '', isMajor: false }
+		crest: { type: '', isMajor: false },
+		
+		equippedClass: '',
+		equippedWeapons: [],
+		equippedCombatSkills: [],
+		equippedCombatArts: [],
 	};
 
 	let ready = false;
 	let fullSheet: CharacterSheet = defaultSheet;
-	let equippedClass: string = '';
-	let equippedWeapons: Array<string> = [];
-	let equippedCombatSkills: Array<string> = [];
-	let equippedCombatArts: Array<string> = [];
 
 	let selectedCombatArt: string;
 	let selectedWeapon: string;
@@ -141,6 +142,10 @@
 	$: classXP = fullSheet.classXP;
 	$: weaponXP = fullSheet.weaponXP;
 	$: playerCrest = fullSheet.crest;
+	$: equippedClass = fullSheet.equippedClass;
+	$: equippedWeapons = fullSheet.equippedWeapons;
+	$: equippedCombatSkills = fullSheet.equippedCombatSkills;
+	$: equippedCombatArts = fullSheet.equippedCombatArts;
 
 	$: allWeapons = calculateAllWeapons(fullSheet, equippedClass);
 	$: allCombatSkills = calculateAllCombatSkills(fullSheet, equippedClass);
@@ -242,6 +247,7 @@
 	};
 	$: setEquippedClass = (newClass: any) => {
 		equippedClass = newClass;
+		onUpdateSheet('equippedClass', equippedClass);
 	};
 	$: setSelectedWeapon = (newWeapon: any) => {
 		selectedWeapon = newWeapon;
@@ -255,6 +261,8 @@
 		} else if (equippedCombatArts.length < MAX_COMBAT_ARTS) {
 			equippedCombatArts = [...equippedCombatArts, targetArt];
 		}
+
+		onUpdateSheet('equippedCombatArts', equippedCombatArts);
 	};
 	$: onToggleCombatSkill = (targetSkill: any) => {
 		if (equippedCombatSkills.indexOf(targetSkill) !== -1) {
@@ -262,6 +270,8 @@
 		} else if (equippedCombatSkills.length < MAX_COMBAT_SKILLS) {
 			equippedCombatSkills = [...equippedCombatSkills, targetSkill];
 		}
+
+		onUpdateSheet('equippedCombatSkills', equippedCombatSkills);
 	};
 	$: onToggleEquippedWeapons = (weapon: any) => {
 		if (equippedWeapons.includes(weapon)) {
@@ -269,6 +279,8 @@
 		} else if (equippedWeapons.length < MAX_WEAPONS_EQUIPPED) {
 			equippedWeapons = [...equippedWeapons, weapon];
 		}
+
+		onUpdateSheet('equippedWeapons', equippedWeapons);
 	};
 	$: onUpdateUnlockedClasses = (newClasses: Array<string>) => {
 		const classOrder = Object.values(CLASS);
