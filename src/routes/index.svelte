@@ -147,11 +147,6 @@
 	$: equippedCombatSkills = fullSheet.equippedCombatSkills;
 	$: equippedCombatArts = fullSheet.equippedCombatArts;
 
-	$: allWeapons = calculateAllWeapons(fullSheet, equippedClass);
-	$: allCombatSkills = calculateAllCombatSkills(fullSheet, equippedClass);
-	$: allCombatArts = calculateAllCombatArts(fullSheet, equippedClass, allCombatSkills.fullSet);
-	$: masteredClasses = unlockedClasses.filter((c: any) => classXP[c]?.mastered);
-
 	$: resetEquipped = () => {
 		equippedClass = '';
 		equippedWeapons = [];
@@ -326,6 +321,12 @@
 		localStorage.setItem('otherSheetNames', JSON.stringify(otherSheetNames));
 		onChangeCurSheet(name);
 	};
+
+	$: allWeapons = calculateAllWeapons(fullSheet, equippedClass);
+	$: allCombatSkills = calculateAllCombatSkills(fullSheet, equippedClass, equippedCombatSkills, onToggleCombatSkill);
+	$: allCombatArts = calculateAllCombatArts(fullSheet, equippedClass, allCombatSkills.fullSet);
+	$: masteredClasses = unlockedClasses.filter((c: any) => classXP[c]?.mastered);
+
 	let spoilersOn = Infinity;
 	$: toggleSpoilersOn = () => {
 		if (spoilersOn === Infinity) {

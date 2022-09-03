@@ -133,20 +133,24 @@ const calculateAllWeaponsMemoized = memoize(
 	}
 );
 
-export const calculateAllCombatSkills = (fullSheet: CharacterSheet, equippedClass: string) =>
+export const calculateAllCombatSkills = (fullSheet: CharacterSheet, equippedClass: string, equippedCombatSkills: Array<any>, onToggleCombatSkill: Function) =>
 	calculateAllCombatSkillsMemoized(
 		fullSheet.unlockedClasses,
 		fullSheet.customCombatSkills,
 		fullSheet.classXP,
 		fullSheet.weaponXP,
-		equippedClass
+		equippedClass,
+		equippedCombatSkills,
+		onToggleCombatSkill,
 	);
 const calculateAllCombatSkillsMemoized = (
 	unlockedClasses: Array<string>,
 	customCombatSkills: object,
 	classXP: XPMap,
 	weaponXP: XPMap,
-	equippedClass: string
+	equippedClass: string,
+	equippedCombatSkills: Array<any>,
+	onToggleCombatSkill: Function
 ): AllCombatSkills => {
 	const customSet: Set<string> = new Set(Object.keys(customCombatSkills));
 	const equippedClassSet: Set<string> = new Set(
@@ -209,6 +213,14 @@ const calculateAllCombatSkillsMemoized = (
 		...classUnlockSet,
 		...weaponXPLevelSkillSet
 	]);
+
+	// filter out any equipped skills you don't have still
+	equippedCombatSkills.forEach((skill) => {
+		if (!fullSet.has(skill)) {
+			onToggleCombatSkill(skill);
+		}
+	})
+
 	const customCombatSkillFeatures = Object.keys(customCombatSkills).reduce(
 		(acc: any, cur: any) => {
 			acc[cur] = { ...COMBAT_SKILLS_TO_FEATURES[cur], ...acc[cur] };
