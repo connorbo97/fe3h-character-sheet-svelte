@@ -108,8 +108,7 @@
 
 	const q = query(
 		collection(db, 'lobby', 'taboola', getChatMonth()),
-		where('date', '>', Timestamp.fromDate(now)),
-		orderBy('date')
+		where('date', '>', Timestamp.fromDate(now))
 	);
 
 	const unsubscribe = onSnapshot(q, (querySnapshot) => {
