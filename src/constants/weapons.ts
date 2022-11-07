@@ -7,11 +7,14 @@ export const WEAPONS = {
 	TRAINING_SWORD: 'TRAINING_SWORD',
 	IRON_SWORD: 'IRON_SWORD',
 	STEEL_SWORD: 'STEEL_SWORD',
+	LEVIN_SWORD: 'LEVIN_SWORD',
+	SWORD_OF_THE_CREATOR: 'SWORD_OF_THE_CREATOR',
 
 	TRAINING_LANCE: 'TRAINING_LANCE',
 	IRON_LANCE: 'IRON_LANCE',
 	STEEL_LANCE: 'STEEL_LANCE',
 	PIKE: 'PIKE',
+	LANCE_OF_RUIN: 'LANCE_OF_RUIN',
 
 	TRAINING_AXE: 'TRAINING_AXE',
 	IRON_AXE: 'IRON_AXE',
@@ -58,12 +61,19 @@ export const TRAINING_WEAPONS_SET = new Set([
 	WEAPONS.TRAINING_BOW,
 	WEAPONS.TRAINING_GAUNTLETS
 ]);
-export const SWORD_WEAPONS = [WEAPONS.TRAINING_SWORD, WEAPONS.IRON_SWORD, WEAPONS.STEEL_SWORD];
+export const SWORD_WEAPONS = [
+	WEAPONS.TRAINING_SWORD,
+	WEAPONS.IRON_SWORD,
+	WEAPONS.STEEL_SWORD,
+	WEAPONS.LEVIN_SWORD,
+	WEAPONS.SWORD_OF_THE_CREATOR
+];
 export const LANCE_WEAPONS = [
 	WEAPONS.TRAINING_LANCE,
 	WEAPONS.IRON_LANCE,
 	WEAPONS.STEEL_LANCE,
-	WEAPONS.PIKE
+	WEAPONS.PIKE,
+	WEAPONS.LANCE_OF_RUIN
 ];
 export const AXE_WEAPONS = [
 	WEAPONS.TRAINING_AXE,
@@ -178,6 +188,27 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 		attackBonus: -1,
 		range: [1]
 	},
+	[WEAPONS.LEVIN_SWORD]: {
+		label: 'Levin Sword',
+		description: 'Uses Int instead of Str for damage',
+		type: WEAPON_TYPE.SWORD,
+		acBonus: -1,
+		followUpBonus: -1,
+		damage: [Dice.d3, 1],
+		damageType: [PLAYER_STAT.INT],
+		attackBonus: -4,
+		range: [1, 2]
+	},
+	[WEAPONS.SWORD_OF_THE_CREATOR]: {
+		label: 'Sword of the Creator',
+		description: '',
+		type: WEAPON_TYPE.SWORD,
+		acBonus: -1,
+		followUpBonus: -1,
+		damage: [Dice.d2, 1],
+		attackBonus: 1,
+		range: [1, 2]
+	},
 
 	[WEAPONS.TRAINING_LANCE]: {
 		label: 'Training Lance',
@@ -208,12 +239,22 @@ export const WEAPONS_TO_FEATURES: { [s: string]: WeaponFeatures } = {
 	},
 	[WEAPONS.PIKE]: {
 		label: 'Pike',
-		description: '',
+		description: '+1 range',
 		type: WEAPON_TYPE.LANCE,
 		acBonus: -2,
 		followUpBonus: -3,
 		damage: [Dice.d3, 1],
 		attackBonus: -2,
+		range: [1, 2]
+	},
+	[WEAPONS.LANCE_OF_RUIN]: {
+		label: 'Lance of Ruin',
+		description: '',
+		type: WEAPON_TYPE.LANCE,
+		acBonus: -1,
+		followUpBonus: -2,
+		damage: [Dice.d2, 4],
+		attackBonus: -4,
 		range: [1]
 	},
 
