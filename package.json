@@ -4,7 +4,8 @@
 	"scripts": {
 		"start": "node build/index.js",
 		"dev": "vite dev",
-		"build": "vite build",
+		"build-dev": "vite build",
+		"build": "vite build --config svelte.config.prod.js",
 		"package": "svelte-kit package",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -16,6 +17,7 @@
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/adapter-node": "next",
+		"@sveltejs/adapter-static": "^1.0.0-next.48",
 		"@sveltejs/kit": "next",
 		"eslint": "^8.16.0",
 		"eslint-config-prettier": "^8.3.0",

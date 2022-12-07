@@ -11,11 +11,11 @@ const config = {
 	preprocess: preprocess(),
 	kit: {
 		adapter: adapter({
-			strict: false,
 			pages: 'docs',
 			assets: 'docs'
 		}),
 		paths: {
+			// change below to your repo name
 			base: '/fe3h-character-sheet-svelte'
 		}
 	}

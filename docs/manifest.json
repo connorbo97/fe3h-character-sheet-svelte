@@ -1,0 +1,930 @@
+{
+  "src/images/weapons/sword-removebg-preview.png": {
+    "file": "_app/immutable/assets/sword-removebg-preview-6a200c6b.png",
+    "src": "src/images/weapons/sword-removebg-preview.png"
+  },
+  "src/images/weapons/axe-removebg-preview.png": {
+    "file": "_app/immutable/assets/axe-removebg-preview-6ec4ca46.png",
+    "src": "src/images/weapons/axe-removebg-preview.png"
+  },
+  "src/images/weapons/bow-removebg-preview.png": {
+    "file": "_app/immutable/assets/bow-removebg-preview-75a7b4cd.png",
+    "src": "src/images/weapons/bow-removebg-preview.png"
+  },
+  "src/images/weapons/fists-removebg-preview.png": {
+    "file": "_app/immutable/assets/fists-removebg-preview-1b211e37.png",
+    "src": "src/images/weapons/fists-removebg-preview.png"
+  },
+  ".svelte-kit/runtime/client/start.js": {
+    "file": "_app/immutable/start-6e32770d.js",
+    "src": ".svelte-kit/runtime/client/start.js",
+    "isEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_index-675afd87.js",
+      "_preload-helper-703ceea7.js"
+    ],
+    "dynamicImports": [
+      ".svelte-kit/runtime/components/layout.svelte",
+      ".svelte-kit/runtime/components/error.svelte",
+      "src/routes/dice-editor/diceEditor.svelte",
+      "_editor-7eceae59.js",
+      "src/routes/home/Popup.svelte",
+      "src/routes/home/attackCalc.svelte",
+      "src/routes/home/attackCalcHeader.svelte",
+      "src/routes/home/attackRollModal.svelte",
+      "src/routes/home/classes.svelte",
+      "src/routes/home/classesEntry.svelte",
+      "src/routes/home/combatArts.svelte",
+      "src/routes/home/combatArtsEntry.svelte",
+      "src/routes/home/combatSkillEntry.svelte",
+      "src/routes/home/combatSkills.svelte",
+      "src/routes/home/combatStats.svelte",
+      "src/routes/home/customWeaponPrompt.svelte",
+      "src/routes/home/header.svelte",
+      "src/routes/home/home.svelte",
+      "src/routes/home/queryPicker.svelte",
+      "src/routes/home/skillEntry.svelte",
+      "src/routes/home/skills.svelte",
+      "src/routes/home/stats.svelte",
+      "src/routes/home/weapons.svelte",
+      "src/routes/home/weaponsSection.svelte",
+      "src/routes/index.svelte",
+      "src/routes/roll-chat/RollChat.svelte",
+      "src/routes/roll-chat/attackEntry.svelte",
+      "src/routes/roll-chat/basicEntry.svelte",
+      "src/routes/sheet-manager/sheetManager.svelte",
+      "src/routes/xp/combatXPForm.svelte",
+      "src/routes/xp/levelUpDescription.svelte",
+      "src/routes/xp/xp.svelte"
+    ]
+  },
+  ".svelte-kit/runtime/components/layout.svelte": {
+    "file": "_app/immutable/layout.svelte-4ddb4b1f.js",
+    "src": ".svelte-kit/runtime/components/layout.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js"
+    ]
+  },
+  ".svelte-kit/runtime/components/error.svelte": {
+    "file": "_app/immutable/error.svelte-cfb31704.js",
+    "src": ".svelte-kit/runtime/components/error.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js"
+    ]
+  },
+  "src/routes/dice-editor/diceEditor.svelte": {
+    "file": "_app/immutable/pages/dice-editor/diceEditor.svelte-221f5e64.js",
+    "src": "src/routes/dice-editor/diceEditor.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_preload-helper-703ceea7.js",
+      "_index-d5d48e27.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js"
+    ],
+    "dynamicImports": [
+      "node_modules/@3d-dice/dice-box/dist/dice-box.es.js"
+    ],
+    "css": [
+      "_app/immutable/assets/diceEditor-9e689f9a.css"
+    ]
+  },
+  "src/routes/home/Popup.svelte": {
+    "file": "_app/immutable/pages/home/Popup.svelte-7cb69a21.js",
+    "src": "src/routes/home/Popup.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js"
+    ],
+    "css": [
+      "_app/immutable/assets/Popup-8ea2c0a9.css"
+    ]
+  },
+  "src/routes/home/attackCalc.svelte": {
+    "file": "_app/immutable/pages/home/attackCalc.svelte-4bea1c7e.js",
+    "src": "src/routes/home/attackCalc.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js",
+      "_utils-edd64bc1.js",
+      "src/routes/home/attackCalcHeader.svelte",
+      "src/routes/home/attackRollModal.svelte",
+      "src/routes/home/queryPicker.svelte",
+      "_SvelteTip-cf62352a.js"
+    ],
+    "css": [
+      "_app/immutable/assets/attackCalc-d4a1de04.css"
+    ]
+  },
+  "src/routes/home/attackCalcHeader.svelte": {
+    "file": "_app/immutable/pages/home/attackCalcHeader.svelte-e2ccc629.js",
+    "src": "src/routes/home/attackCalcHeader.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/attackCalcHeader-636eb95c.css"
+    ]
+  },
+  "src/routes/home/attackRollModal.svelte": {
+    "file": "_app/immutable/pages/home/attackRollModal.svelte-b7fe0a2a.js",
+    "src": "src/routes/home/attackRollModal.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_SvelteTip-cf62352a.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js",
+      "_utils-edd64bc1.js"
+    ],
+    "css": [
+      "_app/immutable/assets/attackRollModal-31ad3699.css"
+    ]
+  },
+  "src/routes/home/queryPicker.svelte": {
+    "file": "_app/immutable/pages/home/queryPicker.svelte-52650412.js",
+    "src": "src/routes/home/queryPicker.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js"
+    ],
+    "css": [
+      "_app/immutable/assets/queryPicker-91b42591.css"
+    ]
+  },
+  "src/routes/home/classes.svelte": {
+    "file": "_app/immutable/pages/home/classes.svelte-0faa5563.js",
+    "src": "src/routes/home/classes.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_categoryHeader-f8b5a27f.js",
+      "_pickOnePrompt-78f18453.js",
+      "_SvelteTip-cf62352a.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "src/routes/home/classesEntry.svelte",
+      "_enums-eee6a708.js",
+      "_equippedButton-566568f6.js",
+      "_unlockedButton-2d160252.js",
+      "_descriptionUtils-f5c09904.js"
+    ],
+    "css": [
+      "_app/immutable/assets/classes-932aee1d.css"
+    ]
+  },
+  "src/routes/home/classesEntry.svelte": {
+    "file": "_app/immutable/pages/home/classesEntry.svelte-3d275f77.js",
+    "src": "src/routes/home/classesEntry.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_equippedButton-566568f6.js",
+      "_SvelteTip-cf62352a.js",
+      "_unlockedButton-2d160252.js",
+      "_weaponLevel-1d872777.js",
+      "_descriptionUtils-f5c09904.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/classesEntry-f0fa02f9.css"
+    ]
+  },
+  "src/routes/home/combatArts.svelte": {
+    "file": "_app/immutable/pages/home/combatArts.svelte-69ba7119.js",
+    "src": "src/routes/home/combatArts.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_categoryHeader-f8b5a27f.js",
+      "_pickOnePrompt-78f18453.js",
+      "_SvelteTip-cf62352a.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js",
+      "src/routes/home/combatArtsEntry.svelte",
+      "_equippedButton-566568f6.js",
+      "_editor.svelte_svelte_type_style_lang-7e31c381.js",
+      "_preload-helper-703ceea7.js"
+    ],
+    "css": [
+      "_app/immutable/assets/combatArts-bfc82d30.css"
+    ]
+  },
+  "src/routes/home/combatArtsEntry.svelte": {
+    "file": "_app/immutable/pages/home/combatArtsEntry.svelte-7665ed5e.js",
+    "src": "src/routes/home/combatArtsEntry.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_equippedButton-566568f6.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "_editor.svelte_svelte_type_style_lang-7e31c381.js",
+      "_preload-helper-703ceea7.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/combatArtsEntry-b110b9c6.css"
+    ]
+  },
+  "src/routes/home/combatSkillEntry.svelte": {
+    "file": "_app/immutable/pages/home/combatSkillEntry.svelte-75984f45.js",
+    "src": "src/routes/home/combatSkillEntry.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_equippedButton-566568f6.js",
+      "_constants-56e6b6a8.js",
+      "_enums-eee6a708.js",
+      "_weaponLevel-1d872777.js"
+    ],
+    "css": [
+      "_app/immutable/assets/combatSkillEntry-fbbaf0f1.css"
+    ]
+  },
+  "src/routes/home/combatSkills.svelte": {
+    "file": "_app/immutable/pages/home/combatSkills.svelte-5769979e.js",
+    "src": "src/routes/home/combatSkills.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_categoryHeader-f8b5a27f.js",
+      "_pickOnePrompt-78f18453.js",
+      "_SvelteTip-cf62352a.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js",
+      "src/routes/home/combatSkillEntry.svelte",
+      "_equippedButton-566568f6.js"
+    ],
+    "css": [
+      "_app/immutable/assets/combatSkills-c1ccc9c4.css"
+    ]
+  },
+  "src/routes/home/combatStats.svelte": {
+    "file": "_app/immutable/pages/home/combatStats.svelte-4e2b0b76.js",
+    "src": "src/routes/home/combatStats.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_SvelteTip-cf62352a.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js",
+      "_utils-edd64bc1.js"
+    ],
+    "css": [
+      "_app/immutable/assets/combatStats-7229023b.css"
+    ]
+  },
+  "src/routes/home/customWeaponPrompt.svelte": {
+    "file": "_app/immutable/pages/home/customWeaponPrompt.svelte-c6fcfd04.js",
+    "src": "src/routes/home/customWeaponPrompt.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/customWeaponPrompt-6b8e13cb.css"
+    ]
+  },
+  "src/routes/home/header.svelte": {
+    "file": "_app/immutable/pages/home/header.svelte-b7c4569c.js",
+    "src": "src/routes/home/header.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_utils-edd64bc1.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/header-753fc675.css"
+    ]
+  },
+  "src/routes/home/home.svelte": {
+    "file": "_app/immutable/pages/home/home.svelte-69fbd3f7.js",
+    "src": "src/routes/home/home.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_weaponLevel-1d872777.js",
+      "src/routes/roll-chat/RollChat.svelte",
+      "src/routes/home/attackCalc.svelte",
+      "src/routes/home/classes.svelte",
+      "src/routes/home/combatArts.svelte",
+      "src/routes/home/combatSkills.svelte",
+      "src/routes/home/combatStats.svelte",
+      "src/routes/home/skills.svelte",
+      "src/routes/home/stats.svelte",
+      "src/routes/home/weapons.svelte",
+      "_enums-eee6a708.js",
+      "src/routes/roll-chat/attackEntry.svelte",
+      "src/routes/roll-chat/basicEntry.svelte",
+      "_SvelteTip-cf62352a.js",
+      "_constants-56e6b6a8.js",
+      "_utils-edd64bc1.js",
+      "src/routes/home/attackCalcHeader.svelte",
+      "src/routes/home/attackRollModal.svelte",
+      "src/routes/home/queryPicker.svelte",
+      "_categoryHeader-f8b5a27f.js",
+      "_pickOnePrompt-78f18453.js",
+      "src/routes/home/classesEntry.svelte",
+      "_equippedButton-566568f6.js",
+      "_unlockedButton-2d160252.js",
+      "_descriptionUtils-f5c09904.js",
+      "src/routes/home/combatArtsEntry.svelte",
+      "_editor.svelte_svelte_type_style_lang-7e31c381.js",
+      "_preload-helper-703ceea7.js",
+      "src/routes/home/combatSkillEntry.svelte",
+      "src/routes/home/skillEntry.svelte",
+      "src/routes/home/customWeaponPrompt.svelte",
+      "src/routes/home/weaponsSection.svelte"
+    ],
+    "css": [
+      "_app/immutable/assets/home-57081e3c.css",
+      "_app/immutable/assets/Popup-8ea2c0a9.css"
+    ]
+  },
+  "src/routes/roll-chat/RollChat.svelte": {
+    "file": "_app/immutable/pages/roll-chat/RollChat.svelte-4e4c2bee.js",
+    "src": "src/routes/roll-chat/RollChat.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "src/routes/roll-chat/attackEntry.svelte",
+      "src/routes/roll-chat/basicEntry.svelte",
+      "_SvelteTip-cf62352a.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/RollChat-9a0c86ee.css"
+    ]
+  },
+  "src/routes/home/skills.svelte": {
+    "file": "_app/immutable/pages/home/skills.svelte-4da5b5e0.js",
+    "src": "src/routes/home/skills.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_categoryHeader-f8b5a27f.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "src/routes/home/skillEntry.svelte",
+      "_enums-eee6a708.js",
+      "_SvelteTip-cf62352a.js",
+      "_unlockedButton-2d160252.js",
+      "_utils-edd64bc1.js"
+    ],
+    "css": [
+      "_app/immutable/assets/skills-beb1ffdd.css"
+    ]
+  },
+  "src/routes/home/stats.svelte": {
+    "file": "_app/immutable/pages/home/stats.svelte-260b7822.js",
+    "src": "src/routes/home/stats.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_utils-edd64bc1.js",
+      "_constants-56e6b6a8.js",
+      "_SvelteTip-cf62352a.js",
+      "_categoryHeader-f8b5a27f.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/stats-81349a71.css",
+      "_app/immutable/assets/Popup-8ea2c0a9.css"
+    ]
+  },
+  "src/routes/home/weapons.svelte": {
+    "file": "_app/immutable/pages/home/weapons.svelte-6e0940e1.js",
+    "src": "src/routes/home/weapons.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_categoryHeader-f8b5a27f.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js",
+      "src/routes/home/customWeaponPrompt.svelte",
+      "src/routes/home/weaponsSection.svelte",
+      "_equippedButton-566568f6.js",
+      "_SvelteTip-cf62352a.js",
+      "_utils-edd64bc1.js"
+    ],
+    "css": [
+      "_app/immutable/assets/weapons-187a4e77.css"
+    ]
+  },
+  "src/routes/roll-chat/attackEntry.svelte": {
+    "file": "_app/immutable/pages/roll-chat/attackEntry.svelte-3be730d3.js",
+    "src": "src/routes/roll-chat/attackEntry.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js"
+    ],
+    "css": [
+      "_app/immutable/assets/attackEntry-5c7fc111.css"
+    ]
+  },
+  "src/routes/roll-chat/basicEntry.svelte": {
+    "file": "_app/immutable/pages/roll-chat/basicEntry.svelte-4272e13c.js",
+    "src": "src/routes/roll-chat/basicEntry.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_SvelteTip-cf62352a.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/basicEntry-8580c6df.css"
+    ]
+  },
+  "src/routes/home/skillEntry.svelte": {
+    "file": "_app/immutable/pages/home/skillEntry.svelte-37efbec8.js",
+    "src": "src/routes/home/skillEntry.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_SvelteTip-cf62352a.js",
+      "_unlockedButton-2d160252.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "_utils-edd64bc1.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/skillEntry-39558549.css"
+    ]
+  },
+  "src/routes/home/weaponsSection.svelte": {
+    "file": "_app/immutable/pages/home/weaponsSection.svelte-f7764e20.js",
+    "src": "src/routes/home/weaponsSection.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_equippedButton-566568f6.js",
+      "_SvelteTip-cf62352a.js",
+      "_constants-56e6b6a8.js",
+      "_enums-eee6a708.js",
+      "_weaponLevel-1d872777.js",
+      "_utils-edd64bc1.js"
+    ],
+    "css": [
+      "_app/immutable/assets/weaponsSection-7e2316b3.css"
+    ]
+  },
+  "src/routes/index.svelte": {
+    "file": "_app/immutable/pages/index.svelte-65c43e99.js",
+    "src": "src/routes/index.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_preload-helper-703ceea7.js",
+      "_index-d5d48e27.js",
+      "_constants-56e6b6a8.js",
+      "src/routes/home/home.svelte",
+      "src/routes/home/header.svelte",
+      "_index-675afd87.js",
+      "_editor-7eceae59.js",
+      "src/routes/xp/xp.svelte",
+      "_weaponLevel-1d872777.js",
+      "src/routes/dice-editor/diceEditor.svelte",
+      "src/routes/sheet-manager/sheetManager.svelte",
+      "src/routes/roll-chat/RollChat.svelte",
+      "src/routes/home/attackCalc.svelte",
+      "_enums-eee6a708.js",
+      "_utils-edd64bc1.js",
+      "src/routes/home/attackCalcHeader.svelte",
+      "src/routes/home/attackRollModal.svelte",
+      "_SvelteTip-cf62352a.js",
+      "src/routes/home/queryPicker.svelte",
+      "src/routes/home/classes.svelte",
+      "_categoryHeader-f8b5a27f.js",
+      "_pickOnePrompt-78f18453.js",
+      "src/routes/home/classesEntry.svelte",
+      "_equippedButton-566568f6.js",
+      "_unlockedButton-2d160252.js",
+      "_descriptionUtils-f5c09904.js",
+      "src/routes/home/combatArts.svelte",
+      "src/routes/home/combatArtsEntry.svelte",
+      "_editor.svelte_svelte_type_style_lang-7e31c381.js",
+      "src/routes/home/combatSkills.svelte",
+      "src/routes/home/combatSkillEntry.svelte",
+      "src/routes/home/combatStats.svelte",
+      "src/routes/home/skills.svelte",
+      "src/routes/home/skillEntry.svelte",
+      "src/routes/home/stats.svelte",
+      "src/routes/home/weapons.svelte",
+      "src/routes/home/customWeaponPrompt.svelte",
+      "src/routes/home/weaponsSection.svelte",
+      "src/routes/roll-chat/attackEntry.svelte",
+      "src/routes/roll-chat/basicEntry.svelte",
+      "src/routes/xp/combatXPForm.svelte",
+      "src/routes/xp/levelUpDescription.svelte"
+    ],
+    "dynamicImports": [
+      "node_modules/@3d-dice/dice-box/dist/dice-box.es.js"
+    ],
+    "css": [
+      "_app/immutable/assets/index-95a6dae5.css",
+      "_app/immutable/assets/Popup-8ea2c0a9.css"
+    ]
+  },
+  "src/routes/xp/xp.svelte": {
+    "file": "_app/immutable/pages/xp/xp.svelte-189c0797.js",
+    "src": "src/routes/xp/xp.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_constants-56e6b6a8.js",
+      "_pickOnePrompt-78f18453.js",
+      "_SvelteTip-cf62352a.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js",
+      "_descriptionUtils-f5c09904.js",
+      "_utils-edd64bc1.js",
+      "src/routes/xp/combatXPForm.svelte",
+      "src/routes/xp/levelUpDescription.svelte"
+    ],
+    "css": [
+      "_app/immutable/assets/xp-767e5930.css"
+    ]
+  },
+  "src/routes/sheet-manager/sheetManager.svelte": {
+    "file": "_app/immutable/pages/sheet-manager/sheetManager.svelte-ef608b95.js",
+    "src": "src/routes/sheet-manager/sheetManager.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_utils-edd64bc1.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js"
+    ]
+  },
+  "src/routes/xp/combatXPForm.svelte": {
+    "file": "_app/immutable/pages/xp/combatXPForm.svelte-b5f1157f.js",
+    "src": "src/routes/xp/combatXPForm.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_SvelteTip-cf62352a.js",
+      "_weaponLevel-1d872777.js",
+      "_descriptionUtils-f5c09904.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/combatXPForm-24e8d864.css"
+    ]
+  },
+  "src/routes/xp/levelUpDescription.svelte": {
+    "file": "_app/immutable/pages/xp/levelUpDescription.svelte-1025ece1.js",
+    "src": "src/routes/xp/levelUpDescription.svelte",
+    "isEntry": true,
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_weaponLevel-1d872777.js",
+      "_descriptionUtils-f5c09904.js",
+      "_enums-eee6a708.js"
+    ]
+  },
+  "src/routes/editor/editor.svelte": {
+    "file": "_app/immutable/pages/editor/editor.svelte-a7b44b8f.js",
+    "src": "src/routes/editor/editor.svelte",
+    "isEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_utils-edd64bc1.js",
+      "_editor-7eceae59.js",
+      "_editor.svelte_svelte_type_style_lang-7e31c381.js",
+      "_preload-helper-703ceea7.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js"
+    ]
+  },
+  "_index-d5d48e27.js": {
+    "file": "_app/immutable/chunks/index-d5d48e27.js"
+  },
+  "_index-675afd87.js": {
+    "file": "_app/immutable/chunks/index-675afd87.js",
+    "imports": [
+      "_index-d5d48e27.js"
+    ]
+  },
+  "_preload-helper-703ceea7.js": {
+    "file": "_app/immutable/chunks/preload-helper-703ceea7.js"
+  },
+  "_constants-56e6b6a8.js": {
+    "file": "_app/immutable/chunks/constants-56e6b6a8.js",
+    "imports": [
+      "_weaponLevel-1d872777.js"
+    ]
+  },
+  "_weaponLevel-1d872777.js": {
+    "file": "_app/immutable/chunks/weaponLevel-1d872777.js",
+    "imports": [
+      "_enums-eee6a708.js"
+    ],
+    "assets": [
+      "_app/immutable/assets/sword-removebg-preview-6a200c6b.png",
+      "_app/immutable/assets/axe-removebg-preview-6ec4ca46.png",
+      "_app/immutable/assets/bow-removebg-preview-75a7b4cd.png",
+      "_app/immutable/assets/fists-removebg-preview-1b211e37.png"
+    ]
+  },
+  "_enums-eee6a708.js": {
+    "file": "_app/immutable/chunks/enums-eee6a708.js"
+  },
+  "_editor-7eceae59.js": {
+    "file": "_app/immutable/chunks/editor-7eceae59.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_index-d5d48e27.js",
+      "_utils-edd64bc1.js",
+      "_editor.svelte_svelte_type_style_lang-7e31c381.js",
+      "_preload-helper-703ceea7.js"
+    ],
+    "dynamicImports": [
+      "node_modules/vanilla-picker/dist/vanilla-picker.mjs"
+    ]
+  },
+  "_utils-edd64bc1.js": {
+    "file": "_app/immutable/chunks/utils-edd64bc1.js",
+    "imports": [
+      "_weaponLevel-1d872777.js"
+    ]
+  },
+  "_editor.svelte_svelte_type_style_lang-7e31c381.js": {
+    "file": "_app/immutable/chunks/editor.svelte_svelte_type_style_lang-7e31c381.js",
+    "css": [
+      "_app/immutable/assets/editor-14d69b12.css"
+    ]
+  },
+  "_SvelteTip-cf62352a.js": {
+    "file": "_app/immutable/chunks/SvelteTip-cf62352a.js",
+    "imports": [
+      "_index-d5d48e27.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/SvelteTip-e74eeca4.css"
+    ]
+  },
+  "_categoryHeader-f8b5a27f.js": {
+    "file": "_app/immutable/chunks/categoryHeader-f8b5a27f.js",
+    "imports": [
+      "_index-d5d48e27.js"
+    ],
+    "css": [
+      "_app/immutable/assets/categoryHeader-e43116bc.css"
+    ]
+  },
+  "_pickOnePrompt-78f18453.js": {
+    "file": "_app/immutable/chunks/pickOnePrompt-78f18453.js",
+    "imports": [
+      "_index-d5d48e27.js",
+      "_constants-56e6b6a8.js",
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/pickOnePrompt-ad4b2b02.css"
+    ]
+  },
+  "_equippedButton-566568f6.js": {
+    "file": "_app/immutable/chunks/equippedButton-566568f6.js",
+    "imports": [
+      "_index-d5d48e27.js",
+      "_enums-eee6a708.js"
+    ],
+    "css": [
+      "_app/immutable/assets/equippedButton-f32f7907.css"
+    ]
+  },
+  "_unlockedButton-2d160252.js": {
+    "file": "_app/immutable/chunks/unlockedButton-2d160252.js",
+    "imports": [
+      "_index-d5d48e27.js"
+    ],
+    "css": [
+      "_app/immutable/assets/unlockedButton-0f430339.css"
+    ]
+  },
+  "_descriptionUtils-f5c09904.js": {
+    "file": "_app/immutable/chunks/descriptionUtils-f5c09904.js",
+    "imports": [
+      "_weaponLevel-1d872777.js",
+      "_enums-eee6a708.js"
+    ]
+  },
+  "node_modules/@3d-dice/dice-box/dist/dice-box.es.js": {
+    "file": "_app/immutable/chunks/dice-box.es-7f4fe224.js",
+    "src": "node_modules/@3d-dice/dice-box/dist/dice-box.es.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "_preload-helper-703ceea7.js"
+    ],
+    "dynamicImports": [
+      "node_modules/@3d-dice/dice-box/dist/world.offscreen.js",
+      "node_modules/@3d-dice/dice-box/dist/world.onscreen.js"
+    ]
+  },
+  "node_modules/vanilla-picker/dist/vanilla-picker.mjs": {
+    "file": "_app/immutable/chunks/vanilla-picker-e096ae6b.js",
+    "src": "node_modules/vanilla-picker/dist/vanilla-picker.mjs",
+    "isDynamicEntry": true
+  },
+  "node_modules/@3d-dice/dice-box/dist/world.offscreen.js": {
+    "file": "_app/immutable/chunks/world.offscreen-e1444325.js",
+    "src": "node_modules/@3d-dice/dice-box/dist/world.offscreen.js",
+    "isDynamicEntry": true
+  },
+  "node_modules/@3d-dice/dice-box/dist/world.onscreen.js": {
+    "file": "_app/immutable/chunks/world.onscreen-2972fed2.js",
+    "src": "node_modules/@3d-dice/dice-box/dist/world.onscreen.js",
+    "isDynamicEntry": true,
+    "imports": [
+      "node_modules/@3d-dice/dice-box/dist/dice-box.es.js",
+      "_preload-helper-703ceea7.js"
+    ]
+  },
+  "src/routes/dice-editor/diceEditor.css": {
+    "file": "_app/immutable/assets/diceEditor-9e689f9a.css",
+    "src": "src/routes/dice-editor/diceEditor.css"
+  },
+  "Popup.css": {
+    "file": "_app/immutable/assets/Popup-8ea2c0a9.css",
+    "src": "Popup.css"
+  },
+  "src/routes/home/attackCalcHeader.css": {
+    "file": "_app/immutable/assets/attackCalcHeader-636eb95c.css",
+    "src": "src/routes/home/attackCalcHeader.css"
+  },
+  "src/routes/home/attackCalc.css": {
+    "file": "_app/immutable/assets/attackCalc-d4a1de04.css",
+    "src": "src/routes/home/attackCalc.css"
+  },
+  "src/routes/home/attackRollModal.css": {
+    "file": "_app/immutable/assets/attackRollModal-31ad3699.css",
+    "src": "src/routes/home/attackRollModal.css"
+  },
+  "src/routes/home/queryPicker.css": {
+    "file": "_app/immutable/assets/queryPicker-91b42591.css",
+    "src": "src/routes/home/queryPicker.css"
+  },
+  "SvelteTip.css": {
+    "file": "_app/immutable/assets/SvelteTip-e74eeca4.css",
+    "src": "SvelteTip.css"
+  },
+  "src/routes/home/classes.css": {
+    "file": "_app/immutable/assets/classes-932aee1d.css",
+    "src": "src/routes/home/classes.css"
+  },
+  "categoryHeader.css": {
+    "file": "_app/immutable/assets/categoryHeader-e43116bc.css",
+    "src": "categoryHeader.css"
+  },
+  "pickOnePrompt.css": {
+    "file": "_app/immutable/assets/pickOnePrompt-ad4b2b02.css",
+    "src": "pickOnePrompt.css"
+  },
+  "src/routes/home/classesEntry.css": {
+    "file": "_app/immutable/assets/classesEntry-f0fa02f9.css",
+    "src": "src/routes/home/classesEntry.css"
+  },
+  "equippedButton.css": {
+    "file": "_app/immutable/assets/equippedButton-f32f7907.css",
+    "src": "equippedButton.css"
+  },
+  "unlockedButton.css": {
+    "file": "_app/immutable/assets/unlockedButton-0f430339.css",
+    "src": "unlockedButton.css"
+  },
+  "src/routes/home/combatArts.css": {
+    "file": "_app/immutable/assets/combatArts-bfc82d30.css",
+    "src": "src/routes/home/combatArts.css"
+  },
+  "src/routes/home/combatArtsEntry.css": {
+    "file": "_app/immutable/assets/combatArtsEntry-b110b9c6.css",
+    "src": "src/routes/home/combatArtsEntry.css"
+  },
+  "src/routes/home/combatSkillEntry.css": {
+    "file": "_app/immutable/assets/combatSkillEntry-fbbaf0f1.css",
+    "src": "src/routes/home/combatSkillEntry.css"
+  },
+  "src/routes/home/combatSkills.css": {
+    "file": "_app/immutable/assets/combatSkills-c1ccc9c4.css",
+    "src": "src/routes/home/combatSkills.css"
+  },
+  "src/routes/home/combatStats.css": {
+    "file": "_app/immutable/assets/combatStats-7229023b.css",
+    "src": "src/routes/home/combatStats.css"
+  },
+  "src/routes/home/customWeaponPrompt.css": {
+    "file": "_app/immutable/assets/customWeaponPrompt-6b8e13cb.css",
+    "src": "src/routes/home/customWeaponPrompt.css"
+  },
+  "src/routes/home/header.css": {
+    "file": "_app/immutable/assets/header-753fc675.css",
+    "src": "src/routes/home/header.css"
+  },
+  "src/routes/home/home.css": {
+    "file": "_app/immutable/assets/home-57081e3c.css",
+    "src": "src/routes/home/home.css"
+  },
+  "src/routes/roll-chat/RollChat.css": {
+    "file": "_app/immutable/assets/RollChat-9a0c86ee.css",
+    "src": "src/routes/roll-chat/RollChat.css"
+  },
+  "src/routes/home/skills.css": {
+    "file": "_app/immutable/assets/skills-beb1ffdd.css",
+    "src": "src/routes/home/skills.css"
+  },
+  "src/routes/home/stats.css": {
+    "file": "_app/immutable/assets/stats-81349a71.css",
+    "src": "src/routes/home/stats.css"
+  },
+  "src/routes/home/weapons.css": {
+    "file": "_app/immutable/assets/weapons-187a4e77.css",
+    "src": "src/routes/home/weapons.css"
+  },
+  "src/routes/roll-chat/attackEntry.css": {
+    "file": "_app/immutable/assets/attackEntry-5c7fc111.css",
+    "src": "src/routes/roll-chat/attackEntry.css"
+  },
+  "src/routes/roll-chat/basicEntry.css": {
+    "file": "_app/immutable/assets/basicEntry-8580c6df.css",
+    "src": "src/routes/roll-chat/basicEntry.css"
+  },
+  "src/routes/home/skillEntry.css": {
+    "file": "_app/immutable/assets/skillEntry-39558549.css",
+    "src": "src/routes/home/skillEntry.css"
+  },
+  "src/routes/home/weaponsSection.css": {
+    "file": "_app/immutable/assets/weaponsSection-7e2316b3.css",
+    "src": "src/routes/home/weaponsSection.css"
+  },
+  "src/routes/index.css": {
+    "file": "_app/immutable/assets/index-95a6dae5.css",
+    "src": "src/routes/index.css"
+  },
+  "src/routes/xp/xp.css": {
+    "file": "_app/immutable/assets/xp-767e5930.css",
+    "src": "src/routes/xp/xp.css"
+  },
+  "src/routes/xp/combatXPForm.css": {
+    "file": "_app/immutable/assets/combatXPForm-24e8d864.css",
+    "src": "src/routes/xp/combatXPForm.css"
+  },
+  "editor.css": {
+    "file": "_app/immutable/assets/editor-14d69b12.css",
+    "src": "editor.css"
+  }
+}
