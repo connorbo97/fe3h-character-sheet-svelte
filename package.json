@@ -4,8 +4,7 @@
 	"scripts": {
 		"start": "node build/index.js",
 		"dev": "vite dev",
-		"build-dev": "vite build",
-		"build": "vite build --config svelte.config.prod.js",
+		"build": "vite build",
 		"package": "svelte-kit package",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
